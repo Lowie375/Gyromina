@@ -1,0 +1,14 @@
+{
+  "name": "gyromina-v1",
+  "version": "0.1.0",
+  "description": "Gyromina, L375's experimental bot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "L375#6740",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2"
+  }
+}

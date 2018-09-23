@@ -18,7 +18,7 @@ for (const file of commandFiles) {
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!`);
-  client.user.setActivity(`${prefix}ping / Playing ping-pong with Discord!`);
+  client.user.setActivity(`${prefix}help / Playing ping-pong with Discord!`);
 
   // Temporary status for testing phase
   client.user.setStatus("idle");

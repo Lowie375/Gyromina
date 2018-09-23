@@ -1,6 +1,6 @@
 {
   "name": "gyromina-v1",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Gyromina, L375's experimental bot.",
   "main": "index.js",
   "scripts": {

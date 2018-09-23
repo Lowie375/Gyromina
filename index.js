@@ -18,12 +18,12 @@ for (const file of commandFiles) {
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!`);
-  client.user.setActivity(`${prefix}help / Playing ping-pong with Discord!`);
+  client.user.setActivity(`with Discord! / ${prefix}info`);
 
   // Temporary status for testing phase
-  client.user.setStatus("idle");
+  //client.user.setStatus("idle");
   // Use this status after testing phase
-  //client.user.setStatus("online");
+  client.user.setStatus("online");
 });
 
 client.on('message', message => {
@@ -43,7 +43,9 @@ client.on('message', message => {
   }
   catch (error) {
       console.error(error);
-      message.reply('uh oh... looks like *something* went wrong...');
+      // Gets the 'gyrominaNope' emoji
+      const nope = message.client.emojis.find("name", "gyrominaNope");
+      message.reply(`\n${nope} Something went wrong...`);
   }
 });
 

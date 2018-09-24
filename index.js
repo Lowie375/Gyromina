@@ -43,9 +43,9 @@ client.on('message', message => {
   }
   catch (error) {
       console.error(error);
-      // Gets the 'gyrominaNope' emoji
-      const nope = message.client.emojis.find("name", "gyrominaNope");
-      message.reply(`\n${nope} Something went wrong...`);
+      // Gets the 'gyrominaWarning' emoji
+      const warning = message.client.emojis.find("name", "gyrominaWarning");
+      message.reply(`\n${warning} Something went wrong...`);
   }
 });
 

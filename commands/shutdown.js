@@ -5,12 +5,12 @@ module.exports = {
   name: "shutdown",
   description: "Shuts down Gyromina.",
   execute(message, args) {
-    // Gets the 'gyrominaNope' emoji
-    const nope = message.client.emojis.find("name", "gyrominaNope");
+    // Gets the 'gyrominaNo' emoji
+    const nope = message.client.emojis.find("name", "gyrominaNo");
 
     // Checks to see if the bot owner (L375#6740) sent the message.
     if(message.author.id !== ownerID) {
-      message.channel.send(`${nope} You don\'t have sufficient permissions to use that command!`)
+      message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to shut me down, but was unsuccessful!')
       return;
     }

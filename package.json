@@ -1,7 +1,7 @@
 {
   "name": "gyromina-v1",
-  "version": "0.3.1",
-  "description": "Gyromina, L375's experimental bot.",
+  "version": "0.4.0",
+  "description": "Gyromina, an experimental bot.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

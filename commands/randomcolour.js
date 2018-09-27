@@ -18,7 +18,7 @@ module.exports = {
 
     for (g=0; g<=5; g++) {
 
-      hexNums[g] = getRandomInt(0, 15);
+      hexNums[g] = getRandomInt(0, 16);
 
       if (hexNums[g] === 10) {
         hex[g] = "a";
@@ -30,7 +30,7 @@ module.exports = {
         hex[g] = "d";
       } else if (hexNums[g] === 14) {
         hex[g] = "e";
-      } else if (hexNums[g] === 15) {
+      } else if (hexNums[g] === 15 || hexNums[g] === 16) {
         hex[g] = "f";
       } else {
         hex[g] = hexNums[g].toString();

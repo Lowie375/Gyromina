@@ -3,7 +3,8 @@ const Discord = require('discord.js');
 module.exports = {
 
   name: "randomcolour",
-  description: "Returns a random colour in hex and RGB",
+  aliases: ["randomcolor", "colour", "color"],
+  description: "Returns a random colour in hex and RGB format.",
   execute(message, args) {
 
     function getRandomInt(min, max) {

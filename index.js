@@ -7,6 +7,7 @@ const { prefix, token, ownerID } = require('./config.json');
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
+// Pulls out the command files
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
@@ -20,9 +21,7 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!`);
   client.user.setActivity(`with Discord! / ${prefix}info`);
 
-  // Temporary status for testing phase
-  //client.user.setStatus("idle");
-  // Use this status after testing phase
+  // Sets Gyroina's current status
   client.user.setStatus("online");
 });
 
@@ -34,9 +33,10 @@ client.on('message', message => {
   const args = message.content.slice(prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 
-  if (!client.commands.has(commandName)) return;
+  const command = client.commands.get(commandName)
+    || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-  const command = client.commands.get(commandName);
+  if (!command) return;
 
   try {
       command.execute(message, args);
@@ -44,7 +44,7 @@ client.on('message', message => {
   catch (error) {
       console.error(error);
       // Gets the 'gyrominaWarning' emoji
-      const warning = message.client.emojis.find("name", "gyrominaWarning");
+      const warning = client.emojis.find("name", "gyrominaWarning");
       message.reply(`\n${warning} Something went wrong...`);
   }
 });

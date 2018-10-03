@@ -3,6 +3,7 @@ const { ownerID, token } = require('../config.json');
 module.exports = {
 
   name: "reboot",
+  aliases: "restart",
   description: "Reboots Gyromina.",
   execute(message, args) {
     // Gets the 'gyrominaNo' emoji

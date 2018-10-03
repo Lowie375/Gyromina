@@ -21,13 +21,13 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!`);
   client.user.setActivity(`with Discord! / ${prefix}info`);
 
-  // Sets Gyroina's current status
+  // Sets Gyromina's current status
   client.user.setStatus("online");
 });
 
 client.on('message', message => {
 
-  // Filters out messages not beginning with Gyromina's prefix and messages sent by bots.
+  // Filters out messages that don't begin with Gyromina's prefix, as well as messages sent by bots.
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(/ +/);

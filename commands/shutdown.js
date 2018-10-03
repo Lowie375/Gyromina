@@ -3,6 +3,7 @@ const { ownerID } = require('../config.json');
 module.exports = {
 
   name: "shutdown",
+  aliases: ["off", "stop", "quit"],
   description: "Shuts down Gyromina.",
   execute(message, args) {
     // Gets the 'gyrominaNo' emoji

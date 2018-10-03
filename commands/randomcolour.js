@@ -1,17 +1,17 @@
 const Discord = require('discord.js');
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 module.exports = {
 
   name: "randomcolour",
   aliases: ["randomcolor", "colour", "color"],
   description: "Returns a random colour in hex and RGB format.",
   execute(message, args) {
-
-    function getRandomInt(min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
 
     var hexNums = [0];
     var hex = ["0"];

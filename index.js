@@ -18,7 +18,7 @@ for (const file of commandFiles) {
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}, ready for action!`);
+  console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
   client.user.setActivity(`with Discord! / ${prefix}info`);
 
   // Sets Gyromina's current status
@@ -43,11 +43,14 @@ client.on('message', message => {
   }
   catch (error) {
       console.error(error);
+      console.log('- - - - - - - - - - -');
       // Gets the 'gyrominaWarning' emoji
-      const warning = client.emojis.find("name", "gyrominaWarning");
+      const warning = client.emojis.get("493570621599383552");
       message.reply(`\n${warning} Something went wrong...`);
   }
 });
+
+client.on("warn", (warn) => console.warn(e));
 
 // Logs into Discord with Gyromina's token
 client.login(token);

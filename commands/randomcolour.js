@@ -9,7 +9,7 @@ function getRandomInt(min, max) {
 module.exports = {
 
   name: "randomcolour",
-  aliases: ["randomcolor", "colour", "color"],
+  aliases: ["randomcolor", "randomcol", "randcolour", "randcolor", "randcol", "colour", "color", "col", "rc"],
   description: "Returns a random colour in hex and RGB format.",
   execute(message, args) {
 

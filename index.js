@@ -50,7 +50,7 @@ client.on('message', message => {
   }
 });
 
-client.on("warn", (warn) => console.warn(e));
+client.on("warn", (warn) => console.warn(warn));
 
 // Logs into Discord with Gyromina's token
 client.login(token);

@@ -34,7 +34,7 @@ function getRandomNumber(min, max) {
   }
 
   // Debug snippet
-  console.log(`altMin = ${altMin}, altMax = ${altMax}, factor = ${factor}`);
+  // console.log(`altMin = ${altMin}, altMax = ${altMax}, factor = ${factor}`);
 
   if (altMax >= 0) {
     altMax++;
@@ -47,7 +47,7 @@ function getRandomNumber(min, max) {
   }
 
   // Debug snippet
-  console.log(`num = ${num}`);
+  // console.log(`num = ${num}`);
 
   if (altMax >= 0 && num >= altMax) {
     num = altMax;
@@ -56,7 +56,7 @@ function getRandomNumber(min, max) {
   }
 
   // Debug snippet
-  console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
+  // console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
 
   return (num / factor);
 }
@@ -64,7 +64,7 @@ function getRandomNumber(min, max) {
 module.exports = {
 
   name: "randomnumber",
-  aliases: ["number", "num", "randomnum", "randnumber", "randnum", "rn"],
+  aliases: ["number", "num", "rn"],
   description: "Returns a random number between two other numbers, inclusive.\nIf only one argument is given, returns a number between 0 and that number, inclusive.",
   execute(message, args) {
 

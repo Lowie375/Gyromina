@@ -21,7 +21,7 @@ function getRandomDecimal(min, max, decims) {
 module.exports = {
 
   name: "randomdecimal",
-  aliases: ["decimal", "dec", "randomdec", "randdecimal", "randdec", "rd"],
+  aliases: ["decimal", "rd"],
   description: "Generates a random decimal number between 0 and 1 to a certain amount of decimal places (0-16). Defaults to 10 decimal places if unspecified.",
   execute(message, args) {
 

@@ -1,5 +1,9 @@
 // List of 'proofs'
-const proof = new Array("because that's just how it is.\n**Deal with it.**", "because smart people think it is.\n**Deal with it.**", "because Gyromina said so.\n**Deal with it.**", "for some odd reason.\n**Deal with it.**", "because Gyromina is too slow to argue.\n**Deal with it.**");
+const proof = ["because that's just how it is.\n**Deal with it.**",
+  "because smart people think it is.\n**Deal with it.**",
+  "because Gyromina said so.\n**Deal with it.**", 
+  "for some odd reason.\n**Deal with it.**", 
+  "because Gyromina is too slow to argue.\n**Deal with it.**"];
 
 // Basic RNG
 function getRandomInt(min, max) {

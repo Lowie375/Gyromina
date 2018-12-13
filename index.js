@@ -1,14 +1,13 @@
-// Require discord.js, fs, and the config file
+// Require discord.js and fs
 const Discord = require('discord.js');
 const fs = require('fs');
-const { prefix, token, ownerID } = require('./config.json');
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
 // Pulls out the command files
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -19,7 +18,7 @@ for (const file of commandFiles) {
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
-  client.user.setActivity(`with Discord! / ${prefix}info`);
+  client.user.setActivity(`with Discord! / ${process.env.prefix}info`);
 
   // Sets Gyromina's current status
   client.user.setStatus("online");
@@ -28,9 +27,10 @@ client.on('ready', () => {
 client.on('message', message => {
 
   // Filters out messages that don't begin with Gyromina's prefix, as well as messages sent by bots.
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (!message.content.startsWith(process.env.prefix) 
+    || message.author.bot) return;
 
-  const args = message.content.slice(prefix.length).split(/ +/);
+  const args = message.content.slice(process.env.prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 
   const command = client.commands.get(commandName)
@@ -50,7 +50,8 @@ client.on('message', message => {
   }
 });
 
-client.on("warn", (warn) => console.warn(warn));
+// Warns when there is a warning with a bot
+client.on("warn", w => console.warn(w));
 
 // Logs into Discord with Gyromina's token
-client.login(token);
+client.login(process.env.token);

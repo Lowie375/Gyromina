@@ -1,5 +1,3 @@
-const { ownerID, token } = require('../config.json');
-
 module.exports = {
 
   name: "reboot",
@@ -11,7 +9,7 @@ module.exports = {
     const yep = message.client.emojis.get("493570632785723402");
 
     // Checks to see if the bot owner (L375#6740) sent the message.
-    if(message.author.id !== ownerID) {
+    if(message.author.id !== process.env.ownerID) {
       message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to reboot me, but was unsuccessful!')
       return;
@@ -23,6 +21,6 @@ module.exports = {
     console.log(`Rebooting ${message.client.user.tag}...\n- - - - - - - - - - -`);
     message.client.destroy();
     // Reboots Gyromina by logging back into Discord with Gyromina's token
-    message.client.login(token);
+    message.client.login(process.env.token);
   },
 };

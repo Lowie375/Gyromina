@@ -1,5 +1,3 @@
-const { ownerID } = require('../config.json');
-
 module.exports = {
 
   name: "shutdown",
@@ -11,7 +9,7 @@ module.exports = {
     const yep = message.client.emojis.get("493570632785723402");
 
     // Checks to see if the bot owner (L375#6740) sent the message.
-    if(message.author.id !== ownerID) {
+    if(message.author.id !== process.env.ownerID) {
       message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to shut me down, but was unsuccessful!')
       return;

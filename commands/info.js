@@ -12,7 +12,7 @@ module.exports = {
       .setAuthor("Bot Information", message.client.user.avatarURL)
       .setColor(0x7effaf)
       .setTitle(botinfo.description)
-      .setDescription("~ Created by " + botinfo.author + "\n~ Currently running version " + botinfo.version + " on " + message.client.guilds.size + " servers")
+      .setDescription("~ Created by L375#6740, with support from Alten#4148\n~ Currently running version " + botinfo.version + " on " + message.client.guilds.size + " servers")
       .setFooter("Requested by " + message.author.tag, message.author.avatarURL)
       .addField("Github Repository", "[https://github.com/Lowie375/Gyromina](https://github.com/Lowie375/Gyromina)");
 

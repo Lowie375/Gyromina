@@ -10,7 +10,7 @@ function getRandomNumber(min, max) {
   var factor = 1;
   var altMin, altMax;
 
-  // Checks to see if the minimum is laregr than them maximum. If so, switches the numbers around.
+  // Checks to see if the minimum is larger than them maximum. If so, switches the numbers around.
   if (min > max) {
     altMin = max;
     altMax = min;
@@ -34,7 +34,7 @@ function getRandomNumber(min, max) {
   }
 
   // Debug snippet
-  // console.log(`altMin = ${altMin}, altMax = ${altMax}, factor = ${factor}`);
+  console.log(`altMin = ${altMin}, altMax = ${altMax}, factor = ${factor}`);
 
   if (altMax >= 0) {
     altMax++;
@@ -47,7 +47,7 @@ function getRandomNumber(min, max) {
   }
 
   // Debug snippet
-  // console.log(`num = ${num}`);
+  console.log(`num = ${num}`);
 
   if (altMax >= 0 && num >= altMax) {
     num = altMax;
@@ -56,7 +56,7 @@ function getRandomNumber(min, max) {
   }
 
   // Debug snippet
-  // console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
+  console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
 
   return (num / factor);
 }

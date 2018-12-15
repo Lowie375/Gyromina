@@ -11,17 +11,18 @@ const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'))
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
-  client.commands.set(command.name, command);
+  client.commands.set(command.help.name, command);
 }
 
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
-  client.user.setActivity(`with Discord! / ${process.env.prefix}info`);
 
   // Sets Gyromina's current status
-  client.user.setStatus("online");
+  client.user.setStatus("idle");
+  //client.user.setActivity(`with Discord! / ${process.env.prefix}info`);
+  client.user.setActivity(`L375 struggle. / ${process.env.prefix}info`, { type: "WATCHING"});
 });
 
 client.on('message', message => {
@@ -29,17 +30,27 @@ client.on('message', message => {
   // Filters out messages that don't begin with Gyromina's prefix, as well as messages sent by bots.
   if (!message.content.startsWith(process.env.prefix) 
     || message.author.bot) return;
-
+  
+  /*var splitter;
+  
+  if (message.content.startsWith(process.env.prefix + "prove")) {
+    splitter = " \";
+  } else {
+    splitter = / +/;
+  }
+  
+  const args = message.content.slice(process.env.prefix.length).split(splitter);*/
+  
   const args = message.content.slice(process.env.prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 
   const command = client.commands.get(commandName)
-    || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+    || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
   if (!command) return;
 
   try {
-      command.execute(message, args);
+      command.execute(message, args, client);
   }
   catch (error) {
       console.error(error);

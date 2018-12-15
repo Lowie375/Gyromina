@@ -62,10 +62,6 @@ function getRandomNumber(min, max) {
 }
 
 module.exports = {
-
-  name: "randomnumber",
-  aliases: ["number", "num", "rn"],
-  description: "Returns a random number between two other numbers, inclusive.\nIf only one argument is given, returns a number between 0 and that number, inclusive.",
   execute(message, args) {
 
     var number = 0;
@@ -115,4 +111,12 @@ module.exports = {
       }
     }
   }
-}
+};
+
+module.exports.help = {
+  name: "randomnumber",
+  aliases: ["number", "num", "rn"],
+  description: "Returns a random number between two other numbers, inclusive.\nIf only one argument is given, returns a number between 0 and that number, inclusive.",
+  usage: `${process.env.prefix}randomnumber <max> [min]`,
+  hide: false
+};

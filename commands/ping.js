@@ -1,7 +1,4 @@
 module.exports = {
-
-  name: 'ping',
-  description: 'Pings Gyromina.',
   execute(message, args) {
     // Pings the channel by sending a message
     let start = Date.now();
@@ -12,4 +9,11 @@ module.exports = {
         newMsg.edit(`Pong! 🏓\nLatency: \`${end - start}ms\`, Discord: \`${message.client.ping}ms\``);
       });
   },
+};
+
+module.exports.help = {
+  name: 'ping',
+  description: 'Pings Gyromina.',
+  usage: `${process.env.prefix}ping`,
+  hide: false
 };

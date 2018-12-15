@@ -16,9 +16,6 @@ function getRandomInt(min, max) {
 }
 
 module.exports = {
-
-  name: "prove",
-  description: "\'Proves\' that the input is true.",
   execute(message, args) {
 
     if (!args.length) {
@@ -36,4 +33,11 @@ module.exports = {
       message.channel.send(statement.join(" ") + " " + selected);
     }
   },
+};
+
+module.exports.help = {
+  name: "prove",
+  description: "\'Proves\' that the input is true.",
+  usage: `${process.env.prefix}prove <statement>`,
+  hide: false
 };

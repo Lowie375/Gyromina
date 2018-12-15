@@ -1,8 +1,4 @@
 module.exports = {
-
-  name: "shutdown",
-  aliases: ["off", "stop", "quit"],
-  description: "Shuts down Gyromina.",
   execute(message, args) {
     // Gets the 'gyrominaNo' and 'gyrominaYes' emojis
     const nope = message.client.emojis.get("493575012276633610");
@@ -21,4 +17,12 @@ module.exports = {
     console.log(`Shutting down ${message.client.user.tag}...\n- - - - - - - - - - -`);
     message.client.destroy();
   },
+};
+
+module.exports.help = {
+  name: "shutdown",
+  aliases: ["off", "stop", "quit"],
+  description: "Shuts down Gyromina.",
+  usage: `${process.env.prefix}shutdown`,
+  hide: true
 };

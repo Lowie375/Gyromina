@@ -7,10 +7,6 @@ function getRandomInt(min, max) {
 }
 
 module.exports = {
-
-  name: "randomcolour",
-  aliases: ["randomcolor", "colour", "color", "col", "rc"],
-  description: "Returns a random colour in hex and RGB format.",
   execute(message, args) {
 
     var hexNums = [0];
@@ -52,4 +48,12 @@ module.exports = {
     message.reply("here you go!", {embed});
 
   },
+};
+
+module.exports.help = {
+  name: "randomcolour",
+  aliases: ["randomcolor", "colour", "color", "col", "rc"],
+  description: "Returns a random colour in hex and RGB format.",
+  usage: `${process.env.prefix}randomcolour`,
+  hide: false
 };

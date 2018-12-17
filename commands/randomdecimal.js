@@ -46,7 +46,7 @@ module.exports = {
 module.exports.help = {
   name: "randomdecimal",
   aliases: ["decimal", "rd"],
-  description: "Generates a random decimal number between 0 and 1 to a certain amount of decimal places (0-16). Defaults to 10 decimal places if unspecified.",
+  description: "Generates a random decimal number between 0 and 1, to up to 16 decimal places.\nDefaults to 10 decimal places if unspecified.",
   usage: `${process.env.prefix}randomdecimal [places]`,
   hide: false
 };

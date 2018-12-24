@@ -4,11 +4,18 @@
   "description": "Gyromina, an experimental bot.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "8.12.0",
+    "npm": "*"
   },
   "author": "L375#6740",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.4.2"
-  }
+  },
+  "devDependencies": {},
+  "keywords": []
 }

@@ -4,6 +4,6 @@ Gyromina, L375's experimental bot.
 
 ***
 
-Created by L375#6740, with help from Alten#4148
+Created by L375#6740
 
 > Latest stable build: 0.6.4

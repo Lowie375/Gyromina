@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.run = {
   execute(message, args) {
     // Gets the 'gyrominaNo' and 'gyrominaYes' emojis
     const nope = message.client.emojis.get("493575012276633610");
@@ -22,9 +22,9 @@ module.exports = {
 };
 
 module.exports.help = {
-  name: "reboot",
-  aliases: "restart",
-  description: "Reboots Gyromina.",
-  usage: `${process.env.prefix}reboot`,
-  hide: true
+  "name": "reboot",
+  "aliases": "restart",
+  "description": "Reboots Gyromina.",
+  "usage": `${process.env.prefix}reboot`,
+  "hide": true
 };

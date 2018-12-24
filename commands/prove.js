@@ -15,7 +15,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-module.exports = {
+module.exports.run = {
   execute(message, args) {
 
     if (!args.length) {
@@ -36,8 +36,8 @@ module.exports = {
 };
 
 module.exports.help = {
-  name: "prove",
-  description: "\'Proves\' that the input is true.",
-  usage: `${process.env.prefix}prove <statement>`,
-  hide: false
+  "name": "prove",
+  "description": "\'Proves\' that the input is true.",
+  "usage": `${process.env.prefix}prove <statement>`,
+  "hide": false
 };

@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.run = {
   execute(message, args) {
     // Pings the channel by sending a message
     let start = Date.now();
@@ -12,8 +12,8 @@ module.exports = {
 };
 
 module.exports.help = {
-  name: 'ping',
-  description: 'Pings Gyromina.',
-  usage: `${process.env.prefix}ping`,
-  hide: false
+  "name": 'ping',
+  "description": 'Pings Gyromina.',
+  "usage": `${process.env.prefix}ping`,
+  "hide": false
 };

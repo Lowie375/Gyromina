@@ -6,7 +6,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-module.exports = {
+module.exports.run = {
   execute(message, args) {
 
     var hexNums = [0];
@@ -51,9 +51,9 @@ module.exports = {
 };
 
 module.exports.help = {
-  name: "randomcolour",
-  aliases: ["randomcolor", "colour", "color", "col", "rc"],
-  description: "Returns a random colour in hex and RGB format.",
-  usage: `${process.env.prefix}randomcolour`,
-  hide: false
+  "name": "randomcolour",
+  "aliases": ["randomcolor", "colour", "color", "col", "rc"],
+  "description": "Returns a random colour in hex and RGB format.",
+  "usage": `${process.env.prefix}randomcolour`,
+  "hide": false
 };

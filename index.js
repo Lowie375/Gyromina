@@ -53,7 +53,7 @@ client.on('message', message => {
   if (!command) return;
 
   try {
-      command.execute(message, args, client);
+      command.run.execute(message, args, client);
   }
   catch (error) {
       console.error(error);

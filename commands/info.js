@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const botinfo = require('../package.json');
 
-module.exports = {
+module.exports.run = {
   execute(message, args) {
 
     const embed = new Discord.RichEmbed()
@@ -17,9 +17,9 @@ module.exports = {
 };
 
 module.exports.help = {
-  name: "info",
-  aliases: "information",
-  description: "Displays Gyromina's info.",
-  usage: `${process.env.prefix}info`,
-  hide: false
+  "name": "info",
+  "aliases": "information",
+  "description": "Displays Gyromina's info.",
+  "usage": `${process.env.prefix}info`,
+  "hide": false
 };

@@ -3,7 +3,7 @@ const fs = require('fs');
 
 module.exports.run = {
   execute(message, args) {
-
+    /*
     message.client.commands = new Discord.Collection();
 
     fs.readdir('./commands/', (err, files) => {
@@ -15,20 +15,18 @@ module.exports.run = {
         return;
       }
 
-      /*cmds.forEach(f => {
-        const command = require(`./commands/${f}`);
-        message.client.commands.set(command.help.name, command);
-      });*/
+      //cmds.forEach(f => {
+        //const command = require(`./commands/${f}`);
+        //message.client.commands.set(command.help.name, command);
+      //});
 
     });
 
-    if (!args) {
-      // generic help
-    } else {
+    if (args.length >= 1) {
       const commandName = args[0];
       const cmdx = require(`./${commandName}.js`);
-      /*const cmdx = message.client.commands.get(commandName)
-        || message.client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));*/
+      //const cmdx = message.client.commands.get(commandName)
+        //|| message.client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
       const embed = new Discord.RichEmbed()
         .setAuthor(process.env.prefix + cmdx.help.name, message.client.user.avatarURL)
@@ -37,14 +35,17 @@ module.exports.run = {
         .addField(cmdx.help.description, "Aliases: TBD\nUsage: " + cmdx.help.usage)
 
       message.channel.send({embed});
+    } else {
+      // generic help
     }
+    */
   },
 };
 
 module.exports.help = {
   "name": "help",
   "aliases": ["commands", "cmds", "command", "cmd"],
-  "description": "Lists all of Gyromina's commands.",
+  "description": "Lists all of Gyromina's commands. (WIP)",
   "usage": `${process.env.prefix}help [command]`,
   "hide": false
 };

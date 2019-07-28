@@ -1,6 +1,6 @@
 {
   "name": "gyromina-v1",
-  "version": "0.6.42",
+  "version": "0.6.43",
   "description": "Gyromina, an experimental bot.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "node": "8.12.0",
     "npm": "*"
   },
-  "author": "L375#6740",
+  "author": "L375#6740 & Alten#4148",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.4.2"

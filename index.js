@@ -34,17 +34,16 @@ client.on('message', message => {
   if (!message.content.startsWith(process.env.prefix) 
     || message.author.bot) return;
   
-  /*var splitter;
-  
+  var args;
+
+  // Splits arguments: with spaces included if the command is "prove", normally otherwise
   if (message.content.startsWith(process.env.prefix + "prove")) {
-    splitter = " \";
+    args = message.content.slice(process.env.prefix.length).split(" ");
   } else {
-    splitter = / +/;
+    args = message.content.slice(process.env.prefix.length).split(/ +/);
   }
   
-  const args = message.content.slice(process.env.prefix.length).split(splitter);*/
-  
-  const args = message.content.slice(process.env.prefix.length).split(/ +/);
+  //const args = message.content.slice(process.env.prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 
   const command = client.commands.get(commandName)

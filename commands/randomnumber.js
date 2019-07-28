@@ -66,7 +66,7 @@ function getRandomNumber(min, max) {
   }*/
 
   // Debug snippet
-  console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
+  // console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
 
   return (num / factor);
 }
@@ -128,5 +128,6 @@ module.exports.help = {
   "aliases": ["number", "num", "rn"],
   "description": "Returns a random number between two other numbers, inclusive.\nIf only one argument is given, returns a number between 0 and that number, inclusive.",
   "usage": `${process.env.prefix}randomnumber <max> [min]`,
-  "hide": false
+  "hide": false,
+  "wip": false
 };

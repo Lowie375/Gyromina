@@ -15,5 +15,6 @@ module.exports.help = {
   "name": 'ping',
   "description": 'Pings Gyromina.',
   "usage": `${process.env.prefix}ping`,
-  "hide": false
+  "hide": false,
+  "wip": false
 };

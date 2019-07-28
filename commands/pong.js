@@ -15,6 +15,7 @@ module.exports.help = {
   "name": 'pong',
   "description": 'Pongs Gyromina. (Functions similarly to ' + process.env.prefix + 'ping)',
   "usage": `${process.env.prefix}pong`,
-  "hide": false
+  "hide": false,
+  "wip": false
 };
   

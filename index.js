@@ -20,12 +20,15 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
 
   // Sets Gyromina's current status
-  //client.user.setStatus("online");
-  //client.user.setActivity(`with Discord! / ${process.env.prefix}info`);
-
-  // Degub/test phase status
-  client.user.setStatus("idle");
-  client.user.setActivity(`L375 write things. / ${process.env.prefix}info`, { type: "WATCHING"});
+  if(process.env.exp === 1) {
+    // Debug/test status
+    client.user.setStatus("idle");
+    client.user.setActivity(`L375 code. / ${process.env.prefix}info`, { type: "WATCHING"});
+  } else {
+    // Normal status
+    client.user.setStatus("online");
+    client.user.setActivity(`with Discord! / ${process.env.prefix}info`);
+  }
 });
 
 client.on('message', message => {

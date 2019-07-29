@@ -40,7 +40,7 @@ module.exports.run = {
     }
   } else {
     // Gets the gyrominaWarning emoji
-    const warning = client.emojis.get("493570621599383552");
+    const warning = message.client.emojis.get("493570621599383552");
 
     message.channel.send(`${warning} This command is unavailable.`);
     if(message.author.id === process.env.ownerID) {

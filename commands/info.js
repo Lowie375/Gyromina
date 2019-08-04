@@ -22,6 +22,6 @@ module.exports.help = {
   "aliases": "information",
   "description": "Displays Gyromina's info.",
   "usage": `${process.env.prefix}info`,
-  "hide": false,
-  "wip": false
+  "hide": 0,
+  "wip": 0
 };

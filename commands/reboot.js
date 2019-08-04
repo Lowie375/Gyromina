@@ -26,6 +26,6 @@ module.exports.help = {
   "aliases": "restart",
   "description": "Reboots Gyromina.",
   "usage": `${process.env.prefix}reboot`,
-  "hide": true,
-  "wip": false
+  "hide": 1,
+  "wip": 0
 };

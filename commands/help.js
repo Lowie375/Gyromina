@@ -3,7 +3,6 @@ const fs = require('fs');
 
 module.exports.run = {
   execute(message, args) {
-    if (process.env.exp === 1) {
     message.client.commands = new Discord.Collection();
 
     fs.readdir('./commands/', (err, files) => {
@@ -38,15 +37,6 @@ module.exports.run = {
     } else {
       // generic help
     }
-  } else {
-    // Gets the gyrominaWarning emoji
-    const warning = message.client.emojis.get("493570621599383552");
-
-    message.channel.send(`${warning} This command is unavailable.`);
-    if(message.author.id === process.env.ownerID) {
-      message.channel.send(`Enable experimental mode to run this command.`)
-    }
-  }
   },
 };
 
@@ -55,6 +45,6 @@ module.exports.help = {
   "aliases": ["commands", "cmds", "command", "cmd"],
   "description": "Provides command help.",
   "usage": `${process.env.prefix}help [command]`,
-  "hide": false,
-  "wip": true
+  "hide": 0,
+  "wip": 1
 };

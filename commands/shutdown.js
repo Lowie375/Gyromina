@@ -24,6 +24,6 @@ module.exports.help = {
   "aliases": ["off", "stop", "quit"],
   "description": "Shuts down Gyromina.",
   "usage": `${process.env.prefix}shutdown`,
-  "hide": true,
-  "wip": false
+  "hide": 1,
+  "wip": 0
 };

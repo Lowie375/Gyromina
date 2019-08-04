@@ -20,7 +20,7 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
 
   // Sets Gyromina's current status
-  if(process.env.exp === 1) {
+  if(process.env.exp === "1") {
     // Debug/test status
     client.user.setStatus("idle");
     client.user.setActivity(`L375 code. / ${process.env.prefix}info`, { type: "WATCHING"});
@@ -52,17 +52,35 @@ client.on('message', message => {
   const command = client.commands.get(commandName)
     || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
-  if (!command) return;
+  // Checks if the command exists. If not, returns.
+  if(!command) return;
 
-  try {
+  // Checks if the command is unstable. If so, displays a warning instead of running the command.
+  if(process.env.exp === "0" && command.help.wip === 1) {
+    const warning2 = client.emojis.get("493570621599383552");
+    const nope = client.emojis.get("493575012276633610");
+
+    if(message.author.id === process.env.ownerID) {
+      message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n\n${warning2} Please enable **experimental mode** to run it.`);
+    } else {
+      message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.`);
+    }
+} else { 
+    try {
       command.run.execute(message, args, client);
-  }
-  catch (error) {
+    }
+    catch (error) {
+      // Logs the error & sends it to the bot owner
       console.error(error);
       console.log('- - - - - - - - - - -');
+      const user = client.users.get(process.env.ownerID);
+      user.send(error);
+      
       // Gets the 'gyrominaWarning' emoji
       const warning = client.emojis.get("493570621599383552");
-      message.reply(`\n${warning} Something went wrong...`);
+      // Sends a warning message in the channel
+      message.channel.send(`${warning} Something went wrong...`);
+    }
   }
 });
 

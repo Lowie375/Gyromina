@@ -10,5 +10,5 @@ Created by L375#6740, with support from Alten#4148
 
 ***
 
-[Info Pages](https://lx375.weebly.com/Gyromina) / [Invite Link](https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=1141234752&scope=bot)
+[Info Pages](https://lx375.weebly.com/gyromina) / [Commands](https://lx375.weebly.com/gyromina-commands) / [Invite Link](https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=1141234752&scope=bot)
 

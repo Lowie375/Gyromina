@@ -9,11 +9,14 @@ module.exports.run = {
       return;
     }
 
-    if(1 === "1") {
+    /*if(1 === "1") {
       message.channel.send("Yeah!");
     } else {
       message.channel.send("bleh.");
-    }
+    }*/
+
+    console.log("test");
+
   },
 };
     

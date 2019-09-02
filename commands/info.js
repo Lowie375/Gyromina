@@ -10,7 +10,7 @@ module.exports.run = {
       .setTitle(botinfo.description)
       .setDescription("\• Created by <@334335706740686849>, with support from <@184061887212814336>\n\• Currently running version " + botinfo.version + " on " + message.client.guilds.size + " servers")
       .setFooter("Requested by " + message.author.tag, message.author.avatarURL)
-      .addField("Gyromina Info Pages", "\• [https://lx375.weebly.com/Gyromina](https://lx375.weebly.com/gyromina)")
+      .addField("Gyromina Info Pages", "\• [https://lx375.weebly.com/gyromina](https://lx375.weebly.com/gyromina)")
       .addField("Invite Link", "\• [https://discord.now.sh/490590334758420481?p1141234752](https://discord.now.sh/490590334758420481?p1141234752)")
       .addField("Github Repository", "\• [https://github.com/Lowie375/Gyromina](https://github.com/Lowie375/Gyromina)");
 

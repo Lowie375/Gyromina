@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 
 function getRandomInt(min, max) {
+  console.log(`GRI min: ${min}, GRI max: ${max}`);
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
@@ -9,6 +10,7 @@ function getRandomInt(min, max) {
 function getRandomNumber(min, max) {
   var factor = 1;
   var altMin, altMax;
+  //var altMind, altMaxd;
 
   // Checks to see if the minimum is larger than the maximum. If so, switches the numbers around.
   if (min > max) {
@@ -32,22 +34,31 @@ function getRandomNumber(min, max) {
       factor *= 10;
     }
   }
+  
+  /*if(altMin % 1 != 0 || altMax % 1 != 0) {
+    // Splits the decimal and whole number portions
+    altMind = altMin % 1;
+    altMaxd = altMax % 1; altMaxd++;
+    altMin = Math.floor(altMin);
+    altMax = Math.floor(altMax) - 1;
+  }*/
 
   // Debug snippet
-  //console.log(`altMin = ${altMin}, altMax = ${altMax}, factor = ${factor}`);
+  console.log(`altMin = ${altMin}, altMax = ${altMax}`);
+  //console.log(`altMind = ${altMind}, altMaxd = ${altMaxd}`);
 
   if (altMax >= 0) {
-    altMax++;
-    var num = getRandomInt(altMin, altMax);
-    altMax--;
+    //altMax++:
+    var num = getRandomInt(altMin, parseInt(altMax)+1);
+    //altMax--;
   } else if (altMax < 0){
-    altMin++;
-    var num = getRandomInt(altMin, altMax);
-    altMin--;
+    //altMin++;
+    var num = getRandomInt(parseInt(altMin)+1, altMax);
+    //altMin--;
   }
 
   // Debug snippet
-  //console.log(`num = ${num}`);
+  console.log(`num = ${num}`);
 
   if (num > altMin && num > altMax) {
     while (num > altMin && num > altMax) {
@@ -68,7 +79,7 @@ function getRandomNumber(min, max) {
   // Debug snippet
   // console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
 
-  return (num / factor);
+  return (num/factor);
 }
 
 module.exports.run = {
@@ -83,10 +94,11 @@ module.exports.run = {
     }
     if (args.length) {
 
-      var a0typ = isNaN(args[0]);
+      // Debug block
+      /*var a0typ = isNaN(args[0]);
       if (args.length >= 2) {
         var a1typ = isNaN(args[1]);
-      }
+      } //*/
 
       if (args.length >= 2) {
 
@@ -126,8 +138,9 @@ module.exports.run = {
 module.exports.help = {
   "name": "randomnumber",
   "aliases": ["number", "num", "rn"],
-  "description": "Returns a random number between two other numbers, inclusive.\nIf only one argument is given, returns a number between 0 and that number, inclusive.",
+  "description": "Generates a random number between two other numbers, inclusive.\nIf only one argument is given, generates a number between 0 and that number, inclusive.",
   "usage": `${process.env.prefix}randomnumber <max> [min]`,
+  "params": "<max> [min]",
   "hide": 0,
   "wip": 0
 };

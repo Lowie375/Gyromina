@@ -39,6 +39,7 @@ module.exports.help = {
   "name": "prove",
   "description": "\'Proves\' that the input is true.",
   "usage": `${process.env.prefix}prove <statement>`,
+  "params": "<statement>",
   "hide": 0,
   "wip": 0
 };

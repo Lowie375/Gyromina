@@ -6,7 +6,7 @@ L375's experimental bot.
 
 Created by L375#6740, with support from Alten#4148
 
-> Latest stable build: 0.6.61
+> Latest stable build: 0.7.0
 
 ***
 

@@ -7,7 +7,7 @@ module.exports.run = {
     var cmds = [];
 
     // Reads command files
-    fs.readdir('../Gyromina/commands/', (err, files) => {
+    fs.readdir('../commands/', (err, files) => {
       if(err) console.error(err);
 
       // Debug snippet

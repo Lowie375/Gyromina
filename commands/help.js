@@ -7,7 +7,7 @@ module.exports.run = {
     var cmds = [];
 
     // Reads command files
-    fs.readdir('../commands/', (err, files) => {
+    fs.readdir('./commands/', (err, files) => {
       if(err) console.error(err);
 
       // Debug snippet
@@ -85,26 +85,30 @@ module.exports.run = {
         embed2.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
         var cmdlist = "";
+        var cmdctr = 0;
         message.client.hcommands.forEach(c => {
           if(c.help.hide === 1 || c.help.wip === 1) return;
-
+          
           if(c.help.params) cmdlist = cmdlist + "\• " + process.env.prefix + "**" + c.help.name + "** " + c.help.params + "\n";
           if(!c.help.params) cmdlist = cmdlist + "\• " + process.env.prefix + "**" + c.help.name + "**\n"
+          cmdctr++;
         });
-        embed2.addField("Main Commands", cmdlist, true);
+        if(cmdctr != 0) embed2.addField("Main Commands", cmdlist, true);
 
         if(process.env.exp === "1") {
           cmdlist = "These commands may be unstable.\n**Use at your own risk!**\n";
         } else {
           cmdlist = "These commands are currently unavailable.\n";
         }
+        cmdctr = 0;
         message.client.hcommands.forEach(c => {
           if(c.help.hide === 1 || c.help.wip === 0) return;
 
           if(c.help.params) cmdlist = cmdlist + "\• " + process.env.prefix + "**" + c.help.name + "** " + c.help.params + "\n";
           if(!c.help.params) cmdlist = cmdlist + "\• " + process.env.prefix + "**" + c.help.name + "**\n"
+          cmdctr++;
         });
-        embed2.addField("Experimental (WIP) Commands " + beta, cmdlist, true);
+        if(cmdctr != 0) embed2.addField("Experimental (WIP) Commands " + beta, cmdlist, true);
 
         message.channel.send(embed2);
       }

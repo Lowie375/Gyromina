@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 
 function getRandomInt(min, max) {
-  console.log(`GRI min: ${min}, GRI max: ${max}`);
+  // Debug snippet
+  //console.log(`GRI min: ${min}, GRI max: ${max}`);
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
@@ -44,7 +45,7 @@ function getRandomNumber(min, max) {
   }*/
 
   // Debug snippet
-  console.log(`altMin = ${altMin}, altMax = ${altMax}`);
+  //console.log(`altMin = ${altMin}, altMax = ${altMax}`);
   //console.log(`altMind = ${altMind}, altMaxd = ${altMaxd}`);
 
   if (altMax >= 0) {
@@ -58,7 +59,7 @@ function getRandomNumber(min, max) {
   }
 
   // Debug snippet
-  console.log(`num = ${num}`);
+  //console.log(`num = ${num}`);
 
   if (num > altMin && num > altMax) {
     while (num > altMin && num > altMax) {
@@ -79,7 +80,7 @@ function getRandomNumber(min, max) {
   // Debug snippet
   // console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
 
-  return (num/factory);
+  return (num/factor);
 }
 
 module.exports.run = {
@@ -90,7 +91,7 @@ module.exports.run = {
 
     if (!args.length) {
       fail = true;
-      message.reply('I can\'t generate a number without a rage to generate between!')
+      message.reply('I can\'t generate a number without a range to generate it between!')
     }
     if (args.length) {
 

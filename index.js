@@ -47,7 +47,6 @@ client.on('message', message => {
     args = message.content.slice(process.env.prefix.length).split(/ +/);
   }
   
-  //const args = message.content.slice(process.env.prefix.length).split(/ +/);
   const commandName = args.shift().toLowerCase();
 
   const command = client.commands.get(commandName)

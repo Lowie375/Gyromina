@@ -1,5 +1,7 @@
+// Require discord.js, fs, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
+const refcode = require("../systemFiles/refcodes.js");
 
 module.exports.run = {
   execute(message, args) {
@@ -8,7 +10,28 @@ module.exports.run = {
 
     // Reads command files
     fs.readdir('./commands/', (err, files) => {
-      if(err) console.error(err);
+      if(err) {
+        // Gets the 'gyrominaWarning' emoji
+        const warning = client.emojis.get("493570621599383552");
+        // Generates a reference code
+        const newRef = refcode.genRefCode();
+        console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
+
+        const embed4 = new Discord.RichEmbed()
+          .setTitle(warning + " Something went wrong...")
+          .setColor(0xffcc4d)
+          .setDescription("\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`" + newRef + "\`");
+        message.channel.send(embed4);
+
+        // Sends the error to the bot owner
+        let xcl = message.channel.client;
+        const L3 = xcl.fetchUser(process.env.ownerID)
+        .then(L3 => {
+          L3.send(`REFCODE: \`${newRef}\` \n\`\`\`js${err.stack}\`\`\``);
+        });
+
+        console.error(err);
+      }
 
       // Debug snippet
       //console.log(`files = ${files}`);
@@ -96,7 +119,7 @@ module.exports.run = {
         if(cmdctr != 0) embed2.addField("Main Commands", cmdlist, true);
 
         if(process.env.exp === "1") {
-          cmdlist = "These commands may be unstable.\n**Use at your own risk!**\n";
+          cmdlist = "**Unstable commands; use at your own risk!**\n";
         } else {
           cmdlist = "These commands are currently unavailable.\n";
         }

@@ -1,12 +1,17 @@
 // List of 'proofs'
-const proof = ["because that's just how it is.\n**Deal with it.**",
-  "because smart people think so.\n**Deal with it.**",
-  "because Gyromina said so.\n**Deal with it.**", 
-  "for some odd reason.\n**Deal with it.**", 
-  "because Gyromina is too slow to argue.\n**Deal with it.**",
-  "because Gyromina heard that was true.\n**Deal with it.**",
-  ".\n**Deal with it.**",
-  "because Gyromina was never told otherwise.\n**Deal with it.**"];
+const proof = ["because that's just how it is.",
+  "because smart people think so.",
+  "because Gyromina said so.", 
+  "for some odd reason.", 
+  "because Gyromina is too slow to argue.",
+  "because Gyromina heard that was true.",
+  ".",
+  "because Gyromina was never told otherwise.",
+  "because it's the truth.",
+  "because the RNG said so, and the RNG is always right.",
+  "because the internet thinks so.",
+  "because… why not.",
+  "because Gyromina is never gonna tell a lie… and hurt you. _\\\*insert rickroll here\\\*_"];
 
 // Basic RNG
 function getRandomInt(min, max) {
@@ -30,7 +35,7 @@ module.exports.run = {
 
       const selected = proof[num];
 
-      message.channel.send(statement.join(" ") + " " + selected);
+      message.channel.send(statement.join(" ") + " " + selected + "\n**Deal with it.**");
     }
   },
 };

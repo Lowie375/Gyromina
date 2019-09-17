@@ -79,7 +79,7 @@ function getRandomNumber(min, max) {
   // Debug snippet
   // console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
 
-  return (num/factor);
+  return (num/factory);
 }
 
 module.exports.run = {
@@ -90,7 +90,7 @@ module.exports.run = {
 
     if (!args.length) {
       fail = true;
-      message.reply('I can\'t generate a random number if I\'m not given any values to generate a number between!')
+      message.reply('I can\'t generate a number without a rage to generate between!')
     }
     if (args.length) {
 
@@ -138,7 +138,7 @@ module.exports.run = {
 module.exports.help = {
   "name": "randomnumber",
   "aliases": ["number", "num", "rn"],
-  "description": "Generates a random number between two other numbers, inclusive.\nIf only one argument is given, generates a number between 0 and that number, inclusive.",
+  "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates a number between 0 and that number, inclusive.",
   "usage": `${process.env.prefix}randomnumber <max> [min]`,
   "params": "<max> [min]",
   "hide": 0,

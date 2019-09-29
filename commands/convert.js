@@ -3,16 +3,16 @@ const cvfile = require('../systemFiles/conversions.js')
 // Arrays
 const allNames = ["millimetres", "millimeters", "mm", "centimetres", "centimeters", "cm", "inches", "foot", "feet", "ft", "yards", "yds", "metres", "meters", "kilometres",
   "kilometers", "km", "miles", "nautical_miles", "nauticalmiles", "nmi", /* */ "nanoseconds", "nanosecs", "microseconds", "microsecs", "milliseconds", "millisecs", "seconds",
-  "secs", "minutes", "mins", "hours", "hrs", "days", "weeks", "wks", "years", "yrs", /* */ "gradians", "degrees", "radians", "milliradians"];
+  "secs", "minutes", "mins", "hours", "hrs", "days", "weeks", "wks", "years", "yrs", /* */ "gradians", "degrees", "radians", "milliradians", /* */ ];
 const allCounters = ["dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist", "dist",
   "dist", /* */ "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", "time", /* */ "angles", "angles",
-  "angles", "angles"];
+  "angles", "angles", /* */];
 
 module.exports.run = {
   execute(message, args) {
 
     var ctr1 = 0;
-    const name = allNames[0];
+    var name = "x";
 
     message.channel.send(name);
 

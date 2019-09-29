@@ -1,7 +1,8 @@
-// Require discord.js, fs, and the refcode generator
+// Require discord.js, fs, package.json, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
 const refcode = require("./systemFiles/refcodes.js");
+const package = require('./package.json');
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
@@ -24,11 +25,11 @@ client.on('ready', () => {
   if(process.env.exp === "1") {
     // Debug/test status
     client.user.setStatus("idle");
-    client.user.setActivity(`L375 code. / ${process.env.prefix}help`, { type: "WATCHING"});
+    client.user.setActivity(`L375 code. / ${process.env.prefix}help / ${package.version}`, { type: "WATCHING"});
   } else {
     // Normal status
     client.user.setStatus("online");
-    client.user.setActivity(`with Discord! / ${process.env.prefix}help`);
+    client.user.setActivity(`with Discord! / ${process.env.prefix}help / ${package.version}`);
   }
 });
 
@@ -60,38 +61,19 @@ client.on('message', message => {
     const warning2 = client.emojis.get("493570621599383552");
     const nope = client.emojis.get("493575012276633610");
 
-    if(message.author.id === process.env.ownerID) {
+    if(message.author.id === package.authorID) {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n\n${warning2} Please enable **experimental mode** to run it.`);
     } else {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.`);
     }
 } else { 
     try {
-      command.run.execute(message, args, client);
+      command.run.execute(message, args);
     }
     catch (error) {
-      // Logs the error
+      // Generates an error message & logs the error
+      refcode.genErrorMsg(message, error);
       console.error(error);
-
-      // Gets the 'gyrominaWarning' emoji
-      const warning = client.emojis.get("493570621599383552");
-      // Generates a reference code
-      const newRef = refcode.genRefCode();
-      console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
-
-      // Sends a warning message in the channel
-      const embed3 = new Discord.RichEmbed()
-        .setTitle(warning + " Something went wrong...")
-        .setColor(0xffcc4d)
-        .setDescription("\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`" + newRef + "\`");
-      message.channel.send(embed3);
-
-      // Sends the error to the bot owner
-      let xcl = message.channel.client;
-      const L3 = xcl.fetchUser(process.env.ownerID)
-      .then(L3 => {
-        L3.send(`REFCODE: \`${newRef}\` \n\`\`\`js${error.stack}\`\`\``);
-      });
     }
   }
 });

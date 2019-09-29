@@ -1,3 +1,5 @@
+const package = require('../package.json');
+
 module.exports.run = {
   execute(message, args) {
     // Gets the 'gyrominaNo' and 'gyrominaYes' emojis
@@ -5,7 +7,7 @@ module.exports.run = {
     const yep = message.client.emojis.get("493570632785723402");
 
     // Checks to see if the bot owner (L375#6740) sent the message.
-    if(message.author.id !== process.env.ownerID) {
+    if(message.author.id !== package.authorID) {
       message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to reboot me, but was unsuccessful!')
       return;

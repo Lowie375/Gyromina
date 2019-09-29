@@ -11,28 +11,9 @@ module.exports.run = {
     // Reads command files
     fs.readdir('./commands/', (err, files) => {
       if(err) {
-        // Gets the 'gyrominaWarning' emoji
-        const warning = client.emojis.get("493570621599383552");
-        // Generates a reference code
-        const newRef = refcode.genRefCode();
-        console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
-
-        const embed4 = new Discord.RichEmbed()
-          .setTitle(warning + " Something went wrong...")
-          .setColor(0xffcc4d)
-          .setDescription("\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`" + newRef + "\`");
-        message.channel.send(embed4);
-
-        // Sends the error to the bot owner
-        let xcl = message.channel.client;
-        const L3 = xcl.fetchUser(process.env.ownerID)
-        .then(L3 => {
-          L3.send(`REFCODE: \`${newRef}\` \n\`\`\`js${err.stack}\`\`\``);
-        });
-
+        refcode.genErrorMsg(message, err);
         console.error(err);
       }
-
       // Debug snippet
       //console.log(`files = ${files}`);
 
@@ -41,7 +22,7 @@ module.exports.run = {
       if(cmds.length <= 0) {
         const nope = message.client.emojis.get("493575012276633610");
         console.log('Error - No commands found');
-        message.channel.send(`${nope} Error - No commands found!`)
+        message.channel.send(`${nope} No commands found!`)
         return;
       }
       
@@ -60,7 +41,7 @@ module.exports.run = {
       const beta = message.client.emojis.get("618198843301036032");
       //const gone = message.client.emojis.get("618199093520498789");
 
-      if (args.length >= 1) { // Detailed help
+      if (args.length >= 1 && args[0] != "-sh") { // Detailed help
 
         const commandName = args[0];
         const cmdy = message.client.hcommands.get(commandName)
@@ -109,6 +90,7 @@ module.exports.run = {
 
         var cmdlist = "";
         var cmdctr = 0;
+        // Creates the main command list
         message.client.hcommands.forEach(c => {
           if(c.help.hide === 1 || c.help.wip === 1) return;
           
@@ -118,6 +100,7 @@ module.exports.run = {
         });
         if(cmdctr != 0) embed2.addField("Main Commands", cmdlist, true);
 
+        // Creates the experimental command list
         if(process.env.exp === "1") {
           cmdlist = "**Unstable commands; use at your own risk!**\n";
         } else {
@@ -133,6 +116,19 @@ module.exports.run = {
         });
         if(cmdctr != 0) embed2.addField("Experimental (WIP) Commands " + beta, cmdlist, true);
 
+        // If specified, creates the hidden command list
+        if(args[0] === "-sh") {
+          cmdlist = "These are owner/contributor-only commands.\n";
+          cmdctr = 0;
+          message.client.hcommands.forEach(c => {
+            if(c.help.hide === 0) return;
+          
+            if(c.help.params) cmdlist = cmdlist + "\• " + process.env.prefix + "**" + c.help.name + "** " + c.help.params + "\n";
+            if(!c.help.params) cmdlist = cmdlist + "\• " + process.env.prefix + "**" + c.help.name + "**\n"
+            cmdctr++;
+          });
+          if(cmdctr != 0) embed2.addField("Hidden Commands" + ghost, cmdlist, true);
+        }
         message.channel.send(embed2);
       }
     });

@@ -26,7 +26,7 @@ module.exports.run = {
 module.exports.help = {
   "name": "reboot",
   "aliases": "restart",
-  "description": "Reboots Gyromina.",
+  "description": "Reboots Gyromina. (owner only)",
   "usage": `${process.env.prefix}reboot`,
   "hide": 1,
   "wip": 0

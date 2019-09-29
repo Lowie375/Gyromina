@@ -24,7 +24,7 @@ module.exports.run = {
 module.exports.help = {
   "name": "shutdown",
   "aliases": ["off", "stop", "quit"],
-  "description": "Shuts down Gyromina.",
+  "description": "Shuts down Gyromina. (owner only)",
   "usage": `${process.env.prefix}shutdown`,
   "hide": 1,
   "wip": 0

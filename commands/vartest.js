@@ -31,8 +31,10 @@ module.exports.run = {
 module.exports.help = {
   "name": 'vartest',
   "aliases": 'vt',
-  "description": 'Miscellaneous test command. (contributors only)',
+  "description": 'Miscellaneous test command. (Contributors only)',
   "usage": `${process.env.prefix}vartest`,
+  "params": "(contributors only)",
   "hide": 1,
-  "wip": 0
+  "wip": 0,
+  "dead": 0,
 };

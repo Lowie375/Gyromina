@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "0.8.3",
+  "version": "0.9.0",
   "description": "Gyromina, an experimental bot.",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,12 @@
   },
   "author": "L375#6740",
   "authorID": "334335706740686849",
-  "contributors": ["Alten#4148"],
-  "contributorIDs": ["184061887212814336"],
+  "contributors": [
+    "Alten#4148"
+  ],
+  "contributorIDs": [
+    "184061887212814336"
+  ],
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.4.2"

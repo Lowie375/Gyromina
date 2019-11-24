@@ -14,26 +14,14 @@ function getRandomNumber(min, max) {
   //var altMind, altMaxd;
 
   // Checks to see if the minimum is larger than the maximum. If so, switches the numbers around.
-  if (min > max) {
-    altMin = max;
-    altMax = min;
+  altMin = Math.max(min, max);
+  altMax = Math.min(max, min);
 
-    // Converts the decimal to an integer for convenience.
-    while (Math.ceil(altMin) !== (max * factor) || Math.floor(altMax) !== (min * factor)) {
-      altMin *= 10;
-      altMax *= 10;
-      factor *= 10;
-    }
-  } else {
-    altMin = min;
-    altMax = max;
-
-    // Converts the decimal to an integer for convenience.
-    while (Math.ceil(altMin) !== (min * factor) || Math.floor(altMax) !== (max * factor)) {
-      altMin *= 10;
-      altMax *= 10;
-      factor *= 10;
-    }
+  // Converts the decimal to an integer for convenience.
+  while (Math.ceil(altMin) !== (max * factor) || Math.floor(altMax) !== (min * factor)) {
+    altMin *= 10;
+    altMax *= 10;
+    factor *= 10;
   }
   
   /*if(altMin % 1 != 0 || altMax % 1 != 0) {
@@ -87,52 +75,47 @@ module.exports.run = {
   execute(message, args) {
 
     var number = 0;
-    var fail = false;
 
     if (!args.length) {
-      fail = true;
-      message.reply('I can\'t generate a number without a range to generate it between!')
+      message.reply('I can\'t generate a number between a non-existent range!')
+      return;
     }
-    if (args.length) {
 
-      // Debug block
-      /*var a0typ = isNaN(args[0]);
-      if (args.length >= 2) {
-        var a1typ = isNaN(args[1]);
-      } //*/
+    // Debug block
+    /*var a0typ = isNaN(args[0]);
+    if (args.length >= 2) {
+      var a1typ = isNaN(args[1]);
+    } //*/
 
-      if (args.length >= 2) {
+    if (args.length >= 2) {
 
-        // Debug snippet
-        //console.log(`arg0type = ${a0typ}, arg1type = ${a1typ}`);
+      // Debug snippet
+      //console.log(`arg0type = ${a0typ}, arg1type = ${a1typ}`);
 
-        if (!isNaN(args[0]) && !isNaN(args[1])) {
-          number = getRandomNumber(args[0], args[1]);
-        } else {
-          fail = true;
-          message.reply('I can\'t generate a random number between non-numerical values!')
-        }
-      } else if (args.length = 1) {
-
-        // Debug snippet
-        //console.log(`arg0type = ${a0typ}`);
-
-        if (!isNaN(args[0])) {
-          number = getRandomNumber(0, args[0]);
-        } else {
-          fail = true;
-          message.reply('I can\'t generate a random number between non-numerical values!')
-        }
+      if (!isNaN(args[0]) && !isNaN(args[1])) {
+        number = getRandomNumber(args[0], args[1]);
+      } else {
+        message.reply('I can\'t generate a random number between non-numerical values!');
+        return;
       }
+    } else if (args.length = 1) {
 
-      if (fail === false) {
-        const embed = new Discord.RichEmbed()
-          .setTitle("\`" + number + "\`")
-          .setColor(0x7effaf);
+      // Debug snippet
+      //console.log(`arg0type = ${a0typ}`);
 
-        message.reply("here you go!", {embed});
+      if (!isNaN(args[0])) {
+        number = getRandomNumber(0, args[0]);
+      } else {
+        message.reply('I can\'t generate a random number between non-numerical values!');
+        return;
       }
     }
+
+    const embed = new Discord.RichEmbed()
+      .setTitle("\`" + number + "\`")
+      .setColor(0x7effaf);
+
+    message.reply("here you go!", {embed});
   }
 };
 
@@ -140,8 +123,9 @@ module.exports.help = {
   "name": "randomnumber",
   "aliases": ["number", "num", "rn"],
   "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates a number between 0 and that number, inclusive.",
-  "usage": `${process.env.prefix}randomnumber <max> [min]`,
-  "params": "<max> [min]",
+  "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
+  "params": "<num1> [num2]",
   "hide": 0,
-  "wip": 0
+  "wip": 0,
+  "dead": 0,
 };

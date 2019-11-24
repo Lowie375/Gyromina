@@ -1,3 +1,6 @@
+// [DEPRECATED AS OF 0.9.0]
+
+/*
 const package = require('../package.json');
 
 module.exports.run = {
@@ -22,12 +25,14 @@ module.exports.run = {
     message.client.login(process.env.token);
   },
 };
+*/
 
 module.exports.help = {
   "name": "reboot",
   "aliases": "restart",
-  "description": "Reboots Gyromina. (owner only)",
+  "description": "Reboots Gyromina. [DEPRECATED AS OF 0.9.0]",
   "usage": `${process.env.prefix}reboot`,
-  "hide": 1,
-  "wip": 0
+  "hide": 0,
+  "wip": 0,
+  "dead": 1,
 };

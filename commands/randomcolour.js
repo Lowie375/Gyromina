@@ -52,9 +52,10 @@ module.exports.run = {
 
 module.exports.help = {
   "name": "randomcolour",
-  "aliases": ["randomcolor", "colour", "color", "col", "rc"],
-  "description": "Returns a random colour in hex and RGB format.",
+  "aliases": ["randomcolor", "rc", "rcol"],
+  "description": "Returns a random colour in various formats.",
   "usage": `${process.env.prefix}randomcolour`,
   "hide": 0,
-  "wip": 0
+  "wip": 0,
+  "dead": 0,
 };

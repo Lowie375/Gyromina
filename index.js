@@ -25,7 +25,7 @@ client.on('ready', () => {
   if(process.env.exp === "1") {
     // Debug/test status
     client.user.setStatus("idle");
-    client.user.setActivity(`L375 code. / ${process.env.prefix}help / ${package.version}`, { type: "WATCHING"});
+    client.user.setActivity(`L375 code / ${process.env.prefix}help / ${package.version}`, { type: "WATCHING"});
   } else {
     // Normal status
     client.user.setStatus("online");

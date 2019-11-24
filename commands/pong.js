@@ -6,7 +6,7 @@ module.exports.run = {
       .then(newMsg => {
         let end = Date.now();
         // Edits the message to include Gyromina's latency and Discord's latency.
-        newMsg.edit(`Ping? 🏓\nLatency: \`${end - start}ms\`, Discord: \`${message.client.ping}ms\``);
+        newMsg.edit(`Ping? 🏓\nLatency: \`${end - start}ms\` / Discord: \`${message.client.ping}ms\``);
       });
   },
 };
@@ -16,6 +16,7 @@ module.exports.help = {
   "description": 'Pongs Gyromina. (Functions similarly to ' + process.env.prefix + 'ping)',
   "usage": `${process.env.prefix}pong`,
   "hide": 0,
-  "wip": 0
+  "wip": 0,
+  "dead": 0,
 };
   

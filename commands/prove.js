@@ -46,5 +46,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}prove <statement>`,
   "params": "<statement>",
   "hide": 0,
-  "wip": 0
+  "wip": 0,
+  "dead": 0,
 };

@@ -178,6 +178,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [mode/places]`,
   "params": "<value> <unit> <newUnit> [mode/places]",
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

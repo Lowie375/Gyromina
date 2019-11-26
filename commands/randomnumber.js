@@ -126,6 +126,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
   "params": "<num1> [num2]",
   "hide": 0,
-  "wip": 0,
+  "wip": 1,
   "dead": 0,
 };

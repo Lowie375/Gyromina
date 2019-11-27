@@ -1,8 +1,5 @@
-# Gyromina
-
-An experimental bot.
-
-Fun + function, all in one.
+## Gyromina, an experimental bot.
+### Fun + function, all in one.
 
 ***
 

@@ -1,74 +1,67 @@
 const Discord = require('discord.js');
 
 function getRandomInt(min, max) {
-  // Debug snippet
-  //console.log(`GRI min: ${min}, GRI max: ${max}`);
-  min = Math.ceil(min);
-  max = Math.floor(max);
+  min = Math.round(min);
+  max = Math.round(max);
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function getRandomNumber(min, max) {
-  var factor = 1;
-  var altMin, altMax;
-  //var altMind, altMaxd;
+  var num, numDecim, factor, factorPower;
+  var altMin, altMax, altMinDecim, altMaxDecim;
 
   // Checks to see if the minimum is larger than the maximum. If so, switches the numbers around.
-  altMin = Math.max(min, max);
-  altMax = Math.min(max, min);
+  altMin = Math.min(parseFloat(min), parseFloat(max));
+  altMax = Math.max(parseFloat(min), parseFloat(max));
 
-  // Converts the decimal to an integer for convenience.
-  while (Math.ceil(altMin) !== (max * factor) || Math.floor(altMax) !== (min * factor)) {
-    altMin *= 10;
-    altMax *= 10;
-    factor *= 10;
+  // Splits the decimal and whole number portions of each number
+  altMinDecim = altMin % 1;
+  altMaxDecim = altMax % 1;
+
+  if (altMinDecim == 0 && altMaxDecim == 0) {
+    factor = 1;
+    factorPower = 1;
+  } else if (altMin.toString().split(".").pop().length >= altMax.toString().split(".").pop().length) {
+    factor = Math.pow(10, altMin.toString().split(".").pop().length);
+    factorPower = altMin.toString().split(".").pop().length;
+  } else if (altMin.toString().split(".").pop().length < altMax.toString().split(".").pop().length) {
+    factor = Math.pow(10, altMax.toString().split(".").pop().length);
+    factorPower = altMax.toString().split(".").pop().length;
   }
-  
-  /*if(altMin % 1 != 0 || altMax % 1 != 0) {
-    // Splits the decimal and whole number portions
-    altMind = altMin % 1;
-    altMaxd = altMax % 1; altMaxd++;
-    altMin = Math.floor(altMin);
-    altMax = Math.floor(altMax) - 1;
+
+  altMin -= altMin % 1;
+  altMax -= altMax % 1;
+
+  //altMinDecim = parseFloat(altMin.toString().split(".").pop());
+  //altMaxDecim = parseFloat(altMin.toString().split(".").pop());
+
+  /*if (altMinDecim == 0 && altMaxDecim == 0) {
+    factor = 1;
+  } else if (altMinDecim.toString().length >= altMaxDecim.toString().length) {
+    factor = Math.pow(10, altMinDecim.toString().length - 2);
+  } else if (altMinDecim.toString().length < altMaxDecim.toString().length) {
+    factor = Math.pow(10, altMaxDecim.toString().length - 2);
   }*/
 
-  // Debug snippet
-  //console.log(`altMin = ${altMin}, altMax = ${altMax}`);
-  //console.log(`altMind = ${altMind}, altMaxd = ${altMaxd}`);
+  num = getRandomInt(altMin, altMax+1);
 
-  if (altMax >= 0) {
-    //altMax++:
-    var num = getRandomInt(altMin, parseInt(altMax)+1);
-    //altMax--;
-  } else if (altMax < 0){
-    //altMin++;
-    var num = getRandomInt(parseInt(altMin)+1, altMax);
-    //altMin--;
+  if (factor != 1) {
+    switch (num) {
+      case altMin: numDecim = getRandomInt(altMinDecim*factor, factor)/factor; break;
+      case altMax: numDecim = getRandomInt(0, altMaxDecim*factor)/factor; break;
+      default: numDecim = getRandomInt(0, factor)/factor; break;
+    }
+    num += numDecim;
   }
 
-  // Debug snippet
-  //console.log(`num = ${num}`);
-
-  if (num > altMin && num > altMax) {
-    while (num > altMin && num > altMax) {
-      num--;
-    }
-  } else if (num < altMin && num < altMax) {
-    while (num < altMin && num < altMax) {
-      num++;
-    }
+  while (num > altMax+altMaxDecim) {
+    num -= (num/factor);
+  }
+  while (num < altMin+altMinDecim) {
+    num += (num/factor);
   }
 
-  /*if (altMax >= 0 && num >= altMax) {
-    num = altMax;
-  } else if (altMax < 0 && num >= altMin) {
-    num = altMin;
-  }*/
-
-  // Debug snippet
-  // console.log(`num (altered) = ${num}, num/factor = ${num / factor}\n- - - - - - - - - - -`);
-
-  return (num/factor);
+  return num.toFixed(factorPower);
 }
 
 module.exports.run = {
@@ -122,10 +115,10 @@ module.exports.run = {
 module.exports.help = {
   "name": "randomnumber",
   "aliases": ["number", "num", "rn"],
-  "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates a number between 0 and that number, inclusive.",
+  "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates between 0 and that number, inclusive.",
   "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
   "params": "<num1> [num2]",
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

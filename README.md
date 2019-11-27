@@ -1,13 +1,14 @@
 # Gyromina
 
 An experimental bot.
+
 Fun + function, all in one.
 
 ***
 
 Created by L375#6740, with support from Alten#4148
 
-> Latest stable build: 0.9.2
+> Latest stable build: 0.9.3
 >
 > Built in JavaScript using Node.js
 

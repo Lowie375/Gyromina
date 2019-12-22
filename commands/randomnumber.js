@@ -74,16 +74,7 @@ module.exports.run = {
       return;
     }
 
-    // Debug block
-    /*var a0typ = isNaN(args[0]);
     if (args.length >= 2) {
-      var a1typ = isNaN(args[1]);
-    } //*/
-
-    if (args.length >= 2) {
-
-      // Debug snippet
-      //console.log(`arg0type = ${a0typ}, arg1type = ${a1typ}`);
 
       if (!isNaN(args[0]) && !isNaN(args[1])) {
         number = getRandomNumber(args[0], args[1]);
@@ -92,9 +83,6 @@ module.exports.run = {
         return;
       }
     } else if (args.length = 1) {
-
-      // Debug snippet
-      //console.log(`arg0type = ${a0typ}`);
 
       if (!isNaN(args[0])) {
         number = getRandomNumber(0, args[0]);

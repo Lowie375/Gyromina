@@ -32,7 +32,6 @@ module.exports.run = {
       if (num >= (proof.length - 1)) {
         num = proof.length - 1;
       }
-
       const selected = proof[num];
 
       message.channel.send(statement.join(" ") + " " + selected + "\n**Deal with it.**");

@@ -12,7 +12,8 @@
             "env": {
                 "token": "",
                 "prefix": "",
-                "ownerID": ""
+                "ownerID": "",
+                "github": { "token": "", "username": "", "repoName": "" }
             }
         }
     ]

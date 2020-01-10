@@ -4,7 +4,7 @@
 
 Created by L375#6740, with contributions & support from Alten#4148
 
-**Latest stable build: 0.10.0**
+**Latest stable build: 0.10.1**
 
 ***
 

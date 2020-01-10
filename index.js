@@ -7,13 +7,19 @@ const package = require('./package.json');
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+client.games = new Discord.Collection();
 
-// Pulls out the command files
+// Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
+const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js'));
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.help.name, command);
+}
+for (const file of gameFiles) {
+  const game = require(`./gameFiles/${file}`);
+  client.games.set(game.name, game);
 }
 
 // Logs Gyromina into the console, once the client is ready
@@ -66,7 +72,7 @@ client.on('message', message => {
     } else {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.`);
     }
-} else { 
+  } else { 
     try {
       command.run.execute(message, args, client);
     }
@@ -83,3 +89,5 @@ client.on("warn", w => console.warn(w));
 
 // Logs into Discord with Gyromina's token
 client.login(process.env.token);
+
+

@@ -68,7 +68,7 @@ client.on('message', message => {
     }
 } else { 
     try {
-      command.run.execute(message, args);
+      command.run.execute(message, args, client);
     }
     catch (error) {
       // Generates an error message & logs the error

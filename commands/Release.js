@@ -1,19 +1,77 @@
-const package = require('../package.json');
-const functions = require('../GlobalFunctions');
+const { Write, Clean } = require("../GlobalFunctions");
+const colors = require('colors');
 let request = require('request');
 let json = JSON.parse(process.env.github);
 
-const startTime = Date.now();
+let startTime;
 const githubApiEndpoint = `https://api.github.com/repos/${json.username}/${json.repoName}`;
 
-module.exports.run = {
-    execute(message, args) {
-        // we wont need to change these so might as well put them as consts
-        const version = args[0];
-        const announce = args[1];
-        const forceverification = args[2] === "-y";
+let version = "";
 
-        GetChangelogString();
+module.exports.run = {
+    execute(message, args, client) {
+        // we wont need to change these so might as well put them as consts
+        const vers = args[0];
+        const announce = args[1] === "false";
+        const forceVerification = args.join(" ").toString().includes("-y");
+
+        version = vers;
+
+        //check stuff
+        if (version === undefined)
+            return message.channel.send("You have not provided a version number.");
+
+        if (!forceVerification)
+        {
+            let filter = m => m.author.id === message.author.id;
+            const input = message.channel.createMessageCollector(filter);
+
+            message.channel.send(`Are you absolutely sure you want to release ${Clean(version)}?`);
+
+            filter = m => m.content.toLowerCase().trim() === "cancel" && m.author.id === message.author.id;
+            const cancelChecker = message.channel.createMessageCollector(filter, {
+                time: 60000
+            });
+
+            cancelChecker.on('collect', m => {
+                cancelChecker.stop();
+                input.stop();
+                message.channel.send("Cancelled!");
+            });
+
+            input.on('collect', m => {
+                if (m.content.toLowerCase().trim() === "cancel") return;
+
+                cancelChecker.stop();
+                input.stop();
+
+                main();
+            });
+        }
+        else
+            main();
+
+        function main()
+        {
+            message.channel.send("Releasing...")
+                .then(relMsg => {
+
+                    Write(`Releasing version ${version} ${forceVerification === true ? "(Forced)" : ""}`);
+
+                    GetChangelogString(str => {
+                        let string = `Gyromina V${version} has been released! this now fixes and adds:\n` + str;
+
+                        if (!announce)
+                            client.channels.get("466408542862180352").send(string);
+
+                        CreateGithubRelease(string);
+
+                        relMsg.edit("Released!").then(() => {
+                            setTimeout(() => relMsg.delete(), 2000)
+                        });
+                    });
+                });
+        }
     }
 };
 
@@ -29,11 +87,24 @@ module.exports.help = {
 };
 
 // Functions
-function CreateGithubRelease (changeLogText, uri, func) {
+function CreateGithubRelease (changeLogText) {
     let options = {
         method: "post",
-        url: uri
-    }
+        url: `${githubApiEndpoint}/releases`,
+        body: JSON.stringify({
+            name: `v${version}`,
+            tag_name: version,
+            body: changeLogText,
+            draft: true, // we dont want to release it just yet until we confirm about everything.
+            published_at: Date.now()
+        })
+    };
+
+    Write(`Creating release ${version}...`.blue, startTime, false);
+
+    AuthenticatedBlockingPerform(options, (res, bod) => {
+        Write(`Version ${version} released!`);
+    });
 }
 
 function AuthenticatedBlockingPerform (options, func) {
@@ -52,8 +123,21 @@ function AuthenticatedBlockingPerform (options, func) {
 
 function GetChangelogString (func)
 {
-    getPullRequests(prs => {
+    startTime = Date.now();
 
+    Write(`Fetching pull requests`.yellow, startTime, false);
+
+    getPullRequests(prs => {
+        let str = "";
+
+        for (let i = 0; i < prs.length; i++)
+        {
+            let pr = prs[i];
+
+            str += `- ${pr.title} | ${pr.user.login}\n`
+        }
+
+        func(str);
     });
 
     function getPullRequests(prs)
@@ -69,10 +153,7 @@ function GetChangelogString (func)
 
             AuthenticatedBlockingPerform(miniOptions, (resMini, bodMini) => {
                 let miniJson = JSON.parse(bodMini);
-                let releaseJson;
-
-                if (release !== undefined)
-                    releaseJson = JSON.parse(release);
+                let releaseJson = release;
 
                 for (let i = 0; i < miniJson.length; i++)
                 {
@@ -96,13 +177,13 @@ function GetChangelogString (func)
                         let json = JSON.parse(prBod);
                         pullRequest.push(json);
 
-                        functions.Write(`Got ${pr.title} (${pr.html_url})`, startTime, false);
+                        Write(`Got ${pr.title} (${pr.html_url})`.yellow, startTime, false);
+
+                        prs(pullRequest);
                     })
                 }
             })
         });
-
-        prs(pullRequest);
     }
 
     function getLastGithubRelease(func)

@@ -8,7 +8,7 @@ module.exports.run = {
       .setAuthor("Bot Information", client.user.avatarURL)
       .setColor(0x7effaf)
       .setTitle(botinfo.description)
-      .setDescription("\• Created by <@"+botinfo.authorID+">, with support from <@"+botinfo.contributorIDs[0]+">\n\• Currently running version "+botinfo.version+" on "+client.guilds.size+" servers")
+      .setDescription("\• Created by <@"+botinfo.authorID+">, with contributions & support from <@"+botinfo.contributorIDs[0]+">\n\• Currently running version "+botinfo.version+" on "+client.guilds.size+" servers")
       .setFooter("Requested by "+message.author.tag, message.author.avatarURL)
       .addField("Gyromina Info Pages", "​   [https://lx375.weebly.com/gyromina](https://lx375.weebly.com/gyromina)")
       .addField("Invite Link", "​   [https://discord.now.sh/490590334758420481?p1141234752](https://discord.now.sh/490590334758420481?p1141234752)")

@@ -55,7 +55,7 @@ client.on('message', message => {
 
   // Checks if the command exists. If not, returns.
   if(!command) return;
-  
+
   // Checks if the command is unstable. If so, displays a warning instead of running the command.
   if(process.env.exp === "0" && command.help.wip === 1) {
     const warning2 = client.emojis.get("493570621599383552");

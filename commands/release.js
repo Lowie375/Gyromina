@@ -62,7 +62,7 @@ module.exports.run = {
                         let string = `Gyromina V${version} has been released! this now fixes and adds:\n` + str;
 
                         if (!announce)
-                            client.channels.get("466408542862180352").send(string);
+                            client.channels.get(process.env.logChannel).send(string);
 
                         CreateGithubRelease(string);
 
@@ -191,11 +191,11 @@ function GetChangelogString (func)
 }
 
 module.exports.help = {
-    "name": "deploy",
+    "name": "release",
     "aliases": ["deploy", "rel", "dep"],
     "description": "Deploys a new version of Gyromina. (Owner only)",
     "usage": `${process.env.prefix}release <version> [announceToDiscord?] [-y]`,
-    "params": "(owner only)",
+    "params": "<version> [announceToDiscord?] [-y] (owner only)",
     "hide": 1,
     "wip": 1,
     "dead": 0,

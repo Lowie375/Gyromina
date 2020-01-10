@@ -5,7 +5,7 @@ module.exports.run = {
     // Finds the requested game file
     const gameName = args[0];
     const game = client.games.get(gameName)
-      || client.games.find(g => g.aliases && g.aliases.includes(gameName));
+      || client.games.find(g => g.label.aliases && g.label.aliases.includes(gameName));
     
     // Checks if the game exists
     if (!game) {
@@ -14,7 +14,7 @@ module.exports.run = {
     }
     
     // Runs the game
-    game.start(message, args, client, player);
+    game.exe.start(message, args, client, player);
   }
 };
 

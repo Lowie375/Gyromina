@@ -19,7 +19,7 @@ for (const file of commandFiles) {
 }
 for (const file of gameFiles) {
   const game = require(`./gameFiles/${file}`);
-  client.games.set(game.name, game);
+  client.games.set(game.label.name, game);
 }
 
 // Logs Gyromina into the console, once the client is ready
@@ -89,5 +89,3 @@ client.on("warn", w => console.warn(w));
 
 // Logs into Discord with Gyromina's token
 client.login(process.env.token);
-
-

@@ -12,6 +12,8 @@ module.exports.run = {
         const version = args[0];
         const announce = args[1];
         const forceverification = args[2] === "-y";
+
+        GetChangelogString();
     }
 };
 
@@ -67,23 +69,34 @@ function GetChangelogString (func)
 
             AuthenticatedBlockingPerform(miniOptions, (resMini, bodMini) => {
                 let miniJson = JSON.parse(bodMini);
-                let releaseJson = JSON.parse(release);
+                let releaseJson;
 
-                for (let pr in miniJson)
+                if (release !== undefined)
+                    releaseJson = JSON.parse(release);
+
+                for (let i = 0; i < miniJson.length; i++)
                 {
-                    if (miniJson.merged_at == null) continue;
-                    if (miniJson.merged_at < releaseJson.published_at) continue;
+                    let pr = miniJson[i];
 
-                    functions.Write(`Got ${miniJson.title}!`, startTime, false);
+                    if (pr.merged_at == null) continue;
+
+                    let mergedAtDate = new Date(pr.merged_at);
+                    let publishedatDate;
+
+                    if (releaseJson === undefined || releaseJson.published_at === undefined) publishedatDate = new Date(0);
+
+                    if (mergedAtDate < publishedatDate) continue;
 
                     let prOption = {
                         method: "get",
-                        url: `${githubApiEndpoint}/pulls/${miniJson.number}`
+                        url: pr.url
                     };
 
                     AuthenticatedBlockingPerform(prOption, (prRes, prBod) => {
                         let json = JSON.parse(prBod);
                         pullRequest.push(json);
+
+                        functions.Write(`Got ${pr.title} (${pr.html_url})`, startTime, false);
                     })
                 }
             })

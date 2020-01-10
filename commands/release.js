@@ -75,17 +75,6 @@ module.exports.run = {
     }
 };
 
-module.exports.help = {
-    "name": "deploy",
-    "aliases": ["deploy", "rel", "dep"],
-    "description": "Deploys a new version of Gyromina. (Owner only)",
-    "usage": `${process.env.prefix}release <Version> [AnnounceToDiscord?] [-y]`,
-    "params": "(owner only)",
-    "hide": 1,
-    "wip": 1,
-    "dead": 0,
-};
-
 // Functions
 function CreateGithubRelease (changeLogText) {
     let options = {
@@ -200,3 +189,14 @@ function GetChangelogString (func)
         })
     }
 }
+
+module.exports.help = {
+    "name": "deploy",
+    "aliases": ["deploy", "rel", "dep"],
+    "description": "Deploys a new version of Gyromina. (Owner only)",
+    "usage": `${process.env.prefix}release <version> [announceToDiscord?] [-y]`,
+    "params": "(owner only)",
+    "hide": 1,
+    "wip": 1,
+    "dead": 0,
+};

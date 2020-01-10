@@ -7,7 +7,7 @@ function getRandomInt(min, max) {
 }
 
 module.exports.run = {
-  execute(message, args) {
+  execute(message, args, client) {
 
     var hexNums = [0];
     var hex = ["0"];

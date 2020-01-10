@@ -32,17 +32,6 @@ function getRandomNumber(min, max) {
   altMin -= altMin % 1;
   altMax -= altMax % 1;
 
-  //altMinDecim = parseFloat(altMin.toString().split(".").pop());
-  //altMaxDecim = parseFloat(altMin.toString().split(".").pop());
-
-  /*if (altMinDecim == 0 && altMaxDecim == 0) {
-    factor = 1;
-  } else if (altMinDecim.toString().length >= altMaxDecim.toString().length) {
-    factor = Math.pow(10, altMinDecim.toString().length - 2);
-  } else if (altMinDecim.toString().length < altMaxDecim.toString().length) {
-    factor = Math.pow(10, altMaxDecim.toString().length - 2);
-  }*/
-
   num = getRandomInt(altMin, altMax+1);
 
   if (factor != 1) {
@@ -65,7 +54,7 @@ function getRandomNumber(min, max) {
 }
 
 module.exports.run = {
-  execute(message, args) {
+  execute(message, args, client) {
 
     var number = 0;
 
@@ -74,16 +63,7 @@ module.exports.run = {
       return;
     }
 
-    // Debug block
-    /*var a0typ = isNaN(args[0]);
     if (args.length >= 2) {
-      var a1typ = isNaN(args[1]);
-    } //*/
-
-    if (args.length >= 2) {
-
-      // Debug snippet
-      //console.log(`arg0type = ${a0typ}, arg1type = ${a1typ}`);
 
       if (!isNaN(args[0]) && !isNaN(args[1])) {
         number = getRandomNumber(args[0], args[1]);
@@ -92,9 +72,6 @@ module.exports.run = {
         return;
       }
     } else if (args.length = 1) {
-
-      // Debug snippet
-      //console.log(`arg0type = ${a0typ}`);
 
       if (!isNaN(args[0])) {
         number = getRandomNumber(0, args[0]);

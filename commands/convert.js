@@ -105,7 +105,7 @@ function errorPull(x, message) {
 }
 
 module.exports.run = {
-  execute(message, args) {
+  execute(message, args, client) {
     switch(args.length) {
       case 0: message.reply("I can\'t convert something if I don't have any values or units to convert between!"); return;
       case 1: message.reply("I can\'t convert something if you don't tell me the unit it's in!"); return;

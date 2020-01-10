@@ -21,7 +21,7 @@ function getRandomInt(min, max) {
 }
 
 module.exports.run = {
-  execute(message, args) {
+  execute(message, args, client) {
 
     if (!args.length) {
       message.reply("you didn't give me anything to prove!")

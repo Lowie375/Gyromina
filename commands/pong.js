@@ -1,12 +1,12 @@
 module.exports.run = {
-  execute(message, args) {
+  execute(message, args, client) {
     // Pings the channel by sending a message
     let start = Date.now();
     message.channel.send('Ponging...? 🏓')
       .then(newMsg => {
         let end = Date.now();
         // Edits the message to include Gyromina's latency and Discord's latency.
-        newMsg.edit(`Ping? 🏓\nLatency: \`${end - start}msec\` / Discord: \`${message.client.ping}msec\``);
+        newMsg.edit(`Ping? 🏓\nLatency: \`${end - start}msec\` / Discord: \`${client.ping}msec\``);
       });
   },
 };

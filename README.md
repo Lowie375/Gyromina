@@ -1,16 +1,12 @@
-# Gyromina
+# Gyromina, an experimental bot.
 
-An experimental bot.
-
-Fun + function, all in one.
-
-***
+## Fun + function, all in one.
 
 Created by L375#6740, with support from Alten#4148
 
-> Latest stable build: 0.9.4
->
-> Built in JavaScript using Node.js
+Built in JavaScript using Discord.js (a Node.js module)
+
+> **Latest stable build: 0.10.0**
 
 ***
 

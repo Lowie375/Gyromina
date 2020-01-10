@@ -28,8 +28,8 @@ function checkArgs(x) {
 }
 
 module.exports.run = {
-  execute(message, args) {
-    message.client.hcommands = new Discord.Collection();
+  execute(message, args, client) {
+    client.hcommands = new Discord.Collection();
     var cmds = [];
 
     // Reads command files
@@ -44,7 +44,7 @@ module.exports.run = {
       // Filters out command that don't end in ".js"
       cmds = files.filter(f => f.split('.').pop() === 'js');
       if(cmds.length <= 0) {
-        const nope = message.client.emojis.get("493575012276633610");
+        const nope = client.emojis.get("493575012276633610");
         console.log('Error - No commands found');
         message.channel.send(`${nope} No commands found!`)
         return;
@@ -57,20 +57,20 @@ module.exports.run = {
       for(const fx of cmds) {
         let command = require(`../commands/${fx}`);
         let thiscommand = fx.split(".")[0];
-        message.client.hcommands.set(thiscommand, command);
+        client.hcommands.set(thiscommand, command);
       }
 
       // Sets up info emojis
-      const ghost = message.client.emojis.get("618181399299751937");
-      const beta = message.client.emojis.get("618198843301036032");
-      const main = message.client.emojis.get("647926856615723008");
-      const dead = message.client.emojis.get("618199093520498789");
+      const ghost = client.emojis.get("618181399299751937");
+      const beta = client.emojis.get("618198843301036032");
+      const main = client.emojis.get("647926856615723008");
+      const dead = client.emojis.get("618199093520498789");
 
       if (args.length >= 1 && checkArgs(args[0]) == 0) { // Detailed help
 
         const commandName = args[0];
-        const cmdy = message.client.hcommands.get(commandName)
-          || message.client.hcommands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
+        const cmdy = client.hcommands.get(commandName)
+          || client.hcommands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
       
         // Debug snippet
         //console.log(`${cmdy}`);
@@ -119,13 +119,13 @@ module.exports.run = {
 
         embed2.setColor(0x7effaf);
         embed2.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
-        embed2.setAuthor("Master Command List", message.client.user.avatarURL, "https://lx375.weebly.com/gyromina/commands");
+        embed2.setAuthor("Master Command List", client.user.avatarURL, "https://lx375.weebly.com/gyromina/commands");
         embed2.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
         var cmdlist = "";
         var cmdctr = 0;
         // Creates the main command list
-        message.client.hcommands.forEach(c => {
+        client.hcommands.forEach(c => {
           if(c.help.hide === 1 || c.help.wip === 1 || c.help.dead === 1) return;   
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
@@ -139,7 +139,7 @@ module.exports.run = {
           cmdlist = "These commands are currently unavailable.\n";
         }
         cmdctr = 0;
-        message.client.hcommands.forEach(c => {
+        client.hcommands.forEach(c => {
           if(c.help.hide === 1 || c.help.wip === 0 || c.help.dead === 1) return;
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
@@ -150,7 +150,7 @@ module.exports.run = {
         if(args[0] === "-sh") {
           cmdlist = "Usage of these commands is restricted.\n";      
           cmdctr = 0;
-          message.client.hcommands.forEach(c => {
+          client.hcommands.forEach(c => {
             if(c.help.hide === 0 || c.help.dead === 1) return;
             cmdlist = cmdlist + setParams(c);
             cmdctr++;
@@ -159,7 +159,7 @@ module.exports.run = {
 
           cmdlist = "These commands no longer exist.\n";      
           cmdctr = 0;
-          message.client.hcommands.forEach(c => {
+          client.hcommands.forEach(c => {
             if(c.help.dead === 0) return;
             cmdlist = cmdlist + setParams(c);
             cmdctr++;

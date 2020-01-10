@@ -19,7 +19,7 @@ function getRandomDecimal(min, max, decims) {
 }
 
 module.exports.run = {
-  execute(message, args) {
+  execute(message, args, client) {
 
     var number = 0;
     var fail = false;

@@ -32,17 +32,6 @@ function getRandomNumber(min, max) {
   altMin -= altMin % 1;
   altMax -= altMax % 1;
 
-  //altMinDecim = parseFloat(altMin.toString().split(".").pop());
-  //altMaxDecim = parseFloat(altMin.toString().split(".").pop());
-
-  /*if (altMinDecim == 0 && altMaxDecim == 0) {
-    factor = 1;
-  } else if (altMinDecim.toString().length >= altMaxDecim.toString().length) {
-    factor = Math.pow(10, altMinDecim.toString().length - 2);
-  } else if (altMinDecim.toString().length < altMaxDecim.toString().length) {
-    factor = Math.pow(10, altMaxDecim.toString().length - 2);
-  }*/
-
   num = getRandomInt(altMin, altMax+1);
 
   if (factor != 1) {
@@ -65,7 +54,7 @@ function getRandomNumber(min, max) {
 }
 
 module.exports.run = {
-  execute(message, args) {
+  execute(message, args, client) {
 
     var number = 0;
 

@@ -2,7 +2,7 @@ const package = require('../package.json');
 
 module.exports.run = {
   execute(message, args, client) {
-    const nope = client.emojis.get("493575012276633610");
+    const nope = client.emojis.get("618199093520498789");
 
     // Checks to see if the bot owner (L375#6740) sent the message.
     if(message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id)) {

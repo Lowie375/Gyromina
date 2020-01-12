@@ -3,8 +3,8 @@ const package = require('../package.json');
 module.exports.run = {
   execute(message, args, client) {
     // Gets the 'gyrominaNo' and 'gyrominaYes' emojis
-    const nope = client.emojis.get("493575012276633610");
-    const yep = client.emojis.get("493570632785723402");
+    const nope = client.emojis.get("618199093520498789");
+    const yep = client.emojis.get("647926856615723008");
 
     // Checks to see if the bot owner (L375#6740) sent the message.
     if(message.author.id !== package.authorID) {

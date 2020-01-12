@@ -50,8 +50,8 @@ function genCode() {
 
 // Reference code generator
 module.exports.genErrorMsg = function(message, error) {
-  // Gets the 'gyrominaWarning' emoji
-  const warning = message.client.emojis.get("493570621599383552");
+  // Gets the 'gyrWIP' emoji
+  const warning = message.client.emojis.get("618198843301036032");
   // Generates a reference code
   const newRef = genCode();
   console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
@@ -62,11 +62,8 @@ module.exports.genErrorMsg = function(message, error) {
     .setColor(0xffcc4d)
     .setDescription("\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`" + newRef + "\`");
   message.channel.send(embed3);
-
-  // Sends the error to the bot owner
-  let xcl = message.channel.client;
-  const L3 = xcl.fetchUser(package.authorID)
-  .then(L3 => {
-    L3.send(`REFCODE: \`${newRef}\` \n\`\`\`js${error.stack}\`\`\``);
-  });
+  
+  // Sends the error to the Gyromina log channel
+  const log = message.client.channels.get(process.env.errorLog);
+  log.send(`REFCODE: \`${newRef}\` \n\`\`\`js${error.stack}\`\`\``);
 }

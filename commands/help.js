@@ -20,10 +20,9 @@ function setParams(c) {
 
 function checkArgs(x) {
   switch(x) {
-    case "-sh":
-      return 1;
-    default:
-      return 0;
+    case "-sh": return 1;
+    case "-g": return 2;
+    default: return 0;
   }
 }
 
@@ -44,7 +43,7 @@ module.exports.run = {
       // Filters out command that don't end in ".js"
       cmds = files.filter(f => f.split('.').pop() === 'js');
       if(cmds.length <= 0) {
-        const nope = client.emojis.get("493575012276633610");
+        const nope = client.emojis.get("618199093520498789");
         console.log('Error - No commands found');
         message.channel.send(`${nope} No commands found!`)
         return;
@@ -112,6 +111,8 @@ module.exports.run = {
         // Sends the embed
         message.channel.send(embed1);
 
+      } else if (args.length >= 1 && checkArgs(args[0]) == 2) {
+        // Game help
       } else { // General help
 
         // Creates & sets up the embed
@@ -176,8 +177,8 @@ module.exports.help = {
   "name": "help",
   "aliases": ["commands", "cmds", "command", "cmd"],
   "description": "Provides command help.",
-  "usage": `${process.env.prefix}help [command]`,
-  "params": "[command]",
+  "usage": `${process.env.prefix}help [command/query]`,
+  "params": "[command/query]",
   "hide": 0,
   "wip": 0,
   "dead": 0,

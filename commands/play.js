@@ -9,7 +9,7 @@ module.exports.run = {
     
     // Checks if the game exists
     if (!game) {
-      message.channel.reply("I couldn't find the game you were looking for. Please check your spelling and try again.");
+      message.x.reply("I couldn't find the game you were looking for. Please check your spelling and try again.");
       return;
     }
     

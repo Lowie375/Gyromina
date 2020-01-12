@@ -9,7 +9,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
 
-// Pulls out the command and game files
+// Pulls out the command files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
 const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js'));
 
@@ -64,15 +64,15 @@ client.on('message', message => {
 
   // Checks if the command is unstable. If so, displays a warning instead of running the command.
   if(process.env.exp === "0" && command.help.wip === 1) {
-    const warning2 = client.emojis.get("493570621599383552");
-    const nope = client.emojis.get("493575012276633610");
+    const warning = client.emojis.get("618198843301036032");
+    const nope = client.emojis.get("618199093520498789");
 
     if(message.author.id === package.authorID) {
-      message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n\n${warning2} Please enable **experimental mode** to run it.`);
+      message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n\n${warning} Please enable **experimental mode** to run it.`);
     } else {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.`);
     }
-  } else { 
+} else { 
     try {
       command.run.execute(message, args, client);
     }

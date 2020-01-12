@@ -9,7 +9,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
 
-// Pulls out the command files
+// Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
 const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js'));
 

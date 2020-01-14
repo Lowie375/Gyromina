@@ -3,6 +3,7 @@ const air = "󠀠⬛";
 const wll = "🔲";
 const bmb = "🧨";
 const bam = "💥";
+const bkd = "❌";
 // Instruction icons
 const dir = ["🔑", "🛑", "🔼", "🔽", "◀️", "▶️", "🤖", "💎"];
 
@@ -20,6 +21,7 @@ var field = [
 // Position variables
 var robotY = 0;
 var targetY = 0;
+var tempPath = [];
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -44,6 +46,7 @@ function bombCheck(x) {
       return 10;
     case "insane":
     case "expert":
+    case "master":
     case "x":
     case "i":
       return 13;
@@ -53,16 +56,67 @@ function bombCheck(x) {
 }
 
 function genBomb() {
+  // Generates bomb coordinates
   let x = getRandomInt(1, 12);
   if (x == 12) x = 11;
   let y = getRandomInt(1, 7);
   if (y == 7) y = 6;
-
-  checkBombPos(x, y);
+  
+  // Checks if the bomb is directly blocking a path
+  if (checkBombPos(x, y) == 1){
+    genBomb();
+  } else {
+    field[y][x] = bmb;
+  }
 }
 
 function checkBombPos(x, y) {
+  // Basic check (bot un-trapper)
+  switch(x) {
+    case 1:
+      if (y == robotY) return 1;
+      break;
+    case 11:
+      if (y == targetY) return 1;
+      break;
+  }
+  
+  // Array.push() + Array.pop() 
+  
+  // Advanced check (pathfinder)
+  if (!tempPath) {
+    return pathfind();
+  } else {
+    // Check existing path
+    
+    if(/*path invalid*/)
+      pathfind();
+    else
+      return 0;
+  }
+}
 
+function pathfind(sx, sy, tx, ty) {
+  // If cove hit, return to most recent split[] and split[].pop
+  // Follow left first, then front, then right (always this order)
+  
+  // Create path
+    let facing = "E";
+    let split = [[0], [0], ["E"], [0]]; //x, y, facing, step#
+    let found = 0;
+    do {
+      switch (facing) {
+        case "N":
+          break;
+        case "E":
+          break;
+        case "S":
+          break;
+        case "W":
+          break;
+      }
+    }
+    while (found != 1);
 }
 
 module.exports.exe = {
@@ -79,8 +133,8 @@ module.exports.exe = {
       let y = getRandomInt(1, 7);
       if (y == 7) y = 6;
       switch(i) {
-        case 0: field[0][y] = dir[6]; robotY = y; break;
-        case 1: field[12][y] = dir[7]; targetY = y; break;
+        case 0: field[y][0] = dir[6]; robotY = y; break;
+        case 1: field[y][12] = dir[7]; targetY = y; break;
       }
     }
 
@@ -110,7 +164,7 @@ module.exports.exe = {
 
 module.exports.label = {
   "name": "minefield",
-  "aliases": ["field", "walkinaminefield", "walk-in-a-minefield"],
+  "aliases": ["field", "walkinaminefield", "walk-in-a-minefield", "walkin"],
   "players": 1,
   "description": "A modified version of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from r/dailyprogrammer.",
   "art": "",

@@ -195,9 +195,6 @@ function checkBombPos(x, y, ry, ty, tempSteps, field) {
 
           // Removes all steps into the dead path
           tempSteps.splice(split[l][3], tempSteps.length-split[l][3]-1);
-          /*for(let i = tempSteps.length; i > split[l][3]; i--) {
-            tempSteps.pop();
-          }*/
 
           // Removes the intersection from split[]
           split.pop();
@@ -242,7 +239,7 @@ module.exports.exe = {
     var tempSteps = [];
     var bombs = 0;
     var bombOrder = [[],[]];
-    var boardID = "";
+    //var boardID = "";
     var steps = [];
 
     if(args.length >= 2)
@@ -263,14 +260,6 @@ module.exports.exe = {
 
     field[robotY][0] = dir[6];
     field[targetY][12] = dir[7];
-    /*for(let i = 0; i <= 1; i++) {
-      let y = getRandomInt(1, 7);
-      if (y == 7) y = 6;
-      switch(i) {
-        case 0: field[y][0] = dir[6]; robotY = y; break;
-        case 1: field[y][12] = dir[7]; targetY = y; break;
-      }
-    }*/
 
     // Randomly place bombs
     for(let i = 0; i < bombs; i++) {
@@ -303,39 +292,66 @@ module.exports.exe = {
         for (let i = 0; i <= 7; i++) {
           await board.react(rxns[i]);
         }
+        
+        // Create a reaction collector (currently not functional)
+        const filter = (reaction, user) => {
+          rxns.includes(reaction.emoji.name) && user.id == player;
+        };
+        var confirm = 0;
+        const builder = message.createReactionCollector(filter, {/*time: 30000*/});
+        // .then await a 'collect', if none return shutdown and stop
+        
+        builder.on('collect', r => {
+          // Determine which reaction got collected
+          switch(r.emoji.name) {
+            case rxns[0]:
+            case rxns[1]:
+            case rxns[2]:
+            case rxns[3]:
+            case rxns[4]:
+            case rxns[5]:
+              steps.push(r);
+              message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
+              break;
+            case rxns[6]:
+              steps.pop();
+              message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
+              break;
+            case rxns[7]:
+              confirm = 1;
+              break;
+            default:
+              break;
+          }
+          if (confirm != 1) {
+            //const nb = new builder();
+          }
+        });
+        
+        /*const builder = message.awaitReactions(filter, {time: 30000})
+          .then(r => {
+            switch(r.emoji.name) {
+            case rxns[0]:
+            case rxns[1]:
+            case rxns[2]:
+            case rxns[3]:
+            case rxns[4]:
+            case rxns[5]:
+              steps.push(r);
+              message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
+              break;
+            case rxns[6]:
+              steps.pop();
+              message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
+              break;
+            case rxns[7]:
+              confirm = 1;
+              break;
+            default:
+              break;
+          }
+        });*/
       });
-
-    // Create a reaction collector
-    const filter = (reaction, user) => rxns.includes(reaction.emoji.name) && user.id == player;
-    const builder = message.createReactionCollector(filter, {time: 30000});
-    var confirm = 0;
-
-    // Currently not functional:
-    builder.on('collect', r => {
-      // Determine which reaction got collected
-      switch(r.emoji.name) {
-        case rxns[0]:
-        case rxns[1]:
-        case rxns[2]:
-        case rxns[3]:
-        case rxns[4]:
-        case rxns[5]:
-          steps.push(r);
-          message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
-          break;
-        case rxns[6]:
-          steps.pop();
-          message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
-          break;
-        case rxns[7]:
-          confirm = 1;
-          break;
-      }
-      builder.stop();
-      if (confirm != 1) {
-        const nb = new builder();
-      }
-    });
 
     // Final check + output here
   }

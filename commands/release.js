@@ -1,4 +1,4 @@
-const { Write, Clean } = require("../systemFiles/globalFunctions.js/index.js.js");
+const { Write, Clean } = require("../systemFiles/globalFunctions.js");
 const colors = require('colors');
 let request = require('request');
 

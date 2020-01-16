@@ -1,24 +1,32 @@
 const package = require('../package.json');
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 module.exports.run = {
   execute(message, args, client) {
     const nope = client.emojis.get("618199093520498789");
 
-    // Checks to see if the bot owner (L375#6740) sent the message.
+    // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id)) {
       message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to run a test, but was unsuccessful!')
       return;
     }
 
-    if("xenon" % 1 === 0) {
+    message.channel.send(getRandomInt(1, 7));
+
+    /*if("xenon" % 1 === 0) {
       message.channel.send("Yeah!");
     } else {
       message.channel.send("bleh.");
     }
     console.log("xenon" % 1);
 
-    /*if(1 % 1 === 0) {
+    if(1 % 1 === 0) {
       message.channel.send("Yeah!");
     } else {
       message.channel.send("bleh.");

@@ -1,8 +1,8 @@
 // Require discord.js, fs, package.json, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
-const refcode = require("./systemFiles/refcodes.js");
 const package = require('./package.json');
+const { genErrorMsg }= require("./systemFiles/refcodes.js");
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
@@ -78,7 +78,7 @@ client.on('message', message => {
     }
     catch (error) {
       // Generates an error message & logs the error
-      refcode.genErrorMsg(message, error);
+      genErrorMsg(message, error);
       console.error(error);
     }
   }

@@ -1,7 +1,8 @@
 {
   "name": "gyromina",
   "version": "0.11.0 (beta)",
-  "description": "Gyromina, an experimental bot.",
+  "description": "Gyromina, a multipurpose Discord bot",
+  "tagline": "Fun + function, all in one",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

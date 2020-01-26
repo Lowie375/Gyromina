@@ -7,7 +7,7 @@ const color = require('colors');
  * @param useLocale
  */
 
-exports.Write = function(message, startTime = null, useLocale = true) {
+module.exports.Write = function(message, startTime = null, useLocale = true) {
   let currentTime = Date.now() - startTime;
   let body = "";
 
@@ -26,9 +26,15 @@ exports.Write = function(message, startTime = null, useLocale = true) {
  * @return {string}
  */
 
-exports.Clean = function(text) {
+module.exports.Clean = function(text) {
   if (typeof(text) === "string")
     return text.replace(/`/g, "`" + String.fromCharCode(8203).replace(/@/g, "@" + String.fromCharCode(8203)))
   else
     return text;
+};
+
+module.exports.getRandomInt = function(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
 };

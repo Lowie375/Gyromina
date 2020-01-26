@@ -1,3 +1,5 @@
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+
 module.exports.exe = {
   start(message, args, client, player) {
     // Insert code here
@@ -10,5 +12,8 @@ module.exports.label = {
   "players": 1,
   "description": "King's Magic, a self-created card game.",
   "art": "",
+  "options": "[mode]",
+  "exclusive": 0,
   "indev": 1,
+  "deleted": 0
 };

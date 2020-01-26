@@ -1,16 +1,8 @@
-// Require discord.js and package.json
 const Discord = require('discord.js');
-const package = require('../package.json');
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 // Declares CBX characters for future use
 const genChars = ["0", "1", "2", "3", "5", "8", "l", "@", "w", "n", "?", "x", "-", "i", "!", "y", "h", "%", "t", "q", "j", "s", "r", "#", "k", ":", "&", "f", "m", "z", "e", "u"];
-
-// Basic RNG
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
 
 // Custom decimal converter
 function toCBX(num, mul) {
@@ -49,7 +41,7 @@ function genCode() {
 }
 
 // Reference code generator
-module.exports.genErrorMsg = function(message, error) {
+exports.genErrorMsg = function(message, error) {
   // Gets the 'gyrWIP' emoji
   const warning = message.client.emojis.get("618198843301036032");
   // Generates a reference code

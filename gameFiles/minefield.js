@@ -1,3 +1,6 @@
+const func = require('../systemFiles/gameFunctions.js');
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+
 // Display icons
 const air = "󠀠⬛";
 const wll = "🔲";
@@ -9,12 +12,6 @@ const ibx = "📥";
 const dir = ["🔑", "🛑", "◀️", "🔼", "▶️", "🔽", "🤖", "💎"];
 const rxns = [dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], bkd, ibx];
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
 function bombCheck(x) {
   switch(x) {
     case "easy":
@@ -25,17 +22,21 @@ function bombCheck(x) {
     case "moderate":
     case "regular":
     case "m":
-      return 7;
+      return 8;
     case "hard":
     case "difficult":
     case "h":
-      return 10;
+      return 12;
     case "insane":
     case "expert":
-    case "master":
     case "x":
     case "i":
-      return 13;
+      return 16;
+    case "master":
+    case "ultimate":
+    case "xm":
+    case "u":
+      return 20;
     default:
       return x;
   }
@@ -220,8 +221,42 @@ function checkBombPos(x, y, ry, ty, tempSteps, field) {
   }
 }
 
+function collector(message, filter, rxns, steps) {
+  const builder = message.createReactionCollector(filter, {max: 1, time: 30000, errors: ['time']});
+  // .then await a 'collect', if none return shutdown and stop
+  
+  builder.on('collect', r => {
+    // Determine which reaction got collected
+    switch(r.emoji.name) {
+      case rxns[0]:
+      case rxns[1]:
+      case rxns[2]:
+      case rxns[3]:
+      case rxns[4]:
+      case rxns[5]:
+        steps.push(r);
+        message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
+        break;
+      case rxns[6]:
+        steps.pop();
+        message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
+        break;
+      case rxns[7]:
+        builder.stop('complete');
+        return;
+      default:
+        break;
+    }
+    builder.stop('continue');
+  });
+
+  builder.on('end', reason => {
+    return reason;
+  });
+}
+
 module.exports.exe = {
-  start(message, args, client, player) {
+  start(message, options, client, player) {
     // Minefield shell
     var field = [
       [wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll],
@@ -241,15 +276,23 @@ module.exports.exe = {
     var bombOrder = [[],[]];
     //var boardID = "";
     var steps = [];
+    var content = "";
 
-    if(args.length >= 2)
-      bombs = bombCheck(args[1]);
-    else
+    if(!options)
       bombs = 4;
+    else
+      bombs = bombCheck(options[0]);
     
     if (bombs % 1 != 0) {
-      message.reply("that's not a valid number of mines! Please enter a valid whole number less than [x] (or a valid preset) and try again.");
+      message.reply("that's not a valid number of mines! Please enter a valid whole number less than [x] or a valid preset and try again.");
       return;
+    }
+    if (bombs > 20) {
+      bombs = 20;
+      content = "*The mine count has been reduced to 20 (max).*\n\n"
+    } else if (bombs < 4) {
+      bombs = 4
+      content = "*The mine count has been increased to 4 (min).*\n\n"
     }
 
     // Randomly place robot and target
@@ -276,7 +319,7 @@ module.exports.exe = {
     }
     
     // Puts the whole shebang into one variable (wow)
-    var content = `A minefield has been generated!\n\n${output}\n` +
+    content += `A minefield has been generated!\n\n${output}\n` +
     `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
     `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
     `\*(This instance of the game will time out if you do not react within 30 seconds.)\*` +
@@ -293,40 +336,25 @@ module.exports.exe = {
           await board.react(rxns[i]);
         }
         
-        // Create a reaction collector (currently not functional)
+        // Set up a collection filter
         const filter = (reaction, user) => {
           rxns.includes(reaction.emoji.name) && user.id == player;
         };
+
         var confirm = 0;
-        const builder = message.createReactionCollector(filter, {/*time: 30000*/});
-        // .then await a 'collect', if none return shutdown and stop
-        
-        builder.on('collect', r => {
-          // Determine which reaction got collected
-          switch(r.emoji.name) {
-            case rxns[0]:
-            case rxns[1]:
-            case rxns[2]:
-            case rxns[3]:
-            case rxns[4]:
-            case rxns[5]:
-              steps.push(r);
-              message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
-              break;
-            case rxns[6]:
-              steps.pop();
-              message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
-              break;
-            case rxns[7]:
-              confirm = 1;
-              break;
-            default:
-              break;
+        var rsn = "";
+        /*while (confirm == 0) {
+          rsn = collector(message, filter, rxns, steps);
+          // Determine why the builder stopped
+          switch (rsn) {
+            case 'continue':
+              return 0;
+            case 'complete':
+              return 1;
+            case 'time':
+              return 2;
           }
-          if (confirm != 1) {
-            //const nb = new builder();
-          }
-        });
+        }*/
         
         /*const builder = message.awaitReactions(filter, {time: 30000})
           .then(r => {
@@ -363,5 +391,9 @@ module.exports.label = {
   "players": 1,
   "description": "A modified version of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from r/dailyprogrammer.",
   "art": "",
+  "options": "[mines/preset]",
+  "optionsdesc": "\• [mines/preset]: Number of mines on the field (4-20) or a preset difficulty (easy = 4, medium = 8, hard = 12, insane = 16, master = 20). Defaults to easy (4 mines)",
+  "exclusive": 0,
   "indev": 1,
+  "deleted": 0
 };

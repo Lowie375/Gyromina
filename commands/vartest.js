@@ -1,10 +1,5 @@
 const package = require('../package.json');
-
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 module.exports.run = {
   execute(message, args, client) {

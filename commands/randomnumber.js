@@ -1,10 +1,5 @@
 const Discord = require('discord.js');
-
-function getRandomInt(min, max) {
-  min = Math.round(min);
-  max = Math.round(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;

@@ -1,10 +1,10 @@
-# Gyromina, a multipurpose Discord bot.
+# Gyromina, an experimental bot.
 
-## "Fun + function, all in one."
+## Fun + function, all in one.
 
-Created by L375#6740 (@Lowie375), with contributions & support from Alten#4148 (@Altenhh)
+Created by L375#6740, with contributions & support from Alten#4148
 
-**Latest stable build: 0.11.0**
+**Latest stable build: 0.10.1**
 
 ***
 

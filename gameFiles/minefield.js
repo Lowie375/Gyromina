@@ -42,7 +42,7 @@ function bombCheck(x) {
   }
 }
 
-function genBomb(field, ry, ty, tempSteps) {
+function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
   // Generates bomb coordinates
   let x = getRandomInt(1, 12);
   if (x == 12) x = 11;
@@ -52,11 +52,19 @@ function genBomb(field, ry, ty, tempSteps) {
   field[y][x] = bmb;
 
   // Checks if the bomb is directly blocking a path
-  if (checkBombPos(x, y, ry, ty, tempSteps, field) == 1){
+  if (checkBombPos(x, y, ry, ty, tempSteps, field, bombOrder) == 1){
     clearBarricades(field);
     field[y][x] = air;
-    genBomb(field, ry, ty, tempSteps);
+    attCtr++;
+    if (attCtr >= 250) {
+      bombOrder.pop();
+      i--;
+      genBomb(field, ry, ty, tempSteps, bombOrder, i);
+    } else {
+      genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr);
+    }
   } else {
+    bombOrder.push([x, y])
     clearBarricades(field);
   }
 }
@@ -143,7 +151,7 @@ function barricade(x, y, field, x1, y1, x2, y2, x3, y3) {
     field[y+y3][x+x3] = bkd;
 }
 
-function checkBombPos(x, y, ry, ty, tempSteps, field) {
+function checkBombPos(x, y, ry, ty, tempSteps, field, bombOrder) {
   // Basic check (bot un-trapper)
   switch(x) {
     case 1:
@@ -156,7 +164,6 @@ function checkBombPos(x, y, ry, ty, tempSteps, field) {
   
   // Advanced check (pathfinder)
   if (!tempSteps || quickCheckPath(ry, tempSteps) == 1) {
-  
     // Creates a path (if none available or current one is no longer valid)
     let facing = "E";
     let cx = 1;
@@ -215,7 +222,6 @@ function checkBombPos(x, y, ry, ty, tempSteps, field) {
     }
     while (found != 1);
     return 0;
-
   } else {
     return 0;
   }
@@ -273,7 +279,7 @@ module.exports.exe = {
     var targetY = 0;
     var tempSteps = [];
     var bombs = 0;
-    var bombOrder = [[],[]];
+    var bombOrder = [[]];
     //var boardID = "";
     var steps = [];
     var content = "";
@@ -306,7 +312,7 @@ module.exports.exe = {
 
     // Randomly place bombs
     for(let i = 0; i < bombs; i++) {
-      genBomb(field, robotY, targetY, tempSteps);
+      genBomb(field, robotY, targetY, tempSteps, bombOrder, i);
     }
 
     // Clear tempSteps[] (no cheating!)
@@ -343,18 +349,18 @@ module.exports.exe = {
 
         var confirm = 0;
         var rsn = "";
-        /*while (confirm == 0) {
-          rsn = collector(message, filter, rxns, steps);
+        while (confirm == 0) {
+          rsn = await collector(message, filter, rxns, steps);
           // Determine why the builder stopped
           switch (rsn) {
             case 'continue':
-              return 0;
+              break;
             case 'complete':
-              return 1;
+              confirm = 1;
             case 'time':
-              return 2;
+              return 0;
           }
-        }*/
+        }
         
         /*const builder = message.awaitReactions(filter, {time: 30000})
           .then(r => {

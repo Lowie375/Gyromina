@@ -13,6 +13,7 @@ module.exports.label = {
   "description": "King's Magic, a self-created card game.",
   "art": "",
   "options": "[mode]",
+  "optionsdesc": "\• [mode]: A mode preset (standard, hex, octal, dodeca, double, double-dodeca, quadruple, quadruple-dodeca",
   "exclusive": 0,
   "indev": 1,
   "deleted": 0

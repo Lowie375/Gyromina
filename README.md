@@ -2,7 +2,7 @@
 
 ## "Fun + function, all in one."
 
-Created by L375#6740 (@Lowie375), with contributions & support from Alten#4148 (@Altenhh)
+Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from Alten#4148 \([@Altenhh](https://www.github.com/Altenhh)\)
 
 **Latest stable build: 0.11.0**
 

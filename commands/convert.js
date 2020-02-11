@@ -1,45 +1,45 @@
 const Discord = require('discord.js');
 
 // Array V4: names[array#][object#] + metrics[array#][object#] --> converterV3[array#][object#] (0-9/10-19/20-29/etc.)
-const names = [
+const names = [ // GOOD!
   ["metres", "meters", "m", "inches", "in", "foot", "feet", "ft", "yards", "yds",
-    "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
-    "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
-    "degrees", "degs", "°", "radians", "rads", "milliradians", "millirads", "mil", "litres", "liters",
-    "L", "cubicmetres", "cubicmeters", "m³", "m3", "m^3", "in³", "in3", "in^3", "cubicinches",
-    "ft³", "ft3", "ft^3", "cubicfoot", "cubicfeet", "gallons", "usgallons", "gallonsus", "gallonus", "gal",
-    "usgal", "galus", "quarts", "usquarts", "quartsus", "quartus", "qt", "usqt", "qtus", "fluidounces",
-    "floz", "usfluidounces", "usfloz", "fluidouncesus", "fluidounceus", "flozus", "pints", "uspints", "pt", "uspt",
-    "pintsus", "pintus", "ptus", "tablespoons", "ustablespoons", "tbsp", "ustbsp", "tablespoonsus", "tablespoonus","tbspus",
-    "teaspoons", "usteaspoons", "tsp", "ustsp", "teaspoonsus", "teaspoonus", "tspus", "\"", "\'"
-    ], // GOOD!
-    // WIP below:
-  ["d0", "d0", "d0", "d1", "d1", "d2", "d2", "d2", "d3", "d3",
-    "d4", "d4", "d5", "d5", "t6", "t6", "t6", "t7", "t7", "t8",
-    "t8", "t9", "t9", "t10", "t10", "t11", "t11", // good until here
-    
-    "n12", 
-    "t12", "t13", "t13", "t14", "t14", "t15", "t16", "t16", "t17", "t17",
-    "n18", "n18", "n19", "n19", "n20", "n20", "n21", "n21", "v22", "v22",
-    "v22", "v23", "v23", "v24", "v24", "v24", "v24", "d5", "n18", "t15",
-    "t9", "t10", "t11", "n21", "v24", "v24", "v24", "t10", "v22", "v22",
-    "v22", "v22", "v22", "v22", "v22", "v25", "v25", "v25", "v25", "v25",
-    "v26", "v26", "v26", "v26", "v26", "v26", "v26", "v27", "v27", "v27",
-    "v27", "v27", "v27", "v28", "v28", "v28", "v28", "v28", "v28", "v29",
-    "v29", "v29", "v29", "v29", "v29", "v29", "v29", "v29", "v29", "v30",
-    "v30", "v30", "v30", "v30", "v30", "v31", "v31", "v31", "v31", "v31",
-    "v31", "v32", "v32", "v32", "v32", "v32", "v32",]
+   "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
+   "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
+   "degrees", "degs", "°", "radians", "rads", "milliradians", "millirads", "mil", "litres", "liters",
+   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
+   "in³", "in3", "in^3", "cubicinches", "inchescubed", "inchcubed", "ft³", "ft3", "ft^3", "cubicfoot", 
+   "cubicfeet", "feetcubed", "footcubed", "gallons", "usgallons", "gallonsus", "gallonus", "gal", "usgal", "galus",
+   "quarts", "usquarts", "quartsus", "quartus", "qt", "usqt", "qtus", "fluidounces", "floz", "usfluidounces",
+   "usfloz", "fluidouncesus", "fluidounceus", "flozus", "pints", "uspints", "pt", "uspt", "pintsus", "pintus",
+   "ptus", "tablespoons", "ustablespoons", "tbsp", "ustbsp", "tablespoonsus", "tablespoonus","tbspus", "teaspoons", "usteaspoons",
+   "tsp", "ustsp", "teaspoonsus", "teaspoonus", "tspus", "\"", "\'",],
+  ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
+   "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
+   "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
+   "n013", "n013", "n013", "n014", "n014", "n015", "n015", "n015", "v016", "v016",
+   "v016", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017",
+   "v018", "v018", "v018", "v018", "v018", "v018", "v019", "v019", "v019", "v019",
+   "v019", "v019", "v019", "v020", "v020", "v020", "v020", "v020", "v020", "v020",
+   "v021", "v021", "v021", "v021", "v021", "v021", "v021", "v022", "v022", "v022",
+   "v022", "v022", "v022", "v022", "v023", "v023", "v023", "v023", "v023", "v023",
+   "v023", "v024", "v024", "v024", "v024", "v024", "v024", "v024", "v025", "v025",
+   "v025", "v025", "v025", "v025", "v025", "d001", "d002",]
 ]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // e=energy // m=mass // w=power // g=weight //
 
-const converter = [
+const converter = [ // GOOD!
   ["m", "in", "ft", " yds", "mi", "nmi", "/sec", " min", " hrs", " days",
-    " wks", " yrs", " gon", "°", " rads", " mil", "L", "m³", "in³", "ft³",
-    " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp"], // GOOD!
-  // WIP below:
-  [1609344, 160934.4, 63360, 5280, 1760, 1609.344, 1.609344, 1, 1609.344/1852, 604800000000000,
-    604800000000, 604800000, 604800, 10080, 168, 7, 1, 0.0191780664289865, 200, 180,
-    "π", "π/1000", 1000, 1, 0.001, 1/0.016387064, 1/28.316846592, 1/3.785411784, 4/3.785411784, 128/3.785411784,
-    8/3.785411784, 256/3.785411784, 768/3.785411784]
+   " wks", " yrs", " gon", "°", " rads", " mil", "L", "m³", "in³", "ft³",
+   " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp",],
+  [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
+   1, 0.0191780664289865, 200, 180, "π", "π/1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
+   1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784,]
+];
+
+const metricNames = [
+  
+];
+const metrics = [
+  
 ];
 
 function metricCases(x) {

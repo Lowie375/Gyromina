@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
-// Array V4: names[array#][object#] + metrics[array#][object#] --> converterV3[array#][object#] (0-9/10-19/20-29/etc.)
-const names = [ // GOOD!
+// Array V4: names[array#][object#] + metricNames[array#][object#] --> converter[array#][object#] + metrics[array#][object#] (0-9/10-19/20-29/etc.)
+const names = [
   ["metres", "meters", "m", "inches", "in", "foot", "feet", "ft", "yards", "yds",
    "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
    "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
@@ -25,29 +25,77 @@ const names = [ // GOOD!
    "v023", "v024", "v024", "v024", "v024", "v024", "v024", "v024", "v025", "v025",
    "v025", "v025", "v025", "v025", "v025", "d001", "d002",]
 ]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // e=energy // m=mass // w=power // g=weight //
-
-const converter = [ // GOOD!
-  ["m", "in", "ft", " yds", "mi", "nmi", "/sec", " min", " hrs", " days",
+const converter = [
+  ["m", "in", "ft", "yds", "mi", "nmi", "/sec", " min", " hrs", " days",
    " wks", " yrs", " gon", "°", " rads", " mil", "L", "m³", "in³", "ft³",
    " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp",],
   [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
    1, 0.0191780664289865, 200, 180, "π", "π/1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
    1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784,]
 ];
-
 const metricNames = [
-  
+  ["deci", "d", "centi", "c", "milli", "m", "kilo", "k", "mega", "M",
+   "giga", "G", "tera", "T", "peta", "P", "exa", "E", "zetta", "Z",
+   "yotta", "Y", "hecto", "h", "nano", "n", "pico", "p", "femto", "f", 
+   "atto", "a", "zepto", "z", "yocto", "y", "micro", "μ", "u",
+   "deka", "da",],
+  [00, 00, 01, 01, 02, 02, 03, 03, 04, 04,
+   05, 05, 06, 06, 07, 07, 08, 08, 09, 09,
+   10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
+   15, 15, 16, 16, 17, 17, 18, 18, 18,
+   19, 19]
 ];
 const metrics = [
-  
+  ["d", "c", "m", "k", "M", "G", "T", "P", "E", "Z", 
+   "Y", "h", "n", "p", "f", "a", "z", "y", "μ",
+   "da",],
+  [Math.pow(10, 1), Math.pow(10, 2), Math.pow(10, 3), Math.pow(10, -3), Math.pow(10, -6),
+     Math.pow(10, -9), Math.pow(10, -12), Math.pow(10, -15), Math.pow(10, -18), Math.pow(10, -21),
+   Math.pow(10, -24), Math.pow(10, -2), Math.pow(10, 9), Math.pow(10, 12), Math.pow(10, 15),
+     Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6),
+   Math.pow(10, -1),]
 ];
 
 function metricCases(x) {
   return x;
 }
 
+function deepCleanArgs() {
+  
+}
+
 function cleanArgs(args) {
-  let cleaned = [];
+  // args[val, unit, newUnit, places] --> cleaned[val, uRoot, newURoot, places, uPrefix, newUPrefix]
+  let cleaned = [args[0], "", "", args[3], "", ""];
+  let checkCtr = 0;
+  let save = [];
+  
+  for (let j = 1; j < 2; j++) {
+    for (let i = 0; i < metricNames[0].length; i++) {
+      if(args[j].startsWith(metricNames[0][i])) {
+        checkCtr++;
+        save.push([metricNames[0][i], i]);
+      }
+    }
+    if (checkCtr == 1) {
+      cleaned[j+3] = save[0][0];
+    } else if (checkCtr != 0 && checkCtr != 1) {
+      // run again, but with a longer string!
+    }
+    
+  }
+  
+  /*for (let i = 1; i <= 2; i++) {
+    switch(args[i]) {
+      case "da":
+        break;
+    }
+    for (let j = 0; j < metricNames[0].length - 1; j++) {
+      if(metricNames[0][j] === args[i]) {
+        // return 
+      }
+    }
+  }*/
   return args;
 }
 
@@ -60,7 +108,7 @@ function valCases(x) {
   return result;
 }
 
-function nameCases(x, args) {
+function nameCases(x, args, i) {
   var result = x;
   // Plural handling if args[0] == 1
   if(args[0] == 1) {
@@ -69,6 +117,12 @@ function nameCases(x, args) {
         result = result.slice(0, -1); break;
     }
   }
+  // Metric prefix handling
+  if (args[i] != "")
+    result = args[i] + result;
+  
+  // Metric space handling
+  if(x.splice())
   return result;
 }
 
@@ -140,8 +194,8 @@ module.exports.run = {
       message.reply("I can\'t convert between 2 unlike units! Please check your units and try again.");
       return;
     }
-    var name1 = nameCases(converter[0][pos1], cArgs);
-    var name2 = nameCases(converter[0][pos2], cArgs);
+    var name1 = nameCases(converter[0][pos1], cArgs, 4);
+    var name2 = nameCases(converter[0][pos2], cArgs, 5);
 
     // Initialises conversion values
     var val1, val2, output, round;

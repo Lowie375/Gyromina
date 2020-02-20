@@ -5,25 +5,25 @@ const names = [
   ["metres", "meters", "m", "inches", "in", "foot", "feet", "ft", "yards", "yds",
    "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
    "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
-   "degrees", "degs", "°", "radians", "rads", "milliradians", "millirads", "mil", "litres", "liters",
+   "degrees", "degs", "°", "radians", "rads", "mil", "\"", "\'", "litres", "liters",
    "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
    "in³", "in3", "in^3", "cubicinches", "inchescubed", "inchcubed", "ft³", "ft3", "ft^3", "cubicfoot", 
    "cubicfeet", "feetcubed", "footcubed", "gallons", "usgallons", "gallonsus", "gallonus", "gal", "usgal", "galus",
    "quarts", "usquarts", "quartsus", "quartus", "qt", "usqt", "qtus", "fluidounces", "floz", "usfluidounces",
    "usfloz", "fluidouncesus", "fluidounceus", "flozus", "pints", "uspints", "pt", "uspt", "pintsus", "pintus",
    "ptus", "tablespoons", "ustablespoons", "tbsp", "ustbsp", "tablespoonsus", "tablespoonus","tbspus", "teaspoons", "usteaspoons",
-   "tsp", "ustsp", "teaspoonsus", "teaspoonus", "tspus", "\"", "\'",],
+   "tsp", "ustsp", "teaspoonsus", "teaspoonus", "tspus",],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
-   "n013", "n013", "n013", "n014", "n014", "n015", "n015", "n015", "v016", "v016",
+   "n013", "n013", "n013", "n014", "n014", "n015", "d001", "d002", "v016", "v016",
    "v016", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017",
    "v018", "v018", "v018", "v018", "v018", "v018", "v019", "v019", "v019", "v019",
    "v019", "v019", "v019", "v020", "v020", "v020", "v020", "v020", "v020", "v020",
    "v021", "v021", "v021", "v021", "v021", "v021", "v021", "v022", "v022", "v022",
    "v022", "v022", "v022", "v022", "v023", "v023", "v023", "v023", "v023", "v023",
    "v023", "v024", "v024", "v024", "v024", "v024", "v024", "v024", "v025", "v025",
-   "v025", "v025", "v025", "v025", "v025", "d001", "d002",]
+   "v025", "v025", "v025", "v025", "v025",]
 ]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // e=energy // m=mass // w=power // g=weight //
 const converter = [
   ["m", "in", "ft", "yds", "mi", "nmi", "/sec", " min", " hrs", " days",
@@ -42,47 +42,82 @@ const metricNames = [
   [00, 00, 01, 01, 02, 02, 03, 03, 04, 04,
    05, 05, 06, 06, 07, 07, 08, 08, 09, 09,
    10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
-   15, 15, 16, 16, 17, 17, 18, 18, 18,
-   19, 19]
+   15, 15, 16, 16, 17, 17, 18, 18, 18, 19,
+   19]
 ];
 const metrics = [
   ["d", "c", "m", "k", "M", "G", "T", "P", "E", "Z", 
-   "Y", "h", "n", "p", "f", "a", "z", "y", "μ",
-   "da",],
+   "Y", "h", "n", "p", "f", "a", "z", "y", "μ", "da",],
   [Math.pow(10, 1), Math.pow(10, 2), Math.pow(10, 3), Math.pow(10, -3), Math.pow(10, -6),
      Math.pow(10, -9), Math.pow(10, -12), Math.pow(10, -15), Math.pow(10, -18), Math.pow(10, -21),
    Math.pow(10, -24), Math.pow(10, -2), Math.pow(10, 9), Math.pow(10, 12), Math.pow(10, 15),
-     Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6),
-   Math.pow(10, -1),]
+     Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1),]
 ];
+const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
+  "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",]
 
-function metricCases(x) {
-  return x;
+function metricCheck(x) {
+  for (let i = 0; i < registered.length; i++) {
+    if(0 == 1 && 0 == x){
+      // add text here
+    }
+  }
+  return 0;
 }
 
-function deepCleanArgs() {
+function deepCleanArgs(args, list, j, k) {
+  let save = [];
+  let checkCtr = 0;
   
+  for (var item of list) {
+    if(args[j].startsWith(metricNames[0][item].slice(0, k)) && metricNames[0][item].slice(0, k).length == k+1) {
+      checkCtr++;
+      save.push(item);
+    }
+  }
+  if (checkCtr == 1) {
+    let arr = [save[0], k]
+    return arr;
+  } else if (checkCtr != 0 && checkCtr != 1) {
+    return deepCleanArgs(args, save, j, k+1);
+  }
 }
 
 function cleanArgs(args) {
   // args[val, unit, newUnit, places] --> cleaned[val, uRoot, newURoot, places, uPrefix, newUPrefix]
-  let cleaned = [args[0], "", "", args[3], "", ""];
+  let cleaned = [args[0], "", "", args[3], -1, -1];
   let checkCtr = 0;
   let save = [];
   
   for (let j = 1; j < 2; j++) {
+    // Determines possible metric prefixes
     for (let i = 0; i < metricNames[0].length; i++) {
       if(args[j].startsWith(metricNames[0][i])) {
         checkCtr++;
-        save.push([metricNames[0][i], i]);
+        save.push(i);
       }
     }
+    // Checks if the prefix is exclusive
     if (checkCtr == 1) {
-      cleaned[j+3] = save[0][0];
+      cleaned[j+3] = save[0];
+      cleaned[j] = args[j].slice(1);
     } else if (checkCtr != 0 && checkCtr != 1) {
-      // run again, but with a longer string!
+      // If not, runs a deeper check
+      let dpr = deepCleanArgs(args, save, j, 1);
+      cleaned[j+3] = dpr[0];
+      cleaned[j] = args[j].slice(dpr[1]+1);
     }
     
+    let validate = metricCheck();
+    switch(validate) {
+      case 0:
+        // OK
+        break;
+      case 1:
+        // Not OK, undo split
+        break;
+      
+    }
   }
   
   /*for (let i = 1; i <= 2; i++) {
@@ -96,7 +131,7 @@ function cleanArgs(args) {
       }
     }
   }*/
-  return args;
+  return cleaned;
 }
 
 function valCases(x) {
@@ -110,6 +145,8 @@ function valCases(x) {
 
 function nameCases(x, args, i) {
   var result = x;
+  let metricChk = 0;
+  
   // Plural handling if args[0] == 1
   if(args[0] == 1) {
     switch (result) {
@@ -117,12 +154,20 @@ function nameCases(x, args, i) {
         result = result.slice(0, -1); break;
     }
   }
+  // Metric space handling (1)
+  if(result.slice(0, 1) == "/") {
+    result.slice(1);
+    spaceCheck = 1;
+  }
+  
   // Metric prefix handling
   if (args[i] != "")
     result = args[i] + result;
   
-  // Metric space handling
-  if(x.splice())
+  // Metric space handling (2)
+  if (spaceCheck == 1)
+    result = " " + result;
+
   return result;
 }
 

@@ -54,15 +54,15 @@ const metrics = [
      Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1),]
 ];
 const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
-  "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",]
+  "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",];
 
 function metricCheck(x) {
   for (let i = 0; i < registered.length; i++) {
-    if(0 == 1 && 0 == x){
-      // add text here
+    if(registered[i].startsWith(x)){
+      return 0;
     }
   }
-  return 0;
+  return 1;
 }
 
 function deepCleanArgs(args, list, j, k) {
@@ -70,6 +70,7 @@ function deepCleanArgs(args, list, j, k) {
   let checkCtr = 0;
   
   for (var item of list) {
+    // Checks if the prefixes match
     if(args[j].startsWith(metricNames[0][item].slice(0, k)) && metricNames[0][item].slice(0, k).length == k+1) {
       checkCtr++;
       save.push(item);
@@ -108,15 +109,16 @@ function cleanArgs(args) {
       cleaned[j] = args[j].slice(dpr[1]+1);
     }
     
-    let validate = metricCheck();
+    let validate = metricCheck(cleaned[j]);
     switch(validate) {
       case 0:
         // OK
         break;
       case 1:
         // Not OK, undo split
+        cleaned[j] = args[j];
+        cleaned [j+3] = -1;
         break;
-      
     }
   }
   
@@ -145,7 +147,6 @@ function valCases(x) {
 
 function nameCases(x, args, i) {
   var result = x;
-  let metricChk = 0;
   
   // Plural handling if args[0] == 1
   if(args[0] == 1) {
@@ -159,11 +160,9 @@ function nameCases(x, args, i) {
     result.slice(1);
     spaceCheck = 1;
   }
-  
   // Metric prefix handling
-  if (args[i] != "")
-    result = args[i] + result;
-  
+  if (args[i] != -1)
+    result = metrics[0][args[i]] + result;
   // Metric space handling (2)
   if (spaceCheck == 1)
     result = " " + result;
@@ -259,6 +258,11 @@ module.exports.run = {
 
     // Converts and checks if the output is valid
     output = cArgs[0] * val2 / val1;
+    // Metric handling
+    if (cArgs[5] != -1)
+      output = output * metrics[1][cArgs[5]];
+    if (cArgs[4] != -1)
+      output = output / metrics[1][cArgs[4]];
     if (isNaN(output) == 1) {
       message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");
       return;

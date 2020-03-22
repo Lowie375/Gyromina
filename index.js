@@ -2,7 +2,8 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');
-const { genErrorMsg } = require("./systemFiles/refcodes.js");
+const e = require('./systemFiles/emojis.json');
+const { genErrorMsg } = require('./systemFiles/refcodes.js');
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
@@ -10,8 +11,8 @@ client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
 
 // Emoji setup
-const nope = client.emojis.get("618199093520498789");
-const warning = client.emojis.get("618198843301036032");
+const nope = client.emojis.get(e.nope);
+const warning = client.emojis.get(e.warn);
 
 // Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));

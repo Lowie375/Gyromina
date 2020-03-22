@@ -1,6 +1,7 @@
 // Require discord.js and the RNG
 const Discord = require('discord.js');
 const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const e = require('../systemFiles/emojis.json');
 
 // Declares CBX characters for future use
 const genChars = ["0", "1", "2", "3", "5", "8", "l", "@", "w", "n", "?", "x", "-", "i", "!", "y", "h", "%", "t", "q", "j", "s", "r", "#", "k", ":", "&", "f", "m", "z", "e", "u"];
@@ -44,7 +45,7 @@ function genCode() {
 // Reference code generator
 exports.genErrorMsg = function(message, client, error) {
   // Emoji setup
-  const warning = client.emojis.get("618198843301036032");
+  const warning = client.emojis.get(e.warn);
 
   // Generates a reference code
   const newRef = genCode();

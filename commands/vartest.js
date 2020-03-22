@@ -1,10 +1,11 @@
 // Require the package file
 const package = require('../package.json');
+const e = require('../systemFiles/emojis.json');
 
 module.exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = client.emojis.get("618199093520498789");
+    const nope = client.emojis.get(e.nope);
 
     // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id)) {

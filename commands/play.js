@@ -1,11 +1,12 @@
 // Require the package file
 const package = require('../package.json');
+const e = require('../systemFiles/emojis.json');
 
 module.exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = client.emojis.get("618199093520498789");
-    const warning = client.emojis.get("618198843301036032");
+    const nope = client.emojis.get(e.nope);
+    const warning = client.emojis.get(e.warn);
 
     const player = message.author.id;
     args.shift();

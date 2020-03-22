@@ -11,3 +11,4 @@ Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with cont
 [Info Pages](https://lx375.weebly.com/gyromina) / [Commands](https://lx375.weebly.com/gyromina-commands) / [Invite Link](https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=1141234752&scope=bot)
 
 ###### Built in JavaScript using Discord.js (a Node.js module)
+s

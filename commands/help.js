@@ -1,6 +1,7 @@
 // Require discord.js, fs, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
+const e = require('../systemFiles/emojis.json');
 
 function setParams(c) {
   var list = "\• " + process.env.prefix + "**" + c.help.name + "**"
@@ -57,11 +58,11 @@ module.exports.run = {
     client.lgames = new Discord.Collection();
 
     // Emoji setup
-    const nope = client.emojis.get("618199093520498789");
-    const ghost = client.emojis.get("618181399299751937");
-    const beta = client.emojis.get("618198843301036032");
-    const main = client.emojis.get("647926856615723008");
-    const dead = client.emojis.get("618199093520498789");
+    const nope = client.emojis.get(e.nope);
+    const ghost = client.emojis.get(e.ghost);
+    const beta = client.emojis.get(e.beta);
+    const main = client.emojis.get(e.main);
+    const dead = client.emojis.get(e.dead);
 
     // Reads command and game files
     const cmds = fs.readdirSync('./commands/').filter(f => f.split('.').pop() === 'js');

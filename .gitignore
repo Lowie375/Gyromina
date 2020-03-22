@@ -36,6 +36,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Art library
+systemFiles/art/
+
 # TypeScript v1 declaration files
 typings/
 
@@ -76,4 +79,4 @@ typings/
 .fusebox/
 
 #DynamoDB Local files 
-.dynamodb/ 
+.dynamodb/

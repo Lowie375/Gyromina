@@ -44,7 +44,7 @@ module.exports.run = {
       // Filters out command that don't end in ".js"
       cmds = files.filter(f => f.split('.').pop() === 'js');
       if(cmds.length <= 0) {
-        const nope = client.emojis.get("493575012276633610");
+        const nope = client.emojis.get("618199093520498789");
         console.log('Error - No commands found');
         message.channel.send(`${nope} No commands found!`)
         return;

@@ -1,13 +1,17 @@
-// Require discord.js, fs, package.json, and the refcode generator
+// Require discord.js, fs, the package file, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');
-const { genErrorMsg }= require("./systemFiles/refcodes.js");
+const { genErrorMsg } = require("./systemFiles/refcodes.js");
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
+
+// Emoji setup
+const nope = client.emojis.get("618199093520498789");
+const warning = client.emojis.get("618198843301036032");
 
 // Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
@@ -64,9 +68,6 @@ client.on('message', message => {
 
   // Checks if the command is unstable. If so, displays a warning instead of running the command.
   if(process.env.exp === "0" && command.help.wip === 1) {
-    const warning = client.emojis.get("618198843301036032");
-    const nope = client.emojis.get("618199093520498789");
-
     if(message.author.id === package.authorID) {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n\n${warning} Please enable **experimental mode** to run it.`);
     } else {
@@ -78,14 +79,18 @@ client.on('message', message => {
     }
     catch (error) {
       // Generates an error message & logs the error
-      genErrorMsg(message, error);
+      genErrorMsg(message, client, error);
       console.error(error);
     }
   }
 });
 
 // Warns when there is a warning with a bot
-client.on("warn", w => console.warn(w));
+client.on('warn', w => {
+  // Generates a warning message & logs the warning
+  genWarningMsg(message, client, w);
+  console.warn(w);
+});
 
 // Logs into Discord with Gyromina's token
 client.login(process.env.token);

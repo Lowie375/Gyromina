@@ -52,20 +52,26 @@ function checkArgs(args) {
 
 module.exports.run = {
   execute(message, args, client) {
+    // Prepares command and game lists
     client.hcommands = new Discord.Collection();
     client.lgames = new Discord.Collection();
+
+    // Emoji setup
+    const nope = client.emojis.get("618199093520498789");
+    const ghost = client.emojis.get("618181399299751937");
+    const beta = client.emojis.get("618198843301036032");
+    const main = client.emojis.get("647926856615723008");
+    const dead = client.emojis.get("618199093520498789");
 
     // Reads command and game files
     const cmds = fs.readdirSync('./commands/').filter(f => f.split('.').pop() === 'js');
     if(cmds.length <= 0) {
-      const nope = client.emojis.get("618199093520498789");
       console.log('Error - No commands found');
       message.channel.send(`${nope} No commands found!`)
       return;
     }
     const gms = fs.readdirSync('./gameFiles/').filter(f => f.split('.').pop() === 'js');
     if(cmds.length <= 0) {
-      const nope = client.emojis.get("618199093520498789");
       console.log('Error - No games found');
       message.channel.send(`${nope} No games found!`)
       return;
@@ -82,12 +88,6 @@ module.exports.run = {
       let thisGame = gx.split(".")[0];
       client.lgames.set(thisGame, game);
     }
-
-    // Sets up info emojis
-    const ghost = client.emojis.get("618181399299751937");
-    const beta = client.emojis.get("618198843301036032");
-    const main = client.emojis.get("647926856615723008");
-    const dead = client.emojis.get("618199093520498789");
 
     // Checks for special arguments
     var conditions = [];
@@ -111,6 +111,7 @@ module.exports.run = {
 
       // Sets up the embed
       embed1.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
+      embed1.setTimestamp();
       if(cmdy.help.dead === 1)
         embed1.setColor(0xff4d4d);
       else if(cmdy.help.wip === 1)
@@ -153,6 +154,7 @@ module.exports.run = {
 
       // Sets up the embed
       embed3.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
+      embed3.setTimestamp();
       if(gmz.label.deleted === 1)
         embed3.setColor(0xff4d4d);
       else if(gmz.label.indev === 1)
@@ -186,6 +188,7 @@ module.exports.run = {
 
       embed4.setColor(0x7effaf);
       embed4.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
+      embed4.setTimestamp();
       embed4.setAuthor("Games Library", client.user.avatarURL, "https://lx375.weebly.com/gyromina/");
       embed4.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
 
@@ -243,6 +246,7 @@ module.exports.run = {
 
       embed2.setColor(0x7effaf);
       embed2.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
+      embed2.setTimestamp();
       embed2.setAuthor("Master Command List", client.user.avatarURL, "https://lx375.weebly.com/gyromina/commands");
       embed2.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
@@ -297,10 +301,10 @@ module.exports.run = {
 
 module.exports.help = {
   "name": "help",
-  "aliases": ["commands", "cmds", "command", "cmd"],
-  "description": "Provides command help.",
+  "aliases": ["commands", "cmds", "command", "cmd", "gamelist", "cmdlist", "commandlist"],
+  "description": "Provides command and game help.",
   "usage": `${process.env.prefix}help [command/queries]`,
-  "params": "[command/query]",
+  "params": "[command/queries]",
   "hide": 0,
   "wip": 0,
   "dead": 0,

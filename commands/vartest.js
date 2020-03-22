@@ -1,8 +1,9 @@
+// Require the package file
 const package = require('../package.json');
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 module.exports.run = {
   execute(message, args, client) {
+    // Emoji setup
     const nope = client.emojis.get("618199093520498789");
 
     // Checks to see if the bot owner or a contributor sent the message.
@@ -14,19 +15,19 @@ module.exports.run = {
 
     message.channel.send(getRandomInt(1, 7));
 
-    /*if("xenon" % 1 === 0) {
+    if("yes" == "Yes") {
       message.channel.send("Yeah!");
     } else {
       message.channel.send("bleh.");
     }
     console.log("xenon" % 1);
 
-    if(1 % 1 === 0) {
+    if("yes" === "Yes") {
       message.channel.send("Yeah!");
     } else {
       message.channel.send("bleh.");
     }
-    console.log(1 % 1);*/
+    console.log(1 % 1);
 
   },
 };

@@ -1,3 +1,4 @@
+// Require discord.js and the RNG
 const Discord = require('discord.js');
 const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
@@ -41,9 +42,10 @@ function genCode() {
 }
 
 // Reference code generator
-exports.genErrorMsg = function(message, error) {
-  // Gets the 'gyrWIP' emoji
-  const warning = message.client.emojis.get("618198843301036032");
+exports.genErrorMsg = function(message, client, error) {
+  // Emoji setup
+  const warning = client.emojis.get("618198843301036032");
+
   // Generates a reference code
   const newRef = genCode();
   console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
@@ -56,6 +58,13 @@ exports.genErrorMsg = function(message, error) {
   message.channel.send(embed3);
   
   // Sends the error to the Gyromina log channel
-  const log = message.client.channels.get(process.env.errorLog);
-  log.send(`REFCODE: \`${newRef}\` \n\`\`\`js${error.stack}\`\`\``);
+  const log = client.channels.get(process.env.errorLog);
+  log.send(`REFCODE: \`${newRef}\`\n\`\`\`js${error.stack}\`\`\``);
+}
+
+// Warning generator
+exports.genWarningMsg = function(message, client, w) {
+  // Sends the warning to the Gyromina log channel
+  const log = client.channels.get(process.env.errorLog);
+  log.send(`WARNING\n\`\`\`js${w.stack}\`\`\``);
 }

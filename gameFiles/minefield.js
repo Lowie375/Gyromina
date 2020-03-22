@@ -1,3 +1,4 @@
+// Require the game functions file and the RNG
 const func = require('../systemFiles/gameFunctions.js');
 const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 

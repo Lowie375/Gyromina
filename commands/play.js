@@ -1,7 +1,12 @@
+// Require the package file
 const package = require('../package.json');
 
 module.exports.run = {
   execute(message, args, client) {
+    // Emoji setup
+    const nope = client.emojis.get("618199093520498789");
+    const warning = client.emojis.get("618198843301036032");
+
     const player = message.author.id;
     args.shift();
     const options = args;
@@ -18,9 +23,6 @@ module.exports.run = {
     }
     
     if(process.env.exp === "0" && game.label.indev === 1) {
-      const warning = client.emojis.get("618198843301036032");
-      const nope = client.emojis.get("618199093520498789");
-  
       if(message.author.id === package.authorID) {
         message.channel.send(`${nope} The game \`${gameName}\` is still in development and thus has not been released to the public.\n\n${warning} Please enable **experimental mode** to play it.`);
       } else {

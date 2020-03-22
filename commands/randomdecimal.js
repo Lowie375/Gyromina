@@ -1,3 +1,4 @@
+// Require discord.js
 const Discord = require('discord.js');
 
 function getRandomDecimal(min, max, decims) {

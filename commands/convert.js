@@ -1,3 +1,4 @@
+// Require discord.js
 const Discord = require('discord.js');
 
 // Array V4: names[array#][object#] + metricNames[array#][object#] --> converter[array#][object#] + metrics[array#][object#] (0-9/10-19/20-29/etc.)
@@ -53,8 +54,11 @@ const metrics = [
    Math.pow(10, -24), Math.pow(10, -2), Math.pow(10, 9), Math.pow(10, 12), Math.pow(10, 15),
      Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1),]
 ];
+// Valid metric roots
 const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",];
+// Splitter separators
+const separators = ["_", "-"];
 
 function metricCheck(x) {
   for (let i = 0; i < registered.length; i++) {
@@ -87,57 +91,69 @@ function deepCleanArgs(args, list, j, k) {
 function cleanArgs(args) {
   // args[val, unit, newUnit, places] --> cleaned[val, uRoot, newURoot, places, uPrefix, newUPrefix]
   let cleaned = [args[0], "", "", args[3], -1, -1];
+  let args2 = [args[0], "", "", args[3]];
   let checkCtr = 0;
   let save = [];
   
-  for (let j = 1; j < 2; j++) {
+  // Removes separators
+  for (let j = 1; j <= 2; j++) {
+    // Splits the argument into individual characters
+    let splitter = args[j].split("");
+    for (let i = 0; i < splitter.length; i++) {
+      if(separators.includes(splitter[i])) {
+        splitter.splice(i, 1);
+        i--;
+      }
+    }
+    // Rejoins the characters into one argument
+    args2[j] = splitter.join("");
+  }
+
+  for (let j = 1; j <= 2; j++) {
     // Determines possible metric prefixes
     for (let i = 0; i < metricNames[0].length; i++) {
-      if(args[j].startsWith(metricNames[0][i])) {
+      if(args2[j].startsWith(metricNames[0][i])) {
         checkCtr++;
-        save.push(i);
+        save.push(metricNames[1][i]);
       }
     }
-    // Checks if the prefix is exclusive
-    if (checkCtr == 1) {
-      cleaned[j+3] = save[0];
-      cleaned[j] = args[j].slice(1);
-    } else if (checkCtr != 0 && checkCtr != 1) {
-      // If not, runs a deeper check
-      let dpr = deepCleanArgs(args, save, j, 1);
-      cleaned[j+3] = dpr[0];
-      cleaned[j] = args[j].slice(dpr[1]+1);
-    }
+    // Checks if a prefix was found
+    if (checkCtr == 0) {
+      // If not, leaves things as-is
+      cleaned[j] = args2[j];
+    } else {
+      // Otherwise, checks if the prefix is exclusive
+      if (checkCtr == 1) {
+        cleaned[j+3] = save[0];
+        cleaned[j] = args2[j].slice(1);
+      } else if (checkCtr != 0 && checkCtr != 1) {
+        // If not, runs a deeper check
+        let dpr = deepCleanArgs(args2, save, j, 1);
+        cleaned[j+3] = dpr[0];
+        cleaned[j] = args2[j].slice(dpr[1]+1);
+      }
     
-    let validate = metricCheck(cleaned[j]);
-    switch(validate) {
-      case 0:
-        // OK
-        break;
-      case 1:
-        // Not OK, undo split
-        cleaned[j] = args[j];
-        cleaned [j+3] = -1;
-        break;
-    }
-  }
-  
-  /*for (let i = 1; i <= 2; i++) {
-    switch(args[i]) {
-      case "da":
-        break;
-    }
-    for (let j = 0; j < metricNames[0].length - 1; j++) {
-      if(metricNames[0][j] === args[i]) {
-        // return 
+      // Checks if the prefix was actually a valid prefix
+      let validate = metricCheck(cleaned[j]);
+      switch(validate) {
+        case 0:
+          // OK, continue
+          break;
+        case 1:
+          // Not a prefix, undo split
+          cleaned[j] = args2[j];
+          cleaned [j+3] = -1;
+          break;
       }
     }
-  }*/
+    checkCtr = 0;
+    save.splice(0, save.length);
+  }
   return cleaned;
 }
 
 function valCases(x) {
-  var result = x;
+  let result = x;
   switch(x) {
     case "π": result = Math.PI; break;
     case "π/1000": result = Math.PI/1000; break;
@@ -145,15 +161,19 @@ function valCases(x) {
   return result;
 }
 
-function nameCases(x, args, i) {
-  var result = x;
+function pluralHandler(x) {
+  if (x.slice(-1) == "s")
+    x = x.slice(0, -1);
+  return x;
+}
+
+function nameCases(x, args, i, plural) {
+  let result = x;
+  let spaceCheck = 0;
   
   // Plural handling if args[0] == 1
-  if(args[0] == 1) {
-    switch (result) {
-      case (result.slice(-1) == "s"):
-        result = result.slice(0, -1); break;
-    }
+  if(args[0] == 1 && plural == 1) {
+    result = pluralHandler(x);
   }
   // Metric space handling (1)
   if(result.slice(0, 1) == "/") {
@@ -171,13 +191,13 @@ function nameCases(x, args, i) {
 }
 
 function search(args, argNum) {
-  var checkCtr = 0;
-  var save = [];
+  let checkCtr = 0;
+  let save = [];
   // Checks for exact matches
   for (let i = 0; i < names[0].length; i++) {
     if(names[0][i] === (args[argNum])) {
       checkCtr++;
-      save.push(i);
+      save.push(names[1][i]);
     }
   }
   if (searchCheck(save, checkCtr) != "err" && searchCheck(save, checkCtr) != "null") return searchCheck(save, checkCtr);
@@ -185,7 +205,7 @@ function search(args, argNum) {
   for (let i = 0; i < names[0].length; i++) {
     if(names[0][i].startsWith(args[argNum])) {
       checkCtr++;
-      save.push(i);
+      save.push(names[1][i]);
     }
   }
   return searchCheck(save, checkCtr);
@@ -198,9 +218,10 @@ function searchCheck(save, ctr) {
     return "err";
   } else {
     for(let i = 1; i < save.length; i++) {
-      if(names[1][save[0]] != names[1][save[i]]) return "null";
+      if(save[0] != save[i])
+        return "null";
     }
-    return names[1][save[0]];
+    return save[0];
   }
 }
 
@@ -229,17 +250,17 @@ module.exports.run = {
     if (errorPull(pos2, message) != 0) return;
 
     var type1 = pos1.slice(0, 1);
-    pos1 = pos1.slice(1);
+    pos1 = parseInt(pos1.slice(1));
     var type2 = pos2.slice(0, 1);
-    pos2 = pos2.slice(1);
+    pos2 = parseInt(pos2.slice(1));
 
     // Checks if the units can be converted between
     if (type1 != type2) {
       message.reply("I can\'t convert between 2 unlike units! Please check your units and try again.");
       return;
     }
-    var name1 = nameCases(converter[0][pos1], cArgs, 4);
-    var name2 = nameCases(converter[0][pos2], cArgs, 5);
+    var name1 = nameCases(converter[0][pos1], cArgs, 4, 1);
+    var name2 = nameCases(converter[0][pos2], cArgs, 5, 0);
 
     // Initialises conversion values
     var val1, val2, output, round;
@@ -299,6 +320,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [places]`,
   "params": "<value> <unit> <newUnit> [places]",
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

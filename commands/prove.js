@@ -1,3 +1,4 @@
+// Require the RNG
 const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 // List of 'proofs'

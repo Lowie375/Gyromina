@@ -35,11 +35,11 @@ module.exports.run = {
     }
 
     if (fail === false) {
-      const embed = new Discord.RichEmbed()
-        .setTitle("\`" + number + "\`")
+      const embed = new Discord.MessageEmbed()
+        .setTitle(`\`${number}\``)
         .setColor(0x7effaf);
 
-        message.reply("here you go!", {embed});
+        message.reply("here you go!", {embed: embed});
     }
   }
 };

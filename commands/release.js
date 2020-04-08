@@ -63,7 +63,7 @@ module.exports.run = {
             let string = `Gyromina V${version} has been released! this now fixes and adds:\n` + str;
 
             if (!announce)
-              client.channels.get(process.env.progressLog).send(string);
+              client.channels.cache.get(process.env.progressLog).send(string);
 
             if (!softRelease)
               CreateGithubRelease(string);

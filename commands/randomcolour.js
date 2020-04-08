@@ -37,11 +37,11 @@ module.exports.run = {
     rgb[1] = (hexNums[2] * 16) + hexNums[3];
     rgb[2] = (hexNums[4] * 16) + hexNums[5];
 
-    const embed = new Discord.RichEmbed()
-      .setTitle("#" + finalHex + "\nrgb(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ")")
+    const embed = new Discord.MessageEmbed()
+      .setTitle(`#${finalHex}\nrgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`)
       .setColor(embedColour);
 
-    message.reply("here you go!", {embed});
+    message.reply("here you go!", {embed: embed});
 
   },
 };

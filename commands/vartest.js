@@ -5,7 +5,7 @@ const e = require('../systemFiles/emojis.json');
 module.exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = client.emojis.get(e.nope);
+    const nope = client.emojis.cache.get(e.nope);
 
     // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id)) {

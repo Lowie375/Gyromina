@@ -228,42 +228,8 @@ function checkBombPos(x, y, ry, ty, tempSteps, field, bombOrder) {
   }
 }
 
-function collector(message, filter, rxns, steps) {
-  const builder = message.createReactionCollector(filter, {max: 1, time: 30000, errors: ['time']});
-  // .then await a 'collect', if none return shutdown and stop
-  
-  builder.on('collect', r => {
-    // Determine which reaction got collected
-    switch(r.emoji.name) {
-      case rxns[0]:
-      case rxns[1]:
-      case rxns[2]:
-      case rxns[3]:
-      case rxns[4]:
-      case rxns[5]:
-        steps.push(r);
-        message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
-        break;
-      case rxns[6]:
-        steps.pop();
-        message.edit(content + "\n\*\*INSTRUCTIONS:\*\* " + steps.join(""));
-        break;
-      case rxns[7]:
-        builder.stop('complete');
-        return;
-      default:
-        break;
-    }
-    builder.stop('continue');
-  });
-
-  builder.on('end', reason => {
-    return reason;
-  });
-}
-
 module.exports.exe = {
-  start(message, options, client, player) {
+  start(message, client, player, options) {
     // Minefield shell
     var field = [
       [wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll],
@@ -291,7 +257,7 @@ module.exports.exe = {
       bombs = bombCheck(options[0]);
     
     if (bombs % 1 != 0) {
-      message.reply("that's not a valid number of mines! Please enter a valid whole number less than [x] or a valid preset and try again.");
+      message.reply("that's not a valid number of mines! Please enter a valid whole number between 4 and 20 or a valid preset and try again.");
       return;
     }
     if (bombs > 20) {
@@ -326,42 +292,76 @@ module.exports.exe = {
     }
     
     // Puts the whole shebang into one variable (wow)
-    content += `A minefield has been generated!\n\n${output}\n` +
-    `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
-    `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
-    `\*(This instance of the game will time out if you do not react within 30 seconds.)\*` +
-    `\`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n` +
-    `${bkd} Delete last instruction  •  ${ibx} Confirm instructions\`\`\``;
+    content += `A minefield has been generated!\n\n${output}\n
+      Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n
+      Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n
+      \*(This instance of the game will time out if you do not react within 60 seconds.)\*
+      \`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n
+      ${bkd} Delete last instruction  •  ${ibx} Confirm instructions\`\`\``;
 
     // Post the field + instructions
     message.channel.send(content)
-      .then (async board => { 
-        //boardID = board.id;
-        
+      .then (async board => {         
         // Add reactions (in order, yay!)
         for (let i = 0; i <= 7; i++) {
           await board.react(rxns[i]);
         }
-        
-        // Set up a collection filter
+
+        // Set up a collection filter and collector
         const filter = (reaction, user) => {
           rxns.includes(reaction.emoji.name) && user.id == player;
         };
+        const builder = board.createReactionCollector(filter, {max: 1, time: 60000, idle: 60000});
+        // .then await a 'collect', if none return shutdown and stop
+        
+        board.edit(content + "\n\*\*GO!\*\*");
 
-        var confirm = 0;
-        var rsn = "";
-        while (confirm == 0) {
-          rsn = await collector(message, filter, rxns, steps);
-          // Determine why the builder stopped
-          switch (rsn) {
-            case 'continue':
+        builder.on('collect', reaction => {
+          // Determine which reaction got collected
+          switch(reaction.emoji.name) {
+            case rxns[0]:
+            case rxns[1]:
+            case rxns[2]:
+            case rxns[3]:
+            case rxns[4]:
+            case rxns[5]:
+              steps.push(reaction);
+              board.edit(`${content}\n\*\*INSTRUCTIONS:\*\* ${steps.join(" ")}`);
               break;
+            case rxns[6]:
+              steps.pop();
+              board.edit(`${content}\n\*\*INSTRUCTIONS:\*\* ${steps.join(" ")}`);
+              break;
+            case rxns[7]:
+              builder.stop('complete');
+              return;
+            default:
+              break;
+          }
+          builder.empty();
+          builder.resetTimer({time: 60000, idle: 60000});
+        });
+
+        builder.on('end', reason => {
+          switch (reason) {
             case 'complete':
-              confirm = 1;
-            case 'time':
+              // Final check + output here
+            default:
+              board.edit(`${content}\n\*\*Game timed out due to inactivity. Please restart the game if you would like to play again.\*\*`);
               return 0;
           }
-        }
+        });
+
+        // Go!
+
+        /*var confirm = 0;
+        while (confirm == 0) {
+          rsn = await collector(board, filter, steps, content);
+          // Determine why the builder stopped
+          switch (rsn) {
+            
+          }
+        }*/
         
         /*const builder = message.awaitReactions(filter, {time: 30000})
           .then(r => {
@@ -388,7 +388,7 @@ module.exports.exe = {
         });*/
       });
 
-    // Final check + output here
+    
   }
 };
 

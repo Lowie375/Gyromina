@@ -16,7 +16,7 @@ function getRandomNumber(min, max) {
 
   if (altMinDecim == 0 && altMaxDecim == 0) {
     factor = 1;
-    factorPower = 1;
+    factorPower = 0;
   } else if (altMin.toString().split(".").pop().length >= altMax.toString().split(".").pop().length) {
     factor = Math.pow(10, altMin.toString().split(".").pop().length);
     factorPower = altMin.toString().split(".").pop().length;
@@ -77,11 +77,11 @@ module.exports.run = {
       }
     }
 
-    const embed = new Discord.RichEmbed()
-      .setTitle("\`" + number + "\`")
+    const embed = new Discord.MessageEmbed()
+      .setTitle(`\`${number}\``)
       .setColor(0x7effaf);
 
-    message.reply("here you go!", {embed});
+    message.reply("here you go!", {embed: embed});
   }
 };
 

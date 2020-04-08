@@ -31,7 +31,7 @@ const converter = [
    " wks", " yrs", " gon", "°", " rads", " mil", "L", "m³", "in³", "ft³",
    " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp",],
   [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
-   1, 0.0191780664289865, 200, 180, "π", "π/1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
+   1, 0.0191780664289865, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
    1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784,]
 ];
 const metricNames = [
@@ -156,7 +156,7 @@ function valCases(x) {
   let result = x;
   switch(x) {
     case "π": result = Math.PI; break;
-    case "π/1000": result = Math.PI/1000; break;
+    case "π*1000": result = Math.PI*1000; break;
   }
   return result;
 }
@@ -290,20 +290,25 @@ module.exports.run = {
     }
 
     // Creates an approximation to go alongside the full conversion, if necessary
-    if(!cArgs[4] || cArgs[4] < 0) {
-      round = Math.round(output*10)/10;
-    } else if (cArgs[4] == 0) {
+    if(!cArgs[3] || cArgs[3] < 0) {
+      round = (Math.round(output*100)/100);
+      switch(round.toString().split(".").pop().length) {
+        case 0: break;
+        case 1: round.toFixed(1); break;
+        case 2: round.toFixed(2); break;
+      }
+    } else if (cArgs[3] == 0) {
       round = "null";
       output = Math.round(output);
     } else {
       round = Math.round(output);
-      output = Math.round(output*Math.pow(10, cArgs[4]))/Math.pow(10, cArgs[4]);
+      output = (Math.round(output*Math.pow(10, cArgs[3]))/Math.pow(10, cArgs[3])).toFixed(cArgs[3]);
     }
-    if(round == output && output % 1 != 0) round = Math.round(output);
-    if(round == output && output % 1 == 0) round = "null";
+    if(round == output && output % 1 != 0) round = Math.round(output).toFixed(0);
+    if((round == output && output % 1 == 0) || round == 0) round = "null";
 
     // Creates and sends the embed
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
       .setTitle(`${cArgs[0]}${name1} equals…\n\`${output}${name2}\``)
       .setColor(0x7effaf);
 

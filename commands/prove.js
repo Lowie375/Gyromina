@@ -30,7 +30,7 @@ module.exports.run = {
       }
       const selected = proof[num];
 
-      message.channel.send(statement.join(" ") + " " + selected + "\n**Deal with it.**");
+      message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
     }
   },
 };

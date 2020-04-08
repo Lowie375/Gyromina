@@ -58,11 +58,11 @@ module.exports.run = {
     client.lgames = new Discord.Collection();
 
     // Emoji setup
-    const nope = client.emojis.get(e.nope);
-    const ghost = client.emojis.get(e.ghost);
-    const beta = client.emojis.get(e.beta);
-    const main = client.emojis.get(e.main);
-    const dead = client.emojis.get(e.dead);
+    const nope = client.emojis.cache.get(e.nope);
+    const ghost = client.emojis.cache.get(e.ghost);
+    const beta = client.emojis.cache.get(e.beta);
+    const main = client.emojis.cache.get(e.main);
+    const dead = client.emojis.cache.get(e.dead);
 
     // Reads command and game files
     const cmds = fs.readdirSync('./commands/').filter(f => f.split('.').pop() === 'js');
@@ -94,6 +94,9 @@ module.exports.run = {
     var conditions = [];
     if (args) conditions = checkArgs(args);
 
+    // Creates an embed shell
+    const embed = new Discord.MessageEmbed();
+
     if (args.length >= 1 && conditions[1] == 0) { // Detailed command help
 
       const commandName = args[0];
@@ -102,8 +105,7 @@ module.exports.run = {
 
       if(!cmdy) return;
 
-      // Creates the embed
-      let embed1 = new Discord.RichEmbed();
+      // Begins preparing embed data
       var ext = "";
       if(cmdy.help.dead === 1) ext += `${dead} `;
       if(cmdy.help.wip === 1) ext += `${beta} `;
@@ -111,31 +113,28 @@ module.exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed1.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
-      embed1.setTimestamp();
+      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setTimestamp();
       if(cmdy.help.dead === 1)
-        embed1.setColor(0xff4d4d);
+        embed.setColor(0xff4d4d);
       else if(cmdy.help.wip === 1)
-        embed1.setColor(0xffcc4d);
+        embed.setColor(0xffcc4d);
       else if(cmdy.help.hide === 1)
-        embed1.setColor(0xfefefe);
+        embed.setColor(0xfefefe);
       else
-        embed1.setColor(0x7effaf);
+        embed.setColor(0x7effaf);
 
       if(cmdy.help.name === commandName)
-        embed1.setTitle(ext + process.env.prefix + cmdy.help.name);
+        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}`);
       else
-        embed1.setTitle(ext + process.env.prefix + cmdy.help.name + " (" + process.env.prefix + commandName + ")");
+        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName})`);
 
       if(!cmdy.help.aliases)
-        embed1.setDescription(cmdy.help.description + "\n\• Usage: " + cmdy.help.usage);
+        embed.setDescription(`${cmdy.help.description}\n\• Usage: ${cmdy.help.usage}`);
       else if(Array.isArray(cmdy.help.aliases) == false)
-        embed1.setDescription(cmdy.help.description + "\n\• Alias: " + process.env.prefix + cmdy.help.aliases + "\n\• Usage: " + cmdy.help.usage);
+        embed.setDescription(`${cmdy.help.description}\n\• Alias: ${process.env.prefix}${cmdy.help.aliases}\n\• Usage: ${cmdy.help.usage}`);
       else
-        embed1.setDescription(cmdy.help.description + "\n\• Aliases: " + process.env.prefix + cmdy.help.aliases.join(`, ${process.env.prefix}`) + "\n\• Usage: " + cmdy.help.usage);
-
-      // Sends the embed
-      message.channel.send(embed1);
+        embed.setDescription(`${cmdy.help.description}\n\• Aliases: ${process.env.prefix}${cmdy.help.aliases.join(`, ${process.env.prefix}`)}\n\• Usage: ${cmdy.help.usage}`);
 
     } else if (args.length >= 1 && conditions[1] == 1) { // Detailed game help
 
@@ -145,8 +144,7 @@ module.exports.run = {
 
       if(!gmz) return;
 
-      // Creates the embed
-      let embed3 = new Discord.RichEmbed();
+      // Begins preparing embed data
       var ext = "";
       if(gmz.label.deleted === 1) ext += `${dead} `;
       if(gmz.label.indev === 1) ext += `${beta} `;
@@ -154,21 +152,21 @@ module.exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed3.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
-      embed3.setTimestamp();
+      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setTimestamp();
       if(gmz.label.deleted === 1)
-        embed3.setColor(0xff4d4d);
+        embed.setColor(0xff4d4d);
       else if(gmz.label.indev === 1)
-        embed3.setColor(0xffcc4d);
+        embed.setColor(0xffcc4d);
       else if(gmz.label.exclusive === 1)
-        embed3.setColor(0xfefefe);
+        embed.setColor(0xfefefe);
       else
-        embed3.setColor(0x7effaf);
+        embed.setColor(0x7effaf);
       
       if(gmz.label.name === gameName)
-        embed3.setTitle(ext + process.env.prefix + gmz.label.name)
+        embed.setTitle(`${ext}${process.env.prefix}${gmz.label.name}`);
       else
-        embed3.setTitle(ext + process.env.prefix + gmz.label.name + " (" + process.env.prefix + gameName + ")");
+        embed.setTitle(`${ext}${process.env.prefix}${gmz.label.name} (${process.env.prefix}${gameName})`);
 
       let desc = gmz.label.description;
       if(Array.isArray(gmz.label.aliases) == false)
@@ -176,22 +174,16 @@ module.exports.run = {
       else if(gmz.label.aliases >= 2)
         desc += "\n\• Aliases: " + process.env.prefix + gmz.label.aliases.join(`, ${process.env.prefix}`);
       if (gmz.label.options) desc += "\n\nOptions:\n" + gmz.label.optionsdesc;
-      
-      embed3.setDescription(desc);
-
-      // Sends the embed
-      message.channel.send(embed3);
+      embed.setDescription(desc);
 
     } else if (conditions[1] == 1) { // General game help
 
-      // Creates & sets up the embed
-      const embed4 = new Discord.RichEmbed();
-
-      embed4.setColor(0x7effaf);
-      embed4.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
-      embed4.setTimestamp();
-      embed4.setAuthor("Games Library", client.user.avatarURL, "https://lx375.weebly.com/gyromina/");
-      embed4.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
+      // Sets up the embed
+      embed.setColor(0x7effaf);
+      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setTimestamp();
+      embed.setAuthor("Game Library", client.user.avatarURL(), "https://lx375.weebly.com/gyromina/");
+      embed.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
 
       var glist = "";
       var gctr = 0;
@@ -201,7 +193,7 @@ module.exports.run = {
         glist = glist + setGameOptions(g);
         gctr++;
       });
-      if(gctr != 0) embed4.addField("Downloaded " + main, glist, true);
+      if(gctr != 0) embed.addField(`Downloaded ${main}`, `${glist}`, true);
 
       // If possible, creates the indev game list
       if(process.env.exp === "1") {
@@ -215,7 +207,7 @@ module.exports.run = {
         glist = glist + setGameOptions(g);
         gctr++;
       });
-      if(gctr != 0) embed4.addField("In Development " + beta, glist, true);
+      if(gctr != 0) embed.addField(`In Development ${beta}`, `${glist}`, true);
 
       // If specified, creates the hidden and depricated command lists
       if(conditions[0] == 1) {
@@ -226,30 +218,25 @@ module.exports.run = {
           glist = glist + setGameOptions(g);
           gctr++;
         });
-        if(gctr != 0) embed4.addField("Exclusive Games " + ghost, glist, true);
+        if(gctr != 0) embed.addField(`Exclusive Games ${ghost}`, `${glist}`, true);
 
-        glist = "These games have been deleted from the games library.\n";      
+        glist = "These games have been deleted from the game library.\n";      
         gctr = 0;
         client.lgames.forEach(g => {
           if(g.label.deleted === 0) return;
           glist = glist + setGameOptions(g);
           gctr++;
         });
-        if(gctr != 0) embed4.addField("Removed Games " + dead, glist, true);
+        if(gctr != 0) embed.addField(`Removed Games ${dead}`, `${glist}`, true);
       }
-
-      message.channel.send(embed4);
-
     } else { // General command help
 
-      // Creates & sets up the embed
-      const embed2 = new Discord.RichEmbed();
-
-      embed2.setColor(0x7effaf);
-      embed2.setFooter("Requested by " + message.author.tag + " / <> is required, [] is optional", message.author.avatarURL);
-      embed2.setTimestamp();
-      embed2.setAuthor("Master Command List", client.user.avatarURL, "https://lx375.weebly.com/gyromina/commands");
-      embed2.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
+      // Sets up the embed
+      embed.setColor(0x7effaf);
+      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setTimestamp();
+      embed.setAuthor("Master Command List", client.user.avatarURL(), "https://lx375.weebly.com/gyromina/commands");
+      embed.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
       var cmdlist = "";
       var cmdctr = 0;
@@ -259,7 +246,7 @@ module.exports.run = {
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
       });
-      if(cmdctr != 0) embed2.addField("Main Commands " + main, cmdlist, true);
+      if(cmdctr != 0) embed.addField(`Main Commands ${main}`, `${cmdlist}`, true);
 
       // If possible, creates the experimental command list
       if(process.env.exp === "1") {
@@ -273,7 +260,7 @@ module.exports.run = {
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
       });
-      if(cmdctr != 0) embed2.addField("Experimental (WIP) Commands " + beta, cmdlist, true);
+      if(cmdctr != 0) embed.addField(`Experimental (WIP) Commands ${beta}`, `${cmdlist}`, true);
 
       // If specified, creates the hidden and depricated command lists
       if(conditions[0] == 1) {
@@ -284,7 +271,7 @@ module.exports.run = {
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
         });
-        if(cmdctr != 0) embed2.addField("Hidden Commands " + ghost, cmdlist, true);
+        if(cmdctr != 0) embed.addField(`Hidden Commands ${ghost}`, `${cmdlist}`, true);
 
         cmdlist = "These commands no longer exist.\n";      
         cmdctr = 0;
@@ -293,10 +280,11 @@ module.exports.run = {
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
         });
-        if(cmdctr != 0) embed2.addField("Deprecated Commands " + dead, cmdlist, true);
+        if(cmdctr != 0) embed.addField(`Deprecated Commands ${dead}`, `${cmdlist}`, true);
       }
-      message.channel.send(embed2);
     }
+    // Sends the embed
+    message.channel.send({embed: embed});
   },
 };
 

@@ -11,8 +11,8 @@ client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
 
 // Emoji setup
-const nope = client.emojis.get(e.nope);
-const warning = client.emojis.get(e.warn);
+const nope = client.emojis.cache.get(e.nope);
+const warning = client.emojis.cache.get(e.warn);
 
 // Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
@@ -53,7 +53,7 @@ client.on('message', message => {
   var args;
 
   // Splits arguments: with spaces included if the command is "prove", normally otherwise
-  if (message.content.startsWith(process.env.prefix + "prove")) {
+  if (message.content.startsWith(`${process.env.prefix}prove`)) {
     args = message.content.slice(process.env.prefix.length).split(" ");
   } else {
     args = message.content.slice(process.env.prefix.length).split(/ +/);

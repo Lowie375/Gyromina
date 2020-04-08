@@ -2,7 +2,7 @@
 const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 module.exports.exe = {
-  start(message, args, client, player) {
+  start(message, client, player, options) {
     // Insert code here
   }
 };

@@ -17,7 +17,7 @@ function toCBX(num, mul) {
   while (factor >= 0) {
     var modi = Math.floor(num / Math.pow(mul, factor));
     if (output != "") {
-      output = output + genChars[modi];
+      output += genChars[modi];
     }
     else {
       output = genChars[modi];
@@ -38,34 +38,34 @@ function genCode() {
   var inte2 = getRandomInt(32, 1024);
   // Debug snippet
   //console.log(`yr: ${yr}, mn: ${mn}, dy: ${dy}, time: ${time}, inte1: ${inte1}, inte2: ${inte2}`);
-  var rCode = toCBX(inte1, 32) + toCBX(dy, 32) + toCBX(mn, 32) + toCBX(inte2, 32) + toCBX(time, 32) + toCBX(yr, 32);
+  var rCode = `${toCBX(inte1, 32)}${toCBX(dy, 32)}${toCBX(mn, 32)}${toCBX(inte2, 32)}${toCBX(time, 32)}${toCBX(yr, 32)}`;
   return rCode;
 }
 
 // Reference code generator
 exports.genErrorMsg = function(message, client, error) {
   // Emoji setup
-  const warning = client.emojis.get(e.warn);
+  const warning = client.emojis.cache.get(e.warn);
 
   // Generates a reference code
   const newRef = genCode();
   console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
 
   // Sends a warning message in the channel
-  const embed3 = new Discord.RichEmbed()
-    .setTitle(warning + " Something went wrong...")
+  const embed3 = new Discord.MessageEmbed()
+    .setTitle(`${warning} Something went wrong...`)
     .setColor(0xffcc4d)
-    .setDescription("\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`" + newRef + "\`");
+    .setDescription(`\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`${newRef}\``);
   message.channel.send(embed3);
   
   // Sends the error to the Gyromina log channel
-  const log = client.channels.get(process.env.errorLog);
+  const log = client.channels.cache.get(process.env.errorLog);
   log.send(`REFCODE: \`${newRef}\`\n\`\`\`js${error.stack}\`\`\``);
 }
 
 // Warning generator
 exports.genWarningMsg = function(message, client, w) {
   // Sends the warning to the Gyromina log channel
-  const log = client.channels.get(process.env.errorLog);
+  const log = client.channels.cache.get(process.env.errorLog);
   log.send(`WARNING\n\`\`\`js${w.stack}\`\`\``);
 }

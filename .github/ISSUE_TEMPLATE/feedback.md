@@ -1,7 +1,7 @@
 ---
 name: Feedback
 about: For when you want to leave some feedback
-labels: not a bug, thank you!
+labels: no issue here, thank you!
 ---
 
 **General feedback**

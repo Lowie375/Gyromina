@@ -51,6 +51,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}play <game> [options] …`,
   "params": "<game> [options] …",
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

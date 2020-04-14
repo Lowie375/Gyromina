@@ -24,7 +24,9 @@
   "dependencies": {
     "colors": "^1.4.0",
     "discord.js": "^12.1.1",
-    "request": "^2.88.0"
+    "long": "^4.0.0",
+    "request": "^2.88.0",
+    "ws": "^7.2.3"
   },
   "devDependencies": {},
   "keywords": []

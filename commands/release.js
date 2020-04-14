@@ -199,6 +199,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}release <version> [announceToDiscord] [queries]`,
   "params": "<version> [announceToDiscord] [queries] (owner only)",
   "hide": 1,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

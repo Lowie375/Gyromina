@@ -4,6 +4,7 @@ const e = require('../systemFiles/emojis.json');
 
 module.exports.run = {
   execute(message, args, client) {
+
     // Emoji setup
     const nope = client.emojis.cache.get(e.nope);
 

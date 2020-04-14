@@ -325,6 +325,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [places]`,
   "params": "<value> <unit> <newUnit> [places]",
   "hide": 0,
-  "wip": 0,
+  "wip": 1,
   "dead": 0,
 };

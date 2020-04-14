@@ -69,6 +69,7 @@ client.on('message', message => {
 
   // Checks if the command is unstable. If so, displays a warning instead of running the command.
   if(process.env.exp === "0" && command.help.wip === 1) {
+
     if(message.author.id === package.authorID) {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n\n${warning} Please enable **experimental mode** to run it.`);
     } else {

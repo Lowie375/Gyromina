@@ -9,7 +9,7 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": "8.12.0",
+    "node": "10.x",
     "npm": "*"
   },
   "author": "L375#6740",

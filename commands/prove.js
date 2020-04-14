@@ -1,3 +1,6 @@
+// Require the RNG
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+
 // List of 'proofs'
 const proof = ["because that's just how it is.",
   "because smart people think so.",
@@ -13,13 +16,6 @@ const proof = ["because that's just how it is.",
   "because… why not.",
   "because Gyromina is never gonna tell a lie… and hurt you. _\\\*insert rickroll here\\\*_"];
 
-// Basic RNG
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
 module.exports.run = {
   execute(message, args, client) {
 
@@ -34,7 +30,7 @@ module.exports.run = {
       }
       const selected = proof[num];
 
-      message.channel.send(statement.join(" ") + " " + selected + "\n**Deal with it.**");
+      message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
     }
   },
 };

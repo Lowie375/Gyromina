@@ -1,13 +1,13 @@
-# Gyromina, an experimental bot.
+# Gyromina, a multipurpose Discord bot.
 
-## Fun + function, all in one.
+## "Fun + function, all in one."
 
-Created by L375#6740, with contributions & support from Alten#4148
+Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from Alten#4148 \([@Altenhh](https://www.github.com/Altenhh)\)
 
-**Latest stable build: 0.10.3**
+**Latest stable build: 0.11.0**
 
 ***
 
-[Info Pages](https://lx375.weebly.com/gyromina) / [Commands](https://lx375.weebly.com/gyromina-commands) / [Invite Link](https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=1141234752&scope=bot)
+[Info Pages](https://lx375.weebly.com/gyromina) / [Commands](https://lx375.weebly.com/gyromina-commands) / [Invite Link](https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=388160&scope=bot)
 
-###### Built in JavaScript using Discord.js (a Node.js module)
+###### Built in JavaScript using Discord.js v12.x.x (a Node.js module)

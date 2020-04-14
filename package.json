@@ -1,7 +1,8 @@
 {
   "name": "gyromina",
-  "version": "0.10.3",
-  "description": "Gyromina, an experimental bot.",
+  "version": "0.11.0",
+  "description": "Gyromina, a multipurpose Discord bot",
+  "tagline": "Fun + function, all in one",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -22,8 +23,10 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
-    "discord.js": "^11.4.2",
-    "request": "^2.88.0"
+    "discord.js": "^12.1.1",
+    "long": "^4.0.0",
+    "request": "^2.88.0",
+    "ws": "^7.2.3"
   },
   "devDependencies": {},
   "keywords": []

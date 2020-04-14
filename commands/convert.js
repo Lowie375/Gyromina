@@ -1,75 +1,203 @@
+// Require discord.js
 const Discord = require('discord.js');
 
-// Array V3: names[array#][object#] (10 per line) --> converterV3[array#][object#] (0-9/10-19/20-29/etc.)
+// Array V4: names[array#][object#] + metricNames[array#][object#] --> converter[array#][object#] + metrics[array#][object#] (0-9/10-19/20-29/etc.)
 const names = [
-  ["millimetres", "millimeters", "mm", "centimetres", "centimeters", "cm", "inches", "in", "foot", "feet",
-   "ft", "yards", "yds", "metres", "meters", "kilometres", "kilometers", "km", "miles", "mi",
-   "nauticalmiles", "nautical_miles", "nmi", "nanoseconds", "nanosecs", "microseconds", "microsecs", "milliseconds", "millisecs", "seconds",
-   "secs", "minutes", "mins", "hours", "hrs", "days", "weeks", "wks", "years", "yrs",
-   "gradians", "grads", "degrees", "degs", "radians", "rads", "milliradians", "millirads", "millilitres", "milliliters",
-   "ml", "litres", "liters", "cubicmetres", "cubicmeters", "cubic_metres", "cubic_meters", "m", "gon", "d",
-   "nsecs", "μsecs", "msecs", "mil", "m³", "m3", "m^3", "usecs", "cm³", "cm3",
-   "cm^3", "cubiccentimetres", "cubiccentimeters", "cubic_centimetres", "cubic_centimeters", "in³", "in3", "in^3", "cubicinches", "cubic_inches",
-   "ft³", "ft3", "ft^3", "cubic_foot", "cubicfoot", "cubic_feet", "cubicfeet", "gallons", "usgallons", "us_gallons",
-   "gal", "usgal", "us_gal", "quarts", "usquarts", "us_quarts", "qt", "usqt", "us_qt", "fluidounces",
-   "fluid_ounces", "floz", "fl_oz", "usfluidounces", "usfloz", "us_fluidounces", "us_floz", "us_fluid_ounces", "us_fl_oz", "pints",
-   "uspints", "us_pints", "pt", "uspt", "us_pt", "tablespoon", "ustablespoon", "us_tablespoon", "tbsp", "ustbsp",
-   "us_tbsp", "teaspoon", "usteaspoon", "us_teaspoon", "tsp", "ustsp", "us_tsp",],
-  ["d0", "d0", "d0", "d1", "d1", "d1", "d2", "d2", "d3", "d3",
-   "d3", "d4", "d4", "d5", "d5", "d6", "d6", "d6", "d7", "d7",
-   "d8", "d8", "d8", "t9", "t9", "t10", "t10", "t11", "t11", "t12", 
-   "t12", "t13", "t13", "t14", "t14", "t15", "t16", "t16", "t17", "t17",
-   "n18", "n18", "n19", "n19", "n20", "n20", "n21", "n21", "v22", "v22",
-   "v22", "v23", "v23", "v24", "v24", "v24", "v24", "d5", "n18", "t15",
-   "t9", "t10", "t11", "n21", "v24", "v24", "v24", "t10", "v22", "v22",
-   "v22", "v22", "v22", "v22", "v22", "v25", "v25", "v25", "v25", "v25",
-   "v26", "v26", "v26", "v26", "v26", "v26", "v26", "v27", "v27", "v27",
-   "v27", "v27", "v27", "v28", "v28", "v28", "v28", "v28", "v28", "v29",
-   "v29", "v29", "v29", "v29", "v29", "v29", "v29", "v29", "v29", "v30",
-   "v30", "v30", "v30", "v30", "v30", "v31", "v31", "v31", "v31", "v31",
-   "v31", "v32", "v32", "v32", "v32", "v32", "v32",]
+  ["metres", "meters", "m", "inches", "in", "foot", "feet", "ft", "yards", "yds",
+   "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
+   "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
+   "degrees", "degs", "°", "radians", "rads", "mil", "\"", "\'", "litres", "liters",
+   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
+   "in³", "in3", "in^3", "cubicinches", "inchescubed", "inchcubed", "ft³", "ft3", "ft^3", "cubicfoot", 
+   "cubicfeet", "feetcubed", "footcubed", "gallons", "usgallons", "gallonsus", "gallonus", "gal", "usgal", "galus",
+   "quarts", "usquarts", "quartsus", "quartus", "qt", "usqt", "qtus", "fluidounces", "floz", "usfluidounces",
+   "usfloz", "fluidouncesus", "fluidounceus", "flozus", "pints", "uspints", "pt", "uspt", "pintsus", "pintus",
+   "ptus", "tablespoons", "ustablespoons", "tbsp", "ustbsp", "tablespoonsus", "tablespoonus","tbspus", "teaspoons", "usteaspoons",
+   "tsp", "ustsp", "teaspoonsus", "teaspoonus", "tspus",],
+  ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
+   "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
+   "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
+   "n013", "n013", "n013", "n014", "n014", "n015", "d001", "d002", "v016", "v016",
+   "v016", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017",
+   "v018", "v018", "v018", "v018", "v018", "v018", "v019", "v019", "v019", "v019",
+   "v019", "v019", "v019", "v020", "v020", "v020", "v020", "v020", "v020", "v020",
+   "v021", "v021", "v021", "v021", "v021", "v021", "v021", "v022", "v022", "v022",
+   "v022", "v022", "v022", "v022", "v023", "v023", "v023", "v023", "v023", "v023",
+   "v023", "v024", "v024", "v024", "v024", "v024", "v024", "v024", "v025", "v025",
+   "v025", "v025", "v025", "v025", "v025",]
 ]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // e=energy // m=mass // w=power // g=weight //
-
 const converter = [
-  ["mm", "cm", "in", "ft", " yds", "m", "km", "mi", "nmi", " nsec",
-   " μsec", " msec", " sec", " min", " hrs", " days", " wks", " yrs", " gon", "°",
-   " rads", " mil", "mL", "L", "m³", "in³", "ft³", " US gal", " US qt", " US fl oz",
-   " US pt", " US tbsp", " US tsp"],
-  [1609344, 160934.4, 63360, 5280, 1760, 1609.344, 1.609344, 1, 1609.344/1852, 604800000000000,
-   604800000000, 604800000, 604800, 10080, 168, 7, 1, 0.0191780664289865, 200, 180,
-   "π", "π/1000", 1000, 1, 0.001, 1/0.016387064, 1/28.316846592, 1/3.785411784, 4/3.785411784, 128/3.785411784,
-   8/3.785411784, 256/3.785411784, 768/3.785411784]
+  ["m", "in", "ft", "yds", "mi", "nmi", "/sec", " min", " hrs", " days",
+   " wks", " yrs", " gon", "°", " rads", " mil", "L", "m³", "in³", "ft³",
+   " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp",],
+  [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
+   1, 0.0191780664289865, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
+   1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784,]
 ];
+const metricNames = [
+  ["deci", "d", "centi", "c", "milli", "m", "kilo", "k", "mega", "M",
+   "giga", "G", "tera", "T", "peta", "P", "exa", "E", "zetta", "Z",
+   "yotta", "Y", "hecto", "h", "nano", "n", "pico", "p", "femto", "f", 
+   "atto", "a", "zepto", "z", "yocto", "y", "micro", "μ", "u",
+   "deka", "da",],
+  [00, 00, 01, 01, 02, 02, 03, 03, 04, 04,
+   05, 05, 06, 06, 07, 07, 08, 08, 09, 09,
+   10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
+   15, 15, 16, 16, 17, 17, 18, 18, 18, 19,
+   19]
+];
+const metrics = [
+  ["d", "c", "m", "k", "M", "G", "T", "P", "E", "Z", 
+   "Y", "h", "n", "p", "f", "a", "z", "y", "μ", "da",],
+  [Math.pow(10, 1), Math.pow(10, 2), Math.pow(10, 3), Math.pow(10, -3), Math.pow(10, -6),
+     Math.pow(10, -9), Math.pow(10, -12), Math.pow(10, -15), Math.pow(10, -18), Math.pow(10, -21),
+   Math.pow(10, -24), Math.pow(10, -2), Math.pow(10, 9), Math.pow(10, 12), Math.pow(10, 15),
+     Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1),]
+];
+// Valid metric roots
+const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
+  "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",];
+// Splitter separators
+const separators = ["_", "-"];
+
+function metricCheck(x) {
+  for (let i = 0; i < registered.length; i++) {
+    if(registered[i].startsWith(x)){
+      return 0;
+    }
+  }
+  return 1;
+}
+
+function deepCleanArgs(args, list, j, k) {
+  let save = [];
+  let checkCtr = 0;
+  
+  for (var item of list) {
+    // Checks if the prefixes match
+    if(args[j].startsWith(metricNames[0][item].slice(0, k)) && metricNames[0][item].slice(0, k).length == k+1) {
+      checkCtr++;
+      save.push(item);
+    }
+  }
+  if (checkCtr == 1) {
+    let arr = [save[0], k]
+    return arr;
+  } else if (checkCtr != 0 && checkCtr != 1) {
+    return deepCleanArgs(args, save, j, k+1);
+  }
+}
+
+function cleanArgs(args) {
+  // args[val, unit, newUnit, places] --> cleaned[val, uRoot, newURoot, places, uPrefix, newUPrefix]
+  let cleaned = [args[0], "", "", args[3], -1, -1];
+  let args2 = [args[0], "", "", args[3]];
+  let checkCtr = 0;
+  let save = [];
+  
+  // Removes separators
+  for (let j = 1; j <= 2; j++) {
+    // Splits the argument into individual characters
+    let splitter = args[j].split("");
+    for (let i = 0; i < splitter.length; i++) {
+      if(separators.includes(splitter[i])) {
+        splitter.splice(i, 1);
+        i--;
+      }
+    }
+    // Rejoins the characters into one argument
+    args2[j] = splitter.join("");
+  }
+
+  for (let j = 1; j <= 2; j++) {
+    // Determines possible metric prefixes
+    for (let i = 0; i < metricNames[0].length; i++) {
+      if(args2[j].startsWith(metricNames[0][i])) {
+        checkCtr++;
+        save.push(metricNames[1][i]);
+      }
+    }
+    // Checks if a prefix was found
+    if (checkCtr == 0) {
+      // If not, leaves things as-is
+      cleaned[j] = args2[j];
+    } else {
+      // Otherwise, checks if the prefix is exclusive
+      if (checkCtr == 1) {
+        cleaned[j+3] = save[0];
+        cleaned[j] = args2[j].slice(1);
+      } else if (checkCtr != 0 && checkCtr != 1) {
+        // If not, runs a deeper check
+        let dpr = deepCleanArgs(args2, save, j, 1);
+        cleaned[j+3] = dpr[0];
+        cleaned[j] = args2[j].slice(dpr[1]+1);
+      }
+    
+      // Checks if the prefix was actually a valid prefix
+      let validate = metricCheck(cleaned[j]);
+      switch(validate) {
+        case 0:
+          // OK, continue
+          break;
+        case 1:
+          // Not a prefix, undo split
+          cleaned[j] = args2[j];
+          cleaned [j+3] = -1;
+          break;
+      }
+    }
+    checkCtr = 0;
+    save.splice(0, save.length);
+  }
+  return cleaned;
+}
 
 function valCases(x) {
-  var result = x;
+  let result = x;
   switch(x) {
     case "π": result = Math.PI; break;
-    case "π/1000": result = Math.PI/1000; break;
+    case "π*1000": result = Math.PI*1000; break;
   }
   return result;
 }
 
-function nameCases(x, args) {
-  var result = x;
+function pluralHandler(x) {
+  if (x.slice(-1) == "s")
+    x = x.slice(0, -1);
+  return x;
+}
+
+function nameCases(x, args, i, plural) {
+  let result = x;
+  let spaceCheck = 0;
+  
   // Plural handling if args[0] == 1
-  if(args[0] == 1) {
-    switch (result) {
-      case (result.slice(-1) == "s"):
-        result = result.slice(0, -1); break;
-    }
+  if(args[0] == 1 && plural == 1) {
+    result = pluralHandler(x);
   }
+  // Metric space handling (1)
+  if(result.slice(0, 1) == "/") {
+    result.slice(1);
+    spaceCheck = 1;
+  }
+  // Metric prefix handling
+  if (args[i] != -1)
+    result = metrics[0][args[i]] + result;
+  // Metric space handling (2)
+  if (spaceCheck == 1)
+    result = " " + result;
+
   return result;
 }
 
 function search(args, argNum) {
-  var checkCtr = 0;
-  var save = [];
+  let checkCtr = 0;
+  let save = [];
   // Checks for exact matches
   for (let i = 0; i < names[0].length; i++) {
     if(names[0][i] === (args[argNum])) {
       checkCtr++;
-      save.push(i);
+      save.push(names[1][i]);
     }
   }
   if (searchCheck(save, checkCtr) != "err" && searchCheck(save, checkCtr) != "null") return searchCheck(save, checkCtr);
@@ -77,7 +205,7 @@ function search(args, argNum) {
   for (let i = 0; i < names[0].length; i++) {
     if(names[0][i].startsWith(args[argNum])) {
       checkCtr++;
-      save.push(i);
+      save.push(names[1][i]);
     }
   }
   return searchCheck(save, checkCtr);
@@ -90,9 +218,10 @@ function searchCheck(save, ctr) {
     return "err";
   } else {
     for(let i = 1; i < save.length; i++) {
-      if(names[1][save[0]] != names[1][save[i]]) return "null";
+      if(save[0] != save[i])
+        return "null";
     }
-    return names[1][save[0]];
+    return save[0];
   }
 }
 
@@ -111,24 +240,27 @@ module.exports.run = {
       case 1: message.reply("I can\'t convert something if you don't tell me the unit it's in!"); return;
       case 2: message.reply("I can\'t convert something if you don't tell me what unit to convert it to!"); return;
     }
+    
+    var cArgs = cleanArgs(args);
+    
     // Finds & pulls conversion data
-    var pos1 = search(args, 1);
+    var pos1 = search(cArgs, 1);
     if (errorPull(pos1, message) != 0) return;
-    var pos2 = search(args, 2);
+    var pos2 = search(cArgs, 2);
     if (errorPull(pos2, message) != 0) return;
 
     var type1 = pos1.slice(0, 1);
-    pos1 = pos1.slice(1);
+    pos1 = parseInt(pos1.slice(1));
     var type2 = pos2.slice(0, 1);
-    pos2 = pos2.slice(1);
+    pos2 = parseInt(pos2.slice(1));
 
     // Checks if the units can be converted between
     if (type1 != type2) {
       message.reply("I can\'t convert between 2 unlike units! Please check your units and try again.");
       return;
     }
-    var name1 = nameCases(converter[0][pos1], args);
-    var name2 = nameCases(converter[0][pos2], args);
+    var name1 = nameCases(converter[0][pos1], cArgs, 4, 1);
+    var name2 = nameCases(converter[0][pos2], cArgs, 5, 0);
 
     // Initialises conversion values
     var val1, val2, output, round;
@@ -146,28 +278,38 @@ module.exports.run = {
     }
 
     // Converts and checks if the output is valid
-    output = args[0] * val2 / val1;
+    output = cArgs[0] * val2 / val1;
+    // Metric handling
+    if (cArgs[5] != -1)
+      output = output * metrics[1][cArgs[5]];
+    if (cArgs[4] != -1)
+      output = output / metrics[1][cArgs[4]];
     if (isNaN(output) == 1) {
       message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");
       return;
     }
 
     // Creates an approximation to go alongside the full conversion, if necessary
-    if(!args[4] || args[4] < 0) {
-      round = Math.round(output*10)/10;
-    } else if (args[4] == 0) {
+    if(!cArgs[3] || cArgs[3] < 0) {
+      round = (Math.round(output*100)/100);
+      switch(round.toString().split(".").pop().length) {
+        case 0: break;
+        case 1: round.toFixed(1); break;
+        case 2: round.toFixed(2); break;
+      }
+    } else if (cArgs[3] == 0) {
       round = "null";
       output = Math.round(output);
     } else {
       round = Math.round(output);
-      output = Math.round(output*Math.pow(10, args[4]))/Math.pow(10, args[4]);
+      output = (Math.round(output*Math.pow(10, cArgs[3]))/Math.pow(10, cArgs[3])).toFixed(cArgs[3]);
     }
-    if(round == output && output % 1 != 0) round = Math.round(output);
-    if(round == output && output % 1 == 0) round = "null";
+    if(round == output && output % 1 != 0) round = Math.round(output).toFixed(0);
+    if((round == output && output % 1 == 0) || round == 0) round = "null";
 
     // Creates and sends the embed
-    const embed = new Discord.RichEmbed()
-      .setTitle(`${args[0]}${name1} equals…\n\`${output}${name2}\``)
+    const embed = new Discord.MessageEmbed()
+      .setTitle(`${cArgs[0]}${name1} equals…\n\`${output}${name2}\``)
       .setColor(0x7effaf);
 
     if(round != "null") embed.setDescription(`…or about ${round}${name2}`);

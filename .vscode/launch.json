@@ -1,21 +1,22 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.4.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\index.js",
-            "env": {
-                "token": "",
-                "prefix": "",
-                "exp": "",
-                "logChannel": "",
-                "github": { "token": "", "username": "", "repoName": "" }
-            }
-        }
-    ]
+  "tooltip": "Use IntelliSense to learn about possible attributes. Hover to view descriptions of existing attributes. For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387",
+  "version": "5",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}\\index.js",
+      "env": {
+        "token": "",
+        "prefix": "",
+        "exp": "",
+        "progressLog": "",
+        "errorLog": "",
+        "gitToken": "",
+        "gitUsername": "",
+        "gitRepoName": ""
+      }
+    }
+  ]
 }

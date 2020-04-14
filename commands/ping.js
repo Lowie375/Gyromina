@@ -6,7 +6,7 @@ module.exports.run = {
       .then(newMsg => {
         let end = Date.now();
         // Edits the message to include Gyromina's latency and Discord's latency.
-        newMsg.edit(`Pong! 🏓\nLatency: \`${end - start}msec\` / Discord: \`${client.ping}msec\``);
+        newMsg.edit(`Pong! 🏓\nLatency: \`${end - start}msec\` / Discord: \`${client.ws.ping}msec\``);
       });
   },
 };

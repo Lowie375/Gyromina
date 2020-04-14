@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: For when you have a great idea
-labels: not a bug, under review
+labels: no issue here, under review
 ---
 
 **Your suggestion**

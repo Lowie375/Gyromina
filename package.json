@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "0.11.0",
+  "version": "0.11.2",
   "description": "Gyromina, a multipurpose Discord bot",
   "tagline": "Fun + function, all in one",
   "main": "index.js",
@@ -15,11 +15,15 @@
   "author": "L375#6740",
   "authorID": "334335706740686849",
   "contributors": [
-    "Alten#4148"
+    "Alten#4148",
+    "Homura#5331"
   ],
   "contributorIDs": [
-    "184061887212814336"
+    "184061887212814336",
+    "532819509359149056"
   ],
+  "testers": [],
+  "testerIDs": [],
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
@@ -29,5 +33,5 @@
     "ws": "^7.2.3"
   },
   "devDependencies": {},
-  "keywords": []
+  "keywords": ["Gyromina", "JavaScript", "Node"]
 }

@@ -4,7 +4,6 @@ const e = require('../systemFiles/emojis.json');
 
 module.exports.run = {
   execute(message, args, client) {
-
     // Emoji setup
     const nope = client.emojis.cache.get(e.nope);
 
@@ -15,7 +14,7 @@ module.exports.run = {
       return;
     }
 
-    message.channel.send(getRandomInt(1, 7));
+    console.log(client.users.cache.get(package.authorID));
 
     if("yes" == "Yes") {
       message.channel.send("Yeah!");

@@ -10,13 +10,12 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
 
-// Emoji setup
-const nope = client.emojis.cache.get(e.nope);
-const warning = client.emojis.cache.get(e.warn);
-
 // Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
 const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js'));
+
+// Declares emojis
+var nope, warning;
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -42,6 +41,10 @@ client.on('ready', () => {
     client.user.setStatus("online");
     client.user.setActivity(`with Discord! / ${process.env.prefix}help / ${package.version}`);
   }
+
+  // Emoji setup
+  nope = client.emojis.cache.get(e.nope);
+  warning = client.emojis.cache.get(e.warn);
 });
 
 client.on('message', message => {
@@ -69,9 +72,8 @@ client.on('message', message => {
 
   // Checks if the command is unstable. If so, displays a warning instead of running the command.
   if(process.env.exp === "0" && command.help.wip === 1) {
-
     if(message.author.id === package.authorID) {
-      message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n\n${warning} Please enable **experimental mode** to run it.`);
+      message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n${warning} Please enable **experimental mode** to run it.`);
     } else {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.`);
     }

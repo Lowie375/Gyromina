@@ -8,7 +8,7 @@ module.exports.run = {
       .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
       .setColor(0x7effaf)
       .setTitle("Gy·ro·mi·na\n/jī'räminə/")
-      .setDescription(`*noun:*\n[1] A multipurpose Discord bot created by <@${botinfo.authorID}>, with contributions & support from <@${botinfo.contributorIDs[0]}>, currently running version ${botinfo.version} on ${client.guilds.cache.size} servers\n[2] \"${botinfo.tagline}\"`)
+      .setDescription(`*noun:*\n[1] A multipurpose Discord bot created by <@${botinfo.authorID}>, with contributions & support from <@${botinfo.contributorIDs[0]}> and <@${botinfo.contributorIDs[1]}> (Homura#5331), currently running version ${botinfo.version} on ${client.guilds.cache.size} servers\n[2] \"${botinfo.tagline}\"`)
       .setFooter(`Requested by ${message.author.tag} / Source: package.json`, message.author.avatarURL())
       .setTimestamp()
       .addField("*Origin*", "​***\`    L-V3R7     --->    Gyromina   \`***\n*\` Jul 07, 2018        Sep 20, 2018 \`\nMore information: [https://lx375.weebly.com/gyromina](https://lx375.weebly.com/gyromina)*")

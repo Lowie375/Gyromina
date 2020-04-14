@@ -25,4 +25,4 @@ A list of things that could be improved to make Gyromina better overall.
 
 Anything else you'd like to add.
 
-###### *Template updated on April 10, 2020*
+###### *Template updated on April 14, 2020*

@@ -4,7 +4,7 @@
 
 Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from Alten#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and Homura#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
 
-**Latest stable build: 0.11.2**
+**Latest stable build: 0.11.3**
 
 ***
 

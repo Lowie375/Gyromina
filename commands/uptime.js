@@ -30,9 +30,9 @@ module.exports.run = {
       display += `${days} days, `;
 
     if (hrs == 1)
-      display += `${hrs}} hour, `;
+      display += `${hrs} hour, `;
     else if (hrs != 0)
-      display += `${hrs}} hours, `;
+      display += `${hrs} hours, `;
 
     if (mins == 1)
       display += `${mins} minute, `;
@@ -60,7 +60,7 @@ module.exports.run = {
 module.exports.help = {
   "name": 'uptime',
   "aliases": ["up", "online", "readytime"],
-  "description": 'Shows Gyromina\'s uptime in milliseconds and a readable time format',
+  "description": 'Shows Gyromina\'s uptime.',
   "usage": `${process.env.prefix}uptime`,
   "hide": 0,
   "wip": 0,

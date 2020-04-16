@@ -24,7 +24,7 @@
   ],
   "testers": [],
   "testerIDs": [],
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
     "discord.js": "^12.1.1",

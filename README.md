@@ -6,8 +6,6 @@ Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with cont
 
 **Latest stable build: 0.11.3**
 
-Gyromina is licensed under the terms of the MIT license.
-
 ***
 
 [Info Pages](https://lx375.weebly.com/gyromina) / [Commands](https://lx375.weebly.com/gyromina-commands) / [Invite Link](https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot)

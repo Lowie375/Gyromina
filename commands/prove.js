@@ -1,5 +1,5 @@
 // Require the RNG
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 // List of 'proofs'
 const proof = ["because that's just how it is.",

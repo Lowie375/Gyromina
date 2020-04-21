@@ -12,7 +12,7 @@ module.exports.run = {
   execute(message, args, client) {
     // we wont need to change these so might as well put them as consts
     const vers = args[0];
-    const announce = args[1] === "false";
+    const announce = args.join(" ").toString().includes("-a");
     const forceVerification = args.join(" ").toString().includes("-y");
     const softRelease = args.join(" ").toString().includes("-s");
 
@@ -60,10 +60,12 @@ module.exports.run = {
           Write(`Releasing version ${version} ${forceVerification === true ? "(Forced)" : ""}`);
 
           GetChangelogString(str => {
-            let string = `Gyromina V${version} has been released! this now fixes and adds:\n` + str;
+            let string = `Gyromina v${version} has been released! this now fixes and adds:\n` + str;
 
-            if (!announce)
-              client.channels.cache.get(process.env.progressLog).send(string);
+            if (announce) {
+              let pLog = client.channels.cache.get(process.env.progressLog)
+              pLog.send(string);
+            }
 
             if (!softRelease)
               CreateGithubRelease(string);
@@ -125,7 +127,7 @@ function GetChangelogString (func)
     {
       let pr = prs[i];
 
-      str += `- ${pr.title} | ${pr.user.login}\n`
+      str += `- ${pr.title} | ${pr.user.login}\n${pr.body}\n`
     }
 
     func(str);

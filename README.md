@@ -2,8 +2,8 @@
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Dependencies][dependency-img]][dependency-link]
-![Last Commit][commit-img]
-![Contributors][contributors-img]
+[![Last Commit][commit-img]][commit-img]
+[![Contributors][contributors-img]][contributors-img]
 [![License][license-img]](LICENSE)
 
 ## About

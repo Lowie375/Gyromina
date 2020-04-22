@@ -1,5 +1,5 @@
 // Require the Write function, the Clean function, and colors
-const { Write, Clean } = require("../systemFiles/globalFunctions.js");
+const {Write, Clean} = require("../systemFiles/globalFunctions.js");
 const colors = require('colors');
 let request = require('request');
 

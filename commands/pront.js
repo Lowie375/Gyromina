@@ -24,7 +24,8 @@ const excuses = ["the pronter ran out of black ink.",
   "the pronter ran out of paper.",
   "the pronter threw a fit and refused to pront.",
   "the pronter exploded.",
-];
+  "the pronter caved in on itself.",
+  "the pronter ran away."];
 
 function unicodeCheck(e) {
   let match;

@@ -1,6 +1,6 @@
 // Require discord.js and the RNG
 const Discord = require('discord.js');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;

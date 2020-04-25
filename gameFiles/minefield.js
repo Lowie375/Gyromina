@@ -1,6 +1,6 @@
 // Require the game functions file and the RNG
 const func = require('../systemFiles/gameFunctions.js');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 // Display icons
 const air = "󠀠⬛";
@@ -53,7 +53,7 @@ function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
   // Checks if the randomly selected space already has a bomb
   if (field[y][x] == bmb) {
     // Regenerates the bomb
-    genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr);
+    genBomb(field, ry, ty, tempSteps, bombOrder, i);
   } else {
     // Places a bomb
     field[y][x] = bmb;
@@ -64,7 +64,7 @@ function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
     clearBarricades(field);
     field[y][x] = air;
     attCtr++;
-    if (attCtr >= 25) {
+    if (attCtr >= 250) {
       // Removes this bomb and regenerates the previous bomb
       bombOrder.pop();
       i--;

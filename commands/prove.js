@@ -1,5 +1,5 @@
 // Require the RNG
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const { getRandomInt } = require('../systemFiles/globalFunctions.js');
 
 // List of 'proofs'
 const proof = ["because that's just how it is.",
@@ -14,9 +14,7 @@ const proof = ["because that's just how it is.",
   "because the RNG said so, and the RNG is always right.",
   "because the internet thinks so.",
   "because… why not.",
-  "because Gyromina is never gonna tell a lie… and hurt you. _\\\*insert rickroll here\\\*_",
-  "because… yes.",
-  "because it helps Gyromina sleep at night."];
+  "because Gyromina is never gonna tell a lie… and hurt you. _\\\*insert rickroll here\\\*_"];
 
 module.exports.run = {
   execute(message, args, client) {

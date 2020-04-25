@@ -324,7 +324,6 @@ module.exports.help = {
   "description": "Converts a value from one unit to another.",
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [places]`,
   "params": "<value> <unit> <newUnit> [places]",
-  "helpurl": "https://lx375.weebly.com/gyrocmd-convert",
   "hide": 0,
   "wip": 0,
   "dead": 0,

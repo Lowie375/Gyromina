@@ -1,8 +1,6 @@
 // Require the Write function, the Clean function, and colors
-const {Write, Clean} = require("../systemFiles/globalFunctions.js");
+const { Write, Clean } = require("../systemFiles/globalFunctions.js");
 const colors = require('colors');
-const package = require('../package.json');
-const e = require('../systemFiles/emojis.json');
 let request = require('request');
 
 let startTime;
@@ -14,12 +12,9 @@ module.exports.run = {
   execute(message, args, client) {
     // we wont need to change these so might as well put them as consts
     const vers = args[0];
-    const announce = args.join(" ").toString().includes("-a");
+    const announce = args[1] === "false";
     const forceVerification = args.join(" ").toString().includes("-y");
     const softRelease = args.join(" ").toString().includes("-s");
-
-    // Emoji setup
-    const nope = client.emojis.cache.get(e.nope);
 
     version = vers;
 
@@ -27,10 +22,8 @@ module.exports.run = {
     if (version === undefined)
       return message.channel.send("You have not provided a version number.");
 
-    if (message.author.id !== package.authorID)
-      return message.channel.send(`${nope} Error - Insufficient permissions!`);
-
-    if (!forceVerification) {
+    if (!forceVerification)
+    {
       let filter = m => m.author.id === message.author.id;
       const input = message.channel.createMessageCollector(filter);
 
@@ -55,24 +48,22 @@ module.exports.run = {
 
         main();
       });
-    } 
+    }
     else
       main();
-      
 
-    function main() {
+    function main()
+    {
       message.channel.send("Releasing...")
         .then(relMsg => {
 
           Write(`Releasing version ${version} ${forceVerification === true ? "(Forced)" : ""}`);
 
           GetChangelogString(str => {
-            let string = `Gyromina v${version} has been released! this now fixes and adds:\n` + str;
+            let string = `Gyromina V${version} has been released! this now fixes and adds:\n` + str;
 
-            if (announce) {
-              let pLog = client.channels.cache.get(process.env.progressLog)
-              pLog.send(string);
-            }
+            if (!announce)
+              client.channels.cache.get(process.env.progressLog).send(string);
 
             if (!softRelease)
               CreateGithubRelease(string);
@@ -121,7 +112,8 @@ function AuthenticatedBlockingPerform (options, func) {
   });
 }
 
-function GetChangelogString (func) {
+function GetChangelogString (func)
+{
   startTime = Date.now();
 
   Write(`Fetching pull requests`.yellow, startTime, false);
@@ -133,13 +125,14 @@ function GetChangelogString (func) {
     {
       let pr = prs[i];
 
-      str += `- ${pr.title} | ${pr.user.login}\n${pr.body}\n`
+      str += `- ${pr.title} | ${pr.user.login}\n`
     }
 
     func(str);
   });
 
-  function getPullRequests(prs) {
+  function getPullRequests(prs)
+  {
     let pullRequest = [];
 
     // Gets the last release
@@ -184,7 +177,8 @@ function GetChangelogString (func) {
     });
   }
 
-  function getLastGithubRelease(func) {
+  function getLastGithubRelease(func)
+  {
     let options = {
       method: "get",
       url: `${githubApiEndpoint}/releases`
@@ -202,8 +196,8 @@ module.exports.help = {
   "name": "release",
   "aliases": ["deploy", "rel", "dep"],
   "description": "Deploys a new version of Gyromina. (Owner only)",
-  "usage": `${process.env.prefix}release <version> [queries]`,
-  "params": "<version> [queries] (owner only)",
+  "usage": `${process.env.prefix}release <version> [announceToDiscord] [queries]`,
+  "params": "<version> [announceToDiscord] [queries] (owner only)",
   "hide": 1,
   "wip": 0,
   "dead": 0,

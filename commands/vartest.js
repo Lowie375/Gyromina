@@ -8,7 +8,7 @@ module.exports.run = {
     const nope = client.emojis.cache.get(e.nope);
 
     // Checks to see if the bot owner or a contributor sent the message.
-    if(message.author.id !== package.hostID && message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id)) {
+    if(message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id)) {
       message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to run a test, but was unsuccessful!')
       return;

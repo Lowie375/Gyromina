@@ -13,42 +13,26 @@ const names = [
    "quarts", "usquarts", "quartsus", "quartus", "qt", "usqt", "qtus", "fluidounces", "floz", "usfluidounces",
    "usfloz", "fluidouncesus", "fluidounceus", "flozus", "pints", "uspints", "pt", "uspt", "pintsus", "pintus",
    "ptus", "tablespoons", "ustablespoons", "tbsp", "ustbsp", "tablespoonsus", "tablespoonus","tbspus", "teaspoons", "usteaspoons",
-   "tsp", "ustsp", "teaspoonsus", "teaspoonus", "tspus", "impgallons", "gallonsimp", "gallonimp", "impgal", "galimp",
-   "impquarts", "quartsimp", "quartimp", "impqt", "qtimp", "imppints", "pintsimp", "pintimp", "imppt", "ptimp",
-   "impfluidounces", "fluidouncesimp", "fluidounceimp", "impfloz", "flozimp", "imptablespoons", "tablespoonsimp", "tablepsoonimp", "imptbsp", "tbspimp",
-   "impteaspoons", "teaspoonsimp", "teaspoonimp", "tspimp", "imptsp", "uscups", "cupsus", "cupus", "usc", "cus",
-   "uslegalcups", "legalcupsus", "legalcupus", "cups", "impcups", "cupsimp", "cupimp", "c", "impc", "cimp",
-   "pascals", "Pa", "atmospheres", "atm", "torr", "bar", "mmHg", "psi", "lb/sqin", "ib/in^2",
-   "lb/in²", "lb/in2", "mb", "mbar", "millibar",],
+   "tsp", "ustsp", "teaspoonsus", "teaspoonus", "tspus",],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
    "n013", "n013", "n013", "n014", "n014", "n015", "d001", "d002", "v016", "v016",
    "v016", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017", "v017",
    "v018", "v018", "v018", "v018", "v018", "v018", "v019", "v019", "v019", "v019",
-   "v019", "v019", "v019", "v026", "v020", "v020", "v020", "v026", "v020", "v020",
-   "v027", "v021", "v021", "v021", "v027", "v021", "v021", "v028", "v028", "v022",
-   "v022", "v022", "v022", "v022", "v029", "v023", "v029", "v023", "v023", "v023",
-   "v023", "v030", "v024", "v030", "v024", "v024", "v024", "v024", "v031", "v025",
-   "v031", "v025", "v025", "v025", "v025", "v026", "v026", "v026", "v026", "v026",
-   "v027", "v027", "v027", "v027", "v027", "v029", "v029", "v029", "v029", "v029",
-   "v028", "v028", "v028", "v028", "v028", "v030", "v030", "v030", "v030", "v030",
-   "v031", "v031", "v031", "v031", "v031", "v032", "v032", "v032", "v032", "v032",
-   "v033", "v033", "v033", "v034", "v034", "v034", "v034", "v034", "v034", "v034",
-   "p035", "p035", "p036", "p036", "p037", "p038", "p037", "p039", "p039", "p039",
-   "p039", "p039", "p040", "p040", "p040",]
+   "v019", "v019", "v019", "v020", "v020", "v020", "v020", "v020", "v020", "v020",
+   "v021", "v021", "v021", "v021", "v021", "v021", "v021", "v022", "v022", "v022",
+   "v022", "v022", "v022", "v022", "v023", "v023", "v023", "v023", "v023", "v023",
+   "v023", "v024", "v024", "v024", "v024", "v024", "v024", "v024", "v025", "v025",
+   "v025", "v025", "v025", "v025", "v025",]
 ]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // e=energy // m=mass // w=power // g=weight //
 const converter = [
   ["m", "in", "ft", "yds", "mi", "nmi", "/sec", " min", " hrs", " days",
    " wks", " yrs", " gon", "°", " rads", " mil", "L", "m³", "in³", "ft³",
-   " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp", " Imp. gal", " Imp. qt", " Imp. floz", "Imp. pt",
-   " Imp. tbsp", "Imp. tsp", " US cup", " US legal cup", " Imp. cup", "Pa", "atm", "torr", "bar", "psi",
-   "mbar"],
+   " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp",],
   [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
-   1, 7/365, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
-   1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784, 1/4.546, 4/4.546, 160/4.546, 8/4.546,
-   256/4.546, 768/4.546, 16/3.785411784, 1/0.24, 16/4.546, 101325, 1, 760, 1.01325, 14.6959409,
-   1013.25]
+   1, 0.0191780664289865, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
+   1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784,]
 ];
 const metricNames = [
   ["deci", "d", "centi", "c", "milli", "m", "kilo", "k", "mega", "M",
@@ -59,8 +43,8 @@ const metricNames = [
   [00, 00, 01, 01, 02, 02, 03, 03, 04, 04,
    05, 05, 06, 06, 07, 07, 08, 08, 09, 09,
    10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
-   15, 15, 16, 16, 17, 17, 18, 18, 18,
-   19, 19]
+   15, 15, 16, 16, 17, 17, 18, 18, 18, 19,
+   19]
 ];
 const metrics = [
   ["d", "c", "m", "k", "M", "G", "T", "P", "E", "Z", 
@@ -70,11 +54,9 @@ const metrics = [
    Math.pow(10, -24), Math.pow(10, -2), Math.pow(10, 9), Math.pow(10, 12), Math.pow(10, 15),
      Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1),]
 ];
-
 // Valid metric roots
 const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
-  "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
-  "pascals", "Pa"];
+  "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",];
 // Splitter separators
 const separators = ["_", "-"];
 
@@ -342,7 +324,6 @@ module.exports.help = {
   "description": "Converts a value from one unit to another.",
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [places]`,
   "params": "<value> <unit> <newUnit> [places]",
-  "helpurl": "https://lx375.weebly.com/gyrocmd-convert",
   "hide": 0,
   "wip": 0,
   "dead": 0,

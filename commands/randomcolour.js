@@ -1,45 +1,39 @@
+// randomcolour.js V2 - made by Homura
+
 // Require discord.js and the RNG
 const Discord = require('discord.js');
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 module.exports.run = {
   execute(message, args, client) {
+    function getRandomHex() {
+      let r = getRandomInt(0, 255);
+      let g = getRandomInt(0, 255);
+      let b = getRandomInt(0, 255);
+    
+      return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
 
-    var hexNums = [0];
-    var hex = ["0"];
-    var rgb = [0];
+    function hexToRgb(hex) {
+      var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+      hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+      });
+    
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : null;
+    }
 
-    for (g=0; g<=5; g++) {
-
-      hexNums[g] = getRandomInt(0, 16);
-
-      if (hexNums[g] === 10) {
-        hex[g] = "a";
-      } else if (hexNums[g] === 11) {
-        hex[g] = "b";
-      } else if (hexNums[g] === 12) {
-        hex[g] = "c";
-      } else if (hexNums[g] === 13) {
-        hex[g] = "d";
-      } else if (hexNums[g] === 14) {
-        hex[g] = "e";
-      } else if (hexNums[g] === 15 || hexNums[g] === 16) {
-        hex[g] = "f";
-      } else {
-        hex[g] = hexNums[g].toString();
-      }
-    };
-
-    var finalHex = hex[0] + hex[1] + hex[2] + hex[3] + hex[4] + hex[5]
-    var embedColour = "0x" + finalHex
-
-    rgb[0] = (hexNums[0] * 16) + hexNums[1];
-    rgb[1] = (hexNums[2] * 16) + hexNums[3];
-    rgb[2] = (hexNums[4] * 16) + hexNums[5];
+    let hex = getRandomHex();
+    let rgb = hexToRgb(`#${hex}`)
 
     const embed = new Discord.MessageEmbed()
-      .setTitle(`#${finalHex}\nrgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`)
-      .setColor(embedColour);
+      .setTitle(`#${hex}\nrgb(${rgb.r}, ${rgb.g}, ${rgb.b})`)
+      .setColor(parseInt(`0x${hex}`));
 
     message.reply("here you go!", {embed: embed});
 

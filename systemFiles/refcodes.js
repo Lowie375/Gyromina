@@ -1,6 +1,6 @@
 // Require discord.js and the RNG
 const Discord = require('discord.js');
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 // Declares CBX characters for future use

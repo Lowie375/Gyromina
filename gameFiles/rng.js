@@ -1,9 +1,17 @@
 // Require the RNG (obviously)
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 module.exports.exe = {
   start(message, client, player, options) {
-    //let 
+    //let
+    
+    // Pseudocode time!
+      // RNG
+      // Send initial message
+      // messageCollector
+      // Check if guess is correct
+      // Higher/lower/you got it!
+      // Repeat unti timeout/correct/out of guesses
   }
 };
 

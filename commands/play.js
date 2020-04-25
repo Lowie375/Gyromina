@@ -50,6 +50,7 @@ module.exports.help = {
   "description": "Starts a game.",
   "usage": `${process.env.prefix}play <game> [options] …`,
   "params": "<game> [options] …",
+  "helpurl": "https://lx375.weebly.com/gyrocmd-play",
   "hide": 0,
   "wip": 0,
   "dead": 0,

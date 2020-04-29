@@ -21,24 +21,33 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 [Info Pages][info] / [Commands][commands] / [Changelog][log] / [Invite Link][invite]
 
-## Setup
+## General Setup (for server owners/admins)
+
+* Follow this link: [invite]
+* Choose a server to add Gyromina to
+* Make sure all requested permissions are enabled
+* You're good to go! Have fun!
+
+## Test Bot Setup (for contributors/debuggers)
 
 ### Discord bot token + channel access required
 
 * Fork/download source code + `npm install` in terminal
 * Configure environment variables
-  * token/prefix: Self-explanatory; Discord bot token/prefix
-  * exp: `"1"` to enable experimental commands, `"0"` to disable
-  * progressLog/errorLog: Discord channel IDs for integrated commit/error logs
-  * gitToken/gitUsername/gitRepoName: Optional; only used with `release`
+  * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
+  * `exp`: `"1"` to enable experimental commands, `"0"` to disable
+  * `progressLog`/`errorLog`: Discord channel IDs for integrated commit/error logs
+  * `gitToken`/`gitUsername`/`gitRepoName`: Optional; only used with `release`
 * Configure package file
-  * hostID = Your Discord user ID (enables use of `shutdown` and `vartest`)
+  * `hostID` = Your Discord user ID (enables local use of `shutdown` and `vartest`)
 * Run using your native runtime/debugger and you're good to go!
+
+<!-- ### Contribution Guidelines -->
 
 ## Contributors
 
 [![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
-[![Minor Contributor 📗][maj-contrib-label]][maj-contrib-label]
+[![Minor Contributor 📗][min-contrib-label]][min-contrib-label]
 [![Debugger 🦟][debugger-label]][debugger-label]
 
 ### Author
@@ -56,7 +65,7 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 [commands]: https://lx375.weebly.com/gyro-commands
 [gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
 [info]: https://lx375.weebly.com/gyromina
-[invite]: https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot
+[invite]: https://discord.now.sh/490590334758420481?p537259072
 [log]: https://lx375.weebly.com/gyro-log
 
 [djs-link]: https://discord.js.org

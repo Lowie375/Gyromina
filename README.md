@@ -28,7 +28,7 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 * Fork/download source code + `npm install` in terminal
 * Configure environment variables
   * token/prefix: Self-explanatory; Discord bot token/prefix
-  * exp: "1" to enable experimental commands, "0" to disable
+  * exp: `"1"` to enable experimental commands, `"0"` to disable
   * progressLog/errorLog: Discord channel IDs for integrated commit/error logs
   * gitToken/gitUsername/gitRepoName: Optional; only used with `release`
 * Configure package file

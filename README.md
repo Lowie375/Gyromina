@@ -19,18 +19,20 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 ### External Links
 
-[Info Pages][info] / [Commands][commands] / [Changelog][log] / [Invite Link][invite]
+**[Info Pages][info]** / **[Commands][commands]** / **[Changelog][log]** / **[Invite Link][invite]**
 
-## General Setup (for server owners/admins)
+## Setup
 
-* Follow this link: [invite]
+### General (for server owners/admins)
+
+* Follow this link: [https://discord.now.sh/490590334758420481?p537259072][invite]
 * Choose a server to add Gyromina to
 * Make sure all requested permissions are enabled
 * You're good to go! Have fun!
 
-## Test Bot Setup (for contributors/debuggers)
+### Test Bots (for contributors/debuggers)
 
-### Discord bot token + channel access required
+#### Discord bot token + channel access required
 
 * Fork/download source code + `npm install` in terminal
 * Configure environment variables

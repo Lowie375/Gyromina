@@ -254,9 +254,9 @@ function errorPull(x, message) {
 module.exports.run = {
   execute(message, args, client) {
     switch(args.length) {
-      case 0: message.reply("I can\'t convert something if I don't have any values or units to convert between!"); return;
-      case 1: message.reply("I can\'t convert something if you don't tell me the unit it's in!"); return;
-      case 2: message.reply("I can\'t convert something if you don't tell me what unit to convert it to!"); return;
+      case 0: return message.reply("I can\'t convert something if I don't have any values or units to convert between! Please add a value and try again.");
+      case 1: return message.reply("I can\'t convert something if you don't tell me the unit it's in! Please add the appropriate unit and try again.");
+      case 2: return message.reply("I can\'t convert something if you don't tell me what unit to convert it to! Please add the desired unit and try again.");
     }
     
     var cArgs = cleanArgs(args);
@@ -273,10 +273,9 @@ module.exports.run = {
     pos2 = parseInt(pos2.slice(1));
 
     // Checks if the units can be converted between
-    if (type1 != type2) {
-      message.reply("I can\'t convert between 2 unlike units! Please check your units and try again.");
-      return;
-    }
+    if (type1 != type2)
+      return message.reply("I can\'t convert between 2 unlike units! Please check your units and try again.");
+    
     var name1 = nameCases(converter[0][pos1], cArgs, 4, 1);
     var name2 = nameCases(converter[0][pos2], cArgs, 5, 0);
 
@@ -302,10 +301,8 @@ module.exports.run = {
       output = output * metrics[1][cArgs[5]];
     if (cArgs[4] != -1)
       output = output / metrics[1][cArgs[4]];
-    if (isNaN(output) == 1) {
-      message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");
-      return;
-    }
+    if (isNaN(output) == 1)
+      return message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");
 
     // Creates an approximation to go alongside the full conversion, if necessary
     if(!cArgs[3] || cArgs[3] < 0) {

@@ -1,10 +1,5 @@
-// Require the emoji regex and the RNG
-const emojiRegex = require('emoji-regex');
-//const emojiRegex = require('emoji-regex/es2015/index.js');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
-
-// Sets up the regex
-const regex = emojiRegex();
+// Require the RNG and the emoji checker
+const {getRandomInt, emojiCheck} = require('../systemFiles/globalFunctions.js');
 
 // Emoji setup
 const pront = "🖨️";
@@ -27,20 +22,6 @@ const excuses = ["the pronter ran out of black ink.",
   "the pronter caved in on itself.",
   "the pronter ran away."];
 
-function unicodeCheck(e) {
-  let match;
-  let save = [];
-  while (match = regex.exec(e)) {
-    save.push(match[0]);
-    //const emoji = match[0];
-    //console.log(`Matched sequence ${ emoji } — code points: ${ [...emoji].length }`);
-  }
-  if(save.length != 0)
-    return save[0];
-  else
-    return "null";
-}
-
 function makeExcuse() {
   let num = getRandomInt(0, excuses.length);
   if (num >= (excuses.length - 1)) {
@@ -51,46 +32,30 @@ function makeExcuse() {
 
 module.exports.run = {
   execute(message, args, client) {
-    if (!args) {
+    if (args.length == 0) {
       let excuse = makeExcuse();
-      message.reply(`${excuse} ¯\\_(ツ)_/¯\n(No emoji entered. Please enter a valid emoji and try again.)`);
-      return;
+      return message.reply(`${excuse} ¯\\_(ツ)_/¯\n(No emoji entered. Please enter a valid emoji and try again.)`);
     }
 
-    let uni = unicodeCheck(args[0]);
-    let emoji;
+    var uni = emojiCheck(args[0]);
+    var emoji;
     
-    // Checks if the unicode check passed
-    if (uni != "null") {
-      emoji = uni;
-    } else {
-      // Discord custom emoji (or random string), checks for proper custom emoji formatting
-      var pEmojiID = args[0].split("<")[1]
-      if (!pEmojiID) {
-        // Not an emoji, make an excuse
-        let excuse = makeExcuse();
-        message.reply(`${excuse} ¯\\_(ツ)_/¯\n(That's not a valid emoji. Please enter a valid emoji and try again.)`);
-        return;
-      }
-      var qEmojiID = pEmojiID.split(":");
-      var junk = args[0].split("<")[0].length;
-      if (!qEmojiID[2] || !args[0].slice(junk).startsWith("<") || qEmojiID[2].slice(-1) != ">") {
-        // Not an emoji, make an excuse
-        let excuse = makeExcuse();
-        message.reply(`${excuse} ¯\\_(ツ)_/¯\n(That's not a valid emoji. Please enter a valid emoji and try again.)`);
-        return;
-      }
-      var emojiID = qEmojiID[2].slice(0, -1);
-
-      emoji = client.emojis.cache.get(emojiID);
+    // Checks if the emoji check passed
+    if (uni[0] == "u") { // Pass; unicode
+      emoji = uni[1];
+    } else if (uni[0] == "c") { // Pass; custom 
+      emoji = client.emojis.cache.get(uni[1]);
       if (emoji == undefined) {
         // Emoji not found, make an excuse
         let excuse = makeExcuse();
-        message.reply(`${excuse} ¯\\_(ツ)_/¯\n(That emoji is from a server Gyromina can't access. Please choose a different emoji and try again.)`);
-        return;
+        return message.reply(`${excuse} ¯\\_(ツ)_/¯\n(That emoji is from a server Gyromina can't access. Please choose a different emoji and try again.)`);
       }
+    } else {
+      // Not an emoji, make an excuse
+      let excuse = makeExcuse();
+      return message.reply(`${excuse} ¯\\_(ツ)_/¯\n(That's not a valid emoji. Please enter a valid emoji and try again.)`);
     }
-
+    
     // Sends the printed emojis
     message.channel.send(`${pront}\n${emoji}\n${emoji}\n${emoji}`);
   },
@@ -103,6 +68,6 @@ module.exports.help = {
   "usage": `${process.env.prefix}pront <emoji>`,
   "params": "<emoji>",
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

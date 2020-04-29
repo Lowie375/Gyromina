@@ -17,10 +17,8 @@ module.exports.run = {
       || client.games.find(g => g.label.aliases && g.label.aliases.includes(gameName));
     
     // Checks if the game exists
-    if (!game) {
-      message.reply("I couldn't find the game you were looking for. Please check your spelling and try again.");
-      return;
-    }
+    if (!game)
+      return message.reply("I couldn't find the game you were looking for. Please check your spelling and try again.");
     
     // Prepares game options
     args.shift();

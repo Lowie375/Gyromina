@@ -54,27 +54,19 @@ module.exports.run = {
 
     var number = 0;
 
-    if (!args.length) {
-      message.reply('I can\'t generate a number between a non-existent range!')
-      return;
-    }
+    if (args.length == 0)
+      return message.reply('I can\'t generate a number between a non-existent range!')
 
     if (args.length >= 2) {
-
-      if (!isNaN(args[0]) && !isNaN(args[1])) {
+      if (!isNaN(args[0]) && !isNaN(args[1]))
         number = getRandomNumber(args[0], args[1]);
-      } else {
-        message.reply('I can\'t generate a random number between non-numerical values!');
-        return;
-      }
+      else
+        return message.reply('I can\'t generate a random number between non-numerical values!');
     } else if (args.length = 1) {
-
-      if (!isNaN(args[0])) {
+      if (!isNaN(args[0]))
         number = getRandomNumber(0, args[0]);
-      } else {
-        message.reply('I can\'t generate a random number between non-numerical values!');
-        return;
-      }
+      else
+        return message.reply('I can\'t generate a random number between non-numerical values!');
     }
 
     const embed = new Discord.MessageEmbed()

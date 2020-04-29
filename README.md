@@ -19,7 +19,7 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 ### External Links
 
-[Info Pages][info] / [Commands][commands] / Changelog (TBA) / [Invite Link][invite]
+[Info Pages][info] / [Commands][commands] / [Changelog][log] / [Invite Link][invite]
 
 ## Setup
 
@@ -32,14 +32,14 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
   * progressLog/errorLog: Discord channel IDs for integrated commit/error logs
   * gitToken/gitUsername/gitRepoName: Optional; only used with `release`
 * Configure package file
-  * hostID = Your Discord user ID (enables use of `shutdown`, `vartest`, and `release`)
+  * hostID = Your Discord user ID (enables use of `shutdown` and `vartest`)
 * Run using your native runtime/debugger and you're good to go!
 
 ## Contributors
 
-![Major Contributor 💻][maj-contrib-label]
-![Minor Contributor 📗][min-contrib-label]
-![Debugger 🦟][debugger-label]
+[![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
+[![Minor Contributor 📗][maj-contrib-label]][maj-contrib-label]
+[![Debugger 🦟][debugger-label]][debugger-label]
 
 ### Author
 
@@ -50,12 +50,14 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 * 💻 Alten#4148 - [@Altenhh](https://www.github.com/Altenhh)
 * 🦟 Homura#5331 - [@Homurasama](https://www.github.com/Homurasama)
 
+<!-- ### Testers -->
+
 <!-- Links + images -->
-[commands]: https://lx375.weebly.com/gyromina-commands
+[commands]: https://lx375.weebly.com/gyro-commands
 [gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
 [info]: https://lx375.weebly.com/gyromina
 [invite]: https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot
-[log]: https://lx375.weebly.com/gyromina-log
+[log]: https://lx375.weebly.com/gyro-log
 
 [djs-link]: https://discord.js.org
 [dependency-link]: https://david-dm.org/Lowie375/Gyromina

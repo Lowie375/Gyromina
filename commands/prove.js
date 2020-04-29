@@ -20,21 +20,19 @@ const proof = ["because that's just how it is.",
 
 module.exports.run = {
   execute(message, args, client) {
+    if (args.length == 0)
+      return message.reply("you didn't give me anything to prove!");
+    
+    const [...statement] = args;
 
-    if (!args.length) {
-      message.reply("you didn't give me anything to prove!")
-    } else {
-      const [...statement] = args;
-
-      var num = getRandomInt(0, proof.length);
-      if (num >= (proof.length - 1)) {
-        num = proof.length - 1;
-      }
-      const selected = proof[num];
-
-      message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
+    var num = getRandomInt(0, proof.length);
+    if (num >= (proof.length - 1)) {
+      num = proof.length - 1;
     }
-  },
+    const selected = proof[num];
+
+    message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
+  }
 };
 
 module.exports.help = {

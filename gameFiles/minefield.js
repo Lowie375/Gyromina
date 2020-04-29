@@ -266,10 +266,9 @@ module.exports.exe = {
     else
       bombs = bombCheck(options[0]);
     
-    if (bombs % 1 != 0) {
-      message.reply("that's not a valid number of mines! Please enter a valid whole number between 4 and 20 or a valid preset and try again.");
-      return;
-    }
+    if (bombs % 1 != 0)
+      return message.reply("that's not a valid number of mines! Please enter a valid whole number between 4 and 20 or a valid preset and try again.");
+
     if (bombs > 20) {
       bombs = 20;
       content = "*The mine count has been reduced to 20 (max).*\n\n"

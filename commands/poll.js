@@ -15,7 +15,36 @@ function typeCheck(x) {
     if(x == types[i][0])
       return i;
   }
-  return "null";
+  return null;
+}
+
+function optionCheck(type, options) {
+  if (type == 2) {
+    // Scale poll: determines custom min/max (if present)
+    let save = [2, 6];
+    for (op of options) {
+      let opSplit = op.split(" ");
+      if (opSplit[0].startsWith("min") && opSplit[1].length != 0)
+        save[0] = parseInt(opSplit[1])+1;
+      else if (opSplit[0].startsWith("max") && opSplit[1].length != 0)
+        save[1] = parseInt(opSplit[1])+1;
+    }
+    // Checks if min/max are within bounds
+    save[0] = Math.max(1, save[0]);
+    save[1] = Math.min(11, save[1]);
+
+    // Checks if the min is larger than the max
+    if (save[0] > save[1]) {
+      let tempMax = save[0];
+      save.shift();
+      save.push(tempMax);
+    }
+    // Returns the min/max
+    return save;
+  } else {
+    // No options
+    return null;
+  }
 }
 
 module.exports.run = {
@@ -30,31 +59,68 @@ module.exports.run = {
 
     // Checks the poll type
     let type = typeCheck(args[0]);
-    if (type != "null") { // Preset polls
+    if (type != null) { // Preset polls
 
       // Shifts out the type name
       args.shift();
       // Splits up the prompt + options
-      let prompt = args.split("-")[0];
-      let options = args.split("-");
-      options.shift();
+      let options = args.join(" ").split("-");
+      let prompt = options.shift();
 
-      // option handler (min/max)
+      // Handles options and the description message
+      let opVals = optionCheck(type, options);
+      let content;
+      switch (type) {
+        case 0: content = `Vote yes ${client.emojis.cache.get(e.poll.yes)} or no ${client.emojis.cache.get(e.poll.no)} using the emojis below.`; break;
+        case 1: content = `Vote yes ${client.emojis.cache.get(e.poll.yes)}, neutral ${client.emojis.cache.get(e.poll.nx)}, or no ${client.emojis.cache.get(e.poll.no)} using the emojis below.`; break;
+        case 2: content = `Vote on a scale from ${opVals[0]-1} to ${opVals[1]-1} using the emojis below.`; break;
+        default: content = ``; break;
+      }
 
-      // create message contents
+      // Deletes the poll creation message (for cleanliness)
+      message.delete();
+
+      // Sets up the poll embed
+      embed.setTitle(`${prompt}`);
+      embed.setColor(0x7effaf);
+      embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
+      embed.setTimestamp();
+      if (content != "")
+        embed.setDescription(`${content}`);
+
+      // Sends the embed
+      message.channel.send({embed: embed})
+        .then (async poll => {
+          // Awaits reactions
+          switch (type) {
+            case 0:
+            case 1:
+              for (let i = 1; i < types[type].length; i++) {
+                await poll.react(types[type][i]);
+              }
+              break;
+            case 2:
+              for (let i = opVals[0]; i <= opVals[1]; i++) {
+                await poll.react(types[type][i]);
+              }
+              break;
+          }
+      });     
 
     } else { // custom polls
 
       let pollRoot = args.join(" ").split("-");
-      let prompt = pollRoot[0];
-      pollRoot.shift();
+      let prompt = pollRoot.shift();
       let options = [];
+
+      if (pollRoot.length == 0)
+        return message.reply("I can't make a poll without any poll options!");
 
       for (const shell of pollRoot) {
         let x = shell.split(" ");
         let e = x.shift();
-        x.shift().join(" ");
-        options.push([e, x]);
+        let s = x.join(" ");
+        options.push([e, s]);
       }
 
       // Creates a list of reactions + checks for invalid emojis
@@ -68,8 +134,8 @@ module.exports.run = {
         } else if (u[0] == "c") { // Custom, check if accessible
           let c = client.emojis.cache.get(u[1]);
           switch (c) {
-            case undefined: fails.push(i); // Accessible; push
-            default: rxns.push(c); // Not accessible; fail
+            case undefined: fails.push(i); // Not accessible; fail
+            default: rxns.push(c); // Accessible; push
           }
         } else { // Not an emoji; fail
           fails.push(i);
@@ -80,35 +146,30 @@ module.exports.run = {
       if(fails.length != 0)
         return message.reply(`some custom emojis (\#${fails.join(", \#")}) were invalid. Please check your emojis and try again.`);
       
-      // content merger
+      // Merges content together
+      for (let i = 0; i < rxns.length; i++) {
+        content += `${rxns[i]} ${options[i][1]}\n`;
+      }
 
-      // await reactions
-      
+      // Deletes the poll creation message (for cleanliness)
+      message.delete();
+
+      // Sets up the poll embed
+      embed.setTitle(`${prompt}`);
+      embed.setColor(0x7effaf);
+      embed.setDescription(`${content}`);
+      embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
+      embed.setTimestamp();
+
+      // Sends the embed
+      message.channel.send({embed: embed})
+        .then (async poll => {
+          // Awaits reactions
+          for (rx of rxns) {
+            await poll.react(rx);
+          }
+      });     
     }
-
-    // Pseudocode time!
-      // check if poll is valid (has type/prompt/options/etc.)
-      // create embed shell
-      // check poll type
-      // CASE 1: preset poll
-        // add prompt
-        // react with options (await)
-      // CASE 2: custom poll
-        // add prompt
-        // handle emojis + descriptors
-        // METHOD I:
-          // join array + .split("-") + .shift()
-          // .split(" ") to temp array
-          // join + push to final array
-        // METHOD II:
-          // detect using .startsWith("-")
-          // split off to temp array
-          // join + push to final array
-        // add emojis + descriptors
-        // reach with options (await)
-      // post poll embed
-      // done!
-    
   },
 };
 
@@ -119,6 +180,6 @@ module.exports.help = {
   "params": ["<type> <prompt> -[options]", "<prompt> -<e1> [o1] -[e2] [o2] …"],
   "helpurl": "https://lx375.weebly.com/gyrocmd-poll",
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

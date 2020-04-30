@@ -23,10 +23,7 @@ const excuses = ["the pronter ran out of black ink.",
   "the pronter ran away."];
 
 function makeExcuse() {
-  let num = getRandomInt(0, excuses.length);
-  if (num >= (excuses.length - 1)) {
-    num = excuses.length - 1;
-  }
+  let num = getRandomInt(0, excuses.length-1);
   return excuses[num];
 }
 

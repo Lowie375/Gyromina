@@ -39,7 +39,9 @@ exports.Clean = function(text) {
 exports.getRandomInt = function(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
+  let output = Math.floor(Math.random() * (max - min + 1)) + min
+  if (output > max) output = max;
+  return output;
 };
 
 exports.emojiCheck = function(e) {
@@ -53,13 +55,13 @@ exports.emojiCheck = function(e) {
     return ["u", save[0]];
   } else {
     // Discord custom emoji (or random string), checks for proper custom emoji formatting
-    let pEmojiID = e.split("<")[1]
+    let pEmojiID = e[0].split("<")[1]
     if (!pEmojiID)
       return ["n", "null"]; // Not an emoji
 
     let qEmojiID = pEmojiID.split(":");
-    let junk = e.split("<")[0].length;
-    if (!qEmojiID[2] || !e.slice(junk).startsWith("<") || qEmojiID[2].slice(-1) != ">")
+    let junk = e[0].split("<")[0].length;
+    if (!qEmojiID[2] || !e[0].slice(junk).startsWith("<") || qEmojiID[2].slice(-1) != ">")
       return ["n", "null"]; // Not an emoji
 
     return ["c", qEmojiID[2].slice(0, -1)];

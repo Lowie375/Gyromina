@@ -28,13 +28,13 @@ function getRandomNumber(min, max) {
   altMin -= altMin % 1;
   altMax -= altMax % 1;
 
-  num = getRandomInt(altMin, altMax+1);
+  num = getRandomInt(altMin, altMax);
 
   if (factor != 1) {
     switch (num) {
-      case altMin: numDecim = getRandomInt(altMinDecim*factor, factor)/factor; break;
-      case altMax: numDecim = getRandomInt(0, altMaxDecim*factor)/factor; break;
-      default: numDecim = getRandomInt(0, factor)/factor; break;
+      case altMin: numDecim = getRandomInt(altMinDecim*factor, factor-1)/factor; break;
+      case altMax: numDecim = getRandomInt(0, altMaxDecim*factor-1)/factor; break;
+      default: numDecim = getRandomInt(0, factor-1)/factor; break;
     }
     num += numDecim;
   }

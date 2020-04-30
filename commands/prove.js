@@ -25,10 +25,7 @@ module.exports.run = {
     
     const [...statement] = args;
 
-    var num = getRandomInt(0, proof.length);
-    if (num >= (proof.length - 1)) {
-      num = proof.length - 1;
-    }
+    var num = getRandomInt(0, proof.length-1);
     const selected = proof[num];
 
     message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);

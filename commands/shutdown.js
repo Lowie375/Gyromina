@@ -18,11 +18,9 @@ module.exports.run = {
     // Shuts down the current instance of the Discord Client.
     let tag = client.user.tag;
     await message.channel.send(`${yep}`);
-    client.user.setStatus("invisible");
-    console.log(`Shutting down ${tag}...`);
+    await client.user.setStatus("invisible");
+    console.log(`Shutting down ${tag}...\n- - - - - - - - - - -`);
     await client.destroy();
-    let t = new Date();
-    console.log(`Successfully shut down ${tag} on ${t.toUTCString()}.\n- - - - - - - - - - -`)
   },
 };
 

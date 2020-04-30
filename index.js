@@ -72,7 +72,7 @@ client.on('message', message => {
 
   // Checks if the command is unstable. If so, displays a warning instead of running the command.
   if(process.env.exp === "0" && command.help.wip === 1) {
-    if(message.author.id === package.authorID) {
+    if(message.author.id === package.hostID) {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n${warning} Please enable **experimental mode** to run it.`);
     } else {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.`);
@@ -92,7 +92,7 @@ client.on('message', message => {
 // Warns when there is a warning with a bot
 client.on('warn', w => {
   // Generates a warning message & logs the warning
-  genWarningMsg(message, client, w);
+  genWarningMsg(client, w);
   console.warn(w);
 });
 

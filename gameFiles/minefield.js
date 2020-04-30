@@ -45,10 +45,8 @@ function bombCheck(x) {
 
 function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
   // Generates bomb coordinates
-  let x = getRandomInt(1, 12);
-  if (x == 12) x = 11;
-  let y = getRandomInt(1, 7);
-  if (y == 7) y = 6;
+  let x = getRandomInt(1, 11);
+  let y = getRandomInt(1, 6);
   
   // Checks if the randomly selected space already has a bomb
   if (field[y][x] == bmb) {
@@ -238,6 +236,15 @@ function checkBombPos(x, y, ry, ty, tempSteps, field) {
   }
 }
 
+function removeRxnLoop(urxn, player, n = 0) {
+  try {
+    urxn.users.remove(player);
+  } catch {
+    if (n >= 5) return;
+    removeRxnLoop(urxn, player, n+1);
+  }
+};
+
 module.exports.exe = {
   start(message, client, player, options) {
     // Minefield shell
@@ -350,10 +357,9 @@ module.exports.exe = {
           // Removes the corresponding reaction
           const userReaction = board.reactions.cache.filter(reaction => reaction.users.cache.has(player) && reaction.emoji.name == r.emoji.name);
           for (const urxn of userReaction.values()) {
-            urxn.users.remove(player);
+            removeRxnLoop(urxn, player);
             // Should only iterate once. This is the only way I could get it to work, unfortunately
           }
-          //board.reactions.cache.get(r.emoji).remove();
 
           // Empties and resets the reaction collector
           builder.empty();

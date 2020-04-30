@@ -11,7 +11,7 @@
 
 ### "Fun + function, all in one."
 
-Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from Alten#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and Homura#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
+Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from Alten#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and Homura#5331
 
 Latest stable build: 0.12.0
 
@@ -21,13 +21,17 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 **[Info Pages][info]** / **[Commands][commands]** / **[Changelog][log]** / **[Invite Link][invite]**
 
+### Functionality
+
+Gyromina can do a bunch of things, like generate random colours and numbers, play minigames, perform unit conversions, create polls, and more!
+
 ## Setup
 
 ### General (for server owners/admins)
 
 * Follow this link: [https://discord.now.sh/490590334758420481?p537259072][invite]
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled
+* Make sure all requested permissions are enabled (namely Manage Webhooks and Manage Messages)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)
@@ -44,7 +48,10 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
   * `hostID` = Your Discord user ID (enables local use of `shutdown` and `vartest`)
 * Run using your native runtime/debugger and you're good to go!
 
-<!-- ### Contribution Guidelines -->
+## Contributing
+
+Contributions to Gyromina are always welcome! I'm still an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript and Node. A little help goes a long way.
+Please see **CONTRIBUTING.md** (TBA) for general style notes, contribution code of conduct, and other relevant notes.
 
 ## Contributors
 
@@ -56,10 +63,12 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 * 💻 L375#6740 - [@Lowie375](https://www.github.com/Lowie375)
 
-### Repository Contributors
+### Repo Contributors
 
 * 💻 Alten#4148 - [@Altenhh](https://www.github.com/Altenhh)
-* 🦟 Homura#5331 - [@Homurasama](https://www.github.com/Homurasama)
+* 📗 Homura#5331 - @Homurasama
+
+<!-- ### Helpers -->
 
 <!-- ### Testers -->
 

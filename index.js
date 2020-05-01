@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');
 const e = require('./systemFiles/emojis.json');
-const { genErrorMsg } = require('./systemFiles/refcodes.js');
+const {genErrorMsg} = require('./systemFiles/refcodes.js');
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();

@@ -52,7 +52,7 @@ Gyromina can do a bunch of things, like generate random colours and numbers, pla
 
 Contributions to Gyromina are always welcome! I'm still an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help goes a long way.
 
-Please see **docs/CONTRIBUTING.md** (TBA) for general style notes and **docs/CODE_OF_CONDUCT.md** (TBA) for the community code of conduct.
+Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
 
 ## Contributors
 

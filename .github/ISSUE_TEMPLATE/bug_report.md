@@ -19,6 +19,7 @@ Most of the time, errors will cause a small embed box will pop up with a link to
 ![Gyromina Error Codes](https://user-images.githubusercontent.com/40923337/65012358-dc731100-d8cb-11e9-9a0f-b42125ace028.png)
 
 The part circled in red is the **reference code**. If you have any, post them somewhere inside your bug report. I can use them to find logs for each error, which help me get a better understanding of what went wrong.
+
 *If there aren't any reference codes associated with your bug, add "No reference code" or something similar to your bug report so that I know.*
 
 **Patterns**
@@ -29,4 +30,4 @@ If you noticed any patterns in unexpected behaviour, add them. They may help me 
 
 Add any other context about the problem here.
 
-###### *Template updated on April 14, 2020*
+###### *Template updated on April 30, 2020*

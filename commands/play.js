@@ -12,16 +12,13 @@ module.exports.run = {
     const player = message.author.id;
     
     // Finds the requested game file
-    const gameName = args[0];
+    const gameName = args.shift();
     const game = client.games.get(gameName)
       || client.games.find(g => g.label.aliases && g.label.aliases.includes(gameName));
     
     // Checks if the game exists
     if (!game)
       return message.reply("I couldn't find the game you were looking for. Please check your spelling and try again.");
-    
-    // Prepares game options
-    args.shift();
 
     if(process.env.exp === "0" && game.label.indev === 1) {
       if(message.author.id === package.authorID) {

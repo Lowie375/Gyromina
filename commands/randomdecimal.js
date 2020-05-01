@@ -21,26 +21,20 @@ function getRandomDecimal(min, max, decims) {
 
 module.exports.run = {
   execute(message, args, client) {
-
     var number = 0;
-    var fail = false;
 
-    if (!args.length) {
+    if (args.length == 0)
       number = getRandomDecimal(0, 1, 10);
-    } else if (args[0] < 0) {
-      fail = true;
-      message.reply("I can\'t generate a decimal number to a negative amount of decimal places!");
-    } else if (args[0] >= 0) {
+    else if (args[0] < 0)
+      return message.reply("I can\'t generate a decimal number to a negative amount of decimal places!");
+    else if (args[0] >= 0)
       number = getRandomDecimal(0, 1, args[0]);
-    }
 
-    if (fail === false) {
-      const embed = new Discord.MessageEmbed()
-        .setTitle(`\`${number}\``)
-        .setColor(0x7effaf);
+    const embed = new Discord.MessageEmbed()
+      .setTitle(`\`${number}\``)
+      .setColor(0x7effaf);
 
-        message.reply("here you go!", {embed: embed});
-    }
+    message.reply("here you go!", {embed: embed});
   }
 };
 

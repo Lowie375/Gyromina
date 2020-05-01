@@ -1,5 +1,5 @@
 // Require the RNG
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 module.exports.exe = {
   start(message, client, player, options) {
@@ -15,7 +15,7 @@ module.exports.label = {
   "art": "",
   "options": "[mode]",
   "optionsdesc": "\• [mode]: A mode preset (standard, hex, octal, dodeca, double, double-dodeca, quadruple, quadruple-dodeca)",
-  "exclusive": 0,
+  "exclusive": 1,
   "indev": 1,
   "deleted": 0
 };

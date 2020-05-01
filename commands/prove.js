@@ -1,5 +1,5 @@
 // Require the RNG
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 // List of 'proofs'
 const proof = ["because that's just how it is.",
@@ -14,25 +14,22 @@ const proof = ["because that's just how it is.",
   "because the RNG said so, and the RNG is always right.",
   "because the internet thinks so.",
   "because… why not.",
-  "because Gyromina is never gonna tell a lie… and hurt you. _\\\*insert rickroll here\\\*_"];
+  "because Gyromina is never gonna tell a lie… and hurt you. _\\\*insert rickroll here\\\*_",
+  "because… yes.",
+  "because it helps Gyromina sleep at night."];
 
 module.exports.run = {
   execute(message, args, client) {
+    if (args.length == 0)
+      return message.reply("you didn't give me anything to prove!");
+    
+    const [...statement] = args;
 
-    if (!args.length) {
-      message.reply("you didn't give me anything to prove!")
-    } else {
-      const [...statement] = args;
+    var num = getRandomInt(0, proof.length-1);
+    const selected = proof[num];
 
-      var num = getRandomInt(0, proof.length);
-      if (num >= (proof.length - 1)) {
-        num = proof.length - 1;
-      }
-      const selected = proof[num];
-
-      message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
-    }
-  },
+    message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
+  }
 };
 
 module.exports.help = {

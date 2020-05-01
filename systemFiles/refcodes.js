@@ -1,6 +1,6 @@
 // Require discord.js and the RNG
 const Discord = require('discord.js');
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 // Declares CBX characters for future use
@@ -34,8 +34,8 @@ function genCode() {
   var mn = d.getUTCMonth() + 1;
   var dy = d.getUTCDay();
   var time = d.getUTCHours() * 10000 + d.getUTCMinutes() * 100 + d.getUTCSeconds() + 10101;
-  var inte1 = getRandomInt(1024, 32768);
-  var inte2 = getRandomInt(32, 1024);
+  var inte1 = getRandomInt(1024, 32767);
+  var inte2 = getRandomInt(32, 1023);
   // Debug snippet
   //console.log(`yr: ${yr}, mn: ${mn}, dy: ${dy}, time: ${time}, inte1: ${inte1}, inte2: ${inte2}`);
   var rCode = `${toCBX(inte1, 32)}${toCBX(dy, 32)}${toCBX(mn, 32)}${toCBX(inte2, 32)}${toCBX(time, 32)}${toCBX(yr, 32)}`;
@@ -64,7 +64,7 @@ exports.genErrorMsg = function(message, client, error) {
 }
 
 // Warning generator
-exports.genWarningMsg = function(message, client, w) {
+exports.genWarningMsg = function(client, w) {
   // Sends the warning to the Gyromina log channel
   const log = client.channels.cache.get(process.env.errorLog);
   log.send(`WARNING\n\`\`\`js${w.stack}\`\`\``);

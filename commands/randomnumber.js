@@ -1,6 +1,6 @@
 // Require discord.js and the RNG
 const Discord = require('discord.js');
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;
@@ -28,13 +28,13 @@ function getRandomNumber(min, max) {
   altMin -= altMin % 1;
   altMax -= altMax % 1;
 
-  num = getRandomInt(altMin, altMax+1);
+  num = getRandomInt(altMin, altMax);
 
   if (factor != 1) {
     switch (num) {
-      case altMin: numDecim = getRandomInt(altMinDecim*factor, factor)/factor; break;
-      case altMax: numDecim = getRandomInt(0, altMaxDecim*factor)/factor; break;
-      default: numDecim = getRandomInt(0, factor)/factor; break;
+      case altMin: numDecim = getRandomInt(altMinDecim*factor, factor-1)/factor; break;
+      case altMax: numDecim = getRandomInt(0, altMaxDecim*factor-1)/factor; break;
+      default: numDecim = getRandomInt(0, factor-1)/factor; break;
     }
     num += numDecim;
   }
@@ -54,27 +54,19 @@ module.exports.run = {
 
     var number = 0;
 
-    if (!args.length) {
-      message.reply('I can\'t generate a number between a non-existent range!')
-      return;
-    }
+    if (args.length == 0)
+      return message.reply('I can\'t generate a number between a non-existent range!')
 
     if (args.length >= 2) {
-
-      if (!isNaN(args[0]) && !isNaN(args[1])) {
+      if (!isNaN(args[0]) && !isNaN(args[1]))
         number = getRandomNumber(args[0], args[1]);
-      } else {
-        message.reply('I can\'t generate a random number between non-numerical values!');
-        return;
-      }
+      else
+        return message.reply('I can\'t generate a random number between non-numerical values!');
     } else if (args.length = 1) {
-
-      if (!isNaN(args[0])) {
+      if (!isNaN(args[0]))
         number = getRandomNumber(0, args[0]);
-      } else {
-        message.reply('I can\'t generate a random number between non-numerical values!');
-        return;
-      }
+      else
+        return message.reply('I can\'t generate a random number between non-numerical values!');
     }
 
     const embed = new Discord.MessageEmbed()

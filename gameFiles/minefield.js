@@ -1,6 +1,6 @@
 // Require the game functions file and the RNG
 const func = require('../systemFiles/gameFunctions.js');
-const { getRandomInt } = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 // Display icons
 const air = "󠀠⬛";
@@ -9,9 +9,10 @@ const bmb = "🧨";
 const bam = "💥";
 const bkd = "❌";
 const ibx = "📥";
+const ccl = "♻️";
 // Instruction icons
 const dir = ["🔑", "🛑", "◀️", "🔼", "▶️", "🔽", "🤖", "💎"];
-const rxns = [dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], bkd, ibx];
+const rxns = [dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], bkd, ibx, ccl];
 
 function bombCheck(x) {
   switch(x) {
@@ -39,21 +40,19 @@ function bombCheck(x) {
     case "u":
       return 20;
     default:
-      return x;
+      return parseInt(x);
   }
 }
 
 function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
   // Generates bomb coordinates
-  let x = getRandomInt(1, 12);
-  if (x == 12) x = 11;
-  let y = getRandomInt(1, 7);
-  if (y == 7) y = 6;
+  let x = getRandomInt(1, 11);
+  let y = getRandomInt(1, 6);
   
   // Checks if the randomly selected space already has a bomb
   if (field[y][x] == bmb) {
     // Regenerates the bomb
-    genBomb(field, ry, ty, tempSteps, bombOrder, i);
+    genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr);
   } else {
     // Places a bomb
     field[y][x] = bmb;
@@ -64,7 +63,7 @@ function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
     clearBarricades(field);
     field[y][x] = air;
     attCtr++;
-    if (attCtr >= 250) {
+    if (attCtr >= 25) {
       // Removes this bomb and regenerates the previous bomb
       bombOrder.pop();
       i--;
@@ -238,6 +237,15 @@ function checkBombPos(x, y, ry, ty, tempSteps, field) {
   }
 }
 
+function removeRxnLoop(urxn, player, n = 0) {
+  try {
+    urxn.users.remove(player);
+  } catch {
+    if (n >= 5) return;
+    removeRxnLoop(urxn, player, n+1);
+  }
+};
+
 module.exports.exe = {
   start(message, client, player, options) {
     // Minefield shell
@@ -252,10 +260,8 @@ module.exports.exe = {
       [wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll]
     ];
     // Position variables
-    var robotY = 0;
-    var targetY = 0;
     var tempSteps = [];
-    var bombs = 0;
+    var bombs;
     var bombOrder = [[]];
     //var boardID = "";
     var steps = [];
@@ -266,10 +272,11 @@ module.exports.exe = {
     else
       bombs = bombCheck(options[0]);
     
-    if (bombs % 1 != 0) {
-      message.reply("that's not a valid number of mines! Please enter a valid whole number between 4 and 20 or a valid preset and try again.");
-      return;
-    }
+    // Checks if options are valid
+    if (isNaN(bombs))
+      return message.reply("that's not a valid mine count/preset! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.");
+
+    // Adjusts bomb count, if necessary
     if (bombs > 20) {
       bombs = 20;
       content = "*The mine count has been reduced to 20 (max).*\n\n"
@@ -279,9 +286,9 @@ module.exports.exe = {
     }
 
     // Randomly place robot and target
-    robotY = getRandomInt(1, 7);
+    var robotY = getRandomInt(1, 7);
     if (robotY == 7) robotY = 6;
-    targetY = getRandomInt(1, 7);
+    var targetY = getRandomInt(1, 7);
     if (targetY == 7) targetY = 6;
     var startY = robotY;
 
@@ -307,14 +314,14 @@ module.exports.exe = {
     `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
     `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
     `\`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n` +
-    `${bkd} Delete last instruction  •  ${ibx} Confirm instructions\`\`\`` + 
+    `${bkd} Delete last instruction  •  ${ibx} Confirm instructions  •  ${ccl} Quit game\`\`\`` + 
     `\*This instance of the game will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
 
     // Post the field + instructions
     message.channel.send(`${content}\n\*Waiting for emojis to load…\*`)
       .then (async board => {         
         // Add reactions (in order, yay!)
-        for (let i = 0; i <= 7; i++) {
+        for (let i = 0; i < rxns.length; i++) {
           await board.react(rxns[i]);
         }
 
@@ -345,16 +352,18 @@ module.exports.exe = {
             case rxns[7]:
               builder.stop("complete");
               return;
+            case rxns[8]:
+              builder.stop("cancel");
+              return;
             default:
               break;
           }
           // Removes the corresponding reaction
           const userReaction = board.reactions.cache.filter(reaction => reaction.users.cache.has(player) && reaction.emoji.name == r.emoji.name);
           for (const urxn of userReaction.values()) {
-            urxn.users.remove(player);
+            removeRxnLoop(urxn, player);
             // Should only iterate once. This is the only way I could get it to work, unfortunately
           }
-          //board.reactions.cache.get(r.emoji).remove();
 
           // Empties and resets the reaction collector
           builder.empty();
@@ -436,9 +445,11 @@ module.exports.exe = {
               break;
             case "time": // Timeouts
             case "idle":
-              board.edit(`${content}\n\*\*The game timed out due to inactivity. Please restart the game if you would like to play again.\*\*`); return 0;
+              board.edit(`${content}\n\*\*This \`minefield\` instance timed out due to inactivity. Please restart the game if you would like to play again.\*\*`); return;
+            case "cancel": // Manually cancelled
+              board.edit(`${content}\n\*\*This \`minefield\` instance has been stopped. Please restart the game if you would like to play again.\*\*`); return;
             default: // Other (error!)
-              board.edit(`${content}\n\*\*The game has encountered an unknown error. Please restart the game if you would like to play again.\*\*`); return 0;
+              board.edit(`${content}\n\*\*This \`minefield\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.\*\*`); return;
           }
         });
     });

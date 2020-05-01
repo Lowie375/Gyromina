@@ -129,12 +129,18 @@ module.exports.run = {
       else
         embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName})`);
 
-      if(!cmdy.help.aliases)
-        embed.setDescription(`${cmdy.help.description}\n\• Usage: ${cmdy.help.usage}`);
-      else if(Array.isArray(cmdy.help.aliases) == false)
-        embed.setDescription(`${cmdy.help.description}\n\• Alias: ${process.env.prefix}${cmdy.help.aliases}\n\• Usage: ${cmdy.help.usage}`);
-      else
-        embed.setDescription(`${cmdy.help.description}\n\• Aliases: ${process.env.prefix}${cmdy.help.aliases.join(`, ${process.env.prefix}`)}\n\• Usage: ${cmdy.help.usage}`);
+      let desc = "";
+      if(cmdy.help.aliases && Array.isArray(cmdy.help.aliases) == false)
+        desc += `${cmdy.help.description}\n\• Alias: ${process.env.prefix}${cmdy.help.aliases}`;
+      else if(cmdy.help.aliases)
+        desc += `${cmdy.help.description}\n\• Aliases: ${process.env.prefix}${cmdy.help.aliases.join(`, ${process.env.prefix}`)}`;
+      
+      desc += `\n\• Usage: ${cmdy.help.usage}`;
+
+      if(cmdy.help.helpurl)
+        desc += `\n\• For more help, [tap/click here](${cmdy.help.helpurl})`;
+      
+      embed.setDescription(desc);
 
     } else if (args.length >= 1 && conditions[1] == 1) { // Detailed game help
 
@@ -170,10 +176,10 @@ module.exports.run = {
 
       let desc = gmz.label.description;
       if(Array.isArray(gmz.label.aliases) == false)
-        desc += "\n\• Alias: " + process.env.prefix + gmz.label.aliases;
+        desc += `\n\• Alias: ${process.env.prefix}${gmz.label.aliases}`;
       else if(gmz.label.aliases >= 2)
-        desc += "\n\• Aliases: " + process.env.prefix + gmz.label.aliases.join(`, ${process.env.prefix}`);
-      if (gmz.label.options) desc += "\n\nOptions:\n" + gmz.label.optionsdesc;
+        desc += `\n\• Aliases: ${process.env.prefix}${gmz.label.aliases.join(`, ${process.env.prefix}`)}`;
+      if (gmz.label.options) desc += `\n\nOptions:\n${gmz.label.optionsdesc}`;
       embed.setDescription(desc);
 
     } else if (conditions[1] == 1) { // General game help

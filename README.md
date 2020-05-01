@@ -87,7 +87,7 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for general style no
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
-[commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/0.12.0
+[commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina
 [contributors-img]: https://img.shields.io/github/contributors/Lowie375/Gyromina
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 

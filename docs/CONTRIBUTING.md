@@ -2,22 +2,22 @@
 
 First off, if you're reading this file, I assume you want to help me improve Gyromina. Thanks for doing that, I really appreciate it!
 
-Secondly, please make sure you've read through the code of conduct under [**docs/CODE_OF_CONDUCT.md**](https://github.com/Lowie375/Gyromina/blob/master/docs/CODE_OF_CONDUCT.md) before contributing.
+Secondly, please make sure you've read through the code of conduct under [**docs/CODE_OF_CONDUCT.md**](CODE_OF_CONDUCT.md) before contributing.
 
 ## General Notes
 
 ### If you are reporting a bug:
 * Check the GitHib [issues tab](https://github.com/Lowie375/Gyromina/issues) to see if your bug has already been reported
-* If it has not been reported, create a new issue using the primary issue template under [**.github/ISSUE_TEMPLATE/bug_report.md**](https://github.com/Lowie375/Gyromina/blob/master/.github/ISSUE_TEMPLATE/bug_report.md)
+* If it has not been reported, create a new issue using the primary issue template under [**.github/ISSUE_TEMPLATE/bug_report.md**](/.github/ISSUE_TEMPLATE/bug_report.md)
 
 ### If you are contributing code or patching a bug:
 * Open a new GitHub pull request
 * Add a title that summarizes the pull request and list changes in the pull request's description
-* Preferably, have code in your pull request follow Gyromina's main conventions (listed [below](https://github.com/Lowie375/Gyromina/new/master#code-conventions)\)
+* Preferably, have code in your pull request follow Gyromina's main conventions (listed [below](#code-conventions)\)
 
 ### If you are requesting a feature:
 * Check the GitHib [issues tab](https://github.com/Lowie375/Gyromina/issues) to see if that feature has already been requested
-* If it has not been requested, create a new issue using the primary feature request template under [**.github/ISSUE_TEMPLATE/feature_request.md**](https://github.com/Lowie375/Gyromina/blob/master/.github/ISSUE_TEMPLATE/feature_request.md)
+* If it has not been requested, create a new issue using the primary feature request template under [**.github/ISSUE_TEMPLATE/feature_request.md**](/.github/ISSUE_TEMPLATE/feature_request.md)
 
 ## Code Conventions
 These are the main conventions I've tried to follow within Gyromina's code. You should be able to get the gist of them (along with other minor conventions) once you start reading through some of the code.
@@ -28,7 +28,7 @@ These are the main conventions I've tried to follow within Gyromina's code. You 
 
 ## Other Notes
 If you have contributed or tested code:
-* Feel free to add yourself to the list of contributors or testers in [**package.json**](https://github.com/Lowie375/Gyromina/blob/master/package.json), if you'd like to
+* Feel free to add yourself to the list of contributors or testers in [**package.json**](/package.json), if you'd like to
   * **Contributors**: Add your Discord tag to `contributors[]` and your Discord user ID to `contributorIDs[]`, preferably at the same array index
   * **Testers**: Add your Discord tag to `testers[]` and your Discord user ID to `testerIDs[]`, preferably at the same array index
 * I will add you to the list of contributors or testers in the README file once your contributions have been pushed, unless you specify otherwise

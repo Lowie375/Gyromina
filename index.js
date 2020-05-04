@@ -1,4 +1,4 @@
-// Require discord.js, fs, the package file, and the refcode generator
+// Require discord.js, fs, the package file, the emoji file, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');
@@ -30,6 +30,9 @@ for (const file of gameFiles) {
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
+  // Event logger
+  const eventLog = client.channels.cache.get(process.env.eventLog);
+  eventLog.send(`Logged in as ${client.user.tag}, ready for action!`);
 
   // Sets Gyromina's current status
   if(process.env.exp === "1") {

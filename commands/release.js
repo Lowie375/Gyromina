@@ -69,7 +69,7 @@ module.exports.run = {
           GetChangelogString(str => {
             let string = `Gyromina v${version} has been released! this now fixes and adds:\n` + str;
 
-            if (announce) {
+            if (!announce) {
               let pLog = client.channels.cache.get(process.env.progressLog)
               pLog.send(string);
             }
@@ -114,7 +114,7 @@ function AuthenticatedBlockingPerform (options, func) {
     'content-type': 'application/json',
   };
 
-  request(options, (err, res, bod) => {
+  request(options, (err, res, bod) => { // Depricated; swap out snippet in future versions
     if (err) console.error(err);
 
     func(res, bod);

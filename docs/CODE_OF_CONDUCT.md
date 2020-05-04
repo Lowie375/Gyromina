@@ -55,9 +55,9 @@ further defined and clarified by project maintainers.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at lowie375@gmail.com. All
+reported by contacting the project head at lowie375@gmail.com. All
 complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
+is deemed necessary and appropriate to the circumstances. The project head is
 obligated to maintain confidentiality with regard to the reporter of an incident.
 Further details of specific enforcement policies may be posted separately.
 
@@ -68,9 +68,11 @@ members of the project's leadership.
 ## Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
-
-[homepage]: https://www.contributor-covenant.org
+available at [https://www.contributor-covenant.org/version/1/4/code-of-conduct.html][code-of-conduct]
 
 For answers to common questions about this code of conduct, see
-https://www.contributor-covenant.org/faq
+[https://www.contributor-covenant.org/faq][faq]
+
+[homepage]: https://www.contributor-covenant.org
+[code-of-conduct]: https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
+[faq]: https://www.contributor-covenant.org/faq

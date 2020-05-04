@@ -2,7 +2,7 @@
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
-const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit", "cancel", "stop", "end", "quit"];
+const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit"];
 
 function numCheck(x) {
   switch(x) {

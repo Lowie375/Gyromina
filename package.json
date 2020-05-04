@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "0.12.0",
+  "version": "0.13.0-beta",
   "description": "Gyromina, a multipurpose Discord bot",
   "tagline": "Fun + function, all in one",
   "main": "index.js",

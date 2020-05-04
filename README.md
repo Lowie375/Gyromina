@@ -11,7 +11,7 @@
 
 ### "Fun + function, all in one."
 
-Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from Alten#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and Homura#5331
+Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331
 
 Latest stable build: 0.12.0
 
@@ -23,7 +23,7 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 ### Functionality
 
-Gyromina can do a bunch of things, like generate random colours and numbers, play minigames, perform unit conversions, create polls, and more!
+Gyromina is a multipurpose bot, made to be a fun and functional addition to any Discord server. Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of simple minigames, and more!
 
 ## Setup
 
@@ -50,9 +50,9 @@ Gyromina can do a bunch of things, like generate random colours and numbers, pla
 
 ## Contributing
 
-Contributions to Gyromina are always welcome! I'm still an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help goes a long way.
+Contributions to Gyromina are always welcome! I'm still an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help can go a long way.
 
-Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
+Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for comtributing information and general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
 
 ## Contributors
 
@@ -67,7 +67,7 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for general style no
 ### Repo Contributors
 
 * 💻 Alten#4148 - [@Altenhh](https://www.github.com/Altenhh)
-* 📗 Homura#5331 - @Homurasama
+* 📗 Homura#5331
 
 <!-- ### Helpers -->
 

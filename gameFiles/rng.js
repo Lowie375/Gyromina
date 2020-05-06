@@ -156,8 +156,8 @@ module.exports.label = {
   "players": 1,
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
   "art": "",
-  "options": "[difficulty/maximum]",
-  "optionsdesc": "\• [difficulty/maximum]: Maximum number that the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
+  "options": "[max/preset]",
+  "optionsdesc": "\• [max/preset]: Maximum number that the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
   "exclusive": 0,
   "indev": 0,
   "deleted": 0

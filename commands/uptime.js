@@ -1,17 +1,19 @@
-// Require discord.js
+// Require discord.js and bent
 const Discord = require('discord.js');
+const bent = require('bent');
 
 module.exports.run = {
   execute(message, args, client) {
-    // Gets the current time and time the bot went online (ready time)
-    var up = Date.parse(client.readyAt);
+    // Gets the current time, the time the latest bot evrsion was deployed, and the time the bot's current dyno went online (ready time)
+    //var up = 
+    var dynoUp = Date.parse(client.readyAt);
     var locTime = Date.now();
 
     // Calculates the uptime (in milliseconds)
-    var millival = locTime - up;
+    var dynoMillival = locTime - dynoUp;
 
     // Seconds
-    var secs = Math.floor(millival/1000);
+    var secs = Math.floor(dynoMillival/1000);
     // Minutes
     var mins = Math.floor(secs/60);
     secs -= mins*60;
@@ -41,16 +43,18 @@ module.exports.run = {
 
     if (secs == 1)
       display += `${secs} second, `;
-    if (secs != 0)
+    else if (secs != 0)
       display += `${secs} seconds, `;
 
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Uptime", client.user.avatarURL())
       .setColor(0x7effaf)
-      .setTitle(`${display.slice(0, -2)}`)
-      .setDescription(`That's ${millival} milliseconds, wow!`)
       .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
       .setTimestamp();
+
+    // Better formatting for later additions (Heroku UPI integration)
+    embed.setTitle(`${display.slice(0, -2)}`)
+    embed.setDescription(`That's ${dynoMillival} milliseconds, wow!`)
 
     // Sends the embed
     message.channel.send({embed: embed});

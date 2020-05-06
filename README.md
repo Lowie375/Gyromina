@@ -21,7 +21,7 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 **[Info Pages][info]** / **[Commands][commands]** / **[Changelog][log]** / **[Invite Link][invite]**
 
-### Functionality
+### Overview
 
 Gyromina is a multipurpose bot, made to be a fun and functional addition to any Discord server. Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of simple minigames, and more!
 
@@ -48,11 +48,15 @@ Gyromina is a multipurpose bot, made to be a fun and functional addition to any 
   * `hostID` = Your Discord user ID (enables local use of `shutdown` and `vartest`)
 * Run using your native runtime/debugger and you're good to go!
 
+## Changelog
+
+Gyromina's changelog can be found at [https://lx375.weebly.com/gyro-log][log].
+
 ## Contributing
 
 Contributions to Gyromina are always welcome! I'm still an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help can go a long way.
 
-Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for comtributing information and general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
+Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution information + general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
 
 ## Contributors
 

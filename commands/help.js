@@ -12,7 +12,7 @@ function setParams(c) {
     list = list + " " + c.help.params + "\n";
   } else {
     list = list + " " + c.help.params[0];
-    for(let i = 1; i < c.help.params.length; i++) list = list + " **--OR--** " + process.env.prefix + c.help.name + " " + c.help.params[i];
+    for(let i = 1; i < c.help.params.length; i++) list = list + "\n   **OR** " + process.env.prefix + c.help.name + " " + c.help.params[i];
     list = list + "\n"
   }
   return list;
@@ -53,42 +53,12 @@ function checkArgs(args) {
 
 module.exports.run = {
   execute(message, args, client) {
-    // Prepares command and game lists
-    client.hcommands = new Discord.Collection();
-    client.lgames = new Discord.Collection();
-
     // Emoji setup
     const nope = client.emojis.cache.get(e.nope);
     const ghost = client.emojis.cache.get(e.ghost);
     const beta = client.emojis.cache.get(e.beta);
     const main = client.emojis.cache.get(e.main);
     const dead = client.emojis.cache.get(e.dead);
-
-    // Reads command and game files
-    const cmds = fs.readdirSync('./commands/').filter(f => f.split('.').pop() === 'js');
-    if(cmds.length <= 0) {
-      console.log('Error - No commands found');
-      message.channel.send(`${nope} No commands found!`)
-      return;
-    }
-    const gms = fs.readdirSync('./gameFiles/').filter(f => f.split('.').pop() === 'js');
-    if(cmds.length <= 0) {
-      console.log('Error - No games found');
-      message.channel.send(`${nope} No games found!`)
-      return;
-    }
-
-    // Pulls command and game info
-    for(const fx of cmds) {
-      let command = require(`../commands/${fx}`);
-      let thisCommand = fx.split(".")[0];
-      client.hcommands.set(thisCommand, command);
-    }
-    for(const gx of gms) {
-      let game = require(`../gameFiles/${gx}`);
-      let thisGame = gx.split(".")[0];
-      client.lgames.set(thisGame, game);
-    }
 
     // Checks for special arguments
     var conditions = [];
@@ -100,8 +70,8 @@ module.exports.run = {
     if (args.length >= 1 && conditions[1] == 0) { // Detailed command help
 
       const commandName = args[0];
-      const cmdy = client.hcommands.get(commandName)
-        || client.hcommands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
+      const cmdy = client.commands.get(commandName)
+        || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
       if(!cmdy) return;
 
@@ -145,8 +115,8 @@ module.exports.run = {
     } else if (args.length >= 1 && conditions[1] == 1) { // Detailed game help
 
       const gameName = args[0];
-      const gmz = client.lgames.get(gameName)
-      || client.lgames.find(gm => gm.label.aliases && gm.label.aliases.includes(gameName));
+      const gmz = client.games.get(gameName)
+      || client.games.find(gm => gm.label.aliases && gm.label.aliases.includes(gameName));
 
       if(!gmz) return;
 
@@ -194,7 +164,7 @@ module.exports.run = {
       var glist = "";
       var gctr = 0;
       // Creates the main game list
-      client.lgames.forEach(g => {
+      client.games.forEach(g => {
         if(g.label.exclusive === 1 || g.label.indev === 1 || g.label.deleted === 1) return;   
         glist = glist + setGameOptions(g);
         gctr++;
@@ -208,7 +178,7 @@ module.exports.run = {
         glist = "These games have not been released.\n";
       }
       gctr = 0;
-      client.lgames.forEach(g => {
+      client.games.forEach(g => {
         if(g.label.exclusive === 1 || g.label.indev === 0 || g.label.deleted === 1) return;
         glist = glist + setGameOptions(g);
         gctr++;
@@ -219,7 +189,7 @@ module.exports.run = {
       if(conditions[0] == 1) {
         glist = "These games can only be played by certain people.\n";      
         gctr = 0;
-        client.lgames.forEach(g => {
+        client.games.forEach(g => {
           if(g.label.exclusive === 0 || g.label.deleted === 1) return;
           glist = glist + setGameOptions(g);
           gctr++;
@@ -228,7 +198,7 @@ module.exports.run = {
 
         glist = "These games have been deleted from the game library.\n";      
         gctr = 0;
-        client.lgames.forEach(g => {
+        client.games.forEach(g => {
           if(g.label.deleted === 0) return;
           glist = glist + setGameOptions(g);
           gctr++;
@@ -247,7 +217,7 @@ module.exports.run = {
       var cmdlist = "";
       var cmdctr = 0;
       // Creates the main command list
-      client.hcommands.forEach(c => {
+      client.commands.forEach(c => {
         if(c.help.hide === 1 || c.help.wip === 1 || c.help.dead === 1) return;   
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
@@ -261,7 +231,7 @@ module.exports.run = {
         cmdlist = "These commands are currently unavailable.\n";
       }
       cmdctr = 0;
-      client.hcommands.forEach(c => {
+      client.commands.forEach(c => {
         if(c.help.hide === 1 || c.help.wip === 0 || c.help.dead === 1) return;
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
@@ -272,7 +242,7 @@ module.exports.run = {
       if(conditions[0] == 1) {
         cmdlist = "Usage of these commands is restricted.\n";      
         cmdctr = 0;
-        client.hcommands.forEach(c => {
+        client.commands.forEach(c => {
           if(c.help.hide === 0 || c.help.dead === 1) return;
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
@@ -281,7 +251,7 @@ module.exports.run = {
 
         cmdlist = "These commands no longer exist.\n";      
         cmdctr = 0;
-        client.hcommands.forEach(c => {
+        client.commands.forEach(c => {
           if(c.help.dead === 0) return;
           cmdlist = cmdlist + setParams(c);
           cmdctr++;

@@ -36,6 +36,13 @@ exports.Clean = function(text) {
     return text;
 };
 
+/**
+ * Generates a random integer.
+ * @param min The minimum value that can be generated
+ * @param max The maximumn value that can be generated
+ * @return {number}
+ */
+
 exports.getRandomInt = function(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -43,6 +50,12 @@ exports.getRandomInt = function(min, max) {
   if (output > max) output = max;
   return output;
 };
+
+/**
+ * Checks whether an emoji is part of the unicode set, a custom Discord emoji, or not an emoji at all.
+ * @param e The emoji to check
+ * @return {Array<string>}
+ */
 
 exports.emojiCheck = function(e) {
   let match;

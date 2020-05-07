@@ -1,10 +1,14 @@
-// Require the RNG and the emoji file
+// Require fs, Jimp, the RNG, the refcode randomizer, and the cdn file
+const fs = require('fs');
+const Jimp = require('jimp');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
-const e = require('../systemFiles/emojis.json');
+const {codeRNG, genErrorMsg} = require('../systemFiles/refcodes.js');
+//const e = require('../systemFiles/emojis.json');
+const cdn = require('../systemFiles/cdn.json');
 
-const brickShell = [e.mswp.b0, e.mswp.b1, e.mswp.b2, e.mswp.b3, e.mswp.b4, e.mswp.b5, e.mswp.b6, e.mswp.b7, e.mswp.b8, e.mswp.solid, e.mswp.flag, e.mswp.qmc, e.mswp.mine, e.mswp.kaboom, e.mswp.fake];
 const cancelWords = ["minesweeper stop", "mswp stop", "mine stop", "sweeper stop", "sweep stop", "minesweeper cancel", "mswp cancel", "mine cancel", "sweeper cancel", "sweep cancel",
   "minesweeper end", "mswp end", "mine end", "sweeper end", "sweep end", "minesweeper quit", "mswp quit", "mine quit", "sweeper quit", "sweep quit"];
+const img = [cdn.mswp.b0, cdn.mswp.b1, cdn.mswp.b2, cdn.mswp.b3, cdn.mswp.b4, cdn.mswp.b5, cdn.mswp.b6, cdn.mswp.b7, cdn.mswp.b8, cdn.mswp.solid, cdn.mswp.flag, cdn.mswp.qmc, cdn.mswp.mine, cdn.mswp.kaboom, cdn.mswp.fake];
 
 function boardCheck(x) {
   switch (x) {
@@ -26,23 +30,23 @@ function boardCheck(x) {
   }
 }
 
-function genMine(field, bricks, places, i) {
+function genMine(field, places, i) {
   let gen = getRandomInt(0, places.length-1)
   let x = places[gen][0]
   let y = places[gen][1]
   
   // Checks if the spot already has a mine
-  if (field[y][x] == bricks[12]) {
-    genMine(field, bricks, places, i);
+  if (field[y][x] == "m") {
+    genMine(field, places, i);
   } else {
     // Places a mine
-    field[y][x] = bricks[12];
+    field[y][x] = "m";
     places.splice(gen, 1);
-    cycle(field, bricks, x, y, 1);
+    cycle(field, x, y, 1);
   }
 }
 
-function backfill(field, bricks, places, k) {
+function backfill(field, places, k) {
   let lineup = [];
   for (let i = 0; i < k; i++) {
     let gen = getRandomInt(0, places.length-1)
@@ -50,7 +54,7 @@ function backfill(field, bricks, places, k) {
     let y = places[gen][1]
 
     // Checks if the spot already has a mine
-    if (field[y][x] == bricks[12]) {
+    if (field[y][x] == "m") {
       i--;
     } else {
       // Saves the backfill position
@@ -61,38 +65,16 @@ function backfill(field, bricks, places, k) {
   return lineup;
 }
 
-function count(field, bricks, cx, cy) {
+function count(field, cx, cy) {
   // Adds appropriate numbers for each square in the 3x3 that previously held a mine
 }
 
-function numFinder(brick, bricks) {
-  // Finds the number/icon of a board element
-  switch(brick) {
-    default: {
-      for (let i = 0; i <= 8; i++) {
-        if (brick == bricks[i])
-          return i;
-      }
-      return "null";
-    }
-    case bricks[9]: return "unknown";
-    case bricks[10]: return "flag";
-    case bricks[11]: return "unsure";
-    case bricks[12]: return "mine";
-    case bricks[13]: return "hitmine";
-    case bricks[14]: return "falseflag";
-  }
-}
-
-function cycle(field, bricks, bx, by, inc) {
+function cycle(field, bx, by, inc) {
   // Increments board numbers upwards once a bomb is placed
   for (let sx = -1; sx <= 1; sx++) {
     for(let sy = -1; sy <= 1; sy++) {
-      if(bx+sx >= 0 && bx+sx < field[0].length && by+sy >= 0 && by+sy < field.length) {
-        let num = numFinder(field[by+sy][bx+sx], bricks);
-        if (!isNaN(num))
-          field[by+sy][bx+sx] = bricks[num+inc];
-      }
+      if(bx+sx >= 0 && bx+sx < field[0].length && by+sy >= 0 && by+sy < field.length && !isNaN(field[by+sy][bx+sx]))
+        field[by+sy][bx+sx] += inc; 
     }
   }
 }
@@ -105,13 +87,9 @@ module.exports.exe = {
   start(message, client, player, options) {
     // Variable setup
     var setup;
-    var bricks = [];
     var places = [];
 
-    // Emoji setup
-    for (const brick of brickShell) {
-      bricks.push(client.emojis.cache.get(brick));
-    }
+    // Emoji setup (none of it!)
 
     // Option setup
     if (!options)
@@ -136,7 +114,7 @@ module.exports.exe = {
     for (let i = 0; i < setup[2]; i++) {
       let insert = [];
       for (let j = 0; j < setup[1]; j++) {
-        insert.push(bricks[0]);
+        insert.push(0);
         places.push([j, i]);
       }
       field.push(insert);
@@ -145,19 +123,51 @@ module.exports.exe = {
     for (let i = 0; i < setup[2]; i++) {
       let insert = [];
       for (let j = 0; j < setup[1]; j++) {
-        insert.push(bricks[9]);
+        insert.push(9);
       }
       display.push(insert);
     }
 
     // Mine generation
     for (let i = 0; i < setup[0]; i++) {
-      genMine(field, bricks, places, i)
+      genMine(field, places, i)
     }
-    let filler = backfill(field, bricks, places, 9);
+    let filler = backfill(field, places, 9);
+
+    // Creates an image identifier (using the refcode randomizer)
+    var boardID = `assets/minesweeper/game${codeRNG()}`;
+    var ext;
+    var imgSave;
+
+    // Creates the board image (hoping this works!)
+    new Jimp((display[0].length+1)*32, (display.length+1)*32, 0xffffffff, (err, image) => {
+      // Gets the image extension + stores the image in another variable
+      ext = image.getExtension();
+      imgSave = image;
+
+      // Overlays minesweeper assets
+      for (let i = 0; i < display.length; i++) {
+        for (let j = 0; j < display[i].length; j++) {
+          // Loads the overlay
+          Jimp.read(cdn.mswp[display[i][j]])
+            .then(overlay => {
+              // Overlays, then writes the image
+              imgSave.composite(overlay, (j+1)*32, (i+1)*32);
+              imgSave.write(`${boardID}.${ext}`)
+          })
+            .catch(error => {
+
+          });
+        }
+      }
+    });  
+
+    // Test send
+    message.channel.send("Test", {files: `../${boardID}.png`});
 
     // Image library needed to send field (due to emojis taking up too much space)
 
+    
     // Test snippet
     /*var output = "";
     for (row of field) {

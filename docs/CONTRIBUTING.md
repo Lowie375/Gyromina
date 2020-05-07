@@ -8,7 +8,7 @@ Secondly, please make sure you've read through the code of conduct under [**docs
 
 ### If you are reporting a bug
 
-* Check the GitHib [issues tab](https://github.com/Lowie375/Gyromina/issues) to see if your bug has already been reported
+* Check the GitHib [**issues tab**](https://github.com/Lowie375/Gyromina/issues) to see if your bug has already been reported
 * If it has not been reported, create a new issue using the primary issue template under [**.github/ISSUE_TEMPLATE/bug_report.md**](/.github/ISSUE_TEMPLATE/bug_report.md)
 
 ### If you are contributing code or patching a bug
@@ -19,7 +19,7 @@ Secondly, please make sure you've read through the code of conduct under [**docs
 
 ### If you are requesting a feature
 
-* Check the GitHib [issues tab](https://github.com/Lowie375/Gyromina/issues) to see if that feature has already been requested
+* Check the GitHib [**issues tab**](https://github.com/Lowie375/Gyromina/issues) to see if that feature has already been requested
 * If it has not been requested, create a new issue using the primary feature request template under [**.github/ISSUE_TEMPLATE/feature_request.md**](/.github/ISSUE_TEMPLATE/feature_request.md)
 
 ## Code Conventions
@@ -28,11 +28,11 @@ These are some of the major conventions I've tried to follow within Gyromina's c
 
 * Indent using double spaces (soft tabs)
 * Put spaces after list items and parameters (`[x, y, z]` over `[x,y,z]`)
-* Put spaces around operators, except when used inside arguments or long conditionals (`var = 5` over `var=5`, but `arr[i+2]` and `myFunc(n*5)` are okay)
+* Put spaces around operators, except when used inside arguments or long conditionals (`myVar = 5` over `myVar=5`, but `arr[i+2]` and `myFunc(n*5)` are okay)
 * No spaces inside single line blocks (`if (foo == true) {return bar;}` over `if (foo == true) { return bar; }`)
 * Make things look nice! Add whitespace between large segments of code and include brief comments wherever you see fit. This is an open source project, so keeping things clean and easy to read helps everyone. Plus, comments help everyone (especially myself) see what certain segments of code do so that we don't end up breaking them later on.
 
-## Other Notes
+## Crediting
 
 If you have contributed or tested code:
 

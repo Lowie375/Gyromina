@@ -246,7 +246,7 @@ function removeRxnLoop(urxn, player, n = 0) {
   }
 };
 
-module.exports.exe = {
+exports.exe = {
   start(message, client, player, options) {
     // Minefield shell
     var field = [
@@ -456,7 +456,7 @@ module.exports.exe = {
   }
 };
 
-module.exports.label = {
+exports.label = {
   "name": "minefield",
   "aliases": ["field", "walkinaminefield", "walk-in-a-minefield", "walkin", "maze"],
   "players": 1,

@@ -51,7 +51,7 @@ function checkArgs(args) {
   return output;
 }
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     // Emoji setup
     const nope = client.emojis.cache.get(e.nope);
@@ -264,7 +264,7 @@ module.exports.run = {
   },
 };
 
-module.exports.help = {
+exports.help = {
   "name": "help",
   "aliases": ["commands", "cmds", "command", "cmd", "gamelist", "cmdlist", "commandlist"],
   "description": "Provides command and game help.",

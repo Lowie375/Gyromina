@@ -27,7 +27,7 @@ function makeExcuse() {
   return excuses[num];
 }
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     if (args.length == 0) {
       let excuse = makeExcuse();
@@ -58,7 +58,7 @@ module.exports.run = {
   },
 };
 
-module.exports.help = {
+exports.help = {
   "name": "pront",
   "aliases": "print",
   "description": "Prints emojis.",

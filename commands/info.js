@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const cdn = require('../systemFiles/cdn.json');
 const botinfo = require('../package.json');
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     const embed = new Discord.MessageEmbed()
       .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
@@ -22,7 +22,7 @@ module.exports.run = {
   },
 };
 
-module.exports.help = {
+exports.help = {
   "name": "info",
   "aliases": "information",
   "description": "Displays Gyromina's info.",

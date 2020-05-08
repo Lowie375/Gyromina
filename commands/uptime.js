@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const bent = require('bent');
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     // Gets the current time, the time the latest bot evrsion was deployed, and the time the bot's current dyno went online (ready time)
     //var up = 
@@ -61,7 +61,7 @@ module.exports.run = {
   },
 };
   
-module.exports.help = {
+exports.help = {
   "name": 'uptime',
   "aliases": ["up", "online", "readytime"],
   "description": 'Shows Gyromina\'s uptime.',

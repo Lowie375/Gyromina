@@ -2,7 +2,7 @@
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     // Emoji setup
     const nope = client.emojis.cache.get(e.nope);
@@ -33,7 +33,7 @@ module.exports.run = {
   },
 };
     
-module.exports.help = {
+exports.help = {
   "name": 'vartest',
   "aliases": 'vt',
   "description": 'Miscellaneous test command. (Contributors only)',

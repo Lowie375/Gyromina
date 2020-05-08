@@ -19,7 +19,7 @@ function getRandomDecimal(min, max, decims) {
   return (num / factor);
 }
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     var number = 0;
 
@@ -38,7 +38,7 @@ module.exports.run = {
   }
 };
 
-module.exports.help = {
+exports.help = {
   "name": "randomdecimal",
   "aliases": ["decimal", "rd"],
   "description": "Generates a random decimal number between 0 and 1, to up to 16 decimal places.\nDefaults to 10 decimal places.",

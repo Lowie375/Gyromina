@@ -251,7 +251,7 @@ function errorPull(x, message) {
   }
 }
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     switch(args.length) {
       case 0: return message.reply("I can\'t convert something if I don't have any values or units to convert between! Please add a value and try again.");
@@ -333,7 +333,7 @@ module.exports.run = {
   }
 }
 
-module.exports.help = {
+exports.help = {
   "name": "convert",
   "aliases": "unit",
   "description": "Converts a value from one unit to another.",

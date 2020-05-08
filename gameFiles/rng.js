@@ -40,7 +40,7 @@ function numCheck(x) {
   }
 }
 
-module.exports.exe = {
+exports.exe = {
   start(message, client, player, options) {
     // Variable setup
     var max;
@@ -150,7 +150,7 @@ module.exports.exe = {
   }
 };
 
-module.exports.label = {
+exports.label = {
   "name": "rng",
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
   "players": 1,

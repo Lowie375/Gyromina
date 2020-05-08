@@ -1,13 +1,13 @@
 // Require the RNG
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
-module.exports.exe = {
+exports.exe = {
   start(message, client, player, options) {
     // Insert code here
   }
 };
 
-module.exports.label = {
+exports.label = {
   "name": "kingsmagic",
   "aliases": ["kings", "kings-magic"],
   "players": 1,

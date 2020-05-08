@@ -2,7 +2,7 @@
 const fs = require('fs');
 const Jimp = require('jimp');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
-const {codeRNG, genErrorMsg} = require('../systemFiles/refcodes.js');
+const {codeRNG} = require('../systemFiles/refcodes.js');
 //const e = require('../systemFiles/emojis.json');
 const cdn = require('../systemFiles/cdn.json');
 
@@ -83,10 +83,21 @@ function openTiles(field, bricks, x, y) {
   // Opens blank segments of the board
 }
 
-module.exports.exe = {
-  start(message, client, player, options) {
+async function generateCanvas(boardID, imgSave, display) {
+  // just in case :)
+  new Jimp((display[0].length+1)*32, (display.length+1)*32, "0xffffffff", (err, image) => {
+    if (err) console.error(err);
+    // Stores the image in another file
+    imgSave = image;
+    imgSave.write(boardID);
+  })
+}
+
+exports.exe = {
+  async start(message, client, player, options) {
     // Variable setup
     var setup;
+    var imgSave;
     var places = [];
 
     // Emoji setup (none of it!)
@@ -135,38 +146,56 @@ module.exports.exe = {
     let filler = backfill(field, places, 9);
 
     // Creates an image identifier (using the refcode randomizer)
-    var boardID = `assets/minesweeper/game${codeRNG()}`;
-    var ext;
-    var imgSave;
-
+    var boardID = `assets/minesweeper/game${codeRNG()}.png`;
+    
     // Creates the board image (hoping this works!)
-    new Jimp((display[0].length+1)*32, (display.length+1)*32, 0xffffffff, (err, image) => {
-      // Gets the image extension + stores the image in another variable
-      ext = image.getExtension();
+    //await generateCanvas(boardID, imgSave, display);
+  
+    // Creates the board image (hoping this works!)
+    const image = new Jimp((display[0].length+1)*32, (display.length+1)*32, "#FFFFFF", (err, image) => {
+      if (err) {
+        console.log("[1]")
+        console.error(err);
+      }
+      // Stores the image in another file
       imgSave = image;
-
-      // Overlays minesweeper assets
-      for (let i = 0; i < display.length; i++) {
-        for (let j = 0; j < display[i].length; j++) {
-          // Loads the overlay
-          Jimp.read(cdn.mswp[display[i][j]])
-            .then(overlay => {
-              // Overlays, then writes the image
-              imgSave.composite(overlay, (j+1)*32, (i+1)*32);
-              imgSave.write(`${boardID}.${ext}`)
-          })
-            .catch(error => {
-
+      imgSave.write(boardID);
+    })
+    // Overlays minesweeper assets
+    for (let i = 0; i < display.length; i++) {
+      for (let j = 0; j < display[i].length; j++) {
+        // Loads the overlay
+        try {
+          Jimp.read(cdn.mswp[field[i][j]], (err, overlay) => {
+            if (err) {
+              console.log("[2]");
+              console.error(err);
+            }
+            // Overlays, then writes the image
+            imgSave.composite(overlay, (j+1)*32, (i+1)*32);
+            imgSave.writeAsync(boardID)
           });
+        } catch {
+          console.log("[3]");
         }
       }
-    });  
+    }
+
+    var board = fs.readFile(`./${boardID}`, function(err, img) {
+      if (err) throw err;
+      message.channel.send("Test", {file: img});
+    });
+    /*
+    // Deletes the file
+    fs.unlink(`./${boardID}.png`, function() {
+      console.log('Image removed');
+    });
+    */
 
     // Test send
-    message.channel.send("Test", {files: `../${boardID}.png`});
+    //message.channel.send("Test", {files: image});
 
     // Image library needed to send field (due to emojis taking up too much space)
-
     
     // Test snippet
     /*var output = "";
@@ -177,7 +206,7 @@ module.exports.exe = {
   }
 };
 
-module.exports.label = {
+exports.label = {
   "name": "minesweeper",
   "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "mswp"],
   "players": 1,

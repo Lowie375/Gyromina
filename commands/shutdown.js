@@ -2,7 +2,7 @@
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
 
-module.exports.run = {
+exports.run = {
   async execute(message, args, client) {
     // Emoji setup
     const nope = client.emojis.cache.get(e.nope);
@@ -24,7 +24,7 @@ module.exports.run = {
   },
 };
 
-module.exports.help = {
+exports.help = {
   "name": "shutdown",
   "aliases": ["off", "stop", "quit", "shutoff"],
   "description": "Shuts down the current instance of Gyromina. (Owner only)",

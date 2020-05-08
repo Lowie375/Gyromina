@@ -4,7 +4,7 @@
 const Discord = require('discord.js');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     function getRandomHex() {
       let r = getRandomInt(0, 255);
@@ -40,7 +40,7 @@ module.exports.run = {
   },
 };
 
-module.exports.help = {
+exports.help = {
   "name": "randomcolour",
   "aliases": ["randomcolor", "rc", "rcol"],
   "description": "Returns a random colour in various formats.",

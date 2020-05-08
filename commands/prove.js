@@ -18,7 +18,7 @@ const proof = ["because that's just how it is.",
   "because… yes.",
   "because it helps Gyromina sleep at night."];
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     if (args.length == 0)
       return message.reply("you didn't give me anything to prove!");
@@ -32,7 +32,7 @@ module.exports.run = {
   }
 };
 
-module.exports.help = {
+exports.help = {
   "name": "prove",
   "description": "\'Proves\' that the input is true.",
   "usage": `${process.env.prefix}prove <statement>`,

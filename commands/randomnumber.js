@@ -49,7 +49,7 @@ function getRandomNumber(min, max) {
   return num.toFixed(factorPower);
 }
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
 
     var number = 0;
@@ -77,7 +77,7 @@ module.exports.run = {
   }
 };
 
-module.exports.help = {
+exports.help = {
   "name": "randomnumber",
   "aliases": ["number", "num", "rn"],
   "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates between 0 and that number, inclusive.",

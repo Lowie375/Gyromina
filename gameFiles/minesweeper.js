@@ -1,14 +1,16 @@
-// Require fs, Jimp, the RNG, the refcode randomizer, and the cdn file
-const fs = require('fs');
-const Jimp = require('jimp');
+// Require discord.js, bent, canvas, the RNG, the refcode randomizer, and the cdn file
+const Discord = require('discord.js');
+const bent = require('bent');
+const {createCanvas, loadImage} = require('canvas');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const {codeRNG} = require('../systemFiles/refcodes.js');
-//const e = require('../systemFiles/emojis.json');
 const cdn = require('../systemFiles/cdn.json');
+
+// Additional setup
+const getBuffer = bent('buffer');
 
 const cancelWords = ["minesweeper stop", "mswp stop", "mine stop", "sweeper stop", "sweep stop", "minesweeper cancel", "mswp cancel", "mine cancel", "sweeper cancel", "sweep cancel",
   "minesweeper end", "mswp end", "mine end", "sweeper end", "sweep end", "minesweeper quit", "mswp quit", "mine quit", "sweeper quit", "sweep quit"];
-const img = [cdn.mswp.b0, cdn.mswp.b1, cdn.mswp.b2, cdn.mswp.b3, cdn.mswp.b4, cdn.mswp.b5, cdn.mswp.b6, cdn.mswp.b7, cdn.mswp.b8, cdn.mswp.solid, cdn.mswp.flag, cdn.mswp.qmc, cdn.mswp.mine, cdn.mswp.kaboom, cdn.mswp.fake];
 
 function boardCheck(x) {
   switch (x) {
@@ -24,23 +26,24 @@ function boardCheck(x) {
     case "hard":
     case "difficult":
     case "h":
-      return [99, 16, 30];
+      return [99, 30, 16];
     default:
       return x;
   }
 }
 
+// KEY: 0-8=nums, 9=solid, 10=qmc, 11=flag, 12=mine, 13=kaboom, 14=fake, 15=prideFlag
 function genMine(field, places, i) {
   let gen = getRandomInt(0, places.length-1)
   let x = places[gen][0]
   let y = places[gen][1]
   
   // Checks if the spot already has a mine
-  if (field[y][x] == "m") {
+  if (field[y][x] == 12) {
     genMine(field, places, i);
   } else {
     // Places a mine
-    field[y][x] = "m";
+    field[y][x] = 12;
     places.splice(gen, 1);
     cycle(field, x, y, 1);
   }
@@ -54,7 +57,7 @@ function backfill(field, places, k) {
     let y = places[gen][1]
 
     // Checks if the spot already has a mine
-    if (field[y][x] == "m") {
+    if (field[y][x] == 12) {
       i--;
     } else {
       // Saves the backfill position
@@ -65,15 +68,11 @@ function backfill(field, places, k) {
   return lineup;
 }
 
-function count(field, cx, cy) {
-  // Adds appropriate numbers for each square in the 3x3 that previously held a mine
-}
-
 function cycle(field, bx, by, inc) {
   // Increments board numbers upwards once a bomb is placed
   for (let sx = -1; sx <= 1; sx++) {
     for(let sy = -1; sy <= 1; sy++) {
-      if(bx+sx >= 0 && bx+sx < field[0].length && by+sy >= 0 && by+sy < field.length && !isNaN(field[by+sy][bx+sx]))
+      if(bx+sx >= 0 && bx+sx < field[0].length && by+sy >= 0 && by+sy < field.length && field[by+sy][bx+sx] < 8)
         field[by+sy][bx+sx] += inc; 
     }
   }
@@ -83,24 +82,21 @@ function openTiles(field, bricks, x, y) {
   // Opens blank segments of the board
 }
 
-async function generateCanvas(boardID, imgSave, display) {
-  // just in case :)
-  new Jimp((display[0].length+1)*32, (display.length+1)*32, "0xffffffff", (err, image) => {
-    if (err) console.error(err);
-    // Stores the image in another file
-    imgSave = image;
-    imgSave.write(boardID);
-  })
+function fillCanvas(board, display, assets) {
+  // Generates the canvas
+  for (let i = 0; i < display.length; i++) {
+    for (let j = 0; j < display[i].length; j++) {
+      // Draws the overlay
+      board.drawImage(assets, 32*display[i][j], 0, 32, 32, (j+1)*32, (i+1)*32, 32, 32);
+    }
+  }
 }
 
 exports.exe = {
   async start(message, client, player, options) {
     // Variable setup
     var setup;
-    var imgSave;
     var places = [];
-
-    // Emoji setup (none of it!)
 
     // Option setup
     if (!options)
@@ -112,7 +108,7 @@ exports.exe = {
     if (!Array.isArray(setup) && options.length < 3)
       return message.reply("I can't create a custom field without a valid mine count and 2 valid lengths! Please check your options and try again.");
     else if (!Array.isArray(setup) && !isNaN(parseInt(options[0]) + parseInt(options[1]) + parseInt(options[2])))
-      setup = [options[0], Math.max(7, Math.min(parseInt(options[1]), parseInt(options[2]), 36)), Math.min(Math.max(parseInt(options[1]), parseInt(options[2]), 7), 36)];
+      setup = [options[0], Math.min(Math.max(parseInt(options[1]), parseInt(options[2]), 7), 36), Math.max(7, Math.min(parseInt(options[1]), parseInt(options[2]), 36))];
     else if (!Array.isArray(setup))
       return message.reply("I can't create a custom field with invalid options! Please check your options and try again.");
 
@@ -120,7 +116,7 @@ exports.exe = {
     if(setup[0] > (setup[1] - 1) * (setup[2] - 1))
       setup[0] = (setup[1] - 1) * (setup[2] - 1);
     
-    // Array setup
+    // Array setup (j=x, i=y)
     var field = [];
     for (let i = 0; i < setup[2]; i++) {
       let insert = [];
@@ -145,64 +141,52 @@ exports.exe = {
     }
     let filler = backfill(field, places, 9);
 
-    // Creates an image identifier (using the refcode randomizer)
-    var boardID = `assets/minesweeper/game${codeRNG()}.png`;
+    // New board image code
+    const canvas = createCanvas((display[0].length+1)*32, (display.length+1)*32);
+    const board = canvas.getContext("2d");
+    let assetBuffer = await getBuffer(cdn.mswp)
+    loadImage(assetBuffer)
+      .then(img => {
+        // Generates the board's squares
+        fillCanvas(board, display, img);
+
+        // Sends the board
+        let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), 'board.png');
+        message.channel.send("Test", attach)
+          .then(game => {
+
+            var moves = 0;
+
+            const filter = (msg) => msg.author.id == player && (cancelWords.includes(msg.content) || (!msg.content));
+            //const finder = game.channel.createMessageCollector(filter, {time: 120000, idle: 120000});
     
-    // Creates the board image (hoping this works!)
-    //await generateCanvas(boardID, imgSave, display);
-  
-    // Creates the board image (hoping this works!)
-    const image = new Jimp((display[0].length+1)*32, (display.length+1)*32, "#FFFFFF", (err, image) => {
-      if (err) {
-        console.log("[1]")
-        console.error(err);
-      }
-      // Stores the image in another file
-      imgSave = image;
-      imgSave.write(boardID);
-    })
-    // Overlays minesweeper assets
-    for (let i = 0; i < display.length; i++) {
-      for (let j = 0; j < display[i].length; j++) {
-        // Loads the overlay
-        try {
-          Jimp.read(cdn.mswp[field[i][j]], (err, overlay) => {
-            if (err) {
-              console.log("[2]");
-              console.error(err);
-            }
-            // Overlays, then writes the image
-            imgSave.composite(overlay, (j+1)*32, (i+1)*32);
-            imgSave.writeAsync(boardID)
-          });
-        } catch {
-          console.log("[3]");
-        }
-      }
-    }
+            finder.on('collect', msg => {
+              // Checks if the collected message was a cancellation message
+              if (cancelWords.includes(msg.content)) {
+                finder.stop("cancel");
+                return; // Stops the game
+              } else if (moves == 0) {
+                // First move, check and backfill
+              }
+              moves++;
 
-    var board = fs.readFile(`./${boardID}`, function(err, img) {
-      if (err) throw err;
-      message.channel.send("Test", {file: img});
+              finder.resetTimer({time: 120000, idle: 120000});
+            });
+
+            finder.on('end', (c, reason) => {
+              // Determines why the collector ended
+              switch (reason) {
+                case "time": // Timeouts
+                case "idle":
+                  message.reply("your \`minesweeper\` instance timed out due to inactivity. Please restart the game if you would like to play again."); return;
+                case "cancel": // Manually cancelled
+                  message.reply("your \`minesweeper\` instance has been stopped. Please restart the game if you would like to play again."); return;
+                default: 
+                  message.reply("your \`minesweeper\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again."); return;
+              }
+            });
+        });
     });
-    /*
-    // Deletes the file
-    fs.unlink(`./${boardID}.png`, function() {
-      console.log('Image removed');
-    });
-    */
-
-    // Test send
-    //message.channel.send("Test", {files: image});
-
-    // Image library needed to send field (due to emojis taking up too much space)
-    
-    // Test snippet
-    /*var output = "";
-    for (row of field) {
-      output += `${row.join("")}\n`
-    }
-    message.channel.send(output);*/
   }
 };
 

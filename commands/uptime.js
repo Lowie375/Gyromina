@@ -1,63 +1,89 @@
-// Require discord.js and bent
+// Require discord.js and the heroki client
 const Discord = require('discord.js');
-const bent = require('bent');
+const Heroku = require('heroku-client')
+const hData = new Heroku({token: process.env.herokuAuth})
+
+function reDate(ms) {
+  // Converts milliseconds into 
+  let secs = Math.floor(ms/1000); // Seconds
+  let mins = Math.floor(secs/60); // Minutes
+  secs -= mins*60;
+  let hrs = Math.floor(mins/60); // Hours
+  mins -= hrs*60;
+  let days = Math.floor(hrs/24); // Days
+  hrs -= days*24;
+
+  let display = "";
+  switch (days) {
+    case 0: break;
+    case 1: display += `${days} day, `; break;
+    default: display += `${days} days, `; break;
+  }
+  switch (hrs) {
+    case 0: break;
+    case 1: display += `${hrs} hour, `; break;
+    default: display += `${hrs} hours, `; break;
+  }
+  switch (mins) {
+    case 0: break;
+    case 1: display += `${mins} minute, `; break;
+    default: display += `${mins} minutes, `; break;
+  }
+  switch (secs) {
+    case 0: break;
+    case 1: display += `${secs} second, `; break;
+    default: display += `${secs} seconds, `; break;
+  }
+  // Returns the cleanted output
+  return display.slice(0, -2);
+}
 
 exports.run = {
-  execute(message, args, client) {
-    // Gets the current time, the time the latest bot evrsion was deployed, and the time the bot's current dyno went online (ready time)
-    //var up = 
-    var dynoUp = Date.parse(client.readyAt);
-    var locTime = Date.now();
+  async execute(message, args, client) {
+    // Pull from app:released_at (?)
+    // https://api.heroku.com/apps/${process.env.herokuID}
+    // Accept: application/vnd.heroku+json; version=3
 
-    // Calculates the uptime (in milliseconds)
-    var dynoMillival = locTime - dynoUp;
+    // Gets the current time and the ready time
+    var dUp = Date.parse(client.readyAt);
+    var locTime = Date.now();   
 
-    // Seconds
-    var secs = Math.floor(dynoMillival/1000);
-    // Minutes
-    var mins = Math.floor(secs/60);
-    secs -= mins*60;
-    // Hours
-    var hrs = Math.floor(mins/60);
-    mins -= hrs*60;
-    // Days
-    var days = Math.floor(hrs/24);
-    hrs -= days*24;
+    // Calculates the dyno uptime
+    var dMillival = locTime - dUp;
+    var dOut = reDate(dMillival);
 
-    // Sets up the main uptime display
-    var display = ``;
-    if (days == 1)
-      display += `${days} day, `;
-    else if (days != 0)
-      display += `${days} days, `;
-
-    if (hrs == 1)
-      display += `${hrs} hour, `;
-    else if (hrs != 0)
-      display += `${hrs} hours, `;
-
-    if (mins == 1)
-      display += `${mins} minute, `;
-    else if (mins != 0)
-      display += `${mins} minutes, `;
-
-    if (secs == 1)
-      display += `${secs} second, `;
-    else if (secs != 0)
-      display += `${secs} seconds, `;
-
+    // Sets up the embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Uptime", client.user.avatarURL())
       .setColor(0x7effaf)
       .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
       .setTimestamp();
 
-    // Better formatting for later additions (Heroku UPI integration)
-    embed.setTitle(`${display.slice(0, -2)}`)
-    embed.setDescription(`That's ${dynoMillival} milliseconds, wow!`)
+    hData.get(`/apps/${process.env.herokuID}`)
+      .then(app => {
+         // API data pulled!
+        let up = Date.parse(app.released_at);
+        let millival = locTime - up;
+        let out = reDate(millival);
 
-    // Sends the embed
-    message.channel.send({embed: embed});
+        // Full embed
+        embed.setTitle(out);
+        embed.setDescription(`That's ${millival} milliseconds, wow!`);
+        embed.addField("Dyno Uptime", dOut);
+
+        // Sends the embed
+        message.channel.send({embed: embed});
+      })
+      .catch (err => { // Could not pull API data
+        console.error("API request failed; defaulting to minimal uptime report", err);
+
+        // Minimal embed
+        embed.setTitle(dOut);
+        embed.setDescription(`That's ${dMillival} milliseconds, wow!`);
+
+        // Sends the embed
+        message.channel.send({embed: embed});
+    });  
   },
 };
   

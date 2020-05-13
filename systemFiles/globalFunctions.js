@@ -80,3 +80,32 @@ exports.emojiCheck = function(e) {
     return ["c", qEmojiID[2].slice(0, -1)];
   }
 };
+
+exports.hexToRgb = function(hex) { 
+  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+exports.rgbToCmyk = function(rgb) {
+  let c = (255 - rgb.r) / 255;
+  let m = (255 - rgb.g) / 255;
+  let y = (255 - rgb.b) / 255;
+
+  let k = Math.min(c, m, y);
+
+  return {
+    c: Math.round((c - k) / (1 - k) * 100),
+    m: Math.round((m - k) / (1 - k) * 100),
+    y: Math.round((y - k) / (1 - k) * 100),
+    k: Math.round(k * 100)
+  };
+}

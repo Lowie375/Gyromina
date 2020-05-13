@@ -1,22 +1,5 @@
 {
   "banner": "https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png",
   "avatar": "https://cdn.discordapp.com/avatars/490590334758420481/5630ed9ee4b27498147e569ac52641f1.png",
-  "mswp": [
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769818039976066/hollow.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769631703695361/1-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769666935980062/2-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769675303354368/3-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769681859313664/4-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769688095981668/5-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769693527867485/6-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769702423986227/7-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769707771723796/8-outline.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769845621587968/solid.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769838487076965/qmc.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769800172109854/flag.PNG",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769833621553182/mine.png",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769827514646598/kaboom.png",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769794757263401/fake.png",
-    "https://cdn.discordapp.com/attachments/429364141355171840/707769805301743737/flagPride.PNG"
-  ]
+  "mswp": "https://cdn.discordapp.com/attachments/429364141355171840/709862095549759538/compiled-outline.png"
 }

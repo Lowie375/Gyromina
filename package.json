@@ -2,11 +2,20 @@
   "name": "gyromina",
   "version": "0.13.0-beta",
   "description": "Gyromina, a multipurpose Discord bot",
+  "homepage": "https://lx375.weebly.com/gyromina",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lowie375/Gyromina"
+  },
   "tagline": "Fun + function, all in one",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Lowie375/Gyromina/issues",
+    "email": "lowie375@gmail.com"
   },
   "engines": {
     "node": "12.x",
@@ -28,10 +37,11 @@
   "license": "MIT",
   "dependencies": {
     "bent": "^7.3.0",
+    "canvas": "^2.6.1",
     "colors": "^1.4.0",
     "discord.js": "^12.1.1",
     "emoji-regex": "^9.0.0",
-    "jimp": "^0.10.3",
+    "heroku-client": "^3.1.0",
     "long": "^4.0.0",
     "request": "^2.88.0",
     "ws": "^7.2.3"

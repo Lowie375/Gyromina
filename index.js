@@ -99,5 +99,8 @@ client.on('warn', w => {
   console.warn(w);
 });
 
+// Emits uncaught promise rejection warnings
+process.on('unhandledRejection', error => console.error('Promise Rejection', error));
+
 // Logs into Discord with Gyromina's token
 client.login(process.env.token);

@@ -3,7 +3,8 @@
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]](package.json)
 [![Dependencies Status][dependency-img]][dependency-link]
-[![Last Commit][commit-img]][commit-img]
+[![Last Commit (master)][master-commit-img]][master-commit-img]
+[![Last Commit (0.13.0)][beta-commit-img]][beta-commit-img]
 [![Contributors][contributors-img]][contributors-link]
 [![License][license-img]](LICENSE)
 
@@ -36,14 +37,20 @@ Gyromina is a multipurpose bot, made to be a fun and functional addition to any 
 
 ### Test Bots (for contributors/debuggers)
 
-#### Discord bot token + channel access required
+#### Requirements
+
+* Discord bot token + channel access
+
+#### Config
 
 * Fork/download source code + `npm install` in terminal
 * Configure environment variables
   * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
   * `exp`: `"1"` to enable experimental commands, `"0"` to disable
-  * `progressLog`/`errorLog`: Discord channel IDs for integrated commit/error logs
-  * `gitToken`/`gitUsername`/`gitRepoName`: Optional; only used with `release`
+  * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
+  * `progressLog`: Optional; Discord channel ID (used with `release`)
+  * `gitToken`/`gitUsername`/`gitRepoName`: Optional; GitHub auth token/username/repo name (used with `release`)
+  * `herokuAuth`/`herokuID`: Optional; Heroku auth token/project ID (used with `uptime`)
 * Configure package.json
   * `hostID` = Your Discord user ID (enables local use of `shutdown` and `vartest`)
 * Run using your native runtime/debugger and you're good to go!
@@ -51,6 +58,10 @@ Gyromina is a multipurpose bot, made to be a fun and functional addition to any 
 ## Changelog
 
 Gyromina's changelog can be found at [https://lx375.weebly.com/gyro-log][log].
+
+## Code of Conduct
+
+The community Code of Conduct can be found [here](docs/CODE_OF_CONDUCT.md).
 
 ## Contributing
 
@@ -91,7 +102,8 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution inf
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
-[commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina
+[master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
+[beta-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/0.13.0?label=last%20commit%20%280.13.0%29
 [contributors-img]: https://img.shields.io/github/contributors/Lowie375/Gyromina
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 

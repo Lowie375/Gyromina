@@ -101,7 +101,7 @@ exports.exe = {
         return; // Stops the game
       }
       
-      // Fuess setup
+      // Guess setup
       let guess = parseInt(msg.content, 10);
       let alert = "";
       guesses--;

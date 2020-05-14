@@ -1,13 +1,16 @@
-// Require discord.js, bent, canvas, the RNG, the refcode randomizer, and the cdn file
+// Require discord.js, bent, canvas, the RNG, the refcode randomizer, the emoji file, and the cdn file
 const Discord = require('discord.js');
 const bent = require('bent');
 const {createCanvas, loadImage} = require('canvas');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
-const {codeRNG} = require('../systemFiles/refcodes.js');
+//const {codeRNG} = require('../systemFiles/refcodes.js');
+const e = require('../systemFiles/emojis.json');
 const cdn = require('../systemFiles/cdn.json');
 
 // Additional setup
 const getBuffer = bent('buffer');
+const cancelRegex = /stop|cancel|end|quit/;
+const catchRegex = /^[cCfFqQoO]{1}[\.\:\-\_]{1}[a-zA-Z]{1}[a-zA-Z]?\d+/
 
 const cancelWords = ["minesweeper stop", "mswp stop", "mine stop", "sweeper stop", "sweep stop", "minesweeper cancel", "mswp cancel", "mine cancel", "sweeper cancel", "sweep cancel",
   "minesweeper end", "mswp end", "mine end", "sweeper end", "sweep end", "minesweeper quit", "mswp quit", "mine quit", "sweeper quit", "sweep quit"];
@@ -152,24 +155,29 @@ exports.exe = {
 
         // Sends the board
         let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), 'board.png');
-        message.channel.send("Test", attach)
+        message.channel.send("[Add text here]", attach)
           .then(game => {
 
             var moves = 0;
-
-            const filter = (msg) => msg.author.id == player && (cancelWords.includes(msg.content) || (!msg.content));
-            //const finder = game.channel.createMessageCollector(filter, {time: 120000, idle: 120000});
+            const filter = (msg) => msg.author.id == player && ((cancelRegex.exec(msg.content) && client.games.get("minesweeper").label.aliases.some(e => msg.content.includes(e))) || catchRegex.exec(msg.content) || msg.content.includes("time"));
+            const finder = game.channel.createMessageCollector(filter, {time: 120000, idle: 120000});
     
             finder.on('collect', msg => {
               // Checks if the collected message was a cancellation message
-              if (cancelWords.includes(msg.content)) {
+              if (cancelRegex.exec(msg.content)) {
+                let boolTest = client.games.get("minesweeper").label.aliases.some(e => msg.content.includes(e));
                 finder.stop("cancel");
                 return; // Stops the game
+              } else if (msg.content.includes("time")) {
+                msg.react(e.yep);
+                finder.resetTimer({time: 300000, idle: 300000});
+                return;
               } else if (moves == 0) {
                 // First move, check and backfill
+                msg.channel.send("T: First move caught!");
               }
               moves++;
-
+              msg.channel.send("T: move caught!");
               finder.resetTimer({time: 120000, idle: 120000});
             });
 

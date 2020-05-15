@@ -5,7 +5,6 @@
 [![Dependencies Status][dependency-img]][dependency-link]
 [![Last Commit (master)][master-commit-img]][master-commit-img]
 [![Last Commit (0.13.0)][beta-commit-img]][beta-commit-img]
-[![Contributors][contributors-img]][contributors-link]
 [![License][license-img]](LICENSE)
 
 ## About
@@ -104,7 +103,6 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution inf
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
 [master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
 [beta-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/0.13.0?label=last%20commit%20%280.13.0%29
-[contributors-img]: https://img.shields.io/github/contributors/Lowie375/Gyromina
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf

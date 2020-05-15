@@ -44,15 +44,16 @@ function bombCheck(x) {
   }
 }
 
-function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
+function genBomb(field, ry, ty, tempSteps, bombOrder, places, i, attCtr = 0) {
   // Generates bomb coordinates
-  let x = getRandomInt(1, 11);
-  let y = getRandomInt(1, 6);
+  let gen = getRandomInt(0, places.length-1)
+  let x = places[gen][0];
+  let y = places[gen][1];
   
   // Checks if the randomly selected space already has a bomb
   if (field[y][x] == bmb) {
     // Regenerates the bomb
-    genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr);
+    genBomb(field, ry, ty, tempSteps, bombOrder, places, i, attCtr);
   } else {
     // Places a bomb
     field[y][x] = bmb;
@@ -65,16 +66,17 @@ function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
     attCtr++;
     if (attCtr >= 25) {
       // Removes this bomb and regenerates the previous bomb
-      bombOrder.pop();
+      places.push(bombOrder.pop());
       i--;
-      genBomb(field, ry, ty, tempSteps, bombOrder, i);
+      genBomb(field, ry, ty, tempSteps, bombOrder, places, i);
     } else {
       // Regenerates the bomb
-      genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr);
+      genBomb(field, ry, ty, tempSteps, bombOrder, places, i, attCtr);
     }
   } else {
     // Plants the bomb
     bombOrder.push([x, y])
+    places.splice(gen, 1);
     clearBarricades(field);
   }
 }
@@ -263,9 +265,15 @@ exports.exe = {
     var tempSteps = [];
     var bombs;
     var bombOrder = [[]];
-    //var boardID = "";
     var steps = [];
     var content = "";
+    // RNG prep
+    var places = [];
+    for (let i = 1; i < 7; i++) {
+      for (let j = 1; j < 12; j++) {
+        places.push([j, i]);
+      }
+    }
 
     if(!options)
       bombs = 4;
@@ -286,10 +294,8 @@ exports.exe = {
     }
 
     // Randomly place robot and target
-    var robotY = getRandomInt(1, 7);
-    if (robotY == 7) robotY = 6;
-    var targetY = getRandomInt(1, 7);
-    if (targetY == 7) targetY = 6;
+    var robotY = getRandomInt(1, 6);
+    var targetY = getRandomInt(1, 6);
     var startY = robotY;
 
     field[robotY][0] = dir[6];
@@ -297,7 +303,7 @@ exports.exe = {
 
     // Randomly place bombs
     for(let i = 0; i < bombs; i++) {
-      genBomb(field, robotY, targetY, tempSteps, bombOrder, i);
+      genBomb(field, robotY, targetY, tempSteps, bombOrder, places, i);
     }
 
     // Clear tempSteps[] (no cheating!)
@@ -310,7 +316,7 @@ exports.exe = {
     }
     
     // Puts the whole shebang into one variable (wow)
-    content += `A minefield has been generated!\n\n${output}\n` +
+    content += `Your minefield has been generated, <@${player}>!\n\n${output}\n` +
     `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
     `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
     `\`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n` +
@@ -435,9 +441,9 @@ exports.exe = {
               // Prepares a game result message
               var final = `${endField}\n`
               switch(res) {
-                case "stuck": final += "Oh no! The robot got stuck in the minefield!\n**YOU LOSE**"; break;
-                case "pass": final += "Hooray! The robot made it through the minefield!\n**YOU WIN**"; break;
-                case "bam": final += "Oh no! The robot hit a mine and blew up!\n**YOU LOSE**"; break;
+                case "stuck": final += "Oh no! The robot got stuck in the minefield!\n**--- YOU LOSE ---**"; break;
+                case "pass": final += "Hooray! The robot made it through the minefield!\n**--- YOU WIN ---**"; break;
+                case "bam": final += "Oh no! The robot hit a mine and blew up!\n**--- YOU LOSE ---**"; break;
               }
 
               // Sends the final output

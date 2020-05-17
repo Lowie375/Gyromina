@@ -28,7 +28,7 @@ These are some of the major conventions I've tried to follow within Gyromina's c
 
 * Indent using double spaces (soft tabs)
 * Put spaces after list items and parameters (`[x, y, z]` over `[x,y,z]`)
-* Put spaces around operators, except when used inside arguments or long conditionals (`myVar = 5` over `myVar=5`, but `arr[i+2]` and `myFunc(n*5)` are okay)
+* Put spaces around operators, except when used for math inside arguments and conditionals (`myVar = 5` over `myVar=5`, but `arr[i+2]` and `myFunc(n*5)` are okay)
 * No spaces inside single line blocks (`if (foo == true) {return bar;}` over `if (foo == true) { return bar; }`)
 * Make things look nice! Add whitespace between large segments of code and include brief comments wherever you see fit. This is an open source project, so keeping things clean and easy to read helps everyone. Plus, comments help everyone (especially myself) see what certain segments of code do so that we don't end up breaking them later on.
 
@@ -37,9 +37,9 @@ These are some of the major conventions I've tried to follow within Gyromina's c
 If you have contributed or tested code:
 
 * Feel free to add yourself to the list of contributors or testers in the [**package**](/package.json) file, if you'd like to
-  * **Contributors**: Add your Discord tag to `contributors[]` and your Discord user ID to `contributorIDs[]`, preferably at the same array index
-  * **Testers**: Add your Discord tag to `testers[]` and your Discord user ID to `testerIDs[]`, preferably at the same array index
+  * **Contributors**: Add your name or Discord tag to `contributors[]` and your Discord user ID to `contributorIDs[]`, preferably at the same array index
+  * **Testers**: Add your name or Discord tag to `testers[]` and your Discord user ID to `testerIDs[]`, preferably at the same array index
 * Feel free to add your name to the list of contributors in the [**README**](/README) file as well
   * **Contributors**: Add your Discord tag, name, and/or GitHub username under the **Repo Contributors** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate contributor marker once your contribution is pushed.
-  * **Testers**: Add your Discord tag, name, and/or GitHub username under the **Testers** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate tester marker with the next repo push.
+  * **Testers**: Add your Discord tag, name, and/or GitHub username under the **Helpers** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate tester marker with the next repo push.
 * If you do not add yourself to the package or README files, I will do that before your contributions are pushed, unless you specify otherwise.

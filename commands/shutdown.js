@@ -9,7 +9,7 @@ exports.run = {
     const yep = client.emojis.cache.get(e.yep);
     
     // Checks to see if the bot owner (L375#6740) sent the message.
-    if(message.author.id !== package.hostID) {
+    if(message.author.id !== process.env.hostID) {
       message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to shut me down, but was unsuccessful!')
       return;

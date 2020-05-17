@@ -13,9 +13,11 @@
 
 Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331
 
+Latest build (**beta**): 0.13.0-beta.8
+
 Latest stable build: 0.12.0
 
-Gyromina is licensed under the terms of the [MIT license](LICENSE)
+Gyromina's source code is 100% open source and is licensed under the terms of the [MIT license](LICENSE)
 
 ### External Links
 
@@ -23,7 +25,7 @@ Gyromina is licensed under the terms of the [MIT license](LICENSE)
 
 ### Overview
 
-Gyromina is a multipurpose bot, made to be a fun and functional addition to any Discord server. Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of simple minigames, and more!
+Gyromina is a multipurpose bot, made to be a fun and functional addition to any Discord server. Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, miscellaneous fun commands, and more!
 
 ## Setup
 
@@ -31,7 +33,7 @@ Gyromina is a multipurpose bot, made to be a fun and functional addition to any 
 
 * Follow this link: [https://discord.now.sh/490590334758420481?p537259072][invite]
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled (namely Manage Webhooks and Manage Messages)
+* Make sure all requested permissions are enabled (namely Use External Emojis, Manage Webhooks, and Manage Messages)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)
@@ -46,12 +48,11 @@ Gyromina is a multipurpose bot, made to be a fun and functional addition to any 
 * Configure environment variables
   * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
   * `exp`: `"1"` to enable experimental commands, `"0"` to disable
+  * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
   * `progressLog`: Optional; Discord channel ID (used with `release`)
   * `gitToken`/`gitUsername`/`gitRepoName`: Optional; GitHub auth token/username/repo name (used with `release`)
   * `herokuAuth`/`herokuID`: Optional; Heroku auth token/project ID (used with `uptime`)
-* Configure package.json
-  * `hostID` = Your Discord user ID (enables local use of `shutdown` and `vartest`)
 * Run using your native runtime/debugger and you're good to go!
 
 ## Changelog
@@ -64,15 +65,16 @@ The community Code of Conduct can be found [here](docs/CODE_OF_CONDUCT.md).
 
 ## Contributing
 
-Contributions to Gyromina are always welcome! I'm still an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help can go a long way.
+Contributions to Gyromina are always welcome! I'm an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help can go a long way.
 
 Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution information + general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
 
 ## Contributors
 
 [![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
-[![Minor Contributor 📗][min-contrib-label]][min-contrib-label]
+[![Minor Contributor 💾][min-contrib-label]][min-contrib-label]
 [![Debugger 🦟][debugger-label]][debugger-label]
+[![Beta Tester ⌚][tester-label]][tester-label]
 
 ### Author
 
@@ -81,11 +83,9 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution inf
 ### Repo Contributors
 
 * 💻 Alten#4148 - [@Altenhh](https://www.github.com/Altenhh)
-* 📗 Homura#5331
+* 💻 Homura#5331
 
 <!-- ### Helpers -->
-
-<!-- ### Testers -->
 
 <!-- Links + images -->
 [commands]: https://lx375.weebly.com/gyro-commands
@@ -106,5 +106,6 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution inf
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf
-[min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%93%97-7effaf
+[min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-7effaf
 [debugger-label]: https://img.shields.io/badge/debugger-%F0%9F%A6%9F-7effaf
+[tester-label]: https://img.shields.io/badge/beta%20tester-%E2%8C%9A-7effaf

@@ -1,7 +1,10 @@
-// Require discord.js and the heroki client
+// Require discord.js, the Heroku client, and the emoji file
 const Discord = require('discord.js');
-const Heroku = require('heroku-client')
-const hData = new Heroku({token: process.env.herokuAuth})
+const Heroku = require('heroku-client');
+const e = require('../systemFiles/emojis.json');
+
+// Extra setup
+const hData = new Heroku({token: process.env.herokuAuth});
 
 function reDate(ms) {
   // Converts milliseconds into 
@@ -39,10 +42,9 @@ function reDate(ms) {
 }
 
 exports.run = {
-  async execute(message, args, client) {
-    // Pull from app:released_at (?)
-    // https://api.heroku.com/apps/${process.env.herokuID}
-    // Accept: application/vnd.heroku+json; version=3
+  execute(message, args, client) {
+    // Emoji setup
+    const dyno = client.emojis.cache.get(e.dyno);
 
     // Gets the current time and the ready time
     var dUp = Date.parse(client.readyAt);
@@ -61,7 +63,7 @@ exports.run = {
 
     hData.get(`/apps/${process.env.herokuID}`)
       .then(app => {
-         // API data pulled!
+        // API data pulled!
         let up = Date.parse(app.released_at);
         let millival = locTime - up;
         let out = reDate(millival);
@@ -69,7 +71,7 @@ exports.run = {
         // Full embed
         embed.setTitle(out);
         embed.setDescription(`That's ${millival} milliseconds, wow!`);
-        embed.addField("Dyno Uptime", dOut);
+        embed.addField(`${dyno}  Dyno Uptime`, dOut);
 
         // Sends the embed
         message.channel.send({embed: embed});

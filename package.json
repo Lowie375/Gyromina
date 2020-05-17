@@ -33,7 +33,6 @@
   ],
   "testers": [],
   "testerIDs": [],
-  "hostID": "334335706740686849",
   "license": "MIT",
   "dependencies": {
     "bent": "^7.3.0",

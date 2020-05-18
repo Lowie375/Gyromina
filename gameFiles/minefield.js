@@ -466,10 +466,10 @@ exports.label = {
   "name": "minefield",
   "aliases": ["field", "walkinaminefield", "walk-in-a-minefield", "walkin", "maze"],
   "players": 1,
-  "description": "A modified version of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from r/dailyprogrammer.",
+  "description": "A variant of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from [r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/).",
   "art": "",
   "options": "[mines/preset]",
-  "optionsdesc": "\• [mines/preset]: Number of mines on the field (4-20) or a preset difficulty (easy = 4, medium = 8, hard = 12, insane = 16, master = 20). Defaults to easy (4 mines)",
+  "optionsdesc": "[mines/preset]: The number of mines on the field (4-20), or a preset difficulty (easy = 4, medium = 8, hard = 12, insane = 16, master = 20). Defaults to easy (4 mines)",
   "exclusive": 0,
   "indev": 0,
   "deleted": 0

@@ -1,19 +1,17 @@
-// Require discord.js, fs, and the refcode generator
+// Require discord.js and the refcode generator
 const Discord = require('discord.js');
-const fs = require('fs');
 const e = require('../systemFiles/emojis.json');
 
 function setParams(c) {
   var list = "\• " + process.env.prefix + "**" + c.help.name + "**"
   // Checks for parameters, and adds them as necessary
   if(!c.help.params) {
-    list = list + "\n";
+    list += "\n";
   } else if(Array.isArray(c.help.params) == false) {
-    list = list + " " + c.help.params + "\n";
+    list += ` ${c.help.params}\n`;
   } else {
-    list = list + " " + c.help.params[0];
-    for(let i = 1; i < c.help.params.length; i++) list = list + "\n   **OR** " + process.env.prefix + c.help.name + " " + c.help.params[i];
-    list = list + "\n"
+    list += ` ${c.help.params[0]}\n`;
+    for(let i = 1; i < c.help.params.length; i++) {list += `**or** ${process.env.prefix}**${c.help.name}** ${c.help.params[i]}\n`;}
   }
   return list;
 }
@@ -22,13 +20,12 @@ function setGameOptions(g) {
   var list = "\• " + process.env.prefix + "**" + g.label.name + "**"
   // Checks for parameters, and adds them as necessary
   if(!g.label.options) {
-    list = list + "\n";
+    list += "\n";
   } else if(Array.isArray(g.label.options) == false) {
-    list = list + " " + g.label.options + "\n";
+    list += ` ${g.label.options}\n`;
   } else {
-    list = list + " " + g.label.options[0];
-    for(let i = 1; i < g.label.options.length; i++) list = list + " **--OR--** " + process.env.prefix + g.label.name + " " + g.label.options[i];
-    list = list + "\n"
+    list += ` ${g.label.options[0]}\n`;
+    for(let i = 1; i < g.label.options.length; i++) {list += `**or** ${process.env.prefix}**${g.label.name}** ${g.label.options[i]}\n`;}
   }
   return list;
 }
@@ -54,7 +51,6 @@ function checkArgs(args) {
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = client.emojis.cache.get(e.nope);
     const ghost = client.emojis.cache.get(e.ghost);
     const beta = client.emojis.cache.get(e.beta);
     const main = client.emojis.cache.get(e.main);
@@ -99,13 +95,18 @@ exports.run = {
       else
         embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName})`);
 
-      let desc = "";
+      let desc = cmdy.help.description;
       if(cmdy.help.aliases && Array.isArray(cmdy.help.aliases) == false)
-        desc += `${cmdy.help.description}\n\• Alias: ${process.env.prefix}${cmdy.help.aliases}`;
+        desc += `\n\• Alias: ${process.env.prefix}${cmdy.help.aliases}`;
       else if(cmdy.help.aliases)
-        desc += `${cmdy.help.description}\n\• Aliases: ${process.env.prefix}${cmdy.help.aliases.join(`, ${process.env.prefix}`)}`;
+        desc += `\n\• Aliases: ${process.env.prefix}${cmdy.help.aliases.join(`, ${process.env.prefix}`)}`;
       
-      desc += `\n\• Usage: ${cmdy.help.usage}`;
+      if(Array.isArray(cmdy.help.usage) == false) {
+        desc += `\n\• Usage: ${cmdy.help.usage}`;
+      } else {
+        desc += `\n\• Usage: ${cmdy.help.usage[0]}`;
+        for(let i = 1; i < cmdy.help.usage.length; i++) {desc += `\n   **or** ${process.env.prefix}${cmdy.help.name} ${cmdy.help.usage[i]}`;}
+      }
 
       if(cmdy.help.helpurl)
         desc += `\n\• For more help, [tap/click here](${cmdy.help.helpurl})`;
@@ -149,7 +150,14 @@ exports.run = {
         desc += `\n\• Alias: ${process.env.prefix}${gmz.label.aliases}`;
       else if(gmz.label.aliases >= 2)
         desc += `\n\• Aliases: ${process.env.prefix}${gmz.label.aliases.join(`, ${process.env.prefix}`)}`;
-      if (gmz.label.options) desc += `\n\nOptions:\n${gmz.label.optionsdesc}`;
+      
+      if (gmz.label.options && !Array.isArray(gmz.label.optionsdesc)) {
+        desc += `\n\nOptions:\n\• ${gmz.label.optionsdesc}`;
+      } else if (gmz.label.options && Array.isArray(gmz.label.optionsdesc)) {
+        desc += `\n\nOptions:\n\• ${gmz.label.optionsdesc[0]}`;
+        for(let i = 1; i < gmz.label.optionsdesc.length; i++) {desc += `\n\• ${gmz.label.optionsdesc[i]}`;}
+      }
+
       embed.setDescription(desc);
 
     } else if (conditions[1] == 1) { // General game help
@@ -268,8 +276,9 @@ exports.help = {
   "name": "help",
   "aliases": ["commands", "cmds", "command", "cmd", "gamelist", "cmdlist", "commandlist"],
   "description": "Provides command and game help.",
-  "usage": `${process.env.prefix}help [command/queries]`,
-  "params": "[command/queries]",
+  "usage": `${process.env.prefix}help [command/game] [queries]`,
+  "params": "[command/game] [queries]",
+  "helpurl": "https://lx375.weebly.com/gyrocmd-help",
   "hide": 0,
   "wip": 0,
   "dead": 0,

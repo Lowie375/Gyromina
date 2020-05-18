@@ -9,8 +9,8 @@ const cdn = require('../systemFiles/cdn.json');
 
 // Additional setup
 const getBuffer = bent('buffer');
-const cancelRegex = /stop|cancel|end|quit/;
-const catchRegex = /^([cCfFqQoO]){1}[\.\:\-\_]{1}([a-zA-Z]{1}[a-zA-Z]?)(\d)+/
+const cancelRegex = /stop|cancel|end|quit/i;
+const catchRegex = /^([cfqo]){1}[\.\:\-\_]{1}([a-z]{1}[a-z]?)(\d)+/i;
 
 const cancelWords = ["minesweeper stop", "mswp stop", "mine stop", "sweeper stop", "sweep stop", "minesweeper cancel", "mswp cancel", "mine cancel", "sweeper cancel", "sweep cancel",
   "minesweeper end", "mswp end", "mine end", "sweeper end", "sweep end", "minesweeper quit", "mswp quit", "mine quit", "sweeper quit", "sweep quit"];
@@ -30,6 +30,16 @@ function boardCheck(x) {
     case "difficult":
     case "h":
       return [99, 30, 16];
+    case "insane":
+    case "expert":
+    case "x":
+    case "i":
+      return [166, 30, 30];
+    case "master":
+    case "ultimate":
+    case "xm":
+    case "u":
+      return [390, 36, 36];
     default:
       return x;
   }
@@ -186,6 +196,7 @@ exports.exe = {
   async start(message, client, player, options) {
     // Variable setup
     var setup;
+    var fixFlag = 0;
     var places = [];
 
     // Option setup
@@ -202,14 +213,14 @@ exports.exe = {
     else if (!Array.isArray(setup))
       return message.reply("I can't create a custom field with invalid options! Please check your options and try again.");
 
-    // Starts a typing indicator (in case generation takes a while)
-    //message.channel.startTyping();
-
     // Fixes mine count
-    if(setup[0] > (setup[1] - 1) * (setup[2] - 1))
+    if(setup[0] > (setup[1] - 1) * (setup[2] - 1)) {
       setup[0] = (setup[1] - 1) * (setup[2] - 1);
-    else if(setup[0] < 3)
+      fixFlag = 1;
+    } else if(setup[0] < 3) {
       setup[0] = 3;
+      fixFlag = 1;
+    }
     
     // Array setup (j=x, i=y)
     var field = [];
@@ -254,9 +265,6 @@ exports.exe = {
         let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), 'board.png');
         message.channel.send("[Add text here]", attach)
           .then(game => {
-
-            // Stops the typing indicator
-            game.channel.stopTyping(true);
 
             // Sets up a message collector
             var moves = 0;
@@ -334,8 +342,8 @@ exports.label = {
   "players": 1,
   "description": "An old classic, now in bot form!",
   "art": "",
-  "options": "[mines/preset] [length1] [length2]",
-  "optionsdesc": "\• [mines/preset]: Number of mines on the field (3-1225) or a preset difficulty (easy = 9x9 + 10 mines, medium = 16x16 + 40 mines, hard = 16x30 + 99 mines) Defaults to easy (9x9 + 10 mines)\n\• [length1]: If no preset is specified, one dimension of the board (7-36)\n\• [length2]: If no preset is specified, the other dimension of the board (7-36)",
+  "options": ["[preset]", "<mines> <length1> <length2>"],
+  "optionsdesc": ["<mines>/[preset]: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, master = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "<length1>: If no preset is specified, one dimension of the board (7-36)", "<length2>: If no preset is specified, the other dimension of the board (7-36)"],
   "exclusive": 0,
   "indev": 1,
   "deleted": 0

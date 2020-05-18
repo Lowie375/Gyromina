@@ -3,6 +3,8 @@ const color = require('colors');
 const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
 
+// UTIL
+
 /**
  * Writes to the console with time when it was ran
  * @param message
@@ -81,6 +83,14 @@ exports.emojiCheck = function(e) {
   }
 };
 
+// COLOUR
+
+/**
+ * Converts a hexadecimal colour code to RGB format
+ * @param {string} hex The hexadecimal colour code (preceded by a #)
+ * @return {JSON<number>}
+ */
+
 exports.hexToRgb = function(hex) { 
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function(m, r, g, b) {
@@ -95,6 +105,42 @@ exports.hexToRgb = function(hex) {
   } : null;
 }
 
+/**
+ * Converts an RGB colour code to hexadecimal format
+ * @param rgb The RGB colour object
+ * @return {String}
+ */
+
+exports.rgbToHex = function(rgb) { 
+  return `${rgb.r.toString(16)}${rgb.g.toString(16)}${rgb.b.toString(16)}`;
+}
+
+/**
+ * Converts a CMYK colour code to RGB format
+ * @param cmyk The CMYK colour object
+ * @return {JSON<number>}
+ */
+
+exports.cmykToRgb = function(cmyk) {
+  let d = [cmyk.c/100, cmyk.m/100, cmyk.y/100, cmyk.k/100];
+
+  let c = Math.min(1, d[0] * (1 - d[3]) + d[3]);
+  let m = Math.min(1, d[1] * (1 - d[3]) + d[3]);
+  let y = Math.min(1, d[2] * (1 - d[3]) + d[3]);
+
+  return {
+    r: Math.round((1 - c) * 255),
+    g: Math.round((1 - m) * 255),
+    b: Math.round((1 - y) * 255),
+  };
+}
+
+/**
+ * Converts an RGB colour code to CMYK format
+ * @param rgb The RGB colour object
+ * @return {JSON<number>}
+ */
+
 exports.rgbToCmyk = function(rgb) {
   let c = (255 - rgb.r) / 255;
   let m = (255 - rgb.g) / 255;
@@ -108,4 +154,24 @@ exports.rgbToCmyk = function(rgb) {
     y: Math.round((y - k) / (1 - k) * 100),
     k: Math.round(k * 100)
   };
+}
+
+/**
+ * Converts a hexidecimal colour code to a colour integer
+ * @param {String} hex The hexadecimal colour code (raw; no #)
+ * @return {Number}
+ */
+
+exports.hexToInt = function(hex) {
+  return parseInt(parseInt(hex, 16).toString(10));
+}
+
+/**
+ * Converts a colour integer to a hexidecimal colour code
+ * @param {Number} int The colour integer
+ * @return {String}
+ */
+
+exports.intToHex = function(int) {
+  return int.toString(16);
 }

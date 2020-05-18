@@ -2,7 +2,7 @@
 
 // Require discord.js and the RNG
 const Discord = require('discord.js');
-const {getRandomInt, hexToRgb, rgbToCmyk} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, hexToRgb, rgbToCmyk, hexToInt} = require('../systemFiles/globalFunctions.js');
 
 function getRandomHex() {
   let r = getRandomInt(0, 255);
@@ -17,7 +17,7 @@ exports.run = {
     let hex = getRandomHex();
     let rgb = hexToRgb(`#${hex}`);
     let cmyk = rgbToCmyk(rgb);
-    let int = parseInt(hex, 16).toString(10);
+    let int = hexToInt(hex);
 
     const embed = new Discord.MessageEmbed()
       .setTitle(`#${hex}`)

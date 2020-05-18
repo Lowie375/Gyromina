@@ -176,7 +176,7 @@ exports.run = {
 exports.help = {
   "name": "poll",
   "description": "Creates a poll in the current channel.",
-  "usage": `${process.env.prefix}poll <type> <prompt> -[options]\n   **OR** ${process.env.prefix}poll <prompt> -<e1> [o1] -[e2] [o2] …`,
+  "usage": [`${process.env.prefix}poll <type> <prompt> -[options]`, `${process.env.prefix}poll <prompt> -<e1> [o1] -[e2] [o2] …`],
   "params": ["<type> <prompt> -[options]", "<prompt> -<e1> [o1] -[e2] [o2] …"],
   "helpurl": "https://lx375.weebly.com/gyrocmd-poll",
   "hide": 0,

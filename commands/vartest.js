@@ -14,20 +14,25 @@ exports.run = {
       return message.channel.send(`${nope} Error - Insufficient permissions!`);
     }
 
-    // Colour tests
-    let rgb = {r: parseInt(args[0]), g: parseInt(args[1]), b: parseInt(args[2])};
-    // Hex
-    let hex = rgbToHex(rgb);
-    let n1 = hexToRgb(`${hex}`);
-    // CMYK
-    let cmyk = rgbToCmyk(rgb);
-    let n2 = cmykToRgb(cmyk);
-    // Int
-    let int = hexToInt(hex);
-    let hex2 = intToHex(int);
-    let n3 = hexToRgb(hex2);
-    
-    message.channel.send(`1: rgb(${n1.r}, ${n1.g}, ${n1.b}) // 2: rgb(${n2.r}, ${n2.g}, ${n2.b}) // 3: rgb(${n3.r}, ${n3.g}, ${n3.b})\nhex: #${hex} // cmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%) // int: ${int}`);
+    if (args.length >= 3) {
+      // Colour tests
+      let rgb = {r: parseInt(args[0]), g: parseInt(args[1]), b: parseInt(args[2])};
+      // Hex
+      let hex = rgbToHex(rgb);
+      let n1 = hexToRgb(`${hex}`);
+      // CMYK
+      let cmyk = rgbToCmyk(rgb);
+      let n2 = cmykToRgb(cmyk);
+      // Int
+      let int = hexToInt(hex);
+      let hex2 = intToHex(int);
+      let n3 = hexToRgb(hex2);
+
+      message.channel.send(`1: rgb(${n1.r}, ${n1.g}, ${n1.b}) // 2: rgb(${n2.r}, ${n2.g}, ${n2.b}) // 3: rgb(${n3.r}, ${n3.g}, ${n3.b})\nhex: #${hex} // cmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%) // int: ${int}`);
+    } else {
+      // Markdown test
+      message.channel.send("Markdown [test](https://lx375.weebly.com)");
+    }
   },
 };
     

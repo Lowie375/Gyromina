@@ -173,5 +173,21 @@ exports.hexToInt = function(hex) {
  */
 
 exports.intToHex = function(int) {
-  return int.toString(16);
+  let res = int.toString(16)
+  while (res.length < 6) {
+    res = "0".concat(res);
+  }
+  return res;
+}
+
+/**
+ * Constrains a number between a minimum and a maximum value
+ * @param {Number} x The number to constrain
+ * @param {Number} min The minimum
+ * @param {Number} max The maximum
+ * @return {Number}
+ */
+
+exports.minMax = function(n, min, max) {
+  return Math.max(min, Math.min(max, n));
 }

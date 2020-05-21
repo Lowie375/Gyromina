@@ -18,7 +18,7 @@ const names = [
    "impfluidounces", "fluidouncesimp", "fluidounceimp", "impfloz", "flozimp", "imptablespoons", "tablespoonsimp", "tablepsoonimp", "imptbsp", "tbspimp",
    "impteaspoons", "teaspoonsimp", "teaspoonimp", "tspimp", "imptsp", "uscups", "cupsus", "cupus", "usc", "cus",
    "uslegalcups", "legalcupsus", "legalcupus", "cups", "impcups", "cupsimp", "cupimp", "c", "impc", "cimp",
-   "pascals", "Pa", "atmospheres", "atm", "torr", "bar", "mmHg", "psi", "lb/sqin", "ib/in^2",
+   "pascals", "Pa", "atmospheres", "atm", "torr", "bar", "mmHg", "psi", "lb/sqin", "lb/in^2",
    "lb/in²", "lb/in2", "mb", "mbar", "millibar",],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
@@ -75,16 +75,43 @@ const metrics = [
 const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
   "pascals", "Pa"];
-// Splitter separators
-const separators = ["_", "-"];
+// Splitter separators + extraneous cases
+const separators = /_-/;
+const ex = /^(cubic|square)/;
+
+function powerCheck(type) {
+  switch(type) {
+    case "v": return 3;
+    case "a": return 2;
+    default: return 1;
+  }
+}
 
 function metricCheck(x) {
   for (let i = 0; i < registered.length; i++) {
-    if(registered[i].startsWith(x)){
+    if(registered[i].startsWith(x))
       return 0;
-    }
+    /*else if(ex.exec(x))
+      return 1;*/
   }
-  return 1;
+  return 2;
+}
+
+function metricExSlicer(x, pos) {
+  let m = ex.exec(x);
+  if (m) { // Extraneous slicer
+    return x.slice(0, pos) + x.slice(pos + m[1].length)
+  } else {
+    return x.slice(pos);
+  }
+}
+
+function exCheck(x) {
+  let m = ex.exec(x);
+  if (m)
+    return x.slice(m[1].length);
+  else
+    return x;
 }
 
 function deepCleanArgs(args, list, j, k) {
@@ -93,13 +120,14 @@ function deepCleanArgs(args, list, j, k) {
   
   for (var item of list) {
     // Checks if the prefixes match
-    if(args[j].startsWith(metricNames[0][item].slice(0, k)) && metricNames[0][item].slice(0, k).length == k+1) {
+    let exArg = exCheck(args[j]);
+    if(exArg.startsWith(metricNames[0][item[0]].slice(0, k)) && metricNames[0][item[0]].slice(0, k).length == k) {
       checkCtr++;
       save.push(item);
     }
   }
   if (checkCtr == 1) {
-    let arr = [save[0], k]
+    let arr = [save[0][1], k]
     return arr;
   } else if (checkCtr != 0 && checkCtr != 1) {
     return deepCleanArgs(args, save, j, k+1);
@@ -118,7 +146,7 @@ function cleanArgs(args) {
     // Splits the argument into individual characters
     let splitter = args[j].split("");
     for (let i = 0; i < splitter.length; i++) {
-      if(separators.includes(splitter[i])) {
+      if(separators.exec(splitter[i])) {
         splitter.splice(i, 1);
         i--;
       }
@@ -129,38 +157,61 @@ function cleanArgs(args) {
 
   for (let j = 1; j <= 2; j++) {
     // Determines possible metric prefixes
+    let exArg = exCheck(args2[j]);
     for (let i = 0; i < metricNames[0].length; i++) {
-      if(args2[j].startsWith(metricNames[0][i])) {
+      if(exArg.startsWith(metricNames[0][i])) {
         checkCtr++;
-        save.push(metricNames[1][i]);
+        save.push([i, metricNames[1][i]]);
       }
     }
     // Checks if a prefix was found
-    if (checkCtr == 0) {
-      // If not, leaves things as-is
+    if (checkCtr == 0) { // No prefix; leave things as-is
       cleaned[j] = args2[j];
-    } else {
-      // Otherwise, checks if the prefix is exclusive
-      if (checkCtr == 1) {
-        cleaned[j+3] = save[0];
+    } else { // Prefix; check if the prefix is exclusive
+      if (checkCtr == 1) { // Exclusive
+        cleaned[j+3] = save[0][1];
         cleaned[j] = args2[j].slice(1);
       } else if (checkCtr != 0 && checkCtr != 1) {
-        // If not, runs a deeper check
-        let dpr = deepCleanArgs(args2, save, j, 1);
-        cleaned[j+3] = dpr[0];
-        cleaned[j] = args2[j].slice(dpr[1]+1);
+        // Checks if the prefixes have the same index
+        let index = save[0][1];
+        for (item of save) {
+          if(item[1] != index)
+            index = -1;
+        }
+        // Checks if the index remained the same throughout
+        if (index != -1) { // Technically exclusive; find the longest prefix
+          let max = metricNames[0][save[0][0]].length
+          for (item of save) {
+            if(metricNames[0][item[0]].length > max)
+              max = metricNames[0][item[0]].length;
+          }
+          cleaned[j+3] = save[0][1];
+          cleaned[j] = metricExSlicer(args2[j], max);
+          // exCheck
+        } else {
+          // Runs a deeper check
+          let dpr = deepCleanArgs(args2, save, j, 2);
+          cleaned[j+3] = dpr[0];
+          cleaned[j] = metricExSlicer(args2[j], dpr[1]);
+          // exCheck
+        }
       }
     
       // Checks if the prefix was actually a valid prefix
       let validate = metricCheck(cleaned[j]);
       switch(validate) {
-        case 0:
-          // OK, continue
+        case 0: // OK, continue
           break;
-        case 1:
-          // Not a prefix, undo split
+        case 1: { // Extraneous, perform additional check
+          let checkOutput = metricCheckAddl(cleaned[j], cleaned[j+3]);
+          if (checkOutput != null) {
+            cleaned[j] = checkOutput;
+            break;
+          }
+        }
+        case 2: // Not a prefix, undo split
           cleaned[j] = args2[j];
-          cleaned [j+3] = -1;
+          cleaned[j+3] = -1;
           break;
       }
     }
@@ -251,7 +302,7 @@ function errorPull(x, message) {
   }
 }
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     switch(args.length) {
       case 0: return message.reply("I can\'t convert something if I don't have any values or units to convert between! Please add a value and try again.");
@@ -293,14 +344,14 @@ module.exports.run = {
     } else {
       val2 = converter[1][pos2];
     }
-
+    
     // Converts and checks if the output is valid
     output = cArgs[0] * val2 / val1;
     // Metric handling
     if (cArgs[5] != -1)
-      output = output * metrics[1][cArgs[5]];
+      output = output * Math.pow(metrics[1][cArgs[5]], powerCheck(type1));
     if (cArgs[4] != -1)
-      output = output / metrics[1][cArgs[4]];
+      output = output / Math.pow(metrics[1][cArgs[4]], powerCheck(type2));
     if (isNaN(output) == 1)
       return message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");
 
@@ -333,7 +384,7 @@ module.exports.run = {
   }
 }
 
-module.exports.help = {
+exports.help = {
   "name": "convert",
   "aliases": "unit",
   "description": "Converts a value from one unit to another.",

@@ -17,7 +17,7 @@ Latest build (**beta**): 0.13.0-beta.11
 
 Latest stable build: 0.12.1
 
-Gyromina's source code is 100% open source and is licensed under the terms of the [MIT license](LICENSE)
+Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
 ### External Links
 

@@ -13,7 +13,7 @@
 
 Created by L375#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from Alten#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and Homura#5331
 
-Latest stable build: 0.12.0
+Latest stable build: 0.12.1
 
 Gyromina is licensed under the terms of the [MIT license](LICENSE)
 

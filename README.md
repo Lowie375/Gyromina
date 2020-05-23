@@ -1,4 +1,4 @@
-# ​ ![Gyromina, a multipurpose Discord bot][gyro-banner]
+# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner]][info]
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]](package.json)
@@ -11,9 +11,9 @@
 
 ### "Fun + function, all in one."
 
-Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331
+Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
 
-Latest build (**beta**): 0.13.0-beta.11
+Latest build (**beta**): 0.13.0-beta.12
 
 Latest stable build: 0.12.1
 
@@ -25,7 +25,9 @@ Gyromina is entirely open source and is licensed under the terms of the [MIT lic
 
 ### Overview
 
-Gyromina is a multipurpose bot, made to be a fun and functional addition to any Discord server. Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, miscellaneous fun commands, and more!
+Gyromina is a multipurpose Discord bot, made to be a fun and functional addition to any Discord server.
+
+Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, miscellaneous fun commands, and more!
 
 ## Setup
 
@@ -33,7 +35,7 @@ Gyromina is a multipurpose bot, made to be a fun and functional addition to any 
 
 * Follow this link: [https://discord.now.sh/490590334758420481?p537259072][invite]
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled (namely Use External Emojis, Manage Webhooks, and Manage Messages)
+* Make sure all requested permissions are enabled (critical: Use External Emojis, Manage Webhooks, and Manage Messages)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)
@@ -83,11 +85,11 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution inf
 ### Repo Contributors
 
 * 💻 Alten#4148 - [@Altenhh](https://www.github.com/Altenhh)
-* 💻 Homura#5331
+* 💻 Homura#5331 - [@Homurasama](https://www.github.com/Homurasama)
 
 <!-- ### Helpers -->
 
-<!-- Links + images -->
+<!-- Links -->
 [commands]: https://lx375.weebly.com/gyro-commands
 [gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
 [info]: https://lx375.weebly.com/gyromina
@@ -98,6 +100,7 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution inf
 [dependency-link]: https://david-dm.org/Lowie375/Gyromina
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
 
+<!-- Labels -->
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg

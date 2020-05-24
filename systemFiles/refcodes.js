@@ -54,7 +54,8 @@ exports.genErrorMsg = function(message, client, error) {
 
   // Generates a reference code
   const newRef = genCode();
-  console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
+  // Logs the error
+  console.error(`REFCODE: ${newRef}\n- - - - - - - - - - -`, error);
 
   // Sends a warning message in the channel
   const embed3 = new Discord.MessageEmbed()

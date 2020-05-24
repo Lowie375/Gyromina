@@ -1,9 +1,9 @@
-// Require discord.js, bent, canvas, the RNG, the refcode randomizer, the emoji file, and the cdn file
+// Require discord.js, bent, canvas, the RNG, the refcode generator, the emoji file, and the cdn file
 const Discord = require('discord.js');
 const bent = require('bent');
 const {createCanvas, loadImage} = require('canvas');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
-//const {codeRNG} = require('../systemFiles/refcodes.js');
+const {genErrorMsg} = require('../systemFiles/refcodes.js');
 const e = require('../systemFiles/emojis.json');
 const cdn = require('../systemFiles/cdn.json');
 
@@ -11,9 +11,6 @@ const cdn = require('../systemFiles/cdn.json');
 const getBuffer = bent('buffer');
 const cancelRegex = /stop|cancel|end|quit|time/i;
 const catchRegex = /^([cfqop]){1}[\.\:\-\_]{1}([a-z]{1}[a-z]?)(\d)+/i;
-
-const cancelWords = ["minesweeper stop", "mswp stop", "mine stop", "sweeper stop", "sweep stop", "minesweeper cancel", "mswp cancel", "mine cancel", "sweeper cancel", "sweep cancel",
-  "minesweeper end", "mswp end", "mine end", "sweeper end", "sweep end", "minesweeper quit", "mswp quit", "mine quit", "sweeper quit", "sweep quit"];
 
 function boardCheck(x) {
   switch (x) {
@@ -131,13 +128,13 @@ function checkTile(field, display, x, y) {
     return openTiles(field, display, x, y); // Blank; pops open segments of the grid
   } else {
     display[y][x] = field[y][x]; // Standard tile
-    return [display[y][x], x, y]; // Tiles to update
+    return [[display[y][x], x, y]]; // Tiles to update
   }
 }
 
 function openTiles(field, display, ix, iy) {
   // Opens blank segments of the board
-  let coords = [ix, iy];
+  let coords = [[ix, iy]];
   let complete = [];
   let update = [];
   do {
@@ -147,17 +144,23 @@ function openTiles(field, display, ix, iy) {
     // Adds all the surrounding tiles to the update list (if not already present)
     for (let sx = -1; sx <= 1; sx++) {
       for(let sy = -1; sy <= 1; sy++) {
-        if(x+sx >= 0 && x+sx < field[0].length && y+sy >= 0 && y+sy < field.length && display[y+sy][x+sx] == 9 && !update.includes(field[y+sy][x+sx], x+sx, y+sy)) {
+        if(x+sx >= 0 && x+sx < field[0].length && y+sy >= 0 && y+sy < field.length && display[y+sy][x+sx] == 9 && !update.includes([field[y+sy][x+sx], x+sx, y+sy])) {
           display[y+sy][x+sx] = field[y+sy][x+sx]
-          update.push(display[y+sy][x+sx], x+sx, y+sy);
+          update.push([display[y+sy][x+sx], x+sx, y+sy]);
         }
       }
     }
     // Checks if any surrounding tiles are blank
     let roundCheck = roundabout(field, display, x, y, [0]);
+    const filter = a => b => a.length === b.length && a.every((v, i) => v === b[i]);
+
     if (roundCheck[0] != 0) { // Blanks exist
-      for (coord of roundCheck[1]) {
+      /*for (coord of roundCheck[1]) { // Broken, b/c JS doesn't like arrays within arrays :(
         if (!coords.includes(coord) && !complete.includes(coord)) // Checks if blanks are new
+          coords.push(coord); // New blank; push
+      }*/
+      for (coord of roundCheck[1]) {
+        if (!coords.some(filter(coord)) && !complete.some(filter(coord))) // Checks if blanks are new
           coords.push(coord); // New blank; push
       }
     }
@@ -189,7 +192,7 @@ function recycle(field, filler, x, y) {
   // Replaces any bombs in the 3x3
   for (coord of square) {
     if (field[coord[1]][coord[0]] == 12) {
-      field[coord[1]][coord[0]] = roundabout(field, [], coord[0], coord[1]);
+      field[coord[1]][coord[0]] = roundabout(field, [], coord[0], coord[1])[0];
       cycle(field, coord[0], coord[1], -1);
     }
   }
@@ -245,12 +248,17 @@ function decode(y) {
     return c[0];
 }
 
+function mswpCore() {
+
+}
+
 exports.exe = {
   async start(message, client, player, options) {
     // Variable setup
     var setup;
     var fixFlag = 0;
     var places = [];
+    var time = new Date();
 
     // Option setup
     if (!options)
@@ -313,9 +321,29 @@ exports.exe = {
             board.drawImage(img, 32*display[i][j], 0, 32, 32, (j+1)*32, (i+1)*32, 32, 32);
           }
         }
+        
+        // Font format setup
+        board.font = "bold 20px sans-serif";
+        board.textBaseline = "middle";
+        board.textAlign = "center";
+        board.fillStyle = "#ffffff";
+        board.strokeStyle = "#000000";
 
         // Overlays the lettering
-        //Add code here
+        for(let i = 1; i <= field[0].length; i++) { // Column markers (numbers)
+          board.fillText(`${i}`, 32*i+16, 16, 32);
+          board.strokeText(`${i}`, 32*i+16, 16, 32);
+        }
+        for(let j = 0; j < Math.min(field.length, 26); j++) { // Row markers (letters)
+          board.fillText(`${String.fromCharCode(j+65)}`, 16, 32*(j+1)+16, 32);
+          board.strokeText(`${String.fromCharCode(j+65)}`, 16, 32*(j+1)+16, 32);
+        }
+        if (field.length > 26) { // Second sequence
+          for(let j = 26; j < field.length; j++) { // Row markers (letters)
+            board.fillText(`A${String.fromCharCode(j+39)}`, 16, 32*(j+1)+16, 32);
+            board.strokeText(`A${String.fromCharCode(j+39)}`, 16, 32*(j+1)+16, 32);
+          }
+        }
 
         // Sends the board
         let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
@@ -326,6 +354,8 @@ exports.exe = {
             var moves = 0;
             const filter = (msg) => msg.author.id == player && ((cancelRegex.exec(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
             const finder = game.channel.createMessageCollector(filter, {time: 120000, idle: 120000});
+
+            //mswpCore();
     
             finder.on('collect', msg => {
               // Checks if the collected message was a cancellation message
@@ -337,6 +367,7 @@ exports.exe = {
                 finder.stop("cancel");
                 return; // Stops the game
               }
+
               // Pre-check setup
               let caught = catchRegex.exec(msg.content);
               let x = parseInt(caught[3])-1
@@ -368,14 +399,16 @@ exports.exe = {
                 case "p": {
                   // Force snippet
                   if (msg.content.includes("-f"))
-                  display[y][x] == 9;
+                    display[y][x] == 9;
 
                   // Checks the move result
                   let move = checkTile(field, display, x, y);
                   if (Array.isArray(move)) { // Valid; updates board
                     updateCanvas(board, move, img);
                     let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-                    game.edit("[New text]", newAttach);
+                    game.channel.send("[New text]", newAttach);
+
+                    //game = updateGame(game, board, move, img);
                   } else {
                     switch(move) {
                       case 1:
@@ -400,41 +433,46 @@ exports.exe = {
                   // Edits flag status
                   let content;
                   if (display[y][x] == 9 || display[y][x] == 10) {
-                    display[y][x] == 11 + (Date.getUTCMonth() == 5 ? 4 : 0);
+                    display[y][x] = 11 + (time.getUTCMonth() == 5 ? 4 : 0);
                     content = "[New flag]";
                   } else if (display[y][x] == 11 || display[y][x] == 15) {
-                    display[y][x] == 9;
+                    display[y][x] = 9;
                     content = "[Flag gone]";
                   } else {
                     msg.channel.send(`That tile can't be flagged, <@${player}>.`);
                     break;
                   }
-                  updateCanvas(board, [display[y][x], x, y], img);
+                  updateCanvas(board, [[display[y][x], x, y]], img);
                   let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-                  game.edit(content, newAttach);
+                  game.channel.send(content, newAttach);
                   break;
                 }
                 case "q": {
                   // Edits qmc status
                   let content;
                   if (display[y][x] == 9) {
-                    display[y][x] == 10;
+                    display[y][x] = 10;
                     content = "[New qmc]";
                   } else if (display[y][x] == 10) {
-                    display[y][x] == 9;
+                    display[y][x] = 9;
                     content = "[Qmc gone]";
                   } else {
                     msg.channel.send(`That tile can't be marked as uncertain, <@${player}>.`);
                     break;
                   }
-                  updateCanvas(board, [display[y][x], x, y], img);
+                  updateCanvas(board, [[display[y][x], x, y]], img);
                   let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-                  game.edit(content, newAttach);
+                  game.channel.send(content, newAttach);
                   break;
                 }
               }
               console.log("Move caught!");
               finder.resetTimer({time: 120000, idle: 120000});
+
+              // Pickup new channel (pseudocode!)
+              // game.channel - cache - get messages
+                // filter - last 15(?), sent by client.user.tag (Gyromina), has image, @mentions player
+              // game = found message (hopefully it gets stored!)
             });
 
             finder.on('end', (c, reason) => {
@@ -452,6 +490,10 @@ exports.exe = {
               }
             });
         });
+    })
+    .catch(error => {
+      // Generates an error message & logs the error
+      genErrorMsg(message, client, error);
     });
   }
 };

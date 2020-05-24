@@ -87,7 +87,6 @@ client.on('message', message => {
     catch (error) {
       // Generates an error message & logs the error
       genErrorMsg(message, client, error);
-      console.error(error);
     }
   }
 });

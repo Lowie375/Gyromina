@@ -4,8 +4,8 @@ const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, Clean, minM
 
 // Regex setup
 const hexX = /^(0x|#|\b)([a-f\d]{6})/i;
-const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i; // broken?
-const cmykX = /^cmyk\((\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?\)/i; // broken?
+const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
+const cmykX = /^cmyk\((\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?\)/i;
 
 function extract (xc) {
   let m;

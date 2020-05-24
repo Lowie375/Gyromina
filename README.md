@@ -13,7 +13,7 @@
 
 Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
 
-Latest build (**beta**): 0.13.0-beta.12
+Latest build (**beta**): 0.13.0-beta.13
 
 Latest stable build: 0.12.1
 
@@ -27,7 +27,7 @@ Gyromina is entirely open source and is licensed under the terms of the [MIT lic
 
 Gyromina is a multipurpose Discord bot, made to be a fun and functional addition to any Discord server.
 
-Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, miscellaneous fun commands, and more!
+Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
 
 ## Setup
 
@@ -35,7 +35,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 * Follow this link: [https://discord.now.sh/490590334758420481?p537259072][invite]
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled (critical: Use External Emojis, Manage Webhooks, and Manage Messages)
+* Make sure all requested permissions are enabled (critical: `Use External Emojis`, `Manage Webhooks`, and `Manage Messages`)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)
@@ -52,9 +52,10 @@ Gyromina contains an assortment of features, including a random colour and numbe
   * `exp`: `"1"` to enable experimental commands, `"0"` to disable
   * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
-  * `progressLog`: Optional; Discord channel ID (used with `release`)
-  * `gitToken`/`gitUsername`/`gitRepoName`: Optional; GitHub auth token/username/repo name (used with `release`)
-  * `herokuAuth`/`herokuID`: Optional; Heroku auth token/project ID (used with `uptime`)
+* Optional environment variable config
+  * `progressLog`: Discord channel ID (used with `release`)
+  * `gitToken`/`gitUsername`/`gitRepoName`: GitHub auth token/username/repo name (token scope = `repo`; used with `release`)
+  * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
 * Run using your native runtime/debugger and you're good to go!
 
 ## Changelog

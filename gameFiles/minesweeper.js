@@ -10,7 +10,8 @@ const cdn = require('../systemFiles/cdn.json');
 // Additional setup
 const getBuffer = bent('buffer');
 const cancelRegex = /stop|cancel|end|quit|time/i;
-const catchRegex = /^([cfqop]){1}[\.\:\-\_]{1}([a-z]{1}[a-z]?)(\d)+/i;
+const catchRegex = /^([cfqop]){1}[\.\:\-\_]{1}([a-z]{1}[a-z]?)(\d{1}\d?)+/i;
+const alphaFilter = a => b => a.length === b.length && a.every((v, i) => v === b[i]);
 
 function boardCheck(x) {
   switch (x) {
@@ -82,7 +83,7 @@ function cycle(field, cx, cy, inc) {
   // Increments/reduces board numbers around a target tile
   for (let sx = -1; sx <= 1; sx++) {
     for(let sy = -1; sy <= 1; sy++) {
-      if(cx+sx >= 0 && cx+sx < field[0].length && cy+sy >= 0 && cy+sy < field.length && field[cy+sy][cx+sx] + inc <= 8 && field[cy+sy][cx+sx] + inc >= 0)
+      if(cx+sx >= 0 && cx+sx < field[0].length && cy+sy >= 0 && cy+sy < field.length && field[cy+sy][cx+sx] + inc <= 8 && field[cy+sy][cx+sx] + inc >= 0 && (sx != 0 || sy != 0))
         field[cy+sy][cx+sx] += inc; 
     }
   }
@@ -91,11 +92,16 @@ function cycle(field, cx, cy, inc) {
 function checkTile(field, display, x, y) {
   // Uncovers a tile
   if (field[y][x] == display[y][x]) {
-    if (roundabout(field, display, x, y, [11, 15], "d")[0] == display[y][x]) {
-      // Niche functionality; pops surrounding squares once flag count equals the number on the tile
-      let analysis = roundabout(field, display, x, y);
+    if (/*roundabout(field, display, x, y, [11, 15], "d")[0] == display[y][x]*/0 == 1) {
+
+      // Niche functionality; pops surrounding squares once flag count equals the number on the tile - broken!!!
+      // For some reason, a bunch of tiles change before the for loop and IDK why? There's nothing that should change them
+      // If anyone can help me with this, please do. I'm stuck
+
+      let analysis = roundabout(field, display, x, y, [0, 1, 2, 3, 4, 5, 6, 7, 8, 12]);
       let tiles = [];
-      let rtx;
+      let rtx = 0;
+
       for (p of analysis[1]) {
         if (display[p[1]][p[0]] == 9) {
           switch (field[p[1]][p[0]]) {
@@ -103,16 +109,20 @@ function checkTile(field, display, x, y) {
               rtx = 4;
               display[p[1]][p[0]] = 13;
               break;
+            case 0:
+              let t = openTiles(field, display, p[0], p[1]);
+              tiles.push(t);
+              break;
             default:
               display[p[1]][p[0]] = field[p[1]][p[0]];
-              tiles.push(display[p[1]][p[0]], p[0], p[1])
+              tiles.push([display[p[1]][p[0]], p[0], p[1]])
               break;
           }
         }
       }
-      if (rtx != undefined)
+      if (rtx != 0)
         return rtx; // Mine hit!
-      else 
+      else
         return tiles; // Tiles to update
     } else {
       return 1; // Already revealed; reject
@@ -145,22 +155,17 @@ function openTiles(field, display, ix, iy) {
     for (let sx = -1; sx <= 1; sx++) {
       for(let sy = -1; sy <= 1; sy++) {
         if(x+sx >= 0 && x+sx < field[0].length && y+sy >= 0 && y+sy < field.length && display[y+sy][x+sx] == 9 && !update.includes([field[y+sy][x+sx], x+sx, y+sy])) {
-          display[y+sy][x+sx] = field[y+sy][x+sx]
+          display[y+sy][x+sx] = field[y+sy][x+sx];
           update.push([display[y+sy][x+sx], x+sx, y+sy]);
         }
       }
     }
     // Checks if any surrounding tiles are blank
     let roundCheck = roundabout(field, display, x, y, [0]);
-    const filter = a => b => a.length === b.length && a.every((v, i) => v === b[i]);
 
     if (roundCheck[0] != 0) { // Blanks exist
-      /*for (coord of roundCheck[1]) { // Broken, b/c JS doesn't like arrays within arrays :(
-        if (!coords.includes(coord) && !complete.includes(coord)) // Checks if blanks are new
-          coords.push(coord); // New blank; push
-      }*/
       for (coord of roundCheck[1]) {
-        if (!coords.some(filter(coord)) && !complete.some(filter(coord))) // Checks if blanks are new
+        if (!coords.some(alphaFilter(coord)) && !complete.some(alphaFilter(coord))) // Checks if blanks are new
           coords.push(coord); // New blank; push
       }
     }
@@ -181,20 +186,31 @@ function recycle(field, filler, x, y) {
     }
   }
   // Checks if the filler line contains any squares in the 3x3
-  const filter = (elem) => square.includes(elem);
   for (let i = 0; i < square.length; i++) {
-    let m = filler.findIndex(filter);
-    if (m != -1) { // Removes the offending elements
-      square.splice(i, 1);
-      filler.splice(m, 1);
+    for (coord of square) {
+      if(filler.some(alphaFilter(coord))) {
+        let fm = filler.findIndex(alphaFilter(coord))
+        filler.splice(fm, 1);
+        let sm = square.findIndex(alphaFilter(coord))
+        square.splice(sm, 1);
+      }
     }
   }
   // Replaces any bombs in the 3x3
+  let fillCtr = 0;
   for (coord of square) {
     if (field[coord[1]][coord[0]] == 12) {
+      // Clears the mine
       field[coord[1]][coord[0]] = roundabout(field, [], coord[0], coord[1])[0];
       cycle(field, coord[0], coord[1], -1);
+      fillCtr++;
     }
+  }
+  for (let j = 0; j < fillCtr; j++) {
+    // Re-places the mine elsewhere
+    field[filler[0][1]][filler[0][0]] = 12;
+    cycle(field, filler[0][0], filler[0][1], 1);
+    filler.shift();
   }
 }
 
@@ -212,7 +228,7 @@ function rdbCore(arr, cx, cy, target) {
   let matches = []; 
   for (let sx = -1; sx <= 1; sx++) {
     for(let sy = -1; sy <= 1; sy++) {
-      if(cx+sx >= 0 && cx+sx < arr[0].length && cy+sy >= 0 && cy+sy < arr.length && target.includes(arr[cy+sy][cx+sx])) {
+      if(cx+sx >= 0 && cx+sx < arr[0].length && cy+sy >= 0 && cy+sy < arr.length && target.includes(arr[cy+sy][cx+sx]) && (sx != 0 || sy != 0)) {
         matchCtr++;
         matches.push([cx+sx, cy+sy]);
       }
@@ -248,15 +264,49 @@ function decode(y) {
     return c[0];
 }
 
-function mswpCore() {
+function winCon(field, display) {
+  for (let i = 0; i < display.length; i++) {
+    for (let j = 0; j < display[i].length; j++) {
+      // Checks if all non-mine tiles have been revealed
+      if(display[i][j] == 9 && field[i][j] != 12)
+        return 1; // Not all revealed; continue
+    }
+  }
+  return 0; // All revealed; win!
+}
 
+function revealMines(field, display) {
+  let update = [];
+  for (let i = 0; i < display.length; i++) {
+    for (let j = 0; j < display[i].length; j++) {
+      switch(display[i][j]) {
+        case 9:
+        case 10: {
+          if (field[i][j] == 12)
+            update.push([12, j, i]);
+          break;
+        }
+        case 11:
+        case 15: {
+          if (field[i][j] != 12)
+            update.push([14, j, i]);
+          break;
+        }
+        case 13: {
+          update.push([13, j, i]);
+          break;
+        }
+      }
+    }
+  }
+  return update;
 }
 
 exports.exe = {
   async start(message, client, player, options) {
     // Variable setup
     var setup;
-    var fixFlag = 0;
+    var unrev = 0;
     var places = [];
     var time = new Date();
 
@@ -282,6 +332,9 @@ exports.exe = {
       setup[0] = 3;
       fixFlag = 1;
     }
+
+    // Extra setup
+    unrev = setup[1] * setup[2];
     
     // Array setup (j=x, i=y)
     var field = [];
@@ -373,6 +426,11 @@ exports.exe = {
               let x = parseInt(caught[3])-1
               let y = decode(caught[2]);
 
+              // Checks if the move is valid
+              if (x >= field[0].length || x < 0 || y >= field.length || y < 0) {
+                return msg.channel.send(`That tile isn't on the grid, <@${player}>. Please choose a valid tile and try again.`);
+              }
+
               if (moves == 0) {
                 switch (caught[1].toLowerCase()) {
                   case "c":
@@ -380,13 +438,11 @@ exports.exe = {
                   case "p":
                     // First move, check and backfill
                     recycle(field, filler, x, y);
-                    console.log("First move caught!");
                     break;
                   case "f":
                   case "q":
                     // Invalid starter; reject
-                    msg.channel.send(`Invalid starting move, <@${player}>. Please open a tile using \`c:X#\` notation to begin.`);
-                    return;
+                    return msg.channel.send(`Invalid starting move, <@${player}>. Please open a tile using \`c:X#\` notation to begin.`);
                 }
               }
               // Increments the move counter
@@ -398,18 +454,17 @@ exports.exe = {
                 case "o": 
                 case "p": {
                   // Force snippet
-                  if (msg.content.includes("-f"))
-                    display[y][x] == 9;
+                  if (msg.content.includes("-force"))
+                    display[y][x] = 9;
 
                   // Checks the move result
                   let move = checkTile(field, display, x, y);
                   if (Array.isArray(move)) { // Valid; updates board
+                    unrev -= move.length;
                     updateCanvas(board, move, img);
                     let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-                    game.channel.send("[New text]", newAttach);
-
-                    //game = updateGame(game, board, move, img);
-                  } else {
+                    game.channel.send(`[New text]\nMove count: ${moves}`, newAttach);
+                  } else { // Rejection thrown; check outcome
                     switch(move) {
                       case 1:
                         msg.channel.send(`That tile can't be cleared any further, <@${player}>!`);
@@ -418,11 +473,13 @@ exports.exe = {
                         msg.channel.send(`That tile is flagged, <@${player}>! I can't uncover a flagged tile!`);
                         break;
                       case 3:
-                        msg.channel.send(`That tile is marked as uncertain, <@${player}>!\nIf you are absolutely certain you want to reveal it, re-type the same command followed by \`-f\`.`);
+                        msg.channel.send(`That tile is marked as uncertain, <@${player}>!\nIf you are absolutely certain you want to reveal it, re-type the same command followed by \`-force\`.`);
                         break;
                       case 4: {
+                        updateCanvas(board, revealMines(field, display), img);
+                        let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
+                        game.channel.send(`Oh no! You hit a mine, <@${player}>!\n**--- YOU LOSE ---**`, newAttach);
                         finder.stop("fail");
-                        // revealMines();
                         return;
                       }
                     }
@@ -434,10 +491,12 @@ exports.exe = {
                   let content;
                   if (display[y][x] == 9 || display[y][x] == 10) {
                     display[y][x] = 11 + (time.getUTCMonth() == 5 ? 4 : 0);
-                    content = "[New flag]";
+                    unrev--;
+                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` flagged\nMove count: ${moves}`;
                   } else if (display[y][x] == 11 || display[y][x] == 15) {
                     display[y][x] = 9;
-                    content = "[Flag gone]";
+                    unrev++;
+                    content = `Flag on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed\nMove count: ${moves}`;
                   } else {
                     msg.channel.send(`That tile can't be flagged, <@${player}>.`);
                     break;
@@ -452,10 +511,12 @@ exports.exe = {
                   let content;
                   if (display[y][x] == 9) {
                     display[y][x] = 10;
-                    content = "[New qmc]";
+                    unrev--;
+                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` marked as uncertain\nMove count: ${moves}`;
                   } else if (display[y][x] == 10) {
                     display[y][x] = 9;
-                    content = "[Qmc gone]";
+                    unrev++;
+                    content = `Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed\nMove count: ${moves}`;
                   } else {
                     msg.channel.send(`That tile can't be marked as uncertain, <@${player}>.`);
                     break;
@@ -466,7 +527,11 @@ exports.exe = {
                   break;
                 }
               }
-              console.log("Move caught!");
+              // Checks if the game has been won
+              if (unrev <= setup[0] && winCon(field, display) == 0) {
+                finder.stop("win");
+              }
+              // Resets the timer
               finder.resetTimer({time: 120000, idle: 120000});
 
               // Pickup new channel (pseudocode!)
@@ -478,15 +543,17 @@ exports.exe = {
             finder.on('end', (c, reason) => {
               // Determines why the collector ended
               switch (reason) {
-                case "fail":
-                  message.channel.send(`Oh no! You hit a mine, <@${player}>!\n**--- YOU LOSE ---**`); return;
+                case "fail": 
+                  return; // Handled elsewhere in a unique message
+                case "win":
+                  return message.channel.send(`Congratulations, <@${player}>! You found all the mines!\n**--- YOU WIN ---**`);
                 case "time": // Timeouts
                 case "idle":
-                  message.reply("your \`minesweeper\` instance timed out due to inactivity. Please restart the game if you would like to play again."); return;
+                  return message.reply("your \`minesweeper\` instance timed out due to inactivity. Please restart the game if you would like to play again.");
                 case "cancel": // Manually cancelled
-                  message.reply("your \`minesweeper\` instance has been stopped. Please restart the game if you would like to play again."); return;
+                  return message.reply("your \`minesweeper\` instance has been stopped. Please restart the game if you would like to play again.");
                 default: 
-                  message.reply("your \`minesweeper\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again."); return;
+                  return message.reply("your \`minesweeper\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.");
               }
             });
         });

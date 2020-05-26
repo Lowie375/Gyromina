@@ -315,13 +315,13 @@ exports.exe = {
       output += field[i].join("") + "\n";
     }
     
-    // Puts the whole shebang into one variable (wow)
+    // Puts the whole shebang into one variable (wow!)
     content += `Your minefield has been generated, <@${player}>!\n\n${output}\n` +
     `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
     `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
     `\`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n` +
     `${bkd} Delete last instruction  •  ${ibx} Confirm instructions  •  ${ccl} Quit game\`\`\`` + 
-    `\*This instance of the game will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
+    `\*This \`minefield\` instance will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
 
     // Post the field + instructions
     message.channel.send(`${content}\n\*Waiting for emojis to load…\*`)
@@ -334,7 +334,7 @@ exports.exe = {
         // Set up a collection filter and collector
         const filter = (reaction, user) => rxns.includes(reaction.emoji.name) && user.id == player;
 
-        const builder = board.createReactionCollector(filter, {time: 60000, idle: 60000});
+        const builder = board.createReactionCollector(filter, {time: 95000, idle: 95000}); // First timer is longer to allow for rule reading
         // .then await a 'collect', if none return shutdown and stop
         
         board.edit(content + "\n\*\*GO!\*\*");

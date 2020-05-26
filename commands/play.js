@@ -18,7 +18,7 @@ exports.run = {
     
     // Checks if the game exists
     if (!game)
-      return message.reply("I couldn't find the game you were looking for. Please check your spelling and try again.");
+      return message.reply("I couldn't load the game you were looking for. Please check your spelling and try again.");
 
     if(process.env.exp === "0" && game.label.indev === 1) {
       if(message.author.id === package.authorID) {
@@ -43,8 +43,8 @@ exports.help = {
   "name": "play",
   "aliases": ["game", "playgame", "play-game"],
   "description": "Starts a game.",
-  "usage": `${process.env.prefix}play <game> [options] …`,
-  "params": "<game> [options] …",
+  "usage": `${process.env.prefix}play <game> [options]`,
+  "params": "<game> [options]",
   "helpurl": "https://lx375.weebly.com/gyrocmd-play",
   "hide": 0,
   "wip": 0,

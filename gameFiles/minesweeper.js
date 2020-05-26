@@ -92,7 +92,7 @@ function cycle(field, cx, cy, inc) {
 function checkTile(field, display, x, y) {
   // Uncovers a tile
   if (field[y][x] == display[y][x]) {
-    if (/*roundabout(field, display, x, y, [11, 15], "d")[0] == display[y][x]*/0 == 1) {
+    /*if (roundabout(field, display, x, y, [11, 15], "d")[0] == display[y][x]) {
 
       // Niche functionality; pops surrounding squares once flag count equals the number on the tile - broken!!!
       // For some reason, a bunch of tiles change before the for loop and IDK why? There's nothing that should change them
@@ -124,9 +124,8 @@ function checkTile(field, display, x, y) {
         return rtx; // Mine hit!
       else
         return tiles; // Tiles to update
-    } else {
+    } else*/
       return 1; // Already revealed; reject
-    }
   } else if (display[y][x] == 11 || display[y][x] == 15) {
     return 2; // Flag; reject
   } else if (display[y][x] == 10) {
@@ -138,7 +137,7 @@ function checkTile(field, display, x, y) {
     return openTiles(field, display, x, y); // Blank; pops open segments of the grid
   } else {
     display[y][x] = field[y][x]; // Standard tile
-    return [[display[y][x], x, y]]; // Tiles to update
+    return [[display[y][x], x, y]]; // Tile to update
   }
 }
 
@@ -302,11 +301,31 @@ function revealMines(field, display) {
   return update;
 }
 
+function stats(moves, flags) {
+  // Outputs current game stats in clean format
+  let statOutput = "\`";
+  // Move check
+  switch (moves) {
+    case 1: statOutput += `${moves} move made`; break;
+    default: statOutput += `${moves} moves made`; break;
+  }
+  statOutput += "  •  "
+  // Flag check
+  if (flags == 1)
+    statOutput += `${flags} flag left\``;
+  else if (flags >= 0)
+    statOutput += `${flags} flags left\``;
+  else if (flags == -1)
+    statOutput += `${flags * -1} flag too many\``;
+  else
+    statOutput += `${flags * -1} flags too many\``;
+  return statOutput;
+}
+
 exports.exe = {
   async start(message, client, player, options) {
     // Variable setup
     var setup;
-    var unrev = 0;
     var places = [];
     var time = new Date();
 
@@ -334,7 +353,8 @@ exports.exe = {
     }
 
     // Extra setup
-    unrev = setup[1] * setup[2];
+    var unrev = setup[1] * setup[2];
+    var flags = setup[0];
     
     // Array setup (j=x, i=y)
     var field = [];
@@ -398,15 +418,27 @@ exports.exe = {
           }
         }
 
+        // Puts the whole shebang in one variable (wow!)
+        let tooltip = `Your ${setup[2]}×${setup[1]}, ${setup[0]}-mine grid has been generated, <@${player}>!\n` +
+        `All tiles on the grid start covered. Under each tile, there will be either a blank, a number from 1-8, or a mine.\n` +
+        `Tiles with numbers indicate how many of the surrounding 8 tiles contain mines. Blanks act as zeroes (0).\n` +
+        `(ex: 1 of the 8 tiles surrounding a "1" will contain a mine, 2 of the 8 tiles surrounding a "2" will contain mines, etc.)\n` +
+        `**Uncover all the tiles WITHOUT mines to win!**\n\n` +
+        `•  To uncover a tile, type **\`c:X#\`**, replacing \`X\` with a row letter and \`#\` with a column number. If you uncover a mine, you will lose!\n` +
+        `•  If you think a tile is a mine, you can flag it by typing **\`f:X#\`** (where \`X\` = row and \`#\` = column, as above). Flagged tiles can not be uncovered. To remove a flag, type the flagging command again.\n` +
+        `•  If you are unsure about whether a tile is a mine or not, you can mark it as uncertain by typing **\`q:X#\`** (where \`X\` = row and \`#\` = column, as above). You will be warned when trying to uncover a tile marked as uncertain. To remove an uncertanty marker, type the uncertainty command again.\n` +
+        `**Good luck and have fun!**\n\n` +
+        `\*This \`mswp\` instance will time out if you do not make a move within 2 minutes.\nYou can quit the game at any time by typing \`mswp stop\`.\nIf you need more time to think about your next move, you can reset the timer to 5 minutes by typing \`mswp time\`.\*`;
+        
         // Sends the board
         let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-        message.channel.send("[Add text here]", attach)
+        message.channel.send(tooltip, attach)
           .then(game => {
 
             // Sets up a message collector
             var moves = 0;
             const filter = (msg) => msg.author.id == player && ((cancelRegex.exec(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
-            const finder = game.channel.createMessageCollector(filter, {time: 120000, idle: 120000});
+            const finder = game.channel.createMessageCollector(filter, {time: 210000, idle: 210000});
 
             //mswpCore();
     
@@ -414,7 +446,7 @@ exports.exe = {
               // Checks if the collected message was a cancellation message
               if (msg.content.includes("time")) {
                 msg.react(e.yep);
-                finder.resetTimer({time: 300000, idle: 300000});
+                finder.resetTimer({time: 300000, idle: 300000}); // First timer is longer to allow for rule reading
                 return;
               } else if (cancelRegex.exec(msg.content)) {
                 finder.stop("cancel");
@@ -462,20 +494,31 @@ exports.exe = {
                   if (Array.isArray(move)) { // Valid; updates board
                     unrev -= move.length;
                     updateCanvas(board, move, img);
+                    let content = "";
+                    switch (move.length) {
+                      case 1: content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** cleared!`; break;
+                      default: content = `New region opened from tile **\`${caught[2].toUpperCase()}${caught[3]}\`**!`; break;
+                    }
                     let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-                    game.channel.send(`[New text]\nMove count: ${moves}`, newAttach);
+                    // Checks if the game has been won
+                    if (unrev <= setup[0] && winCon(field, display) == 0) {
+                      finder.stop("win");
+                      game.channel.send(`Congratulations, <@${player}>! You isolated all the mines in ${moves} moves!\n**--- YOU WIN ---**`, newAttach);
+                    } else {
+                      game.channel.send(`${content}\n${stats(moves, flags)}`, newAttach);
+                    }
                   } else { // Rejection thrown; check outcome
                     switch(move) {
-                      case 1:
+                      case 1: // Already cleared
                         msg.channel.send(`That tile can't be cleared any further, <@${player}>!`);
                         break;
-                      case 2:
+                      case 2: // Flag
                         msg.channel.send(`That tile is flagged, <@${player}>! I can't uncover a flagged tile!`);
                         break;
-                      case 3:
+                      case 3: // QMC
                         msg.channel.send(`That tile is marked as uncertain, <@${player}>!\nIf you are absolutely certain you want to reveal it, re-type the same command followed by \`-force\`.`);
                         break;
-                      case 4: {
+                      case 4: { // Mine hit; reveal mines and end game
                         updateCanvas(board, revealMines(field, display), img);
                         let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
                         game.channel.send(`Oh no! You hit a mine, <@${player}>!\n**--- YOU LOSE ---**`, newAttach);
@@ -492,11 +535,13 @@ exports.exe = {
                   if (display[y][x] == 9 || display[y][x] == 10) {
                     display[y][x] = 11 + (time.getUTCMonth() == 5 ? 4 : 0);
                     unrev--;
-                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` flagged\nMove count: ${moves}`;
+                    flags--;
+                    content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** flagged!\n${stats(moves, flags)}`;
                   } else if (display[y][x] == 11 || display[y][x] == 15) {
                     display[y][x] = 9;
                     unrev++;
-                    content = `Flag on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed\nMove count: ${moves}`;
+                    flags++;
+                    content = `Flag on tile **\`${caught[2].toUpperCase()}${caught[3]}\`** removed!\n${stats(moves, flags)}`;
                   } else {
                     msg.channel.send(`That tile can't be flagged, <@${player}>.`);
                     break;
@@ -512,11 +557,11 @@ exports.exe = {
                   if (display[y][x] == 9) {
                     display[y][x] = 10;
                     unrev--;
-                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` marked as uncertain\nMove count: ${moves}`;
+                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` marked as uncertain!\n${stats(moves, flags)}`;
                   } else if (display[y][x] == 10) {
                     display[y][x] = 9;
                     unrev++;
-                    content = `Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed\nMove count: ${moves}`;
+                    content = `Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed!\n${stats(moves, flags)}`;
                   } else {
                     msg.channel.send(`That tile can't be marked as uncertain, <@${player}>.`);
                     break;
@@ -526,10 +571,6 @@ exports.exe = {
                   game.channel.send(content, newAttach);
                   break;
                 }
-              }
-              // Checks if the game has been won
-              if (unrev <= setup[0] && winCon(field, display) == 0) {
-                finder.stop("win");
               }
               // Resets the timer
               finder.resetTimer({time: 120000, idle: 120000});
@@ -543,10 +584,9 @@ exports.exe = {
             finder.on('end', (c, reason) => {
               // Determines why the collector ended
               switch (reason) {
+                case "win":
                 case "fail": 
                   return; // Handled elsewhere in a unique message
-                case "win":
-                  return message.channel.send(`Congratulations, <@${player}>! You found all the mines!\n**--- YOU WIN ---**`);
                 case "time": // Timeouts
                 case "idle":
                   return message.reply("your \`minesweeper\` instance timed out due to inactivity. Please restart the game if you would like to play again.");
@@ -574,6 +614,6 @@ exports.label = {
   "options": ["[preset]", "<mines> <length1> <length2>"],
   "optionsdesc": ["<mines>/[preset]: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, master = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "<length1>: If no preset is specified, one dimension of the board (7-36)", "<length2>: If no preset is specified, the other dimension of the board (7-36)"],
   "exclusive": 0,
-  "indev": 1,
+  "indev": 0,
   "deleted": 0
 };

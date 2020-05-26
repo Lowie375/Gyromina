@@ -84,7 +84,7 @@ exports.exe = {
       case 1: content += `You have ${guesses} guess. Go!`
       default: content += `You have ${guesses} guesses. Go!`
     }
-    content += `\n\n\*This instance of the game will time out if you do not send a guess within 60 seconds.\nYou can quit the game at any time by typing \`rng stop\`.\*`
+    content += `\n\n\*This \`rng\` instance will time out if you do not send a guess within 60 seconds.\nYou can quit the game at any time by typing \`rng stop\`.\*`
 
     var low = 1;
     var high = max;

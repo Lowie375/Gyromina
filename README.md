@@ -2,7 +2,7 @@
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]](package.json)
-[![Dependencies Status][dependency-img]][dependency-link]
+[![Dependency Status][dependency-img]][dependency-link]
 [![Last Commit (master)][master-commit-img]][master-commit-img]
 [![Last Commit (0.13.0)][beta-commit-img]][beta-commit-img]
 [![License][license-img]](LICENSE)
@@ -13,7 +13,7 @@
 
 Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4148 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
 
-Latest build (**beta**): 0.13.0-beta.14
+Latest build (**beta**): 0.13.0-beta.15
 
 Latest stable build: 0.12.1
 

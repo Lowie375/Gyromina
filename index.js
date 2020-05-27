@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');
 const e = require('./systemFiles/emojis.json');
-const {genErrorMsg} = require('./systemFiles/refcodes.js');
+const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
@@ -99,7 +99,10 @@ client.on('warn', w => {
 });
 
 // Emits uncaught promise rejection warnings
-process.on('unhandledRejection', error => console.error('Promise Rejection', error));
+process.on('unhandledRejection', error => {
+  genWarningMsg(client, error);
+  console.error('Promise Rejection', error)
+});
 
 // Logs into Discord with Gyromina's token
 client.login(process.env.token);

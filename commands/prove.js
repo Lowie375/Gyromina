@@ -1,5 +1,5 @@
-// Require the RNG
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+// Require some global functions (RNG + Clean)
+const {getRandomInt, Clean} = require('../systemFiles/globalFunctions.js');
 
 // List of 'proofs'
 const proof = ["because that's just how it is.",
@@ -18,12 +18,12 @@ const proof = ["because that's just how it is.",
   "because… yes.",
   "because it helps Gyromina sleep at night."];
 
-module.exports.run = {
+exports.run = {
   execute(message, args, client) {
     if (args.length == 0)
       return message.reply("you didn't give me anything to prove!");
     
-    const [...statement] = args;
+    const [...statement] = Clean(args);
 
     var num = getRandomInt(0, proof.length-1);
     const selected = proof[num];
@@ -32,7 +32,7 @@ module.exports.run = {
   }
 };
 
-module.exports.help = {
+exports.help = {
   "name": "prove",
   "description": "\'Proves\' that the input is true.",
   "usage": `${process.env.prefix}prove <statement>`,

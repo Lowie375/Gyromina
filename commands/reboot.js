@@ -1,6 +1,6 @@
 // [DEPRECATED AS OF 0.9.0]
 
-module.exports.help = {
+exports.help = {
   "name": "reboot",
   "aliases": "restart",
   "description": "Reboots Gyromina. [DEPRECATED AS OF 0.9.0]",

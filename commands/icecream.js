@@ -32,7 +32,7 @@ const uhoh = [
   "Wait…"
 ];
 
-module.exports.run = {
+exports.run = {
 async execute(message, args, client) {
     // Makes the ice cream
     var crm = getRandomInt(0, icecream.length-1);
@@ -59,7 +59,7 @@ async execute(message, args, client) {
   }
 };
 
-module.exports.help = {
+exports.help = {
   "name": "icecream",
   "aliases": ["gelato", "froyo", "ice-cream", "frozenyogurt", "shavedice"],
   "description": "Makes some lovely ice cream.",

@@ -19,7 +19,11 @@ const names = [
    "impteaspoons", "teaspoonsimp", "teaspoonimp", "tspimp", "imptsp", "uscups", "cupsus", "cupus", "usc", "cus",
    "uslegalcups", "legalcupsus", "legalcupus", "cups", "impcups", "cupsimp", "cupimp", "c", "impc", "cimp",
    "pascals", "Pa", "atmospheres", "atm", "torr", "bar", "mmHg", "psi", "lb/sqin", "lb/in^2",
-   "lb/in²", "lb/in2", "mb", "mbar", "millibar",],
+   "lb/in²", "lb/in2", "mb", "mbar", "millibar", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared",
+   "metresquared", "m²", "m^2", "m2", "squareinches", "inchessquared", "inchsquared", "in²", "in^2", "in2",
+   "squarefeet", "squarefoot", "feetsquared", "footsquared", "ft²", "ft^2", "ft2", "squareyards", "yardssquared", "yardsquared",
+   "yd²", "yd^2", "yd2", "squaremiles", "milessquared", "milesquared", "mi²", "mi^2", "mi2", "acres",
+   "ac", "hectares", "ha"],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
@@ -36,26 +40,30 @@ const names = [
    "v031", "v031", "v031", "v031", "v031", "v032", "v032", "v032", "v032", "v032",
    "v033", "v033", "v033", "v034", "v034", "v034", "v034", "v034", "v034", "v034",
    "p035", "p035", "p036", "p036", "p037", "p038", "p037", "p039", "p039", "p039",
-   "p039", "p039", "p040", "p040", "p040",]
-]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // e=energy // m=mass // w=power // g=weight //
+   "p039", "p039", "p040", "p040", "p040", "a041", "a041", "a041", "a041", "a041",
+   "a041", "a041", "a041", "a041", "a042", "a042", "a042", "a042", "a042", "a042",
+   "a043", "a043", "a043", "a043", "a043", "a043", "a043", "a044", "a044", "a044",
+   "a044", "a044", "a044", "a045", "a045", "a045", "a045", "a045", "a045", "a046",
+   "a046", "a047", "a047",]
+]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // m=mass // e=energy // w=power // f=weight // s=speed
 const converter = [
-  ["m", "in", "ft", "yds", "mi", "nmi", "/sec", " min", " hrs", " days",
-   " wks", " yrs", " gon", "°", " rads", " mil", "L", "m³", "in³", "ft³",
+  ["m", "in", "ft", "yd", "mi", "nmi", "/sec", " min", " hrs", " days",
+   " wks", " yrs", " gon", "°", "/rads", " mil", "L", "m³", "in³", "ft³",
    " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp", " Imp. gal", " Imp. qt", " Imp. floz", "Imp. pt",
    " Imp. tbsp", "Imp. tsp", " US cup", " US legal cup", " Imp. cup", "Pa", "atm", "torr", "bar", "psi",
-   "mbar"],
+   "mbar", "m²", "in²", "ft²", "yd²", "mi²", "ac", "ha"],
   [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
    1, 7/365, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
    1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784, 1/4.546, 4/4.546, 160/4.546, 8/4.546,
    256/4.546, 768/4.546, 16/3.785411784, 1/0.24, 16/4.546, 101325, 1, 760, 1.01325, 14.6959409,
-   1013.25]
+   1013.25, 2589988.110336, 4014489600, 27878400, 3097600, 1, 1/640, 258.9988110336]
 ];
 const metricNames = [
   ["deci", "d", "centi", "c", "milli", "m", "kilo", "k", "mega", "M",
    "giga", "G", "tera", "T", "peta", "P", "exa", "E", "zetta", "Z",
    "yotta", "Y", "hecto", "h", "nano", "n", "pico", "p", "femto", "f", 
    "atto", "a", "zepto", "z", "yocto", "y", "micro", "μ", "u",
-   "deka", "da",],
+   "deka", "da"],
   [00, 00, 01, 01, 02, 02, 03, 03, 04, 04,
    05, 05, 06, 06, 07, 07, 08, 08, 09, 09,
    10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
@@ -64,17 +72,18 @@ const metricNames = [
 ];
 const metrics = [
   ["d", "c", "m", "k", "M", "G", "T", "P", "E", "Z", 
-   "Y", "h", "n", "p", "f", "a", "z", "y", "μ", "da",],
+   "Y", "h", "n", "p", "f", "a", "z", "y", "μ", "da"],
   [Math.pow(10, 1), Math.pow(10, 2), Math.pow(10, 3), Math.pow(10, -3), Math.pow(10, -6),
      Math.pow(10, -9), Math.pow(10, -12), Math.pow(10, -15), Math.pow(10, -18), Math.pow(10, -21),
    Math.pow(10, -24), Math.pow(10, -2), Math.pow(10, 9), Math.pow(10, 12), Math.pow(10, 15),
-     Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1),]
+     Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1)]
 ];
 
 // Valid metric roots
 const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
-  "pascals", "Pa"];
+  "pascals", "Pa", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2",
+  "m2",];
 // Splitter separators + extraneous cases
 const separators = /_-/;
 const ex = /^(cubic|square)/;
@@ -319,9 +328,9 @@ exports.run = {
     if (errorPull(pos2, message) != 0) return;
 
     var type1 = pos1.slice(0, 1);
-    pos1 = parseInt(pos1.slice(1));
+    pos1 = parseInt(pos1.slice(1), 10);
     var type2 = pos2.slice(0, 1);
-    pos2 = parseInt(pos2.slice(1));
+    pos2 = parseInt(pos2.slice(1), 10);
 
     // Checks if the units can be converted between
     if (type1 != type2)

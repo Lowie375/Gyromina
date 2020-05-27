@@ -2,7 +2,7 @@
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
-const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit", "cancel", "stop", "end", "quit"];
+const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit"];
 
 function numCheck(x) {
   switch(x) {
@@ -40,7 +40,7 @@ function numCheck(x) {
   }
 }
 
-module.exports.exe = {
+exports.exe = {
   start(message, client, player, options) {
     // Variable setup
     var max;
@@ -84,7 +84,7 @@ module.exports.exe = {
       case 1: content += `You have ${guesses} guess. Go!`
       default: content += `You have ${guesses} guesses. Go!`
     }
-    content += `\n\n\*This instance of the game will time out if you do not send a guess within 60 seconds.\nYou can quit the game at any time by typing \`rng stop\`.\*`
+    content += `\n\n\*This \`rng\` instance will time out if you do not send a guess within 60 seconds.\nYou can quit the game at any time by typing \`rng stop\`.\*`
 
     var low = 1;
     var high = max;
@@ -101,7 +101,7 @@ module.exports.exe = {
         return; // Stops the game
       }
       
-      // Fuess setup
+      // Guess setup
       let guess = parseInt(msg.content, 10);
       let alert = "";
       guesses--;
@@ -150,14 +150,14 @@ module.exports.exe = {
   }
 };
 
-module.exports.label = {
+exports.label = {
   "name": "rng",
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
   "players": 1,
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
   "art": "",
-  "options": "[difficulty/maximum]",
-  "optionsdesc": "\• [difficulty/maximum]: Maximum number that the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
+  "options": "[max/preset]",
+  "optionsdesc": "[max/preset]: The maximum number the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
   "exclusive": 0,
   "indev": 0,
   "deleted": 0

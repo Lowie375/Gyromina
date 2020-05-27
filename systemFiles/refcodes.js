@@ -4,7 +4,7 @@ const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 // Declares CBX characters for future use
-const genChars = ["0", "1", "2", "3", "5", "8", "l", "@", "w", "n", "?", "x", "-", "i", "!", "y", "h", "%", "t", "q", "j", "s", "r", "#", "k", ":", "&", "f", "m", "z", "e", "u"];
+const genChars = ["0", "1", "2", "3", "5", "8", "l", "a", "w", "n", "p", "x", "-", "i", "_", "y", "h", "b", "t", "q", "j", "s", "r", "v", "k", "c", "g", "f", "m", "z", "e", "u"];
 
 // Custom decimal converter
 function toCBX(num, mul) {
@@ -36,11 +36,16 @@ function genCode() {
   var time = d.getUTCHours() * 10000 + d.getUTCMinutes() * 100 + d.getUTCSeconds() + 10101;
   var inte1 = getRandomInt(1024, 32767);
   var inte2 = getRandomInt(32, 1023);
-  // Debug snippet
-  //console.log(`yr: ${yr}, mn: ${mn}, dy: ${dy}, time: ${time}, inte1: ${inte1}, inte2: ${inte2}`);
   var rCode = `${toCBX(inte1, 32)}${toCBX(dy, 32)}${toCBX(mn, 32)}${toCBX(inte2, 32)}${toCBX(time, 32)}${toCBX(yr, 32)}`;
   return rCode;
 }
+
+/**
+ * Generates an error message
+ * @param message The Discord message object
+ * @param client The Discord client object
+ * @param error The error thrown
+ */
 
 // Reference code generator
 exports.genErrorMsg = function(message, client, error) {
@@ -49,7 +54,8 @@ exports.genErrorMsg = function(message, client, error) {
 
   // Generates a reference code
   const newRef = genCode();
-  console.log(`REFCODE: ${newRef}\n- - - - - - - - - - -`);
+  // Logs the error
+  console.error(`REFCODE: ${newRef}\n- - - - - - - - - - -`, error);
 
   // Sends a warning message in the channel
   const embed3 = new Discord.MessageEmbed()
@@ -63,9 +69,25 @@ exports.genErrorMsg = function(message, client, error) {
   log.send(`REFCODE: \`${newRef}\`\n\`\`\`js${error.stack}\`\`\``);
 }
 
+/**
+ * Generates a warning message
+ * @param client The discord client object
+ * @param w The warning thrown
+ */
+
 // Warning generator
 exports.genWarningMsg = function(client, w) {
   // Sends the warning to the Gyromina log channel
   const log = client.channels.cache.get(process.env.errorLog);
   log.send(`WARNING\n\`\`\`js${w.stack}\`\`\``);
+}
+
+/**
+ * Generates a raw reference code (for miscellaneous use)
+ * @param alpha Whether the sequence should contain only alphanumeric characters or not
+ * @return {string}
+ */
+
+exports.codeRNG = function() {
+  return genCode();
 }

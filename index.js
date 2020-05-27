@@ -1,4 +1,4 @@
-// Require discord.js, fs, the package file, and the refcode generator
+// Require discord.js, fs, the package file, the emoji file, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');
@@ -30,6 +30,9 @@ for (const file of gameFiles) {
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
+  // Event logger
+  const eventLog = client.channels.cache.get(process.env.eventLog);
+  eventLog.send(`Logged in as ${client.user.tag}, ready for action!`);
 
   // Sets Gyromina's current status
   if(process.env.exp === "1") {
@@ -72,7 +75,7 @@ client.on('message', message => {
 
   // Checks if the command is unstable. If so, displays a warning instead of running the command.
   if(process.env.exp === "0" && command.help.wip === 1) {
-    if(message.author.id === package.hostID) {
+    if(message.author.id === process.env.hostID) {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.\n${warning} Please enable **experimental mode** to run it.`);
     } else {
       message.channel.send(`${nope} The \`${commandName}\` command is currently unavailable.`);
@@ -84,7 +87,6 @@ client.on('message', message => {
     catch (error) {
       // Generates an error message & logs the error
       genErrorMsg(message, client, error);
-      console.error(error);
     }
   }
 });
@@ -95,6 +97,9 @@ client.on('warn', w => {
   genWarningMsg(client, w);
   console.warn(w);
 });
+
+// Emits uncaught promise rejection warnings
+process.on('unhandledRejection', error => console.error('Promise Rejection', error));
 
 // Logs into Discord with Gyromina's token
 client.login(process.env.token);

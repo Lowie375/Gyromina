@@ -44,15 +44,16 @@ function bombCheck(x) {
   }
 }
 
-function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
+function genBomb(field, ry, ty, tempSteps, bombOrder, places, i, attCtr = 0) {
   // Generates bomb coordinates
-  let x = getRandomInt(1, 11);
-  let y = getRandomInt(1, 6);
+  let gen = getRandomInt(0, places.length-1)
+  let x = places[gen][0];
+  let y = places[gen][1];
   
   // Checks if the randomly selected space already has a bomb
   if (field[y][x] == bmb) {
     // Regenerates the bomb
-    genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr);
+    genBomb(field, ry, ty, tempSteps, bombOrder, places, i, attCtr);
   } else {
     // Places a bomb
     field[y][x] = bmb;
@@ -65,16 +66,17 @@ function genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr = 0) {
     attCtr++;
     if (attCtr >= 25) {
       // Removes this bomb and regenerates the previous bomb
-      bombOrder.pop();
+      places.push(bombOrder.pop());
       i--;
-      genBomb(field, ry, ty, tempSteps, bombOrder, i);
+      genBomb(field, ry, ty, tempSteps, bombOrder, places, i);
     } else {
       // Regenerates the bomb
-      genBomb(field, ry, ty, tempSteps, bombOrder, i, attCtr);
+      genBomb(field, ry, ty, tempSteps, bombOrder, places, i, attCtr);
     }
   } else {
     // Plants the bomb
     bombOrder.push([x, y])
+    places.splice(gen, 1);
     clearBarricades(field);
   }
 }
@@ -246,7 +248,7 @@ function removeRxnLoop(urxn, player, n = 0) {
   }
 };
 
-module.exports.exe = {
+exports.exe = {
   start(message, client, player, options) {
     // Minefield shell
     var field = [
@@ -263,9 +265,15 @@ module.exports.exe = {
     var tempSteps = [];
     var bombs;
     var bombOrder = [[]];
-    //var boardID = "";
     var steps = [];
     var content = "";
+    // RNG prep
+    var places = [];
+    for (let i = 1; i < 7; i++) {
+      for (let j = 1; j < 12; j++) {
+        places.push([j, i]);
+      }
+    }
 
     if(!options)
       bombs = 4;
@@ -286,10 +294,8 @@ module.exports.exe = {
     }
 
     // Randomly place robot and target
-    var robotY = getRandomInt(1, 7);
-    if (robotY == 7) robotY = 6;
-    var targetY = getRandomInt(1, 7);
-    if (targetY == 7) targetY = 6;
+    var robotY = getRandomInt(1, 6);
+    var targetY = getRandomInt(1, 6);
     var startY = robotY;
 
     field[robotY][0] = dir[6];
@@ -297,7 +303,7 @@ module.exports.exe = {
 
     // Randomly place bombs
     for(let i = 0; i < bombs; i++) {
-      genBomb(field, robotY, targetY, tempSteps, bombOrder, i);
+      genBomb(field, robotY, targetY, tempSteps, bombOrder, places, i);
     }
 
     // Clear tempSteps[] (no cheating!)
@@ -309,13 +315,13 @@ module.exports.exe = {
       output += field[i].join("") + "\n";
     }
     
-    // Puts the whole shebang into one variable (wow)
-    content += `A minefield has been generated!\n\n${output}\n` +
+    // Puts the whole shebang into one variable (wow!)
+    content += `Your minefield has been generated, <@${player}>!\n\n${output}\n` +
     `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
     `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
     `\`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n` +
     `${bkd} Delete last instruction  •  ${ibx} Confirm instructions  •  ${ccl} Quit game\`\`\`` + 
-    `\*This instance of the game will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
+    `\*This \`minefield\` instance will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
 
     // Post the field + instructions
     message.channel.send(`${content}\n\*Waiting for emojis to load…\*`)
@@ -328,7 +334,7 @@ module.exports.exe = {
         // Set up a collection filter and collector
         const filter = (reaction, user) => rxns.includes(reaction.emoji.name) && user.id == player;
 
-        const builder = board.createReactionCollector(filter, {time: 60000, idle: 60000});
+        const builder = board.createReactionCollector(filter, {time: 95000, idle: 95000}); // First timer is longer to allow for rule reading
         // .then await a 'collect', if none return shutdown and stop
         
         board.edit(content + "\n\*\*GO!\*\*");
@@ -435,9 +441,9 @@ module.exports.exe = {
               // Prepares a game result message
               var final = `${endField}\n`
               switch(res) {
-                case "stuck": final += "Oh no! The robot got stuck in the minefield!\n**YOU LOSE**"; break;
-                case "pass": final += "Hooray! The robot made it through the minefield!\n**YOU WIN**"; break;
-                case "bam": final += "Oh no! The robot hit a mine and blew up!\n**YOU LOSE**"; break;
+                case "stuck": final += "Oh no! The robot got stuck in the minefield!\n**--- YOU LOSE ---**"; break;
+                case "pass": final += "Hooray! The robot made it through the minefield!\n**--- YOU WIN ---**"; break;
+                case "bam": final += "Oh no! The robot hit a mine and blew up!\n**--- YOU LOSE ---**"; break;
               }
 
               // Sends the final output
@@ -456,14 +462,14 @@ module.exports.exe = {
   }
 };
 
-module.exports.label = {
+exports.label = {
   "name": "minefield",
   "aliases": ["field", "walkinaminefield", "walk-in-a-minefield", "walkin", "maze"],
   "players": 1,
-  "description": "A modified version of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from r/dailyprogrammer.",
+  "description": "A variant of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from [r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/).",
   "art": "",
   "options": "[mines/preset]",
-  "optionsdesc": "\• [mines/preset]: Number of mines on the field (4-20) or a preset difficulty (easy = 4, medium = 8, hard = 12, insane = 16, master = 20). Defaults to easy (4 mines)",
+  "optionsdesc": "[mines/preset]: The number of mines on the field (4-20), or a preset difficulty (easy = 4, medium = 8, hard = 12, insane = 16, master = 20). Defaults to easy (4 mines)",
   "exclusive": 0,
   "indev": 0,
   "deleted": 0

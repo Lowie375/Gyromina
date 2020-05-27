@@ -1,63 +1,95 @@
-// Require discord.js
+// Require discord.js, the Heroku client, and the emoji file
 const Discord = require('discord.js');
+const Heroku = require('heroku-client');
+const e = require('../systemFiles/emojis.json');
 
-module.exports.run = {
+// Extra setup
+const hData = new Heroku({token: process.env.herokuAuth});
+
+function reDate(ms) {
+  // Converts milliseconds into 
+  let secs = Math.floor(ms/1000); // Seconds
+  let mins = Math.floor(secs/60); // Minutes
+  secs -= mins*60;
+  let hrs = Math.floor(mins/60); // Hours
+  mins -= hrs*60;
+  let days = Math.floor(hrs/24); // Days
+  hrs -= days*24;
+
+  let display = "";
+  switch (days) {
+    case 0: break;
+    case 1: display += `${days} day, `; break;
+    default: display += `${days} days, `; break;
+  }
+  switch (hrs) {
+    case 0: break;
+    case 1: display += `${hrs} hour, `; break;
+    default: display += `${hrs} hours, `; break;
+  }
+  switch (mins) {
+    case 0: break;
+    case 1: display += `${mins} minute, `; break;
+    default: display += `${mins} minutes, `; break;
+  }
+  switch (secs) {
+    case 0: break;
+    case 1: display += `${secs} second, `; break;
+    default: display += `${secs} seconds, `; break;
+  }
+  // Returns the cleanted output
+  return display.slice(0, -2);
+}
+
+exports.run = {
   execute(message, args, client) {
-    // Gets the current time and time the bot went online (ready time)
-    var up = Date.parse(client.readyAt);
-    var locTime = Date.now();
+    // Emoji setup
+    const dyno = client.emojis.cache.get(e.dyno);
 
-    // Calculates the uptime (in milliseconds)
-    var millival = locTime - up;
+    // Gets the current time and the ready time
+    var dUp = Date.parse(client.readyAt);
+    var locTime = Date.now();   
 
-    // Seconds
-    var secs = Math.floor(millival/1000);
-    // Minutes
-    var mins = Math.floor(secs/60);
-    secs -= mins*60;
-    // Hours
-    var hrs = Math.floor(mins/60);
-    mins -= hrs*60;
-    // Days
-    var days = Math.floor(hrs/24);
-    hrs -= days*24;
+    // Calculates the dyno uptime
+    var dMillival = locTime - dUp;
+    var dOut = reDate(dMillival);
 
-    // Sets up the main uptime display
-    var display = ``;
-    if (days == 1)
-      display += `${days} day, `;
-    else if (days != 0)
-      display += `${days} days, `;
-
-    if (hrs == 1)
-      display += `${hrs} hour, `;
-    else if (hrs != 0)
-      display += `${hrs} hours, `;
-
-    if (mins == 1)
-      display += `${mins} minute, `;
-    else if (mins != 0)
-      display += `${mins} minutes, `;
-
-    if (secs == 1)
-      display += `${secs} second, `;
-    if (secs != 0)
-      display += `${secs} seconds, `;
-
+    // Sets up the embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Uptime", client.user.avatarURL())
       .setColor(0x7effaf)
-      .setTitle(`${display.slice(0, -2)}`)
-      .setDescription(`That's ${millival} milliseconds, wow!`)
       .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
       .setTimestamp();
 
-    // Sends the embed
-    message.channel.send({embed: embed});
+    hData.get(`/apps/${process.env.herokuID}`)
+      .then(app => {
+        // API data pulled!
+        let up = Date.parse(app.released_at);
+        let millival = locTime - up;
+        let out = reDate(millival);
+
+        // Full embed
+        embed.setTitle(out);
+        embed.setDescription(`That's ${millival} milliseconds, wow!`);
+        embed.addField(`${dyno}  Dyno Uptime`, dOut);
+
+        // Sends the embed
+        message.channel.send({embed: embed});
+      })
+      .catch (err => { // Could not pull API data
+        console.error("API request failed; defaulting to minimal uptime report", err);
+
+        // Minimal embed
+        embed.setTitle(dOut);
+        embed.setDescription(`That's ${dMillival} milliseconds, wow!`);
+
+        // Sends the embed
+        message.channel.send({embed: embed});
+    });  
   },
 };
   
-module.exports.help = {
+exports.help = {
   "name": 'uptime',
   "aliases": ["up", "online", "readytime"],
   "description": 'Shows Gyromina\'s uptime.',

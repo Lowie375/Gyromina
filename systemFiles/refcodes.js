@@ -89,5 +89,5 @@ exports.genWarningMsg = function(client, w) {
  */
 
 exports.codeRNG = function() {
-    return genCode();
+  return genCode();
 }

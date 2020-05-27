@@ -591,14 +591,6 @@ exports.exe = {
               // Board swap
               let boards = game.channel.messages.cache.filter(msgFilter);
 
-              // Discards the old board
-              /*if (moves > 1) {
-                game.delete()
-                  .catch(err => {
-                    console.error("E: mswp board could not be discarded", err)
-                });
-              }*/
-
               // Gets and saves the latest board from the filtered boards
               let stamp = {createdAt: 0};
               boards.each(msgx => {
@@ -616,12 +608,6 @@ exports.exe = {
 
               // Resets the timer
               finder.resetTimer({time: 120000, idle: 120000});
-
-              // Pickup new channel (pseudocode!)
-              // finder.channel - cache - get messages
-                // filter - last 15(?), sent by client.user.tag (Gyromina), has image, @mentions player
-              // game = found message (hopefully it gets stored!)
-
             });
 
             finder.on('end', (c, reason) => {

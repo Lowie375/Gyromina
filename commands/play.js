@@ -7,9 +7,6 @@ exports.run = {
     // Emoji setup
     const nope = client.emojis.cache.get(e.nope);
     const warning = client.emojis.cache.get(e.warn);
-
-    // Determines the main player
-    const player = message.author.id;
     
     // Finds the requested game file
     const gameName = args.shift();
@@ -19,6 +16,14 @@ exports.run = {
     // Checks if the game exists
     if (!game)
       return message.reply("I couldn't load the game you were looking for. Please check your spelling and try again.");
+
+    // Determines the main player(s)
+    var player;
+    if (game.label.players === 1) {
+      player = message.author.id;
+    } else {
+      player = [message.author.id];
+    }
 
     if(process.env.exp === "0" && game.label.indev === 1) {
       if(message.author.id === package.authorID) {

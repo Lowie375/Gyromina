@@ -3,14 +3,14 @@ const Discord = require('discord.js');
 const bent = require('bent');
 const {createCanvas, loadImage} = require('canvas');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
-const {genErrorMsg} = require('../systemFiles/refcodes.js');
+const {genErrorMsg, codeRNG} = require('../systemFiles/refcodes.js');
 const e = require('../systemFiles/emojis.json');
 const cdn = require('../systemFiles/cdn.json');
 
 // Additional setup
 const getBuffer = bent('buffer');
 const cancelRegex = /stop|cancel|end|quit|time/i;
-const catchRegex = /^([cfqop]){1}[\.\:\-\_]{1}([a-z]{1}[a-z]?)(\d{1}\d?)+/i;
+const catchRegex = /^([cfqop?x]){1}[\.\:\-\_\,]{1}([a-z]{1}[a-z]?)(\d{1}\d?)+/i;
 const alphaFilter = a => b => a.length === b.length && a.every((v, i) => v === b[i]);
 
 function boardCheck(x) {
@@ -328,6 +328,7 @@ exports.exe = {
     var setup;
     var places = [];
     var time = new Date();
+    const flagID = `mswp_${codeRNG()}.png`;
 
     // Option setup
     if (!options)
@@ -431,7 +432,7 @@ exports.exe = {
         `\*This \`mswp\` instance will time out if you do not make a move within 2 minutes.\nYou can quit the game at any time by typing \`mswp stop\`.\nIf you need more time to think about your next move, you can reset the timer to 5 minutes by typing \`mswp time\`.\*`;
         
         // Sends the board
-        let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
+        let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), "mswp_initField.png");
         message.channel.send(tooltip, attach)
           .then(game => {
 
@@ -442,7 +443,7 @@ exports.exe = {
 
             //mswpCore();
     
-            finder.on('collect', msg => {
+            finder.on('collect', async msg => {
               // Checks if the collected message was a cancellation message
               if (msg.content.includes("time")) {
                 msg.react(e.yep);
@@ -472,7 +473,9 @@ exports.exe = {
                     recycle(field, filler, x, y);
                     break;
                   case "f":
+                  case "x":
                   case "q":
+                  case "?":
                     // Invalid starter; reject
                     return msg.channel.send(`Invalid starting move, <@${player}>. Please open a tile using \`c:X#\` notation to begin.`);
                 }
@@ -496,96 +499,135 @@ exports.exe = {
                     updateCanvas(board, move, img);
                     let content = "";
                     switch (move.length) {
-                      case 1: content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** cleared!`; break;
-                      default: content = `New region opened from tile **\`${caught[2].toUpperCase()}${caught[3]}\`**!`; break;
+                      case 1: content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** cleared, <@${player}>!`; break;
+                      default: content = `New region opened from tile **\`${caught[2].toUpperCase()}${caught[3]}\`**, <@${player}>!`; break;
                     }
-                    let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
+                    let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
                     // Checks if the game has been won
                     if (unrev <= setup[0] && winCon(field, display) == 0) {
-                      finder.stop("win");
+                      finder.stop("generic");
                       game.channel.send(`Congratulations, <@${player}>! You isolated all the mines in ${moves} moves!\n**--- YOU WIN ---**`, newAttach);
                     } else {
-                      game.channel.send(`${content}\n${stats(moves, flags)}`, newAttach);
+                      game.channel.send(`${content}\n${stats(moves, flags)}`, newAttach)
+                        .then(newMsg => {
+                          newMsg.channel.messages.fetch(newMsg.id);
+                      });
                     }
                   } else { // Rejection thrown; check outcome
+                    finder.resetTimer({time: 120000, idle: 120000});
                     switch(move) {
                       case 1: // Already cleared
-                        msg.channel.send(`That tile can't be cleared any further, <@${player}>!`);
-                        break;
+                        return msg.channel.send(`That tile can't be cleared any further, <@${player}>!`);
                       case 2: // Flag
-                        msg.channel.send(`That tile is flagged, <@${player}>! I can't uncover a flagged tile!`);
-                        break;
+                        return msg.channel.send(`That tile is flagged, <@${player}>! I can't uncover a flagged tile!`);
                       case 3: // QMC
-                        msg.channel.send(`That tile is marked as uncertain, <@${player}>!\nIf you are absolutely certain you want to reveal it, re-type the same command followed by \`-force\`.`);
-                        break;
+                        return msg.channel.send(`That tile is marked as uncertain, <@${player}>!\nIf you are absolutely certain you want to reveal it, re-type the same command followed by \`-force\`.`);
                       case 4: { // Mine hit; reveal mines and end game
                         updateCanvas(board, revealMines(field, display), img);
-                        let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
+                        let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
                         game.channel.send(`Oh no! You hit a mine, <@${player}>!\n**--- YOU LOSE ---**`, newAttach);
-                        finder.stop("fail");
-                        return;
+                        finder.stop("generic");
                       }
                     }
                   }
                   break;
                 }
-                case "f": {
+                case "f":
+                case "x": {
                   // Edits flag status
                   let content;
                   if (display[y][x] == 9 || display[y][x] == 10) {
                     display[y][x] = 11 + (time.getUTCMonth() == 5 ? 4 : 0);
                     unrev--;
                     flags--;
-                    content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** flagged!\n${stats(moves, flags)}`;
+                    content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** flagged, <@${player}>!\n${stats(moves, flags)}`;
                   } else if (display[y][x] == 11 || display[y][x] == 15) {
                     display[y][x] = 9;
                     unrev++;
                     flags++;
-                    content = `Flag on tile **\`${caught[2].toUpperCase()}${caught[3]}\`** removed!\n${stats(moves, flags)}`;
+                    content = `Flag on tile **\`${caught[2].toUpperCase()}${caught[3]}\`** removed, <@${player}>!\n${stats(moves, flags)}`;
                   } else {
-                    msg.channel.send(`That tile can't be flagged, <@${player}>.`);
-                    break;
+                    finder.resetTimer({time: 120000, idle: 120000});
+                    return msg.channel.send(`That tile can't be flagged, <@${player}>.`);
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
-                  let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-                  game.channel.send(content, newAttach);
+                  let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                  game.channel.send(content, newAttach)
+                    .then(newMsg => {
+                      newMsg.channel.messages.fetch(newMsg.id);
+                  });
                   break;
                 }
-                case "q": {
+                case "q":
+                case "?": {
                   // Edits qmc status
                   let content;
                   if (display[y][x] == 9) {
                     display[y][x] = 10;
                     unrev--;
-                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` marked as uncertain!\n${stats(moves, flags)}`;
+                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` marked as uncertain, <@${player}>!\n${stats(moves, flags)}`;
                   } else if (display[y][x] == 10) {
                     display[y][x] = 9;
                     unrev++;
-                    content = `Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed!\n${stats(moves, flags)}`;
+                    content = `Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed, <@${player}>!\n${stats(moves, flags)}`;
                   } else {
-                    msg.channel.send(`That tile can't be marked as uncertain, <@${player}>.`);
-                    break;
+                    finder.resetTimer({time: 120000, idle: 120000});
+                    return msg.channel.send(`That tile can't be marked as uncertain, <@${player}>.`);
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
-                  let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'));
-                  game.channel.send(content, newAttach);
+                  let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                  game.channel.send(content, newAttach)
+                    .then(newMsg => {
+                      newMsg.channel.messages.fetch(newMsg.id);
+                  });
                   break;
                 }
               }
+
+              // Filter setup
+              const attachFilter = (a) => a.name == flagID;
+              const msgFilter = (msgx) => msgx.author.id == client.user.id && msgx.attachments.some(attachFilter) && msgx.mentions.members.has(player) && !msgx.deleted;
+
+              // Board swap
+              let boards = game.channel.messages.cache.filter(msgFilter);
+
+              // Discards the old board
+              /*if (moves > 1) {
+                game.delete()
+                  .catch(err => {
+                    console.error("E: mswp board could not be discarded", err)
+                });
+              }*/
+
+              // Gets and saves the latest board from the filtered boards
+              let stamp = {createdAt: 0};
+              boards.each(msgx => {
+                if (msgx.createdAt > stamp.createdAt)
+                stamp = msgx;
+              });
+              if (stamp.createdAt != 0) {
+                game = stamp;
+                // Discards the old board
+                game.delete()
+                  .catch(err => {
+                    console.error("E: mswp board could not be discarded", err)
+                });
+              }
+
               // Resets the timer
               finder.resetTimer({time: 120000, idle: 120000});
 
               // Pickup new channel (pseudocode!)
-              // game.channel - cache - get messages
+              // finder.channel - cache - get messages
                 // filter - last 15(?), sent by client.user.tag (Gyromina), has image, @mentions player
               // game = found message (hopefully it gets stored!)
+
             });
 
             finder.on('end', (c, reason) => {
               // Determines why the collector ended
               switch (reason) {
-                case "win":
-                case "fail": 
+                case "generic": 
                   return; // Handled elsewhere in a unique message
                 case "time": // Timeouts
                 case "idle":

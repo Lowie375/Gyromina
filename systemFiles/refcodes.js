@@ -4,7 +4,7 @@ const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 // Declares CBX characters for future use
-const genChars = ["0", "1", "2", "3", "5", "8", "l", "@", "w", "n", "?", "x", "-", "i", "!", "y", "h", "%", "t", "q", "j", "s", "r", "#", "k", ":", "&", "f", "m", "z", "e", "u"];
+const genChars = ["0", "1", "2", "3", "5", "8", "l", "a", "w", "n", "p", "x", "-", "i", "_", "y", "h", "b", "t", "q", "j", "s", "r", "v", "k", "c", "g", "f", "m", "z", "e", "u"];
 
 // Custom decimal converter
 function toCBX(num, mul) {
@@ -84,9 +84,10 @@ exports.genWarningMsg = function(client, w) {
 
 /**
  * Generates a raw reference code (for miscellaneous use)
+ * @param alpha Whether the sequence should contain only alphanumeric characters or not
  * @return {string}
  */
 
 exports.codeRNG = function() {
-  return genCode();
+    return genCode();
 }

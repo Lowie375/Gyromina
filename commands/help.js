@@ -11,13 +11,13 @@ function setParams(c) {
     list += ` ${c.help.params}\n`;
   } else {
     list += ` ${c.help.params[0]}\n`;
-    for(let i = 1; i < c.help.params.length; i++) {list += `**or** ${process.env.prefix}**${c.help.name}** ${c.help.params[i]}\n`;}
+    for(let i = 1; i < c.help.params.length; i++) {list += `or ${process.env.prefix}**${c.help.name}** ${c.help.params[i]}\n`;}
   }
   return list;
 }
 
 function setGameOptions(g) {
-  var list = "\• " + process.env.prefix + "**" + g.label.name + "**"
+  var list = "\• **" + g.label.name + "**"
   // Checks for parameters, and adds them as necessary
   if(!g.label.options) {
     list += "\n";
@@ -25,7 +25,7 @@ function setGameOptions(g) {
     list += ` ${g.label.options}\n`;
   } else {
     list += ` ${g.label.options[0]}\n`;
-    for(let i = 1; i < g.label.options.length; i++) {list += `**or** ${process.env.prefix}**${g.label.name}** ${g.label.options[i]}\n`;}
+    for(let i = 1; i < g.label.options.length; i++) {list += `or **${g.label.name}** ${g.label.options[i]}\n`;}
   }
   return list;
 }
@@ -141,15 +141,15 @@ exports.run = {
         embed.setColor(0x7effaf);
       
       if(gmz.label.name === gameName)
-        embed.setTitle(`${ext}${process.env.prefix}${gmz.label.name}`);
+        embed.setTitle(`${ext}${gmz.label.name}`);
       else
-        embed.setTitle(`${ext}${process.env.prefix}${gmz.label.name} (${process.env.prefix}${gameName})`);
+        embed.setTitle(`${ext}${gmz.label.name} (${gameName})`);
 
       let desc = gmz.label.description;
       if(Array.isArray(gmz.label.aliases) == false)
-        desc += `\n\• Alias: ${process.env.prefix}${gmz.label.aliases}`;
+        desc += `\n\• Alias: ${gmz.label.aliases}`;
       else if(gmz.label.aliases >= 2)
-        desc += `\n\• Aliases: ${process.env.prefix}${gmz.label.aliases.join(`, ${process.env.prefix}`)}`;
+        desc += `\n\• Aliases: ${gmz.label.aliases.join(`, `)}`;
       
       if (gmz.label.options && !Array.isArray(gmz.label.optionsdesc)) {
         desc += `\n\nOptions:\n\• ${gmz.label.optionsdesc}`;

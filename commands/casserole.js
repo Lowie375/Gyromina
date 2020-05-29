@@ -27,6 +27,6 @@ exports.help = {
   "description": 'Makes a quip about casseroles and closets.',
   "usage": `${process.env.prefix}casserole`,
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

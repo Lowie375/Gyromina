@@ -4,7 +4,7 @@
 [![Bot Version][version-img]](package.json)
 [![Dependency Status][dependency-img]][dependency-link]
 [![Last Commit (master)][master-commit-img]][master-commit-img]
-[![Last Commit (0.13.0)][beta-commit-img]][beta-commit-img]
+[![Last Commit (indev-branch)][indev-commit-img]][indev-commit-img]
 [![License][license-img]](LICENSE)
 
 ## About
@@ -13,9 +13,9 @@
 
 Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4351 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
 
-Latest stable build: 0.13.1
+Latest stable build: 0.13.2
 
-Latest build (indev): 0.14.0-alpha.1
+Latest build (**indev**): 0.14.0-beta.1
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
@@ -106,7 +106,7 @@ Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution inf
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
 [master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
-[beta-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/0.13.0?label=last%20commit%20%280.13.0%29
+[indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf

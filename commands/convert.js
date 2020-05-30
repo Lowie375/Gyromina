@@ -1,5 +1,6 @@
-// Require discord.js
+// Require discord.js and the temperature conversions
 const Discord = require('discord.js');
+const {FtoC, CtoF, CtoK, KtoC, FtoR, RtoF} = require('../systemFiles/globalFunctions.js')
 
 // Array V4: names[array#][object#] + metricNames[array#][object#] --> converter[array#][object#] + metrics[array#][object#] (0-9/10-19/20-29/etc.)
 const names = [
@@ -27,7 +28,9 @@ const names = [
    "tons", "pounds", "lb", "ounces", "oz", "stones", "st", "tonnes", "t", "slug",
    "sl", "joules", "j", "watthours", "w•hr", "w·hr", "whr", "calories", "cal", "gramcalories",
    "smallcalories", "btu", "britishthermalunits", "britishtherm", "uktherm", "thermuk", "quad", "quadrillionbtu", "ustherm", "thermus",
-   "electronvolts", "ev", "footpounds", "ftlb", "ft⋅lb", "ft•lb"],
+   "electronvolts", "ev", "footpounds", "ftlb", "ft⋅lb", "ft•lb", "celcius", "centigrade", "degreescelcius", "degreecelcius",
+   "c", "°c", "fahrenheit", "degreesfahrenheit", "degreefahrenheit", "f", "°f", "kelvins", "k", "rankines",
+   "degreesrankine", "degreerankine", "r", "ra", "°r", "°ra"],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
@@ -52,8 +55,10 @@ const names = [
    "m050", "m051", "m051", "m052", "m052", "m053", "m053", "m054", "m054", "m055",
    "m055", "e056", "e056", "e057", "e057", "e057", "e057", "e058", "e058", "e058",
    "e058", "e059", "e059", "e060", "e060", "e060", "e061", "e061", "e062", "e062",
-   "e063", "e063", "e064", "e064", "e064", "e064",]
-]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // m=mass // e=energy // w=power // f=weight // s=speed
+   "e063", "e063", "e064", "e064", "e064", "e064", "t065", "t065", "t065", "t065",
+   "t065", "t065", "t066", "t066", "t066", "t066", "t066", "t067", "t067", "t068",
+   "t068", "t068", "t068", "t068", "t068", "t068",]
+]; // d=distance // t=time // n=angle // v=vol // p=pressure // a=area // m=mass // e=energy // t=temperature (// w=power // f=weight //)
 const converter = [
   ["m", "in", "ft", "yd", "mi", "nmi", "/sec", " min", " hrs", " days",
    " wks", " yrs", " gon", "°", "/rads", " mil", "L", "m³", "in³", "ft³",
@@ -61,7 +66,7 @@ const converter = [
    " Imp. tbsp", "Imp. tsp", " US cup", " US legal cup", " Imp. cup", "Pa", "atm", "torr", "bar", "psi",
    "mbar", "m²", "in²", "ft²", "yd²", "mi²", "ac", "ha", "g", " US ton",
    " Imp. ton", "lb", "oz", "st", "t", "sl", "J", "W·h", "cal", "btu",
-   " UK therm", "quad", " US therm", "ev", "ft⋅lb"],
+   " UK therm", "quad", " US therm", "ev", "ft⋅lb", "°C", "°F", "K", "°R"],
   [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
    1, 7/365, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
    1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784, 1/4.546, 4/4.546, 160/4.546, 8/4.546,
@@ -69,19 +74,19 @@ const converter = [
    1013.25, 2589988.110336, 4014489600, 27878400, 3097600, 1, 1/640, 258.9988110336, 907184.74, 1,
    1/1.12, 2000, 32000, 2000/14, 90.718474, 907184.74/14593.903, 1, 1/3600, 1/4.184, 100/1.65923500225396087980032,
    Math.pow(10, 7)/1.65923500225396087980032, Math.pow(10, 17)/1.65923500225396087980032, Math.pow(10, 7)/1.659631173184781539, Math.pow(10, 19)/1.602176565,
-     0.73756214927726542848]
+     0.73756214927726542848, null, null, null, null]
 ]; 
 const metricNames = [
   ["deci", "d", "centi", "c", "milli", "m", "kilo", "k", "mega", "M",
    "giga", "G", "tera", "T", "peta", "P", "exa", "E", "zetta", "Z",
    "yotta", "Y", "hecto", "h", "nano", "n", "pico", "p", "femto", "f", 
-   "atto", "a", "zepto", "z", "yocto", "y", "micro", "μ", "u",
-   "deka", "da"],
+   "atto", "a", "zepto", "z", "yocto", "y", "micro", "μ", "u", "deka",
+   "da"],
   [00, 00, 01, 01, 02, 02, 03, 03, 04, 04,
    05, 05, 06, 06, 07, 07, 08, 08, 09, 09,
    10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
-   15, 15, 16, 16, 17, 17, 18, 18, 18,
-   19, 19]
+   15, 15, 16, 16, 17, 17, 18, 18, 18, 19,
+   19]
 ];
 const metrics = [
   ["d", "c", "m", "k", "M", "G", "T", "P", "E", "Z", 
@@ -177,67 +182,71 @@ function cleanArgs(args) {
   }
 
   for (let j = 1; j <= 2; j++) {
-    // Determines possible metric prefixes
-    let exArg = exCheck(args2[j]);
-    for (let i = 0; i < metricNames[0].length; i++) {
-      if(exArg.startsWith(metricNames[0][i])) {
-        checkCtr++;
-        save.push([i, metricNames[1][i]]);
-      }
-    }
-    // Checks if a prefix was found
-    if (checkCtr == 0) { // No prefix; leave things as-is
+    // Checks if the argument is a single character
+    if (args2[j].length <= 1) {
+      // Single character; no prefix
       cleaned[j] = args2[j];
-    } else { // Prefix; check if the prefix is exclusive
-      if (checkCtr == 1) { // Exclusive
-        cleaned[j+3] = save[0][1];
-        cleaned[j] = args2[j].slice(1);
-      } else if (checkCtr != 0 && checkCtr != 1) {
-        // Checks if the prefixes have the same index
-        let index = save[0][1];
-        for (item of save) {
-          if(item[1] != index)
-            index = -1;
+    } else {
+      // Determines possible metric prefixes
+      let exArg = exCheck(args2[j]);
+      for (let i = 0; i < metricNames[0].length; i++) {
+        if(exArg.startsWith(metricNames[0][i])) {
+          checkCtr++;
+          save.push([i, metricNames[1][i]]);
         }
-        // Checks if the index remained the same throughout
-        if (index != -1) { // Technically exclusive; find the longest prefix
-          let max = metricNames[0][save[0][0]].length
-          for (item of save) {
-            if(metricNames[0][item[0]].length > max)
-              max = metricNames[0][item[0]].length;
-          }
+      }
+      // Checks if a prefix was found
+      if (checkCtr == 0) { // No prefix; leave things as-is
+        cleaned[j] = args2[j];
+      } else { // Prefix; check if the prefix is exclusive
+        if (checkCtr == 1) { // Exclusive
           cleaned[j+3] = save[0][1];
-          cleaned[j] = metricExSlicer(args2[j], max);
-          // exCheck
-        } else {
-          // Runs a deeper check
-          let dpr = deepCleanArgs(args2, save, j, 2);
-          cleaned[j+3] = dpr[0];
-          cleaned[j] = metricExSlicer(args2[j], dpr[1]);
-          // exCheck
-        }
-      }
-    
-      // Checks if the prefix was actually a valid prefix
-      let validate = metricCheck(cleaned[j]);
-      switch(validate) {
-        case 0: // OK, continue
-          break;
-        case 1: { // Extraneous, perform additional check
-          let checkOutput = metricCheckAddl(cleaned[j], cleaned[j+3]);
-          if (checkOutput != null) {
-            cleaned[j] = checkOutput;
-            break;
+          cleaned[j] = args2[j].slice(1);
+        } else if (checkCtr != 0 && checkCtr != 1) {
+          // Checks if the prefixes have the same index
+          let index = save[0][1];
+          for (item of save) {
+            if(item[1] != index)
+              index = -1;
+          }
+          // Checks if the index remained the same throughout
+          if (index != -1) { // Technically exclusive; find the longest prefix
+            let max = metricNames[0][save[0][0]].length
+            for (item of save) {
+              if(metricNames[0][item[0]].length > max)
+                max = metricNames[0][item[0]].length;
+            }
+            cleaned[j+3] = save[0][1];
+            cleaned[j] = metricExSlicer(args2[j], max);
+          } else {
+            // Runs a deeper check
+            let dpr = deepCleanArgs(args2, save, j, 2);
+            cleaned[j+3] = dpr[0];
+            cleaned[j] = metricExSlicer(args2[j], dpr[1]);
           }
         }
-        case 2: // Not a prefix, undo split
-          cleaned[j] = args2[j];
-          cleaned[j+3] = -1;
-          break;
+    
+        // Checks if the prefix was actually a valid prefix
+        let validate = metricCheck(cleaned[j]);
+        switch(validate) {
+          case 0: // OK, continue
+            break;
+          case 1: { // Extraneous, perform additional check
+            let checkOutput = metricCheckAddl(cleaned[j], cleaned[j+3]);
+            if (checkOutput != null) {
+              cleaned[j] = checkOutput;
+              break;
+            }
+          }
+          case 2: // Not a prefix, undo split
+            cleaned[j] = args2[j];
+            cleaned[j+3] = -1;
+            break;
+        }
       }
+      checkCtr = 0;
+      save.splice(0, save.length);
     }
-    checkCtr = 0;
-    save.splice(0, save.length);
   }
   return cleaned;
 }
@@ -280,12 +289,12 @@ function nameCases(x, args, i, plural) {
   return result;
 }
 
-function search(args, argNum) {
+function search(arg) {
   let checkCtr = 0;
   let save = [];
   // Checks for exact matches
   for (let i = 0; i < names[0].length; i++) {
-    if(names[0][i] === (args[argNum])) {
+    if(names[0][i] === (arg)) {
       checkCtr++;
       save.push(names[1][i]);
     }
@@ -293,7 +302,7 @@ function search(args, argNum) {
   if (searchCheck(save, checkCtr) != "err" && searchCheck(save, checkCtr) != "null") return searchCheck(save, checkCtr);
   // Checks for non-exact matches (shortened words)
   for (let i = 0; i < names[0].length; i++) {
-    if(names[0][i].startsWith(args[argNum])) {
+    if(names[0][i].startsWith(arg)) {
       checkCtr++;
       save.push(names[1][i]);
     }
@@ -315,11 +324,28 @@ function searchCheck(save, ctr) {
   }
 }
 
-function errorPull(x, message) {
+function errorPull(x, message, arg) {
   switch (x) {
-    case "err": message.reply("the unit you specified couldn\'t be found! Please check your spelling and try again."); return 1;
-    case "null": message.reply("the unit you specified wasn\'t specific enough! Please check your spelling and try again."); return 1;
+    case "err": message.reply(`the unit you specified (${arg}) couldn\'t be found! Please check your spelling and try again.`); return 1;
+    case "null": message.reply(`the unit you specified (${arg}) wasn\'t specific enough! Please check your spelling and try again.`); return 1;
     default: return 0;
+  }
+}
+
+function expandUnit(u) {
+  switch (u) {
+    case "d": return "distance";
+    case "t": return "time";
+    case "n": return "angle";
+    case "v": return "volume";
+    case "p": return "pressure";
+    case "a": return "area";
+    case "m": return "mass";
+    case "e": return "energy";
+    case "t": return "temperature";
+    case "w": return "power";
+    case "f": return "weight";
+    default: return "undefined";
   }
 }
 
@@ -327,17 +353,17 @@ exports.run = {
   execute(message, args, client) {
     switch(args.length) {
       case 0: return message.reply("I can\'t convert something if I don't have any values or units to convert between! Please add a value and try again.");
-      case 1: return message.reply("I can\'t convert something if you don't tell me the unit it's in! Please add the appropriate unit and try again.");
+      case 1: return message.reply("I can\'t convert something if you don't tell me its unit! Please add the appropriate unit and try again.");
       case 2: return message.reply("I can\'t convert something if you don't tell me what unit to convert it to! Please add the desired unit and try again.");
     }
     
     var cArgs = cleanArgs(args);
     
     // Finds & pulls conversion data
-    var pos1 = search(cArgs, 1);
-    if (errorPull(pos1, message) != 0) return;
-    var pos2 = search(cArgs, 2);
-    if (errorPull(pos2, message) != 0) return;
+    var pos1 = search(cArgs[1].toLowerCase());
+    if (errorPull(pos1, message, args[1]) != 0) return;
+    var pos2 = search(cArgs[2].toLowerCase());
+    if (errorPull(pos2, message, args[2]) != 0) return;
 
     var type1 = pos1.slice(0, 1);
     pos1 = parseInt(pos1.slice(1), 10);
@@ -346,33 +372,97 @@ exports.run = {
 
     // Checks if the units can be converted between
     if (type1 != type2)
-      return message.reply("I can\'t convert between 2 unlike units! Please check your units and try again.");
+      return message.reply(`I can\'t convert between 2 unlike units (${expandUnit(type1)} & ${expandUnit(type2)})! Please check your units and try again.`);
     
     var name1 = nameCases(converter[0][pos1], cArgs, 4, 1);
     var name2 = nameCases(converter[0][pos2], cArgs, 5, 0);
 
     // Initialises conversion values
-    var val1, val2, output, round;
-    if(converter[1][pos1] != valCases(converter[1][pos1])) {
-      val1 = valCases(converter[1][pos1]);
+    var val1;
+    var val2;
+    var output;
+    var round;
+
+    // Sets conversion variables
+    let vc1 = valCases(converter[1][pos1]);
+    if(converter[1][pos1] != vc1) {
+      val1 = vc1;
       var val1exact = converter[1][pos1];
     } else {
       val1 = converter[1][pos1];
     }
-    if(converter[1][pos2] != valCases(converter[1][pos2])) {
-      val2 = valCases(converter[1][pos2]);
+    let vc2 = valCases(converter[1][pos2])
+    if(converter[1][pos2] != vc2) {
+      val2 = vc2;
       var val2exact = converter[1][pos2];
     } else {
       val2 = converter[1][pos2];
     }
     
-    // Converts and checks if the output is valid
-    output = cArgs[0] * val2 / val1;
+    switch(type1) {
+      default: {
+        // Performs the conversion
+        output = cArgs[0] * val2 / val1;
+        break;
+      }
+      case "t": {
+        // Temperature; performs a custom conversion
+        let starter;
+        switch(pos1) {
+          case 65: // C
+            starter = [cArgs[0], "C"]; break;
+          case 66: // F
+            starter = [cArgs[0], "F"]; break;
+          case 67: // K
+            starter = [KtoC(cArgs[0]), "C"]; break;
+          case 68: // R
+            starter = [RtoF(cArgs[0]), "F"]; break;
+          default: // err!
+            starter = ["NaN", "X"]; break;
+        }
+        switch(starter[1]) {
+          case "C": {
+            switch(pos2) {
+              case 65: // -> C
+                output = starter[0]; break;
+              case 66: // -> F
+                output = CtoF(starter[0]); break;
+              case 67: // -> K
+                output = CtoK(starter[0]); break;
+              case 68: // -> R
+                output = FtoR(CtoF(starter[0])); break;
+              default: // -> err!
+                output = "NaN"; break;
+            }
+            break;
+          }
+          case "F": {
+            switch(pos2) {
+              case 65: // -> C
+                output = FtoC(starter[0]); break;
+              case 66: // -> F
+                output = starter[0]; break;
+              case 67: // -> K
+                output = CtoK(FtoC(starter[0])); break;
+              case 68: // -> R
+                output = FtoR(starter[0]); break;
+              default: // -> err!
+                output = "NaN"; break;
+            }
+            break;
+          }
+          default:
+            output = "NaN"; break;
+        }
+        break;
+      }
+    }
     // Metric handling
     if (cArgs[5] != -1)
       output = output * Math.pow(metrics[1][cArgs[5]], powerCheck(type1));
     if (cArgs[4] != -1)
       output = output / Math.pow(metrics[1][cArgs[4]], powerCheck(type2));
+    // Checks if the conversion was valid
     if (isNaN(output) == 1)
       return message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");
 

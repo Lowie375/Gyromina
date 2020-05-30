@@ -191,3 +191,63 @@ exports.intToHex = function(int) {
 exports.minMax = function(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
+
+/**
+ * Converts a temperature in degrees Fahrenheit to degrees Celcius
+ * @param {Number} F The temperature, in degrees Fahrenheit
+ * @return {Number}
+ */
+
+exports.FtoC = function(F) {
+  return (F - 32) * 5/9;
+}
+
+/**
+ * Converts a temperature in degrees Celcius to degrees Fahrenheit
+ * @param {Number} C The temperature, in degrees Celcius
+ * @return {Number}
+ */
+
+exports.CtoF = function(C) {
+  return C * 9/5 + 32;
+}
+
+/**
+ * Converts a temperature in degrees Celcius to Kelvins
+ * @param {Number} C The temperature, in degrees Celcius
+ * @return {Number}
+ */
+
+exports.CtoK = function(C) {
+  return C + 273.15;
+}
+
+/**
+ * Converts a temperature in Kelvins to degrees Celcius
+ * @param {Number} K The temperature, in Kelvins
+ * @return {Number}
+ */
+
+exports.KtoC = function(K) {
+  return K - 273.15;
+}
+
+/**
+ * Converts a temperature in degrees Fahrenheit to degrees Rankine
+ * @param {Number} K The temperature, in degrees Fahrenheit
+ * @return {Number}
+ */
+
+exports.FtoR = function(F) {
+  return F + 459.67;
+}
+
+/**
+ * Converts a temperature in degrees Rankine to degrees Fahrenheit
+ * @param {Number} K The temperature, in degrees Rankine
+ * @return {Number}
+ */
+
+exports.RtoF = function(R) {
+  return R - 459.67;
+}

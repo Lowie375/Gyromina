@@ -16,7 +16,7 @@ exports.run = {
       .addField("*Usage*", "*\"You can invite Gyromina to your Discord server using this link: [https://discord.now.sh/490590334758420481?p537259072](https://discord.now.sh/490590334758420481?p537259072)\"*")
       .addField("*See also*", "​*Github repository: [https://github.com/Lowie375/Gyromina](https://github.com/Lowie375/Gyromina)\n​[Project Manager](https://github.com/Lowie375/Gyromina/projects/1)"
         + " / [Report a Bug](https://github.com/Lowie375/Gyromina/issues) / [Bug Tracker](https://github.com/Lowie375/Gyromina/projects/2)*")
-      .setThumbnail(cdn.avatar)
+      .setThumbnail(cdn.avatar);
 
     message.channel.send({embed: embed});
   },

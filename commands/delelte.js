@@ -1,3 +1,4 @@
+// Require the RNG and the emoji file
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
@@ -28,7 +29,7 @@ exports.run = {
 exports.help = {
   "name": "delelte",
   "aliases": ["delete", "delele"],
-  "description": "\"Attempts\" to delete the trigger message.",
+  "description": "\'Attempts\' to delete the trigger message.",
   "usage": `${process.env.prefix}delelte`,
   "hide": 0,
   "wip": 0,

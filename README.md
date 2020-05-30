@@ -68,7 +68,7 @@ The community Code of Conduct can be found [here](docs/CODE_OF_CONDUCT.md).
 
 ## Contributing
 
-Contributions to Gyromina are always welcome! I'm an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help can go a long way.
+Contributions to Gyromina are always welcome! I'm very much a novice, so I don't know all the best tips, tricks, and optimization techniques for JavaScript nor Node. A little help can go a long way.
 
 Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution information + general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
 

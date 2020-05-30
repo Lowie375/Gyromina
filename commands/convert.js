@@ -17,15 +17,17 @@ const names = [
    "impquarts", "quartsimp", "quartimp", "impqt", "qtimp", "imppints", "pintsimp", "pintimp", "imppt", "ptimp",
    "impfluidounces", "fluidouncesimp", "fluidounceimp", "impfloz", "flozimp", "imptablespoons", "tablespoonsimp", "tablepsoonimp", "imptbsp", "tbspimp",
    "impteaspoons", "teaspoonsimp", "teaspoonimp", "tspimp", "imptsp", "uscups", "cupsus", "cupus", "usc", "cus",
-   "uslegalcups", "legalcupsus", "legalcupus", "cups", "impcups", "cupsimp", "cupimp", "c", "impc", "cimp",
-   "pascals", "Pa", "atmospheres", "atm", "torr", "bar", "mmHg", "psi", "lb/sqin", "lb/in^2",
-   "lb/in²", "lb/in2", "mb", "mbar", "millibar", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared",
-   "metresquared", "m²", "m^2", "m2", "squareinches", "inchessquared", "inchsquared", "in²", "in^2", "in2",
-   "squarefeet", "squarefoot", "feetsquared", "footsquared", "ft²", "ft^2", "ft2", "squareyards", "yardssquared", "yardsquared",
-   "yd²", "yd^2", "yd2", "squaremiles", "milessquared", "milesquared", "mi²", "mi^2", "mi2", "acres",
-   "ac", "hectares", "ha", "grams", "g", "ustons", "tonsus", "tonus", "imptons", "tonsimp",
-   "tonimp", "tons", "pounds", "lb", "ounces", "oz", "stones", "st", "tonnes", "t",
-   "slug", "sl",],
+   "uslegalcups", "legalcupsus", "legalcupus", "cups", "impcups", "cupsimp", "cupimp","impc", "cimp", "pascals", 
+   "Pa", "atmospheres", "atm", "torr", "bar", "mmHg", "psi", "lb/sqin","lb/in^2", "lb/in²",
+   "lb/in2", "mb", "mbar", "millibar", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared",
+   "m²", "m^2", "m2", "squareinches", "inchessquared", "inchsquared", "in²", "in^2", "in2", "squarefeet",
+   "squarefoot", "feetsquared", "footsquared", "ft²", "ft^2", "ft2", "squareyards", "yardssquared", "yardsquared", "yd²",
+   "yd^2", "yd2", "squaremiles", "milessquared", "milesquared", "mi²", "mi^2", "mi2", "acres", "ac",
+   "hectares", "ha", "grams", "g", "ustons", "tonsus", "tonus", "imptons", "tonsimp", "tonimp",
+   "tons", "pounds", "lb", "ounces", "oz", "stones", "st", "tonnes", "t", "slug",
+   "sl", "joules", "j", "watthours", "w•hr", "w·hr", "whr", "calories", "cal", "gramcalories",
+   "smallcalories", "btu", "britishthermalunits", "britishtherm", "uktherm", "thermuk", "quad", "quadrillionbtu", "ustherm", "thermus",
+   "electronvolts", "ev", "footpounds", "ftlb", "ft⋅lb", "ft•lb"],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
@@ -40,15 +42,17 @@ const names = [
    "v027", "v027", "v027", "v027", "v027", "v029", "v029", "v029", "v029", "v029",
    "v028", "v028", "v028", "v028", "v028", "v030", "v030", "v030", "v030", "v030",
    "v031", "v031", "v031", "v031", "v031", "v032", "v032", "v032", "v032", "v032",
-   "v033", "v033", "v033", "v034", "v034", "v034", "v034", "v034", "v034", "v034",
-   "p035", "p035", "p036", "p036", "p037", "p038", "p037", "p039", "p039", "p039",
-   "p039", "p039", "p040", "p040", "p040", "a041", "a041", "a041", "a041", "a041",
-   "a041", "a041", "a041", "a041", "a042", "a042", "a042", "a042", "a042", "a042",
-   "a043", "a043", "a043", "a043", "a043", "a043", "a043", "a044", "a044", "a044",
-   "a044", "a044", "a044", "a045", "a045", "a045", "a045", "a045", "a045", "a046",
-   "a046", "a047", "a047", "m048", "m048", "m049", "m049", "m049", "m050", "m050",
-   "m050", "m050", "m051", "m051", "m052", "m052", "m053", "m053", "m054", "m054",
-   "m055", "m055",]
+   "v033", "v033", "v033", "v034", "v034", "v034", "v034", "v034", "v034", "p035",
+   "p035", "p036", "p036", "p037", "p038", "p037", "p039", "p039", "p039", "p039",
+   "p039", "p040", "p040", "p040", "a041", "a041", "a041", "a041", "a041", "a041",
+   "a041", "a041", "a041", "a042", "a042", "a042", "a042", "a042", "a042", "a043",
+   "a043", "a043", "a043", "a043", "a043", "a043", "a044", "a044", "a044", "a044",
+   "a044", "a044", "a045", "a045", "a045", "a045", "a045", "a045", "a046", "a046",
+   "a047", "a047", "m048", "m048", "m049", "m049", "m049", "m050", "m050", "m050",
+   "m050", "m051", "m051", "m052", "m052", "m053", "m053", "m054", "m054", "m055",
+   "m055", "e056", "e056", "e057", "e057", "e057", "e057", "e058", "e058", "e058",
+   "e058", "e059", "e059", "e060", "e060", "e060", "e061", "e061", "e062", "e062",
+   "e063", "e063", "e064", "e064", "e064", "e064",]
 ]; // d=dist // t=time // n=angles // v=vol // p=pressure // a=area // m=mass // e=energy // w=power // f=weight // s=speed
 const converter = [
   ["m", "in", "ft", "yd", "mi", "nmi", "/sec", " min", " hrs", " days",
@@ -56,14 +60,17 @@ const converter = [
    " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp", " Imp. gal", " Imp. qt", " Imp. floz", "Imp. pt",
    " Imp. tbsp", "Imp. tsp", " US cup", " US legal cup", " Imp. cup", "Pa", "atm", "torr", "bar", "psi",
    "mbar", "m²", "in²", "ft²", "yd²", "mi²", "ac", "ha", "g", " US ton",
-   " Imp. ton", "lb", "oz", "st", "t", "sl"],
+   " Imp. ton", "lb", "oz", "st", "t", "sl", "J", "W·h", "cal", "btu",
+   " UK therm", "quad", " US therm", "ev", "ft⋅lb"], // 10/7.3756214927726542848
   [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
    1, 7/365, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
    1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784, 1/4.546, 4/4.546, 160/4.546, 8/4.546,
    256/4.546, 768/4.546, 16/3.785411784, 1/0.24, 16/4.546, 101325, 1, 760, 1.01325, 14.6959409,
    1013.25, 2589988.110336, 4014489600, 27878400, 3097600, 1, 1/640, 258.9988110336, 907184.74, 1,
-   1/1.12, 2000, 32000, 2000/14, 90.718474, 907184.74/14593.903]
-];
+   1/1.12, 2000, 32000, 2000/14, 90.718474, 907184.74/14593.903, 1, 1/3600, 1/4.184, 100/1.65923500225396087980032,
+   Math.pow(10, 7)/1.65923500225396087980032, Math.pow(10, 17)/1.65923500225396087980032, Math.pow(10, 7)/1.659631173184781539, Math.pow(10, 19)/1.602176565,
+     Math.pow(10, 6)/1.3558179483314003968, 10/7.3756214927726542848]
+]; 
 const metricNames = [
   ["deci", "d", "centi", "c", "milli", "m", "kilo", "k", "mega", "M",
    "giga", "G", "tera", "T", "peta", "P", "exa", "E", "zetta", "Z",
@@ -89,7 +96,8 @@ const metrics = [
 const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
   "pascals", "Pa", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2",
-  "m2", "grams", "g"];
+  "m2", "grams", "g", "joules", "j", "watthours", "w•hr", "w·hr", "whr", "calories",
+  "cal"];
 // Splitter separators + extraneous cases
 const separators = /_-/;
 const ex = /^(cubic|square)/;
@@ -106,8 +114,6 @@ function metricCheck(x) {
   for (let i = 0; i < registered.length; i++) {
     if(registered[i].startsWith(x))
       return 0;
-    /*else if(ex.exec(x))
-      return 1;*/
   }
   return 2;
 }

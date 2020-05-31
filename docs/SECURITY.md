@@ -2,7 +2,7 @@
 
 As Gyromina is a publicly-usable Discord bot, I take its issues (especially those involving security) very seriously. All it takes is one error or breach for Gyromina to come crashing down, so I strive to prevent each new release from being exploitable.
 
-Only the current stable minor version (`x.minor.x`) and indev versions (`x.x.x-alpha/beta.x`) will receive security patches. Old versions will be left "as-is" for simplicity's sake, since differences between older and newer verisons of Gyromina's code may result in patch incompatibility.
+Only the current stable minor version (**`x.minor.x`**) and indev versions (**`x.x.x-alpha/beta.x`**) will receive security patches. Old versions will be left "as-is" for simplicity's sake, since differences between older and newer verisons of Gyromina's code may result in patch incompatibility.
 
 ## Reporting a Vulnerability
 

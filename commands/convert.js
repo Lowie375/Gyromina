@@ -7,7 +7,7 @@ const names = [
   ["metres", "meters", "m", "inches", "in", "foot", "feet", "ft", "yards", "yds",
    "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
    "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
-   "cdegrees", "degs", "°", "radians", "rads", "mil", "\"", "\'", "litres", "liters",
+   "degrees", "degs", "°", "radians", "rads", "mil", "\"", "\'", "litres", "liters",
    "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
    "in³", "in3", "in^3", "cubicinches", "inchescubed", "inchcubed", "ft³", "ft3", "ft^3", "cubicfoot", 
    "cubicfeet", "feetcubed", "footcubed", "gallons", "usgallons", "gallonsus", "gallonus", "gal", "usgal", "galus",

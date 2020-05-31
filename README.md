@@ -72,7 +72,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 ## Bug Reports
 
-Please see the "**If you are reporting a bug**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
+Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
 
 ## Contributors
 

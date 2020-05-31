@@ -56,6 +56,10 @@ Gyromina contains an assortment of features, including a random colour and numbe
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
 * Run using your native runtime/debugger and you're good to go!
 
+## Bug Reports
+
+Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
+
 ## Changelog
 
 Gyromina's changelog can be found at **[https://lx375.weebly.com/gyro-log][log]**.
@@ -69,10 +73,6 @@ The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](doc
 Contributions to Gyromina are always welcome! I'm a novice, so I don't know all the best tips, tricks, and optimizations for JavaScript and Node. A little help can go a long way.
 
 Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
-
-## Bug Reports
-
-Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
 
 ## Contributors
 

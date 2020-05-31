@@ -29,9 +29,10 @@ These are some of the major conventions I've tried to follow within Gyromina's c
 
 * Indent using double spaces (soft tabs)
 * Put spaces after list items and parameters (`[x, y, z]` over `[x,y,z]`)
-* Put spaces around operators, except when used for math inside arguments and conditionals (`myVar = 5` over `myVar=5` and `myOtherVar += m * 9` over `myOtherVar+=m*9`, but `arr[i+2]` and `myFunc(n*5)` are okay)
+* Put spaces around operators, except when used for math inside arguments or long calculations (`myVar = 5` over `myVar=5` and `myOtherVar += m * 9` over `myOtherVar+=m*9`, but `arr[i+2]` and `myFunc(n*5)` are okay)
 * No spaces inside single line blocks (`if (foo === true) {return bar;}` over `if (foo === true) { return bar; }`)
-* Make things look nice! Add whitespace between large segments of code and include brief comments wherever you see fit. This is an open source project, so keeping things clean and easy to read helps everyone. Plus, comments help everyone (especially myself) see what certain segments of code do so that we don't end up breaking them later on.
+* Add function definitions for all exported functions in the 'systemFiles' folder
+* Make things look nice! Add whitespace between large segments of code and include brief comments wherever you see fit. Gyromina is an open source project, so keeping things clean and easy to read for all contributors is a must. Plus, comments help everyone (especially myself) see what certain segments of code do so that we don't end up breaking them later on.
 
 ## Crediting
 

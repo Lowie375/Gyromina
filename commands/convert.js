@@ -36,7 +36,13 @@ const names = [
    "gramofforce", "gf", "ouncesforce", "ounceforce", "ouncesofforce", "ounceofforce", "ozf", "poundsforce", "poundforce", "poundsofforce",
    "poundofforce", "lbf", "ustonsforce", "ustonforce", "tonsforceus", "tonforceus", "ustonsofforce", "ustonofforce", "tonsofforceus", "tonofforceus",
    "ustonf", "tonfus", "imptonsforce", "imptonforce", "tonsforceimp", "tonforceimp", "imptonsofforce", "imptonofforce", "tonsofforceimp", "tonofforceimp",
-   "imptonf", "tonfimp", "tonsforce", "tonforce", "tonsofforce", "tonofforce", "tonf",],
+   "imptonf", "tonfimp", "tonsforce", "tonforce", "tonsofforce", "tonofforce", "tonf", "ukgallons", "gallonsuk", "gallonuk",
+   "ukgal", "galuk", "ukquarts", "quartsuk", "quartuk", "ukqt", "qtuk", "ukpints", "pintsuk", "pintuk",
+   "ukpt", "ptuk", "ukfluidounces", "fluidouncesuk", "fluidounceuk", "ukfloz", "flozuk", "uktablespoons", "tablespoonsuk", "tablepsoonuk",
+   "uktbsp", "tbspuk", "ukteaspoons", "teaspoonsuk", "teaspoonuk", "tspuk", "uktsp", "ukcups", "cupsuk", "cupuk",
+   "ukc", "cuk", "quadrillionbritishthermalunits", "uktons", "tonsuk", "tonuk", "uktherm", "thermuk", "uktonsforce", "uktonforce",
+   "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk",
+  ],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
@@ -69,7 +75,13 @@ const names = [
    "f074", "f074", "f075", "f075", "f075", "f075", "f075", "f076", "f076", "f076",
    "f076", "f076", "f077", "f077", "f077", "f077", "f077", "f077", "f077", "f077",
    "f077", "f077", "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078",
-   "f078", "f078", "f078", "f078", "f078", "f078", "f078",]
+   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "v026", "v026", "v026",
+   "v026", "v026", "v027", "v027", "v027", "v027", "v027", "v029", "v029", "v029",
+   "v029", "v029", "v028", "v028", "v028", "v028", "v028", "v030", "v030", "v030",
+   "v030", "v030", "v031", "v031", "v031", "v031", "v031", "v034", "v034", "v034",
+   "v034", "v034", "e061", "m050", "m050", "m050", "e060", "e060", "f078", "f078",
+   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078",
+  ]
 ]; // d=distance // t=time // n=angle // v=vol // p=pressure // a=area // m=mass // e=energy // k=temperature // w=power // f=force/weight //
 const converter = [
   ["m", "in", "ft", "yd", "mi", "nmi", "/sec", " min", " hrs", " days",

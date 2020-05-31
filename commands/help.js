@@ -109,7 +109,7 @@ exports.run = {
       }
 
       if(cmdy.help.helpurl)
-        desc += `\n\• For more help, [tap/click here](${cmdy.help.helpurl})`;
+        desc += `\n\nFor more information, [tap/click here](${cmdy.help.helpurl})`;
       
       embed.setDescription(desc);
 
@@ -157,6 +157,9 @@ exports.run = {
         desc += `\n\nOptions:\n\• ${gmz.label.optionsdesc[0]}`;
         for(let i = 1; i < gmz.label.optionsdesc.length; i++) {desc += `\n\• ${gmz.label.optionsdesc[i]}`;}
       }
+
+      if(gmz.label.helpurl)
+        desc += `\n\nFor more information, [tap/click here](${gmz.label.helpurl})`
 
       embed.setDescription(desc);
 

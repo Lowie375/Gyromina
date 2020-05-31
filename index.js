@@ -91,7 +91,7 @@ client.on('message', message => {
   }
 });
 
-// Warns when there is a warning with a bot
+// Catches emitted warnings
 client.on('warn', w => {
   // Generates a warning message & logs the warning
   genWarningMsg(client, w);

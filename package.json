@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "0.13.2",
+  "version": "1.0.0",
   "description": "Gyromina, a multipurpose Discord bot",
   "homepage": "https://lx375.weebly.com/gyromina",
   "repository": {
@@ -30,6 +30,10 @@
   "contributorIDs": [
     "395691107574611970",
     "532819509359149056"
+  ],
+  "contributorLinks": [
+    "https://github.com/Altenhh",
+    "https://github.com/Homurasama"
   ],
   "testers": [],
   "testerIDs": [],

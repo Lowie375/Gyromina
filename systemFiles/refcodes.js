@@ -71,7 +71,7 @@ exports.genErrorMsg = function(message, client, error) {
 
 /**
  * Generates a warning message
- * @param client The discord client object
+ * @param client The Discord client object
  * @param w The warning thrown
  */
 
@@ -84,7 +84,6 @@ exports.genWarningMsg = function(client, w) {
 
 /**
  * Generates a raw reference code (for miscellaneous use)
- * @param alpha Whether the sequence should contain only alphanumeric characters or not
  * @return {string}
  */
 

@@ -13,7 +13,7 @@
 
 Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4351 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
 
-Latest stable build: 0.13.2
+Latest stable build: v1.0.0
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
@@ -31,9 +31,9 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 ### General (for server owners/admins)
 
-* Follow this link: [https://discord.now.sh/490590334758420481?p537259072][invite]
+* Follow this link: **[https://discord.now.sh/490590334758420481?p537259072][invite]**
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled (critical: `Use External Emojis`, `Manage Webhooks`, and `Manage Messages`)
+* Make sure all requested permissions are enabled (critical: **`Use External Emojis`**, **`Manage Webhooks`**, and **`Manage Messages`**)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)
@@ -56,19 +56,23 @@ Gyromina contains an assortment of features, including a random colour and numbe
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
 * Run using your native runtime/debugger and you're good to go!
 
+## Bug Reports
+
+Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
+
 ## Changelog
 
-Gyromina's changelog can be found at [https://lx375.weebly.com/gyro-log][log].
+Gyromina's changelog can be found at **[https://lx375.weebly.com/gyro-log][log]**.
 
 ## Code of Conduct
 
-The community Code of Conduct can be found [here](docs/CODE_OF_CONDUCT.md).
+The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)**.
 
 ## Contributing
 
-Contributions to Gyromina are always welcome! I'm an amateur programmer, so I don't know all the best tips, tricks, and optimisation techniques for JavaScript nor Node. A little help can go a long way.
+Contributions to Gyromina are always welcome! I'm a novice, so I don't know all the best tips, tricks, and optimizations for JavaScript and Node. A little help can go a long way.
 
-Please see [**docs/CONTRIBUTING.md**](docs/CONTRIBUTING.md) for contribution information + general style notes and [**docs/CODE_OF_CONDUCT.md**](docs/CODE_OF_CONDUCT.md) for the community code of conduct.
+Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
 
 ## Contributors
 

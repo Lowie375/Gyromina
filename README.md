@@ -1,4 +1,4 @@
-# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner]][info]
+# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner-alt]][info]
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]](package.json)
@@ -26,6 +26,12 @@ Gyromina is entirely open source and is licensed under the terms of the [MIT lic
 Gyromina is a multipurpose Discord bot, made to be a fun and functional addition to any Discord server.
 
 Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
+
+### Pride
+
+Gyromina's author is very proud to be who they are and eternally grateful for living in an accepting area. 💗💛💙
+
+For the month of June, Gyromina will don a rainbow profile picture to show love and support for the LGBTQIA+ community! Some special pride-related easter eggs will also be activated during this time!
 
 ## Setup
 
@@ -95,6 +101,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 <!-- Links -->
 [commands]: https://lx375.weebly.com/gyro-commands
 [gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
+[gyro-banner-alt]: https://cdn.discordapp.com/attachments/429364141355171840/716978345774022696/GyrominaPlasmaBannerPride.png
 [info]: https://lx375.weebly.com/gyromina
 [invite]: https://discord.now.sh/490590334758420481?p537259072
 [log]: https://lx375.weebly.com/gyro-log

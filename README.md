@@ -101,7 +101,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 <!-- Links -->
 [commands]: https://lx375.weebly.com/gyro-commands
 [gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
-[gyro-banner-alt]: https://cdn.discordapp.com/attachments/429364141355171840/716978345774022696/GyrominaPlasmaBannerPride.png
+[gyro-banner-alt]: https://cdn.discordapp.com/attachments/429364141355171840/717147986186207343/GPBPride.jpg
 [info]: https://lx375.weebly.com/gyromina
 [invite]: https://discord.now.sh/490590334758420481?p537259072
 [log]: https://lx375.weebly.com/gyro-log

@@ -27,6 +27,7 @@ exports.help = {
   "aliases": "information",
   "description": "Displays Gyromina's info.",
   "usage": `${process.env.prefix}info`,
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

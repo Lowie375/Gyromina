@@ -51,6 +51,7 @@ exports.help = {
   "usage": `${process.env.prefix}play <game> [options]`,
   "params": "<game> [options]",
   "helpurl": "https://lx375.weebly.com/gyrocmd-play",
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

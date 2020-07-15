@@ -179,6 +179,7 @@ exports.help = {
   "usage": [`${process.env.prefix}poll <type> <prompt> -[options]`, `${process.env.prefix}poll <prompt> -<e1> [o1] -[e2] [o2] …`],
   "params": ["<type> <prompt> -[options]", "<prompt> -<e1> [o1] -[e2] [o2] …"],
   "helpurl": "https://lx375.weebly.com/gyrocmd-poll",
+  "weight": 4,
   "hide": 0,
   "wip": 0,
   "dead": 0,

@@ -102,6 +102,7 @@ exports.help = {
   "description": 'Displays colour data.',
   "usage": `${process.env.prefix}colour <colour>`,
   "params": "<colour>",
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

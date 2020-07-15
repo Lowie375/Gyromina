@@ -48,6 +48,52 @@ function checkArgs(args) {
   return output;
 }
 
+function split(list, weight) {
+  // Splits the command/game list into multiple parts to save vertical space in the embed
+  let splitList = list.split('\n');
+  splitList.pop();
+  let totWeight = 0;
+  for (w of weight) {
+    totWeight += w;
+  }
+  // Checks the weight of the list
+  if(totWeight <= 12) // Light: 1 list
+    return splitList.join('\n');
+  else if(totWeight <= 24) // Moderate: 2 lists
+    return splitCore(splitList, 2, weight, totWeight);
+  else // Heavy: 3 lists
+    return splitCore(splitList, 3, weight, totWeight);
+}
+
+function splitCore(splitList, count, weight, totWeight) {
+  // Core functionality for split()
+  let endLists = [[], [], []];
+  let weightLists = [0, 0, 0];
+
+  // Calcuates the target weight for each embed field
+  let target = Math.ceil(totWeight/count);
+
+  // Splits everything into lists
+  for (let i = 0; i < count; i++) {
+    while(splitList.length != 0 && weightLists[i] < target) {
+      // Adds an element
+      endLists[i].push(splitList.shift());
+      weightLists[i] += weight.shift();
+      while(splitList.length != 0 && splitList[0].startsWith("or")) {
+        // Adds linked elements
+        endLists[i].push(splitList.shift());
+      }
+    }
+  }
+  // Returns the concatenated lists
+  switch (count) {
+    case 2:
+      return [endLists[0].join("\n"), endLists[1].join("\n")];
+    case 3:
+      return [endLists[0].join("\n"), endLists[1].join("\n"), endLists[2].join("\n")];
+  }
+}
+
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
@@ -174,13 +220,28 @@ exports.run = {
 
       var glist = "";
       var gctr = 0;
+      var gweight = [];
       // Creates the main game list
       client.games.forEach(g => {
         if(g.label.exclusive === 1 || g.label.indev === 1 || g.label.deleted === 1) return;   
         glist = glist + setGameOptions(g);
         gctr++;
+        gweight.push(g.label.weight);
       });
-      if(gctr != 0) embed.addField(`Downloaded ${main}`, `${glist}`, true);
+      if(gctr != 0) {
+        // Checks if a list split is needed
+        let splitList = split(glist, gweight);
+        if(!Array.isArray(splitList)) { // Short list, no splitting needed
+          embed.addField(`Ready to Launch ${main}`, `${splitList}`, true);
+        } else { // Splitting needed
+          let inlineCtr = 1;
+          embed.addField(`Ready to Launch [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
+          for(l of splitList) {
+            inlineCtr++;
+            embed.addField(`[${inlineCtr}]`, `${l}`, true);
+          }
+        }
+      }
 
       // If possible, creates the indev game list
       if(process.env.exp === "1") {
@@ -198,7 +259,7 @@ exports.run = {
 
       // If specified, creates the hidden and depricated command lists
       if(conditions[0] == 1) {
-        glist = "These games can only be played by certain people.\n";      
+        glist = "These games are only available to a small group of people.\n";      
         gctr = 0;
         client.games.forEach(g => {
           if(g.label.exclusive === 0 || g.label.deleted === 1) return;
@@ -207,7 +268,7 @@ exports.run = {
         });
         if(gctr != 0) embed.addField(`Exclusive Games ${ghost}`, `${glist}`, true);
 
-        glist = "These games have been deleted from the game library.\n";      
+        glist = "These games have been removed from the game library.\n";      
         gctr = 0;
         client.games.forEach(g => {
           if(g.label.deleted === 0) return;
@@ -227,13 +288,28 @@ exports.run = {
 
       var cmdlist = "";
       var cmdctr = 0;
+      var weight = [];
       // Creates the main command list
       client.commands.forEach(c => {
         if(c.help.hide === 1 || c.help.wip === 1 || c.help.dead === 1) return;   
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
+        weight.push(c.help.weight);
       });
-      if(cmdctr != 0) embed.addField(`Main Commands ${main}`, `${cmdlist}`, true);
+      if(cmdctr != 0) {
+        // Checks if a list split is needed
+        let splitList = split(cmdlist, weight);
+        if(!Array.isArray(splitList)) { // Short list, no splitting needed
+          embed.addField(`Main Commands ${main}`, `${splitList}`, true);
+        } else { // Splitting needed
+          let inlineCtr = 1;
+          embed.addField(`Main Commands [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
+          for(l of splitList) {
+            inlineCtr++;
+            embed.addField(`[${inlineCtr}]`, `${l}`, true);
+          }
+        }
+      }
 
       // If possible, creates the experimental command list
       if(process.env.exp === "1") {
@@ -282,6 +358,7 @@ exports.help = {
   "usage": `${process.env.prefix}help [command/game] [queries]`,
   "params": "[command/game] [queries]",
   "helpurl": "https://lx375.weebly.com/gyrocmd-help",
+  "weight": 3,
   "hide": 0,
   "wip": 0,
   "dead": 0,

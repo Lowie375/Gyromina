@@ -37,6 +37,7 @@ exports.help = {
   "description": "\'Proves\' that the input is true.",
   "usage": `${process.env.prefix}prove <statement>`,
   "params": "<statement>",
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

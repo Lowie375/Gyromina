@@ -15,6 +15,7 @@ exports.label = {
   "helpurl": "https://lx375.weebly.com/gyrogame-kingsmagic",
   "options": "[mode]",
   "optionsdesc": "\• [mode]: A mode preset (standard, hex, octal, dodeca, double, double-dodeca, quadruple, quadruple-dodeca)",
+  "weight": 1,
   "exclusive": 1,
   "indev": 1,
   "deleted": 0

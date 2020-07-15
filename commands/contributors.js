@@ -46,6 +46,7 @@ exports.help = {
   "aliases": ["credits", "developers", "devs", "contrib", "helpers", "team"],
   "description": "Lists all of Gyromina's contributors.",
   "usage": `${process.env.prefix}contributors`,
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

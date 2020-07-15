@@ -15,7 +15,7 @@ Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with 
 
 Latest stable build: v1.0.0
 
-Latest indev build: v1.1.0-alpha.1
+Latest indev build: v1.1.0-alpha.2
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 

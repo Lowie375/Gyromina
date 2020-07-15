@@ -158,6 +158,7 @@ exports.label = {
   "helpurl": "https://lx375.weebly.com/gyrogame-rng",
   "options": "[max/preset]",
   "optionsdesc": "[max/preset]: The maximum number the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
+  "weight": 1,
   "exclusive": 0,
   "indev": 0,
   "deleted": 0

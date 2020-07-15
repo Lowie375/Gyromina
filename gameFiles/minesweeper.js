@@ -636,7 +636,7 @@ exports.exe = {
 exports.label = {
   "name": "minesweeper",
   "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "mswp"],
-  "players": 1,
+  "players": [1],
   "description": "An old classic, now in bot form!",
   "helpurl": "https://lx375.weebly.com/gyrogame-minesweeper",
   "options": ["[preset]", "<mines> <length1> <length2>"],

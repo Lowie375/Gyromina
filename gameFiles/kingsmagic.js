@@ -10,7 +10,7 @@ exports.exe = {
 exports.label = {
   "name": "kingsmagic",
   "aliases": ["kings", "kings-magic"],
-  "players": 1,
+  "players": [1],
   "description": "An original card game. Try your luck, but don't hit the king!",
   "helpurl": "https://lx375.weebly.com/gyrogame-kingsmagic",
   "options": "[mode]",

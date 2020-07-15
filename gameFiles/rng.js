@@ -153,7 +153,7 @@ exports.exe = {
 exports.label = {
   "name": "rng",
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
-  "players": 1,
+  "players": [1],
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
   "helpurl": "https://lx375.weebly.com/gyrogame-rng",
   "options": "[max/preset]",

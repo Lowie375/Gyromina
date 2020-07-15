@@ -19,7 +19,7 @@ exports.run = {
 
     // Determines the main player(s)
     var player;
-    if (game.label.players === 1) {
+    if (game.label.players[0] === 1 && game.label.players.length === 1) {
       player = message.author.id;
     } else {
       player = [message.author.id];

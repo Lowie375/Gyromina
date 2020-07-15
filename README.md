@@ -15,6 +15,8 @@ Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with 
 
 Latest stable build: v1.0.0
 
+Latest indev build: v1.1.0-alpha.1
+
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
 ### External Links
@@ -94,7 +96,6 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 <!-- Links -->
 [commands]: https://lx375.weebly.com/gyro-commands
-[gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
 [info]: https://lx375.weebly.com/gyromina
 [invite]: https://discord.now.sh/490590334758420481?p537259072
 [log]: https://lx375.weebly.com/gyro-log
@@ -102,6 +103,10 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [djs-link]: https://discord.js.org
 [dependency-link]: https://david-dm.org/Lowie375/Gyromina
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
+
+<!-- Banners -->
+[gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
+[gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/717147986186207343/GPBPride.jpg
 
 <!-- Labels -->
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js

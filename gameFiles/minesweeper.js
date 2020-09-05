@@ -32,7 +32,7 @@ function boardCheck(x) {
     case "expert":
     case "x":
     case "i":
-      return [166, 30, 30];
+      return [255, 30, 30];
     case "master":
     case "ultimate":
     case "xm":
@@ -636,11 +636,12 @@ exports.exe = {
 exports.label = {
   "name": "minesweeper",
   "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "mswp"],
-  "players": 1,
+  "players": [1],
   "description": "An old classic, now in bot form!",
-  "helpurl": "https://lx375.weebly.com/gyrogame-minesweeper",
+  "helpurl": "https://l375.weebly.com/gyrogame-minesweeper",
   "options": ["[preset]", "<mines> <length1> <length2>"],
   "optionsdesc": ["<mines>/[preset]: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, master = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "<length1>: If no preset is specified, one dimension of the board (7-36)", "<length2>: If no preset is specified, the other dimension of the board (7-36)"],
+  "weight": 3,
   "exclusive": 0,
   "indev": 0,
   "deleted": 0

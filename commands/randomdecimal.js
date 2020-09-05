@@ -44,6 +44,7 @@ exports.help = {
   "description": "Generates a random decimal number between 0 and 1, to up to 16 decimal places.\nDefaults to 10 decimal places.",
   "usage": `${process.env.prefix}randomdecimal [places]`,
   "params": "[places]",
+  "weight": 2,
   "hide": 0,
   "wip": 0,
   "dead": 0,

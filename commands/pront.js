@@ -64,6 +64,7 @@ exports.help = {
   "description": "Prints emojis.",
   "usage": `${process.env.prefix}pront <emoji>`,
   "params": "<emoji>",
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

@@ -31,6 +31,7 @@ exports.help = {
   "aliases": ["delete", "delele"],
   "description": "\'Attempts\' to delete the trigger message.",
   "usage": `${process.env.prefix}delelte`,
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

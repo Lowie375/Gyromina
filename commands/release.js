@@ -204,6 +204,7 @@ exports.help = {
   "description": "Deploys a new version of Gyromina. (Owner only)",
   "usage": `${process.env.prefix}release <version> [queries]`,
   "params": "<version> [queries] (owner only)",
+  "weight": 1,
   "hide": 1,
   "wip": 0,
   "dead": 0,

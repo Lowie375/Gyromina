@@ -94,6 +94,7 @@ exports.help = {
   "aliases": ["up", "online", "readytime"],
   "description": 'Shows Gyromina\'s uptime.',
   "usage": `${process.env.prefix}uptime`,
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

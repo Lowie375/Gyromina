@@ -19,7 +19,7 @@ exports.run = {
 
     // Determines the main player(s)
     var player;
-    if (game.label.players === 1) {
+    if (game.label.players[0] === 1 && game.label.players.length === 1) {
       player = message.author.id;
     } else {
       player = [message.author.id];
@@ -50,7 +50,8 @@ exports.help = {
   "description": "Starts a game.",
   "usage": `${process.env.prefix}play <game> [options]`,
   "params": "<game> [options]",
-  "helpurl": "https://lx375.weebly.com/gyrocmd-play",
+  "helpurl": "https://l375.weebly.com/gyrocmd-play",
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

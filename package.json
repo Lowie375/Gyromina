@@ -1,8 +1,8 @@
 {
   "name": "gyromina",
-  "version": "1.0.0",
+  "version": "1.1.0-alpha.2",
   "description": "Gyromina, a multipurpose Discord bot",
-  "homepage": "https://lx375.weebly.com/gyromina",
+  "homepage": "https://l375.weebly.com/gyromina",
   "repository": {
     "type": "git",
     "url": "https://github.com/Lowie375/Gyromina"
@@ -24,7 +24,7 @@
   "author": "L375#6740",
   "authorID": "334335706740686849",
   "contributors": [
-    "Alten#4351",
+    "Laica#4351",
     "Homura#5331"
   ],
   "contributorIDs": [

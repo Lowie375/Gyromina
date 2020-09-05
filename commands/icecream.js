@@ -64,6 +64,7 @@ exports.help = {
   "aliases": ["gelato", "froyo", "ice-cream", "frozenyogurt", "shavedice"],
   "description": "Makes some lovely ice cream.",
   "usage": `${process.env.prefix}icecream`,
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

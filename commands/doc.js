@@ -43,6 +43,7 @@ exports.help = {
   "aliases": ["duck", "rubberduck", "rubberducky", "ducky"],
   "description": "Calls Gyromina's duck friend, Doc, for some support.",
   "usage": `${process.env.prefix}duck`,
+  "weight": 1,
   "hide": 0,
   "wip": 0,
   "dead": 0,

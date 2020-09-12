@@ -129,6 +129,10 @@ const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", 
   "m2", "grams", "g", "joules", "j", "watthours", "w•hr", "w·hr", "whr", "calories",
   "cal", "watts", "w", "newtons", "n", "gramsforce", "gramforce", "gramsofforce", "gramofforce", "gf"];
 
+// Prefix powers (doubling/tripling/etc)
+const metricDoubles = ["squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2", "m2"];
+const metricTriples = ["cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3"];
+
 // Splitter separators + extraneous cases
 const separators = /[_-]/;
 const ex = /^(cubic|square)/;
@@ -150,12 +154,13 @@ function expandUnit(u) {
   }
 }
 
-function powerCheck(type) {
-  switch(type) {
-    case "v": return 3;
-    case "a": return 2;
-    default: return 1;
-  }
+function powerCheck(root) {
+  if(metricTriples.includes(root))
+    return 3;
+  else if(metricDoubles.includes(root))
+    return 2;
+  else
+    return 1;
 }
 
 function metricCheck(x) {
@@ -438,45 +443,30 @@ exports.run = {
         // Temperature; performs a custom conversion
         let starter;
         switch(pos1) {
-          case 65: // C
-            starter = [cArgs[0], "C"]; break;
-          case 66: // F
-            starter = [cArgs[0], "F"]; break;
-          case 67: // K
-            starter = [KtoC(cArgs[0]), "C"]; break;
-          case 68: // R
-            starter = [RtoF(cArgs[0]), "F"]; break;
-          default: // err!
-            starter = ["NaN", "X"]; break;
+          case 65: starter = [cArgs[0], "C"]; break; // C 
+          case 66: starter = [cArgs[0], "F"]; break; // F
+          case 67: starter = [KtoC(cArgs[0]), "C"]; break; // K
+          case 68: starter = [RtoF(cArgs[0]), "F"]; break; // R
+          default: starter = ["NaN", "X"]; break; // err!
         }
         switch(starter[1]) {
           case "C": {
             switch(pos2) {
-              case 65: // -> C
-                output = starter[0]; break;
-              case 66: // -> F
-                output = CtoF(starter[0]); break;
-              case 67: // -> K
-                output = CtoK(starter[0]); break;
-              case 68: // -> R
-                output = FtoR(CtoF(starter[0])); break;
-              default: // -> err!
-                output = "NaN"; break;
+              case 65: output = starter[0]; break; // -> C
+              case 66: output = CtoF(starter[0]); break; // -> F
+              case 67: output = CtoK(starter[0]); break; // -> K
+              case 68: output = FtoR(CtoF(starter[0])); break; // -> R
+              default: output = "NaN"; break; // -> err!
             }
             break;
           }
           case "F": {
             switch(pos2) {
-              case 65: // -> C
-                output = FtoC(starter[0]); break;
-              case 66: // -> F
-                output = starter[0]; break;
-              case 67: // -> K
-                output = CtoK(FtoC(starter[0])); break;
-              case 68: // -> R
-                output = FtoR(starter[0]); break;
-              default: // -> err!
-                output = "NaN"; break;
+              case 65: output = FtoC(starter[0]); break; // -> C
+              case 66: output = starter[0]; break; // -> F
+              case 67: output = CtoK(FtoC(starter[0])); break; // -> K
+              case 68: output = FtoR(starter[0]); break; // -> R
+              default: output = "NaN"; break; // -> err!
             }
             break;
           }
@@ -488,9 +478,9 @@ exports.run = {
     }
     // Metric handling
     if (cArgs[5] != -1)
-      output = output * Math.pow(metrics[1][cArgs[5]], powerCheck(type1));
+      output = output * Math.pow(metrics[1][cArgs[5]], powerCheck(cArgs[2]));
     if (cArgs[4] != -1)
-      output = output / Math.pow(metrics[1][cArgs[4]], powerCheck(type2));
+      output = output / Math.pow(metrics[1][cArgs[4]], powerCheck(cArgs[1]));
     // Checks if the conversion was valid
     if (isNaN(output))
       return message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");

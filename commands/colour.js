@@ -107,8 +107,8 @@ exports.run = {
       .setTitle(head)
       .setDescription(strand.join("\n"));
     switch(hex) {
-      case "ffffff": embed.setColor(0xfefefe); // override because #ffffff is transparent
-      default: embed.setColor(parseInt(`0x${hex}`));
+      case "ffffff": embed.setColor(0xfefefe); break; // override because #ffffff is transparent
+      default: embed.setColor(parseInt(`0x${hex}`)); break;
     }
       
     // Sends the embed

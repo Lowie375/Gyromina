@@ -7,22 +7,38 @@ const hexX = /^(0x|#|\b)([a-f\d]{6})/i;
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 const cmykX = /^cmyk\((\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?\)/i;
 
-function extract (xc) {
-  let m;
-  if(hexX.exec(xc)) {
-    // xc -> hex code
-    return ["hex", 0, hexX.exec(xc)[2]];
-  } else if(rgbX.exec(xc)) {
+function extract(xc) {
+  let m = rgbX.exec(xc);
+  let n = cmykX.exec(xc);
+  let o = hexX.exec(xc);
+  if(m) {
     // xc -> RGB object
-    m = rgbX.exec(xc);
     return ["rgb", 1, {r: minMax(m[1], 0, 255), g: minMax(m[2], 0, 255), b: minMax(m[3], 0, 255)}];
-  } else if(cmykX.exec(xc)) {
+  } else if(n) {
     // xc -> CMKY object
-    m = cmykX.exec(xc);
-    return ["cmyk", 2, {c: minMax(m[1], 0, 100), m: minMax(m[2], 0, 100), y: minMax(m[3], 0, 100), k: minMax(m[4], 0, 100)}];
-  } else if(!isNaN(parseInt(xc, 10))) {
+    return ["cmyk", 2, {c: minMax(n[1], 0, 100), m: minMax(n[2], 0, 100), y: minMax(n[3], 0, 100), k: minMax(n[4], 0, 100)}];
+  } /*else if(!isNaN(parseInt(xc, 10))) {
     // xc -> int
     return ["int", 3, parseInt(xc, 10)];
+  } else if(hexX.exec(xc)) {
+    // xc -> hex code
+    return ["hex", 0, hexX.exec(xc)[2]];
+  } */
+  else if(!isNaN(parseInt(xc, 10)) || o) {
+  // xc -> int or hex, secondary check needed
+    if(o && (xc.startsWith("#") || xc.startsWith("0x") || /[a-f]+/i.exec(xc))) { // hex check
+      // xc -> hex code
+      return ["hex", 0, o[2]];
+    } else if(!isNaN(parseInt(xc, 10)) && /(\d+)/i.exec(xc)[1].length != 6) { // int check
+      // xc -> int
+      return ["int", 3, parseInt(xc, 10)];
+    } else { // ambiguous case
+      // xc -> int; default
+      return ["amb", 3, parseInt(xc, 10)];
+    }
+
+    /*return ["int", 3, parseInt(xc, 10)];
+    return ["hex", 0, hexX.exec(xc)[2]];*/
   } else {
     // xc -> null; unsupported format
     return [null, null];
@@ -32,7 +48,7 @@ function extract (xc) {
 exports.run = {
   execute(message, args, client) {
     if (args.length == 0)
-      return message.reply("I can't get colour data for a non-existent colour!")
+      return message.channel.send(`I can't get colour data for a non-existent colour, <@${message.author.id}>!`)
 
     // Decoding
     var [...code] = Clean(args);
@@ -70,7 +86,8 @@ exports.run = {
         int = hexToInt(hex);
         break;
       }
-      case "int": {
+      case "int":
+      case "amb": {
         int = col[2];
         hex = intToHex(int);
         rgb = hexToRgb(`#${hex}`);
@@ -78,7 +95,7 @@ exports.run = {
         break;
       }
       case null:
-        return message.reply("Invalid colour code. Please check your syntax and try again.");
+        return message.channel.send(`Invalid colour code, <@${message.author.id}>. Please check your syntax and try again.`);
     }
 
     // Encoding
@@ -92,7 +109,10 @@ exports.run = {
       .setColor(parseInt(`0x${hex}`));
 
     // Sends the embed
-    message.channel.send({embed: embed});
+    switch (col[0]) {
+      case "amb": message.channel.send(`Ambiguous input detected, <@${message.author.id}>, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, {embed: embed}); break;
+      default: message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed}); break;
+    }
   }
 }
 

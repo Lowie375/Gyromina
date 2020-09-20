@@ -338,11 +338,11 @@ exports.exe = {
 
     // Extraneous case I: missing custom field options
     if (!Array.isArray(setup) && options.length < 3)
-      return message.reply("I can't create a custom field without a valid mine count and 2 valid lengths! Please check your options and try again.");
+      return message.channel.send(`I can't create a custom field without a valid mine count and 2 valid lengths, <@${player}>! Please check your options and try again.`);
     else if (!Array.isArray(setup) && !isNaN(parseInt(options[0]) + parseInt(options[1]) + parseInt(options[2])))
       setup = [options[0], Math.min(Math.max(parseInt(options[1]), parseInt(options[2]), 7), 36), Math.max(7, Math.min(parseInt(options[1]), parseInt(options[2]), 36))];
     else if (!Array.isArray(setup))
-      return message.reply("I can't create a custom field with invalid options! Please check your options and try again.");
+      return message.channel.send(`I can't create a custom field with invalid options, <@${player}>! Please check your options and try again.`);
 
     // Fixes mine count
     if(setup[0] > (setup[1] - 1) * (setup[2] - 1)) {
@@ -617,11 +617,11 @@ exports.exe = {
                   return; // Handled elsewhere in a unique message
                 case "time": // Timeouts
                 case "idle":
-                  return message.reply("your \`minesweeper\` instance timed out due to inactivity. Please restart the game if you would like to play again.");
+                  return message.channel.send(`your \`minesweeper\` instance timed out due to inactivity, <@${player}>. Please restart the game if you would like to play again.`);
                 case "cancel": // Manually cancelled
-                  return message.reply("your \`minesweeper\` instance has been stopped. Please restart the game if you would like to play again.");
-                default: 
-                  return message.reply("your \`minesweeper\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.");
+                  return message.channel.send(`your \`minesweeper\` instance has been stopped, <@${player}>. Please restart the game if you would like to play again.`);
+                default: // Other (error!)
+                  return message.channel.send(`your \`minesweeper\` instance has encountered an unknown error and has been stopped, <@${player}>. Please restart the game if you would like to play again.`);
               }
             });
         });

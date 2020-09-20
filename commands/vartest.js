@@ -2,6 +2,9 @@
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
 
+// Test regex
+const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
+
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
@@ -12,6 +15,14 @@ exports.run = {
       console.log('A user attempted to run a test, but was unsuccessful!');
       return message.channel.send(`${nope} Insufficient permissions!`);
     }
+
+    message.channel.send(parseInt(0x707070));
+
+    let m = rgbX.exec("rgb(255, 255, 255)");
+    let n = rgbX.exec("yada blah blah");
+
+    if (m) console.log("m!");
+    if (n) console.log("n!");
 
     message.channel.send("The Test has been initiated. You may begin.")
       .then(tMsg => {

@@ -55,25 +55,25 @@ exports.run = {
     var number = 0;
 
     if (args.length == 0)
-      return message.reply('I can\'t generate a number between a non-existent range!')
+      return message.channel.send(`I can\'t generate a number in a non-existent range, <@${message.author.id}>!`)
 
     if (args.length >= 2) {
       if (!isNaN(args[0]) && !isNaN(args[1]))
         number = getRandomNumber(args[0], args[1]);
       else
-        return message.reply('I can\'t generate a random number between non-numerical values!');
+        return message.channel.send(`I can\'t generate a random number between non-numerical values, <@${message.author.id}>!`);
     } else if (args.length = 1) {
       if (!isNaN(args[0]))
         number = getRandomNumber(0, args[0]);
       else
-        return message.reply('I can\'t generate a random number between non-numerical values!');
+        return message.channel.send(`I can\'t generate a random number between non-numerical values, <@${message.author.id}>!`);
     }
 
     const embed = new Discord.MessageEmbed()
       .setTitle(`\`${number}\``)
       .setColor(0x7effaf);
 
-    message.reply("here you go!", {embed: embed});
+    message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   }
 };
 

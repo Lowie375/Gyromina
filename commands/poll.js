@@ -51,7 +51,7 @@ exports.run = {
   execute(message, args, client) {
     // Argument check
     if (args.length <= 1)
-      return message.reply("I can't make a poll if no type or prompt is specified!");
+      return message.channel.send(`I can't make a poll if no type or prompt is specified, <@${message.author.id}>!`);
 
     // Embed setup
     const embed = new Discord.MessageEmbed();
@@ -114,7 +114,7 @@ exports.run = {
       let options = [];
 
       if (pollRoot.length == 0)
-        return message.reply("I can't make a poll without any poll options!");
+        return message.channel.send(`I can't make a poll without any poll options, <@${message.author.id}>!`);
 
       for (const shell of pollRoot) {
         let x = shell.split(" ");
@@ -144,7 +144,7 @@ exports.run = {
       }
 
       if(fails.length != 0)
-        return message.reply(`some custom emojis (\#${fails.join(", \#")}) were invalid. Please check your emojis and try again.`);
+        return message.channel.send(`Some custom emojis (\#${fails.join(", \#")}) were invalid, <@${message.author.id}>. Please check your emojis and try again.`);
       
       // Merges content together
       for (let i = 0; i < rxns.length; i++) {

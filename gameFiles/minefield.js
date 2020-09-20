@@ -282,7 +282,7 @@ exports.exe = {
     
     // Checks if options are valid
     if (isNaN(bombs))
-      return message.reply("that's not a valid mine count/preset! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.");
+      return message.channel.send(`That's not a valid mine count/preset, <@${player}>! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.`);
 
     // Adjusts bomb count, if necessary
     if (bombs > 20) {

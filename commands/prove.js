@@ -21,7 +21,7 @@ const proof = ["because that's just how it is.",
 exports.run = {
   execute(message, args, client) {
     if (args.length == 0)
-      return message.reply("you didn't give me anything to prove!");
+      return message.channel.send(`You didn't give me anything to prove, <@${message.author.id}>!`);
     
     const [...statement] = Clean(args);
 

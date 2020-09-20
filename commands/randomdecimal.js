@@ -26,7 +26,7 @@ exports.run = {
     if (args.length == 0)
       number = getRandomDecimal(0, 1, 10);
     else if (args[0] < 0)
-      return message.reply("I can\'t generate a decimal number to a negative amount of decimal places!");
+      return message.channel.send(`I can\'t generate a decimal number to a negative amount of decimal places, <@${message.author.id}>!`);
     else if (args[0] >= 0)
       number = getRandomDecimal(0, 1, args[0]);
 
@@ -34,7 +34,7 @@ exports.run = {
       .setTitle(`\`${number}\``)
       .setColor(0x7effaf);
 
-    message.reply("here you go!", {embed: embed});
+    message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   }
 };
 

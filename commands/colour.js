@@ -26,7 +26,7 @@ function extract(xc) {
   } */
   else if(!isNaN(parseInt(xc, 10)) || o) {
   // xc -> int or hex, secondary check needed
-    if(o && (xc.startsWith("#") || xc.startsWith("0x") || /[a-f]+/i.exec(xc))) { // hex check
+    if(o && (xc.startsWith("#") || xc.startsWith("0x") || /[a-f]+/i.exec(xc) || /^0+/.exec(o))) { // hex check
       // xc -> hex code
       return ["hex", 0, o[2]];
     } else if(!isNaN(parseInt(xc, 10)) && /(\d+)/i.exec(xc)[1].length != 6) { // int check
@@ -88,7 +88,7 @@ exports.run = {
       }
       case "int":
       case "amb": {
-        int = col[2];
+        int = Math.max(0, Math.min(col[2], Math.pow(2, 24)-1));
         hex = intToHex(int);
         rgb = hexToRgb(`#${hex}`);
         cmyk = rgbToCmyk(rgb);
@@ -105,9 +105,12 @@ exports.run = {
     // Output setup
     const embed = new Discord.MessageEmbed()
       .setTitle(head)
-      .setDescription(strand.join("\n"))
-      .setColor(parseInt(`0x${hex}`));
-
+      .setDescription(strand.join("\n"));
+    switch(hex) {
+      case "ffffff": embed.setColor(0xfefefe); // override because #ffffff is transparent
+      default: embed.setColor(parseInt(`0x${hex}`));
+    }
+      
     // Sends the embed
     switch (col[0]) {
       case "amb": message.channel.send(`Ambiguous input detected, <@${message.author.id}>, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, {embed: embed}); break;

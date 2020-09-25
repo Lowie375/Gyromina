@@ -41,7 +41,7 @@ const names = [
    "ukpt", "ptuk", "ukfluidounces", "fluidouncesuk", "fluidounceuk", "ukfloz", "flozuk", "uktablespoons", "tablespoonsuk", "tablepsoonuk",
    "uktbsp", "tbspuk", "ukteaspoons", "teaspoonsuk", "teaspoonuk", "tspuk", "uktsp", "ukcups", "cupsuk", "cupuk",
    "ukc", "cuk", "quadrillionbritishthermalunits", "uktons", "tonsuk", "tonuk", "uktherm", "thermuk", "uktonsforce", "uktonforce",
-   "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk",
+   "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk", "l",
   ],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
@@ -80,7 +80,7 @@ const names = [
    "v029", "v029", "v028", "v028", "v028", "v028", "v028", "v030", "v030", "v030",
    "v030", "v030", "v031", "v031", "v031", "v031", "v031", "v034", "v034", "v034",
    "v034", "v034", "e061", "m050", "m050", "m050", "e060", "e060", "f078", "f078",
-   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078",
+   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078", "v016",
   ]
 ]; // d=distance // t=time // n=angle // v=vol // p=pressure // a=area // m=mass // e=energy // k=temperature // w=power // f=force/weight //
 const converter = [
@@ -127,7 +127,8 @@ const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", 
   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
   "pascals", "Pa", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2",
   "m2", "grams", "g", "joules", "j", "watthours", "w•hr", "w·hr", "whr", "calories",
-  "cal", "watts", "w", "newtons", "n", "gramsforce", "gramforce", "gramsofforce", "gramofforce", "gf"];
+  "cal", "watts", "w", "newtons", "n", "gramsforce", "gramforce", "gramsofforce", "gramofforce", "gf",
+  "l"];
 
 // Prefix powers (doubling/tripling/etc)
 const metricDoubles = ["squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2", "m2"];

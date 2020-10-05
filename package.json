@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Gyromina, a multipurpose Discord bot",
   "homepage": "https://l375.weebly.com/gyromina",
   "repository": {
@@ -25,15 +25,18 @@
   "authorID": "334335706740686849",
   "contributors": [
     "Laica#4351",
-    "Homura#5331"
+    "Homura#5331",
+    "alazymeme"
   ],
   "contributorIDs": [
     "395691107574611970",
-    "532819509359149056"
+    "532819509359149056",
+    "n/a"
   ],
   "contributorLinks": [
     "https://github.com/Altenhh",
-    "https://github.com/Homurasama"
+    "https://github.com/Homurasama",
+    "https://github.com/alazymeme"
   ],
   "testers": [],
   "testerIDs": [],

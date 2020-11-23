@@ -42,7 +42,7 @@
   "testerIDs": [],
   "license": "MIT",
   "dependencies": {
-    "bent": "^7.3.11",
+    "bent": "^7.3.12",
     "canvas": "^2.6.1",
     "colors": "^1.4.0",
     "discord.js": "^12.5.0",

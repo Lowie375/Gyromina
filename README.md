@@ -11,10 +11,9 @@
 
 ### "Fun + function, all in one."
 
-Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Laica**#4351 \([@Altenhh](https://www.github.com/Altenhh)\), **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\), and [@alazymeme](https://www.github.com/alazymeme)
+Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Laica** \([@Altenhh](https://www.github.com/Altenhh)\), **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\), and [@alazymeme](https://www.github.com/alazymeme)
 
 Latest stable build: v1.0.7  
-Latest indev build: v1.1.0-alpha.4
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 

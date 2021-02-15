@@ -583,10 +583,12 @@ exports.exe = {
                   break;
                 }
               }
-
+              // Resets the timer
+              finder.resetTimer({time: 120000, idle: 120000});
+              
               // Filter setup
               const attachFilter = (a) => a.name == flagID;
-              const msgFilter = (msgx) => msgx.author.id == client.user.id && msgx.attachments.some(attachFilter) && msgx.mentions.members.has(player) && !msgx.deleted;
+              const msgFilter = (msgx) => msgx.author.id == client.user.id && msgx.attachments.some(attachFilter) && msgx.mentions.users.has(player) && !msgx.deleted;
 
               // Board swap
               let boards = game.channel.messages.cache.filter(msgFilter);
@@ -605,9 +607,6 @@ exports.exe = {
                     console.error("E: mswp board could not be discarded", err)
                 });
               }
-
-              // Resets the timer
-              finder.resetTimer({time: 120000, idle: 120000});
             });
 
             finder.on('end', (c, reason) => {

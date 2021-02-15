@@ -9,7 +9,7 @@ exports.run = {
       .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
       .setColor(0x7effaf)
       .setTitle("Gy·ro·mi·na\n/jīräminə/")
-      .setDescription(`*noun:*\n[1] A multipurpose Discord bot created by <@${botinfo.authorID}> (${botinfo.author}), with contributions & support from <@${botinfo.contributorIDs[0]}> (${botinfo.contributors[0]}), <@${botinfo.contributorIDs[1]}> (${botinfo.contributors[1]}), and others, currently running v${botinfo.version} on ${client.guilds.cache.size} servers\n[2] \"${botinfo.tagline}\"`)
+      .setDescription(`*noun:*\n[1] A multipurpose Discord bot created by [${botinfo.author}](${botinfo.authorLink}), with contributions & support from [${botinfo.contributors[0]}](${botinfo.contributorLinks[0]}), [${botinfo.contributors[1]}](${botinfo.contributorLinks[1]}), and [${botinfo.contributors[2]}](${botinfo.contributorLinks[2]}), currently running v${botinfo.version} on ${client.guilds.cache.size} servers\n[2] \"${botinfo.tagline}\"`)
       .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())
       .setTimestamp()
       .addField("*Origin:*", "​***\`    L-V3R7     --->    Gyromina   \`***\n*\` Jul 07, 2018        Sep 15, 2018 \`\nMore information: [https://l375.weebly.com/gyromina](https://l375.weebly.com/gyromina)*")

@@ -85,6 +85,37 @@ exports.emojiCheck = function(e) {
   }
 };
 
+/**
+ * Constrains a number between a minimum and a maximum value
+ * @param {Number} n The number to constrain
+ * @param {Number} min The minimum
+ * @param {Number} max The maximum
+ * @return {Number}
+ */
+
+exports.minMax = function(n, min, max) {
+  return Math.max(min, Math.min(max, n));
+}
+
+/**
+ * Checks whether Gyromina has a certain permission in the channel a message was sent in
+ * @param message The message object
+ * @param perm An array containing the permissions to check for
+ * @return {Boolean}
+ */
+
+exports.p = function(message, perm = [""]) {
+  if (message.channel.type == "dm" || message.channel.type == "voice") {
+    return true;
+  } else {
+    let gPerm = message.channel.permissionsFor(message.guild.me);
+    if (gPerm.has(perm))
+      return true;
+    else
+      return false;
+  }
+}
+
 // COLOUR
 
 /**
@@ -193,17 +224,7 @@ exports.intToHex = function(int) {
   return res;
 }
 
-/**
- * Constrains a number between a minimum and a maximum value
- * @param {Number} x The number to constrain
- * @param {Number} min The minimum
- * @param {Number} max The maximum
- * @return {Number}
- */
-
-exports.minMax = function(n, min, max) {
-  return Math.max(min, Math.min(max, n));
-}
+// TEMPERATURE
 
 /**
  * Converts a temperature in degrees Fahrenheit to degrees Celcius

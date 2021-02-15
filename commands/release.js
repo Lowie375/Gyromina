@@ -1,5 +1,5 @@
-// Require the Write function, the Clean function, and colors
-const {Write, Clean} = require("../systemFiles/globalFunctions.js");
+// Require the permission checker, Write function, Clean function, and colors
+const {p, Write, Clean} = require("../systemFiles/globalFunctions.js");
 const colors = require('colors');
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
@@ -19,7 +19,7 @@ exports.run = {
     const softRelease = args.join(" ").toString().includes("-s");
 
     // Emoji setup
-    const nope = client.emojis.cache.get(e.nope);
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
 
     version = vers;
 

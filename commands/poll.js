@@ -1,7 +1,7 @@
-// Require discord.js
+// Require discord.js, the emoji file, the permission checker, and the emoji checker
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
-const {emojiCheck} = require('../systemFiles/globalFunctions.js');
+const {p, emojiCheck} = require('../systemFiles/globalFunctions.js');
 
 // Preset poll types - types[array#][obj#]
 const types = [
@@ -59,12 +59,11 @@ exports.run = {
       return message.channel.send(`I can't make a poll if no type or prompt is specified, <@${message.author.id}>!`);
 
     // Permission check: add reactions
-    if (!message.guild.me.permissions.has('ADD_REACTIONS'))
-      return message.channel.send(`I can't make a poll if I can't add any reactions, <@${message.author.id}>! Please ask an administrator to enable that permission and try again.`);
+    if (!p(message, ['ADD_REACTIONS']))
+      return message.channel.send(`I can't make a poll if I can't add any reactions, <@${message.author.id}>! Please ask an administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
 
     // Permission check: external emojis
-    var perms = true;
-    if (!message.guild.me.permissions.has('USE_EXTERNAL_EMOJIS')) perms = false;
+    var perms = p(message, ['USE_EXTERNAL_EMOJIS']);
 
     // Embed setup
     const embed = new Discord.MessageEmbed();

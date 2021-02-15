@@ -1,6 +1,6 @@
-// Require discord.js and the RNG
+// Require discord.js, the permission checker, the RNG, and the emoji file
 const Discord = require('discord.js');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 // Declares CBX characters for future use
@@ -50,7 +50,7 @@ function genCode() {
 // Reference code generator
 exports.genErrorMsg = function(message, client, error) {
   // Emoji setup
-  const warning = client.emojis.cache.get(e.warn);
+  const warning = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.warn) : e.alt.warn;
 
   // Generates a reference code
   const newRef = genCode();

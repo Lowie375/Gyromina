@@ -1,6 +1,7 @@
-// Require discord.js and the refcode generator
+// Require discord.js, the refcode generator, and the permission checker
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
+const {p} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
   var list = "\• " + process.env.prefix + "**" + c.help.name + "**"
@@ -97,10 +98,10 @@ function splitCore(splitList, count, weight, totWeight) {
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const ghost = client.emojis.cache.get(e.ghost);
-    const beta = client.emojis.cache.get(e.beta);
-    const main = client.emojis.cache.get(e.main);
-    const dead = client.emojis.cache.get(e.dead);
+    const ghost = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.ghost) : e.alt.ghost;
+    const beta = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.beta) : e.alt.beta;
+    const main = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.main) : e.alt.main;
+    const dead = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.dead) : e.alt.dead;
 
     // Checks for special arguments
     var conditions = [];

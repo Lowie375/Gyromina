@@ -1,11 +1,11 @@
-// Require the RNG and the emoji file
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+// Require the RNG, permission checker, and emoji file
+const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 exports.run = {
   execute(message, args, client) {
-    const yep = message.guild.me.permissions.has('USE_EXTERNAL_EMOJIS') ? client.emojis.cache.get(e.yep) : e.alt.yep;
-    const nope = message.guild.me.permissions.has('USE_EXTERNAL_EMOJIS') ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
 
     let max = getRandomInt(1, 3);
     var del = getRandomInt(0, max);

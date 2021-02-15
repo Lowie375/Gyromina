@@ -1,12 +1,13 @@
 // Require the package file
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
+const {p} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   async execute(message, args, client) {
     // Emoji setup
-    const nope = client.emojis.cache.get(e.nope);
-    const yep = client.emojis.cache.get(e.yep);
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
     
     // Checks to see if the bot owner (L375#6740) sent the message.
     if(message.author.id !== process.env.hostID) {

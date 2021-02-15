@@ -1,6 +1,7 @@
 // Require the package file and emoji file
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
+const {p} = require('../systemFiles/globalFunctions.js');
 
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
@@ -8,7 +9,7 @@ const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = client.emojis.cache.get(e.nope);
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
 
     // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== process.env.hostID && message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id) && !package.testerIDs.includes(message.author.id)) {
@@ -24,11 +25,20 @@ exports.run = {
     if (m) console.log("m!");
     if (n) console.log("n!");
 
+    console.log(message.channel);
+    console.log(message.channel.type)
     console.log(client.user);
-    console.log(message.guild.me);
-    let gyr = message.guild.me;
-    console.log(gyr.permissions);
-    console.log(gyr.permissions.has('ADMINISTRATOR'));
+    if(message.channel.type != "dm" && message.channel.type != "voice") {
+      console.log(message.guild.me);
+      let gyr = message.guild.me;
+      let gPerm = ['SEND_MESSAGES', 'ADD_REACTIONS'];
+      console.log(gyr.permissions);
+      console.log(gyr.permissions.has(['VIEW_CHANNEL']));
+      console.log(gyr.permissions.has('ADMINISTRATOR'));
+      console.log(gyr.permissions.has(gPerm));
+      console.log(gyr.permissionsIn(message.channel));
+      console.log(message.channel.permissionsFor(gyr));
+    }
 
     message.channel.send("The Test has been initiated. You may begin.")
       .then(tMsg => {

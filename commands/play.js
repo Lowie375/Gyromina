@@ -1,12 +1,13 @@
-// Require the package file
+// Require the package file, emoji file, and permission checker
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
+const {p} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = client.emojis.cache.get(e.nope);
-    const warning = client.emojis.cache.get(e.warn);
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const warning = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.warn) : e.alt.warn;
     
     // Finds the requested game file
     const gameName = args.shift();
@@ -16,6 +17,11 @@ exports.run = {
     // Checks if the game exists
     if (!game)
       return message.channel.send(`I couldn't load the game you were looking for, <@${message.author.id}>. Please check your spelling and try again.`);
+
+    /*
+    // Checks if Gyromina has permission to add reactions (if the game requires them)
+    // add code here
+    */
 
     // Determines the main player(s)
     var player;

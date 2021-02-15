@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 const Heroku = require('heroku-client');
 const e = require('../systemFiles/emojis.json');
+const {p} = require('../systemFiles/globalFunctions.js');
 
 // Extra setup
 const hData = new Heroku({token: process.env.herokuAuth});
@@ -37,14 +38,14 @@ function reDate(ms) {
     case 1: display += `${secs} second, `; break;
     default: display += `${secs} seconds, `; break;
   }
-  // Returns the cleanted output
+  // Returns the cleaned output
   return display.slice(0, -2);
 }
 
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const dyno = client.emojis.cache.get(e.dyno);
+    const dyno = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.dyno) : e.alt.dyno;
 
     // Gets the current time and the ready time
     var dUp = Date.parse(client.readyAt);

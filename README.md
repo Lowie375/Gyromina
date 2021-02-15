@@ -11,9 +11,9 @@
 
 ### "Fun + function, all in one."
 
-Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Laica** \([@Altenhh](https://www.github.com/Altenhh)\), **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\), and [@alazymeme](https://www.github.com/alazymeme)
+Created by **L375** \([@Lowie375](https://github.com/Lowie375)\), with contributions & support from **Laica** \([@Altenhh](https://github.com/Altenhh)\), **[@Ausakura](https://github.com/Ausakura)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.0.7  
+Latest stable build: v1.0.8
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
@@ -31,7 +31,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 ### General (for server owners/admins)
 
-* Follow this link: **[https://discord.now.sh/490590334758420481?p537259072][invite]**
+* Follow this link: **[https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot][invite]**
 * Choose a server to add Gyromina to
 * Make sure all requested permissions are enabled (critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**, **`Use External Emojis`**, and **`Manage Messages`**)
 * You're good to go! Have fun!
@@ -83,20 +83,20 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 ### Author
 
-* 💻 L375#6740 - [@Lowie375](https://www.github.com/Lowie375)
+* 💻 L375 - [@Lowie375](https://github.com/Lowie375)
 
 ### Repo Contributors
 
-* 💻 Laica#4351 - [@Altenhh](https://www.github.com/Altenhh)
-* 💻 Homura#5331 - [@Homurasama](https://www.github.com/Homurasama)
-* 💾 alazymeme - [@alazymeme](https://www.github.com/alazymeme)
+* 💻 Laica - [@Altenhh](https://github.com/Altenhh)
+* 💻 Ausakura - [@Ausakura](https://github.com/Homurasama)
+* 💾 alazymeme - [@alazymeme](https://github.com/alazymeme)
 
 <!-- ### Helpers -->
 
 <!-- Links -->
 [commands]: https://l375.weebly.com/gyro-commands
 [info]: https://l375.weebly.com/gyromina
-[invite]: https://discord.now.sh/490590334758420481?p537259072
+[invite]: https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot
 [log]: https://l375.weebly.com/gyro-log
 
 [djs-link]: https://discord.js.org

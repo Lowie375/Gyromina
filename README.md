@@ -11,9 +11,10 @@
 
 ### "Fun + function, all in one."
 
-Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Laica**#4351 \([@Altenhh](https://www.github.com/Altenhh)\), **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\), and others
+Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Laica**#4351 \([@Altenhh](https://www.github.com/Altenhh)\), **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\), and [@alazymeme](https://www.github.com/alazymeme)
 
-Latest stable build: v1.0.6
+Latest stable build: v1.0.7  
+Latest indev build: v1.1.0-alpha.4
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
@@ -33,7 +34,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 * Follow this link: **[https://discord.now.sh/490590334758420481?p537259072][invite]**
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled (critical: **`Use External Emojis`** and **`Manage Messages`**)
+* Make sure all requested permissions are enabled (critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**, **`Use External Emojis`**, and **`Manage Messages`**)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)

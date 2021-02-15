@@ -11,11 +11,9 @@
 
 ### "Fun + function, all in one."
 
-Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Alten**#4351 \([@Altenhh](https://www.github.com/Altenhh)\) and **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\)
+Created by **L375**#6740 \([@Lowie375](https://www.github.com/Lowie375)\), with contributions & support from **Laica**#4351 \([@Altenhh](https://www.github.com/Altenhh)\), **Homura**#5331 \([@Homurasama](https://www.github.com/Homurasama)\), and others
 
-Latest stable build: v1.0.0
-
-Latest indev build: v1.1.0-alpha.2
+Latest stable build: v1.0.6
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
@@ -35,7 +33,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 * Follow this link: **[https://discord.now.sh/490590334758420481?p537259072][invite]**
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled (critical: **`Use External Emojis`**, **`Manage Webhooks`**, and **`Manage Messages`**)
+* Make sure all requested permissions are enabled (critical: **`Use External Emojis`** and **`Manage Messages`**)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)
@@ -64,7 +62,7 @@ Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-r
 
 ## Changelog
 
-Gyromina's changelog can be found at **[https://lx375.weebly.com/gyro-log][log]**.
+Gyromina's changelog can be found at **[https://l375.weebly.com/gyro-log][log]**.
 
 ## Code of Conduct
 
@@ -89,16 +87,17 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 ### Repo Contributors
 
-* 💻 Alten#4351 - [@Altenhh](https://www.github.com/Altenhh)
+* 💻 Laica#4351 - [@Altenhh](https://www.github.com/Altenhh)
 * 💻 Homura#5331 - [@Homurasama](https://www.github.com/Homurasama)
+* 💾 alazymeme - [@alazymeme](https://www.github.com/alazymeme)
 
 <!-- ### Helpers -->
 
 <!-- Links -->
-[commands]: https://lx375.weebly.com/gyro-commands
-[info]: https://lx375.weebly.com/gyromina
+[commands]: https://l375.weebly.com/gyro-commands
+[info]: https://l375.weebly.com/gyromina
 [invite]: https://discord.now.sh/490590334758420481?p537259072
-[log]: https://lx375.weebly.com/gyro-log
+[log]: https://l375.weebly.com/gyro-log
 
 [djs-link]: https://discord.js.org
 [dependency-link]: https://david-dm.org/Lowie375/Gyromina

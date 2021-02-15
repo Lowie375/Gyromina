@@ -24,7 +24,7 @@ exports.run = {
       .setDescription(`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})\ncmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)\nint: ${int}`)
       .setColor(parseInt(`0x${hex}`));
 
-    message.reply("here you go!", {embed: embed});
+    message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
 
   },
 };

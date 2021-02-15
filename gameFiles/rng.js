@@ -58,7 +58,7 @@ exports.exe = {
 
     // Checks if options are valid
     if(isNaN(max))
-      return message.reply("that's not a valid maximum/preset! Please enter a valid positive integer less than 16777216 or a valid preset and try again.");
+      return message.channel.send(`that's not a valid maximum/preset, <@${player}>! Please enter a valid positive integer less than 16777216 or a valid preset and try again.`);
 
     // Adjusts max, if necessary
     if (max < 2)
@@ -136,15 +136,15 @@ exports.exe = {
       switch (reason) {
         case "time": // Timeouts
         case "idle":
-          message.reply("your \`rng\` instance timed out due to inactivity. Please restart the game if you would like to play again."); return;
+          message.channel.send(`your \`rng\` instance timed out due to inactivity, <@${player}>. Please restart the game if you would like to play again.`); return;
         case "cancel": // Manually cancelled
-          message.reply("your \`rng\` instance has been stopped. Please restart the game if you would like to play again."); return;
+          message.channel.send(`your \`rng\` instance has been stopped, <@${player}>. Please restart the game if you would like to play again.`); return;
         case "win": // Correct guess!
           message.channel.send(`${yep} You guessed the right number, <@${player}>!\n**YOU WIN**`); return;
         case "out": // Out of guesses
           message.channel.send(`${nope} You ran out of guesses, <@${player}>.\nThe number was ${num}.\n**YOU LOSE**`); return;
-        default: 
-          message.reply("your \`rng\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again."); return;
+        default: // Other (error!)
+          message.channel.send(`your \`rng\` instance has encountered an unknown error and has been stopped, <@${player}>. Please restart the game if you would like to play again.`); return;
       }
     });
   }
@@ -155,7 +155,7 @@ exports.label = {
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
   "players": [1],
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
-  "helpurl": "https://lx375.weebly.com/gyrogame-rng",
+  "helpurl": "https://l375.weebly.com/gyrogame-rng",
   "options": "[max/preset]",
   "optionsdesc": "[max/preset]: The maximum number the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
   "weight": 1,

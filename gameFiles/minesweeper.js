@@ -338,11 +338,11 @@ exports.exe = {
 
     // Extraneous case I: missing custom field options
     if (!Array.isArray(setup) && options.length < 3)
-      return message.reply("I can't create a custom field without a valid mine count and 2 valid lengths! Please check your options and try again.");
+      return message.channel.send(`I can't create a custom field without a valid mine count and 2 valid lengths, <@${player}>! Please check your options and try again.`);
     else if (!Array.isArray(setup) && !isNaN(parseInt(options[0]) + parseInt(options[1]) + parseInt(options[2])))
       setup = [options[0], Math.min(Math.max(parseInt(options[1]), parseInt(options[2]), 7), 36), Math.max(7, Math.min(parseInt(options[1]), parseInt(options[2]), 36))];
     else if (!Array.isArray(setup))
-      return message.reply("I can't create a custom field with invalid options! Please check your options and try again.");
+      return message.channel.send(`I can't create a custom field with invalid options, <@${player}>! Please check your options and try again.`);
 
     // Fixes mine count
     if(setup[0] > (setup[1] - 1) * (setup[2] - 1)) {
@@ -617,11 +617,11 @@ exports.exe = {
                   return; // Handled elsewhere in a unique message
                 case "time": // Timeouts
                 case "idle":
-                  return message.reply("your \`minesweeper\` instance timed out due to inactivity. Please restart the game if you would like to play again.");
+                  return message.channel.send(`your \`minesweeper\` instance timed out due to inactivity, <@${player}>. Please restart the game if you would like to play again.`);
                 case "cancel": // Manually cancelled
-                  return message.reply("your \`minesweeper\` instance has been stopped. Please restart the game if you would like to play again.");
-                default: 
-                  return message.reply("your \`minesweeper\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.");
+                  return message.channel.send(`your \`minesweeper\` instance has been stopped, <@${player}>. Please restart the game if you would like to play again.`);
+                default: // Other (error!)
+                  return message.channel.send(`your \`minesweeper\` instance has encountered an unknown error and has been stopped, <@${player}>. Please restart the game if you would like to play again.`);
               }
             });
         });
@@ -638,7 +638,7 @@ exports.label = {
   "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "mswp"],
   "players": [1],
   "description": "An old classic, now in bot form!",
-  "helpurl": "https://lx375.weebly.com/gyrogame-minesweeper",
+  "helpurl": "https://l375.weebly.com/gyrogame-minesweeper",
   "options": ["[preset]", "<mines> <length1> <length2>"],
   "optionsdesc": ["<mines>/[preset]: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, master = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "<length1>: If no preset is specified, one dimension of the board (7-36)", "<length2>: If no preset is specified, the other dimension of the board (7-36)"],
   "weight": 3,

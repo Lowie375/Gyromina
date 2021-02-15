@@ -41,7 +41,7 @@ const names = [
    "ukpt", "ptuk", "ukfluidounces", "fluidouncesuk", "fluidounceuk", "ukfloz", "flozuk", "uktablespoons", "tablespoonsuk", "tablepsoonuk",
    "uktbsp", "tbspuk", "ukteaspoons", "teaspoonsuk", "teaspoonuk", "tspuk", "uktsp", "ukcups", "cupsuk", "cupuk",
    "ukc", "cuk", "quadrillionbritishthermalunits", "uktons", "tonsuk", "tonuk", "uktherm", "thermuk", "uktonsforce", "uktonforce",
-   "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk",
+   "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk", "l",
   ],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
@@ -80,7 +80,7 @@ const names = [
    "v029", "v029", "v028", "v028", "v028", "v028", "v028", "v030", "v030", "v030",
    "v030", "v030", "v031", "v031", "v031", "v031", "v031", "v034", "v034", "v034",
    "v034", "v034", "e061", "m050", "m050", "m050", "e060", "e060", "f078", "f078",
-   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078",
+   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078", "v016",
   ]
 ]; // d=distance // t=time // n=angle // v=vol // p=pressure // a=area // m=mass // e=energy // k=temperature // w=power // f=force/weight //
 const converter = [
@@ -127,7 +127,12 @@ const registered = ["meters", "meters", "m", "seconds", "secs", "s", "radians", 
   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
   "pascals", "Pa", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2",
   "m2", "grams", "g", "joules", "j", "watthours", "w•hr", "w·hr", "whr", "calories",
-  "cal", "watts", "w", "newtons", "n", "gramsforce", "gramforce", "gramsofforce", "gramofforce", "gf"];
+  "cal", "watts", "w", "newtons", "n", "gramsforce", "gramforce", "gramsofforce", "gramofforce", "gf",
+  "l"];
+
+// Prefix powers (doubling/tripling/etc)
+const metricDoubles = ["squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2", "m2"];
+const metricTriples = ["cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3"];
 
 // Splitter separators + extraneous cases
 const separators = /[_-]/;
@@ -150,12 +155,13 @@ function expandUnit(u) {
   }
 }
 
-function powerCheck(type) {
-  switch(type) {
-    case "v": return 3;
-    case "a": return 2;
-    default: return 1;
-  }
+function powerCheck(root) {
+  if(metricTriples.includes(root))
+    return 3;
+  else if(metricDoubles.includes(root))
+    return 2;
+  else
+    return 1;
 }
 
 function metricCheck(x) {
@@ -372,8 +378,8 @@ function searchCheck(save, ctr) {
 
 function errorPull(x, message, arg) {
   switch (x) {
-    case "err": message.reply(`the unit you specified (${arg}) couldn\'t be found! Please check your spelling and try again.`); return 1;
-    case "null": message.reply(`the unit you specified (${arg}) wasn\'t specific enough! Please check your spelling and try again.`); return 1;
+    case "err": message.channel.send(`the unit you specified (${arg}) couldn\'t be found, <@${message.author.id}>! Please check your spelling and try again.`); return 1;
+    case "null": message.channel.send(`the unit you specified (${arg}) wasn\'t specific enough, <@${message.author.id}>! Please check your spelling and try again.`); return 1;
     default: return 0;
   }
 }
@@ -381,9 +387,9 @@ function errorPull(x, message, arg) {
 exports.run = {
   execute(message, args, client) {
     switch(args.length) {
-      case 0: return message.reply("I can\'t convert something if I don't have any values or units to convert between! Please add a value and try again.");
-      case 1: return message.reply("I can\'t convert something if you don't tell me its unit! Please add the appropriate unit and try again.");
-      case 2: return message.reply("I can\'t convert something if you don't tell me what unit to convert it to! Please add the desired unit and try again.");
+      case 0: return message.channel.send(`I can\'t convert something if I don't have any values or units to convert between, <@${message.author.id}>! Please add a value and try again.`);
+      case 1: return message.channel.send(`I can\'t convert something if you don't tell me its unit, <@${message.author.id}>! Please add the appropriate unit and try again.`);
+      case 2: return message.channel.send(`I can\'t convert something if you don't tell me what unit to convert it to, <@${message.author.id}>! Please add the desired unit and try again.`);
     }
     
     var cArgs = cleanArgs(args);
@@ -401,7 +407,7 @@ exports.run = {
 
     // Checks if the units can be converted between
     if (type1 != type2)
-      return message.reply(`I can\'t convert between 2 unlike units (${expandUnit(type1)} & ${expandUnit(type2)})! Please check your units and try again.`);
+      return message.channel.send(`I can\'t convert between 2 unlike units (${expandUnit(type1)} & ${expandUnit(type2)}), <@${message.author.id}>! Please check your units and try again.`);
     
     var name1 = nameCases(converter[0][pos1], cArgs, 4, 1);
     var name2 = nameCases(converter[0][pos2], cArgs, 5, 0);
@@ -438,45 +444,30 @@ exports.run = {
         // Temperature; performs a custom conversion
         let starter;
         switch(pos1) {
-          case 65: // C
-            starter = [cArgs[0], "C"]; break;
-          case 66: // F
-            starter = [cArgs[0], "F"]; break;
-          case 67: // K
-            starter = [KtoC(cArgs[0]), "C"]; break;
-          case 68: // R
-            starter = [RtoF(cArgs[0]), "F"]; break;
-          default: // err!
-            starter = ["NaN", "X"]; break;
+          case 65: starter = [cArgs[0], "C"]; break; // C 
+          case 66: starter = [cArgs[0], "F"]; break; // F
+          case 67: starter = [KtoC(cArgs[0]), "C"]; break; // K
+          case 68: starter = [RtoF(cArgs[0]), "F"]; break; // R
+          default: starter = ["NaN", "X"]; break; // err!
         }
         switch(starter[1]) {
           case "C": {
             switch(pos2) {
-              case 65: // -> C
-                output = starter[0]; break;
-              case 66: // -> F
-                output = CtoF(starter[0]); break;
-              case 67: // -> K
-                output = CtoK(starter[0]); break;
-              case 68: // -> R
-                output = FtoR(CtoF(starter[0])); break;
-              default: // -> err!
-                output = "NaN"; break;
+              case 65: output = starter[0]; break; // -> C
+              case 66: output = CtoF(starter[0]); break; // -> F
+              case 67: output = CtoK(starter[0]); break; // -> K
+              case 68: output = FtoR(CtoF(starter[0])); break; // -> R
+              default: output = "NaN"; break; // -> err!
             }
             break;
           }
           case "F": {
             switch(pos2) {
-              case 65: // -> C
-                output = FtoC(starter[0]); break;
-              case 66: // -> F
-                output = starter[0]; break;
-              case 67: // -> K
-                output = CtoK(FtoC(starter[0])); break;
-              case 68: // -> R
-                output = FtoR(starter[0]); break;
-              default: // -> err!
-                output = "NaN"; break;
+              case 65: output = FtoC(starter[0]); break; // -> C
+              case 66: output = starter[0]; break; // -> F
+              case 67: output = CtoK(FtoC(starter[0])); break; // -> K
+              case 68: output = FtoR(starter[0]); break; // -> R
+              default: output = "NaN"; break; // -> err!
             }
             break;
           }
@@ -488,12 +479,12 @@ exports.run = {
     }
     // Metric handling
     if (cArgs[5] != -1)
-      output = output * Math.pow(metrics[1][cArgs[5]], powerCheck(type1));
+      output = output * Math.pow(metrics[1][cArgs[5]], powerCheck(cArgs[2]));
     if (cArgs[4] != -1)
-      output = output / Math.pow(metrics[1][cArgs[4]], powerCheck(type2));
+      output = output / Math.pow(metrics[1][cArgs[4]], powerCheck(cArgs[1]));
     // Checks if the conversion was valid
     if (isNaN(output))
-      return message.reply("I can't convert non-numerical values! Please enter a valid number and try again.");
+      return message.channel.send(`I can't convert non-numerical values, <@${message.author.id}>! Please enter a valid number and try again.`);
 
     // Creates an approximation to go alongside the full conversion, if necessary
     if(!cArgs[3] || cArgs[3] < 0) {
@@ -530,7 +521,7 @@ exports.help = {
   "description": "Converts a value from one unit to another.",
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [places]`,
   "params": "<value> <unit> <newUnit> [places]",
-  "helpurl": "https://lx375.weebly.com/gyrocmd-convert",
+  "helpurl": "https://l375.weebly.com/gyrocmd-convert",
   "weight": 3,
   "hide": 0,
   "wip": 0,

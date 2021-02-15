@@ -15,7 +15,7 @@ exports.run = {
     
     // Checks if the game exists
     if (!game)
-      return message.reply("I couldn't load the game you were looking for. Please check your spelling and try again.");
+      return message.channel.send(`I couldn't load the game you were looking for, <@${message.author.id}>. Please check your spelling and try again.`);
 
     // Determines the main player(s)
     var player;
@@ -50,7 +50,7 @@ exports.help = {
   "description": "Starts a game.",
   "usage": `${process.env.prefix}play <game> [options]`,
   "params": "<game> [options]",
-  "helpurl": "https://lx375.weebly.com/gyrocmd-play",
+  "helpurl": "https://l375.weebly.com/gyrocmd-play",
   "weight": 1,
   "hide": 0,
   "wip": 0,

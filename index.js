@@ -55,7 +55,11 @@ client.on('message', message => {
   // Filters out messages that don't begin with Gyromina's prefix, as well as messages sent by bots.
   if (!message.content.startsWith(process.env.prefix) 
     || message.author.bot) return;
+
+  // Checks if Gyromina has message-sending and channel-viewing permissions. If not, returns.
+  if (!message.guild.me.permissions.has(['SEND_MESSAGES', 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'])) return;
   
+  // Initializes arguments
   var args;
 
   // Splits arguments: with spaces included if the command is "prove", normally otherwise

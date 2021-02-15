@@ -282,7 +282,7 @@ exports.exe = {
     
     // Checks if options are valid
     if (isNaN(bombs))
-      return message.reply("that's not a valid mine count/preset! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.");
+      return message.channel.send(`That's not a valid mine count/preset, <@${player}>! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.`);
 
     // Adjusts bomb count, if necessary
     if (bombs > 20) {
@@ -467,7 +467,7 @@ exports.label = {
   "aliases": ["field", "walkinaminefield", "walk-in-a-minefield", "walkin", "maze"],
   "players": [1],
   "description": "A variant of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from [r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/).",
-  "helpurl": "https://lx375.weebly.com/gyrogame-minefield",
+  "helpurl": "https://l375.weebly.com/gyrogame-minefield",
   "options": "[mines/preset]",
   "optionsdesc": "[mines/preset]: The number of mines on the field (4-20), or a preset difficulty (easy = 4, medium = 8, hard = 12, insane = 16, master = 20). Defaults to easy (4 mines)",
   "weight": 2,

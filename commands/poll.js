@@ -9,6 +9,11 @@ const types = [
   ["yxn", e.poll.yes, e.poll.nx, e.poll.no],
   ["scale", "0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
 ];
+// Alternate emojis (for if external emojis are disabled)
+const alt = [
+  ["yn", e.alt.poll.yes, e.alt.poll.no],
+  ["yxn", e.alt.poll.yes, e.alt.poll.nx, e.alt.poll.no],
+];
 
 function typeCheck(x) {
   for(let i = 0; i < types.length; i++) {
@@ -51,7 +56,15 @@ exports.run = {
   execute(message, args, client) {
     // Argument check
     if (args.length <= 1)
-      return message.reply("I can't make a poll if no type or prompt is specified!");
+      return message.channel.send(`I can't make a poll if no type or prompt is specified, <@${message.author.id}>!`);
+
+    // Permission check: add reactions
+    if (!message.guild.me.permissions.has('ADD_REACTIONS'))
+      return message.channel.send(`I can't make a poll if I can't add any reactions, <@${message.author.id}>! Please ask an administrator to enable that permission and try again.`);
+
+    // Permission check: external emojis
+    var perms = true;
+    if (!message.guild.me.permissions.has('USE_EXTERNAL_EMOJIS')) perms = false;
 
     // Embed setup
     const embed = new Discord.MessageEmbed();
@@ -71,8 +84,8 @@ exports.run = {
       let opVals = optionCheck(type, options);
       let content;
       switch (type) {
-        case 0: content = `Vote yes ${client.emojis.cache.get(e.poll.yes)} or no ${client.emojis.cache.get(e.poll.no)} using the emojis below.`; break;
-        case 1: content = `Vote yes ${client.emojis.cache.get(e.poll.yes)}, neutral ${client.emojis.cache.get(e.poll.nx)}, or no ${client.emojis.cache.get(e.poll.no)} using the emojis below.`; break;
+        case 0: content = `Vote yes ${perms ? client.emojis.cache.get(e.poll.yes) : e.alt.poll.yes} or no ${perms ? client.emojis.cache.get(e.poll.no) : e.alt.poll.no} using the emojis below.`; break;
+        case 1: content = `Vote yes ${perms ? client.emojis.cache.get(e.poll.yes) : e.alt.poll.yes}, neutral ${perms ? client.emojis.cache.get(e.poll.nx) : e.aly.poll.nx}, or no ${perms ? client.emojis.cache.get(e.poll.no) : e.alt.poll.no} using the emojis below.`; break;
         case 2: content = `Vote on a scale from ${opVals[0]-1} to ${opVals[1]-1} using the emojis below.`; break;
         default: content = ``; break;
       }
@@ -96,7 +109,10 @@ exports.run = {
             case 0:
             case 1:
               for (let i = 1; i < types[type].length; i++) {
-                await poll.react(types[type][i]);
+                if (perms)
+                  await poll.react(types[type][i]);
+                else
+                  await poll.react(alt[type][i]);
               }
               break;
             case 2:
@@ -114,7 +130,7 @@ exports.run = {
       let options = [];
 
       if (pollRoot.length == 0)
-        return message.reply("I can't make a poll without any poll options!");
+        return message.channel.send(`I can't make a poll without any poll options, <@${message.author.id}>!`);
 
       for (const shell of pollRoot) {
         let x = shell.split(" ");
@@ -144,7 +160,7 @@ exports.run = {
       }
 
       if(fails.length != 0)
-        return message.reply(`some custom emojis (\#${fails.join(", \#")}) were invalid. Please check your emojis and try again.`);
+        return message.channel.send(`Some custom emojis (\#${fails.join(", \#")}) were invalid, <@${message.author.id}>. Please check your emojis and try again.`);
       
       // Merges content together
       for (let i = 0; i < rxns.length; i++) {
@@ -178,7 +194,7 @@ exports.help = {
   "description": "Creates a poll in the current channel.",
   "usage": [`${process.env.prefix}poll <type> <prompt> -[options]`, `${process.env.prefix}poll <prompt> -<e1> [o1] -[e2] [o2] …`],
   "params": ["<type> <prompt> -[options]", "<prompt> -<e1> [o1] -[e2] [o2] …"],
-  "helpurl": "https://lx375.weebly.com/gyrocmd-poll",
+  "helpurl": "https://l375.weebly.com/gyrocmd-poll",
   "weight": 4,
   "hide": 0,
   "wip": 0,

@@ -7,7 +7,7 @@ const regex = emojiRegex();
 
 /**
  * Writes to the console with time when it was ran
- * @author Alten#4351 (Altenhh)
+ * @author Laica#4351 (Altenhh)
  * @param message
  * @param startTime
  * @param useLocale
@@ -29,7 +29,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
 
 /**
  * Clears out any @Everyone's.
- * @author Alten#4351 (Altenhh)
+ * @author Laica#4351 (Altenhh)
  * @return {string}
  */
 
@@ -114,8 +114,9 @@ exports.hexToRgb = function(hex) {
  * @return {String}
  */
 
-exports.rgbToHex = function(rgb) { 
-  return `${rgb.r.toString(16)}${rgb.g.toString(16)}${rgb.b.toString(16)}`;
+exports.rgbToHex = function(rgb) {
+  let hex = [rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)];
+  return `${hex[0].length > 1 ? hex[0] : `0${hex[0]}`}${hex[1].length > 1 ? hex[1] : `0${hex[1]}`}${hex[2].length > 1 ? hex[2] : `0${hex[2]}`}`;
 }
 
 /**
@@ -151,12 +152,21 @@ exports.rgbToCmyk = function(rgb) {
 
   let k = Math.min(c, m, y);
 
-  return {
-    c: Math.round((c - k) / (1 - k) * 100),
-    m: Math.round((m - k) / (1 - k) * 100),
-    y: Math.round((y - k) / (1 - k) * 100),
-    k: Math.round(k * 100)
-  };
+  switch((1-k)*100) {
+    case 0: {
+      return {
+        c: 0, m: 0, y: 0, k: 100
+      };
+    }
+    default: {
+      return {
+        c: Math.round((c - k) / (1 - k) * 100),
+        m: Math.round((m - k) / (1 - k) * 100),
+        y: Math.round((y - k) / (1 - k) * 100),
+        k: Math.round(k * 100)
+      };
+    }
+  }
 }
 
 /**

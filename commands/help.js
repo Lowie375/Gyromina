@@ -125,7 +125,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       if(cmdy.help.dead === 1)
         embed.setColor(0xff4d4d);
@@ -175,7 +175,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       if(gmz.label.deleted === 1)
         embed.setColor(0xff4d4d);
@@ -213,9 +213,9 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(0x7effaf);
-      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
-      embed.setAuthor("Game Library", client.user.avatarURL(), "https://lx375.weebly.com/gyromina/");
+      embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
       embed.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
 
       var glist = "";
@@ -281,9 +281,9 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(0x7effaf);
-      embed.setFooter(`Requested by ${message.author.tag} / <> is required, [] is optional`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
-      embed.setAuthor("Master Command List", client.user.avatarURL(), "https://lx375.weebly.com/gyromina/commands");
+      embed.setAuthor("Master Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
       embed.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
       var cmdlist = "";
@@ -357,7 +357,7 @@ exports.help = {
   "description": "Provides command and game help.",
   "usage": `${process.env.prefix}help [command/game] [queries]`,
   "params": "[command/game] [queries]",
-  "helpurl": "https://lx375.weebly.com/gyrocmd-help",
+  "helpurl": "https://l375.weebly.com/gyrocmd-help",
   "weight": 3,
   "hide": 0,
   "wip": 0,

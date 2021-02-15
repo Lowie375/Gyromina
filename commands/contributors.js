@@ -10,7 +10,7 @@ exports.run = {
       .setAuthor("Gyromina Contributors", client.user.avatarURL())
       .setColor(0x7effaf)
       .setTitle("A huge thanks to everyone who has contributed to Gyromina!")
-      .setFooter(`Requested by ${message.author.tag} / Source: package.json`, message.author.avatarURL())
+      .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())
       .setTimestamp();
 
     // Creates the author field
@@ -21,7 +21,10 @@ exports.run = {
       let c = `<@${package.contributorIDs[0]}> - [${package.contributors[0]}](${package.contributorLinks[0]})`;
       // Maps the remaining contributors
       for (let i = 1; i < package.contributors.length; i++) {
-        c += `\n<@${package.contributorIDs[i]}> - [${package.contributors[i]}](${package.contributorLinks[i]})`;
+        if (package.contributorIDs[i] != "n/a") 
+          c += `\n<@${package.contributorIDs[i]}> - [${package.contributors[i]}](${package.contributorLinks[i]})`;
+        else
+          c += `\n[${package.contributors[i]}](${package.contributorLinks[i]})`;
       }
       embed.addField("Repo Contributors - 💻 💾", c);
     }
@@ -33,7 +36,7 @@ exports.run = {
       for (let i = 1; i < package.contributors.length; i++) {
         c += `, <@${package.testerIDs[i]}>`;
       }
-      embed.addField("Helpers  - 🦟 ⌚", t);
+      embed.addField("Helpers - 🦟 ⌚", t);
     }
 
     // Sends the embed

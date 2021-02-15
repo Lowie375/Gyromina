@@ -364,11 +364,13 @@ exports.exe = {
             default:
               break;
           }
-          // Removes the corresponding reaction
-          const userReaction = board.reactions.cache.filter(reaction => reaction.users.cache.has(player) && reaction.emoji.name == r.emoji.name);
-          for (const urxn of userReaction.values()) {
-            removeRxnLoop(urxn, player);
-            // Should only iterate once. This is the only way I could get it to work, unfortunately
+          // Removes the corresponding reaction (if not in a DM channel)
+          if(board.channel.type != "dm") {
+            const userReaction = board.reactions.cache.filter(reaction => reaction.users.cache.has(player) && reaction.emoji.name == r.emoji.name);
+            for (const urxn of userReaction.values()) {
+              removeRxnLoop(urxn, player);
+              // Should only iterate once. This is the only way I could get it to work, unfortunately
+            }
           }
 
           // Empties and resets the reaction collector

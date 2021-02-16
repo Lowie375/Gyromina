@@ -3,8 +3,8 @@
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]](package.json)
 [![Dependency Status][dependency-img]][dependency-link]
-[![Last Commit (master)][master-commit-img]][master-commit-img]
-[![Last Commit (indev-branch)][indev-commit-img]][indev-commit-img]
+[![Last Commit (master)][master-commit-img]][master-tree-link]
+[![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
 [![License][license-img]](LICENSE)
 
 ## About
@@ -102,6 +102,8 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [djs-link]: https://discord.js.org
 [dependency-link]: https://david-dm.org/Lowie375/Gyromina
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
+[master-tree-link]: https://github.com/Lowie375/Gyromina/tree/master
+[indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
 
 <!-- Banners -->
 [gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png

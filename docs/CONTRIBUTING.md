@@ -39,9 +39,9 @@ These are some of the major conventions I've tried to follow within Gyromina's c
 If you have contributed or tested code:
 
 * Feel free to add yourself to the list of contributors or testers in the **[package](/package.json)** file, if you'd like to
-  * **Contributors**: Add your name or Discord tag to `contributors[]`, your Discord **ID** (not tag) to `contributorIDs[]`, and a link of your choice to `contributorLinks[]`, all at the same array index
-  * **Testers**: Add your name or Discord tag to `testers[]` and your Discord user ID to `testerIDs[]`, both at the same array index
+  * **Contributors**: Add your name or a nickname to `contributors[]`, your Discord **ID** (not tag) to `contributorIDs[]`, and a link of your choice to `contributorLinks[]`, all at the same array index
+  * **Testers**: Add your name or a nickname to `testers[]` and your Discord **ID** (not tag) to `testerIDs[]`, both at the same array index
 * Feel free to add your name to the list of contributors in the **[README](/README)** file as well
-  * **Contributors**: Add your Discord tag, name, and/or GitHub username under the **Repo Contributors** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate contributor marker once your contribution is pushed.
-  * **Testers**: Add your Discord tag, name, and/or GitHub username under the **Helpers** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate tester marker with the next repo push.
+  * **Contributors**: Add your name, nickname, and/or GitHub username under the **Repo Contributors** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate contributor marker once your contribution is pushed.
+  * **Testers**: Add your name, nickname, and/or GitHub username under the **Helpers** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate tester marker with the next repo push.
 * If you do not add yourself to the package or README files, I will do that before your contributions are pushed, unless you specify otherwise.

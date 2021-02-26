@@ -1,8 +1,8 @@
-// Require discord.js, bent, canvas, the RNG, the refcode generator, the emoji file, and the cdn file
+// Require discord.js, bent, canvas, the RNG, the permission checker, the refcode generator, the emoji file, and the cdn file
 const Discord = require('discord.js');
 const bent = require('bent');
 const {createCanvas, loadImage} = require('canvas');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
 const {genErrorMsg, codeRNG} = require('../systemFiles/refcodes.js');
 const e = require('../systemFiles/emojis.json');
 const cdn = require('../systemFiles/cdn.json');
@@ -439,15 +439,21 @@ exports.exe = {
             // Sets up a message collector
             var moves = 0;
             const filter = (msg) => msg.author.id == player && ((cancelRegex.exec(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
-            const finder = game.channel.createMessageCollector(filter, {time: 210000, idle: 210000});
-
-            //mswpCore();
+            const finder = game.channel.createMessageCollector(filter, {time: 210000, idle: 210000});  // First timer is longer to allow for rule reading
     
             finder.on('collect', async msg => {
-              // Checks if the collected message was a cancellation message
+              // Checks if the collected message was a time or cancellation message
               if (msg.content.includes("time")) {
-                msg.react(e.yep);
-                finder.resetTimer({time: 300000, idle: 300000}); // First timer is longer to allow for rule reading
+                finder.resetTimer({time: 300000, idle: 300000}); // Resets the timer
+                // Sends a confirmation reaction/message
+                if (p(msg, ['ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS']))
+                  msg.react(e.yep);
+                else if (p(msg, ['ADD_REACTIONS']))
+                  msg.react(e.alt.yep);
+                else if (p(msg, ['USE_EXTERNAL_EMOJIS']))
+                  msg.channel.send(`${e.yep} Timer reset, <@${player}>!`);
+                else
+                  msg.channel.send(`${e.alt.yep} Timer reset, <@${player}>!`);
                 return;
               } else if (cancelRegex.exec(msg.content)) {
                 finder.stop("cancel");
@@ -636,6 +642,7 @@ exports.label = {
   "name": "minesweeper",
   "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "mswp"],
   "players": [1],
+  "reactions": 0,
   "description": "An old classic, now in bot form!",
   "helpurl": "https://l375.weebly.com/gyrogame-minesweeper",
   "options": ["[preset]", "<mines> <length1> <length2>"],

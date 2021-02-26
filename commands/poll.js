@@ -60,7 +60,7 @@ exports.run = {
 
     // Permission check: add reactions
     if (!p(message, ['ADD_REACTIONS']))
-      return message.channel.send(`I can't make a poll if I can't add any reactions, <@${message.author.id}>! Please ask an administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
+      return message.channel.send(`I can't make a poll if I can't add any reactions, <@${message.author.id}>! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
 
     // Permission check: external emojis
     var perms = p(message, ['USE_EXTERNAL_EMOJIS']);
@@ -130,6 +130,15 @@ exports.run = {
 
       if (pollRoot.length == 0)
         return message.channel.send(`I can't make a poll without any poll options, <@${message.author.id}>!`);
+      
+      // Escaped dash handler
+      for (let i = 0; i < pollRoot.length; i++) {
+        if(pollRoot[i].slice(-1) == "\\") {
+          pollRoot[i] += `-${pollRoot[i+1]}`;
+          pollRoot.splice(i+1, 1);
+          i--;
+        }
+      }
 
       for (const shell of pollRoot) {
         let x = shell.split(" ");

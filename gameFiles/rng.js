@@ -154,6 +154,7 @@ exports.label = {
   "name": "rng",
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
   "players": [1],
+  "reactions": 0,
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
   "helpurl": "https://l375.weebly.com/gyrogame-rng",
   "options": "[max/preset]",

@@ -468,6 +468,7 @@ exports.label = {
   "name": "minefield",
   "aliases": ["field", "walkinaminefield", "walk-in-a-minefield", "walkin", "maze"],
   "players": [1],
+  "reactions": 1,
   "description": "A variant of Walk in a Minefield, as seen in [Challenge #340 \[Intermediate\]](https://www.reddit.com/r/dailyprogrammer/comments/7d4yoe/20171114_challenge_340_intermediate_walk_in_a/) from [r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/).",
   "helpurl": "https://l375.weebly.com/gyrogame-minefield",
   "options": "[mines/preset]",

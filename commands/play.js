@@ -18,10 +18,9 @@ exports.run = {
     if (!game)
       return message.channel.send(`I couldn't load the game you were looking for, <@${message.author.id}>. Please check your spelling and try again.`);
 
-    /*
     // Checks if Gyromina has permission to add reactions (if the game requires them)
-    // add code here
-    */
+    if(game.label.reactions == 1 && !p(message, ['ADD_REACTIONS']))
+      return message.channel.send(`I can't run this game if I can't add any reactions, <@${message.author.id}>! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
 
     // Determines the main player(s)
     var player;

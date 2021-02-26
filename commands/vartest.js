@@ -22,6 +22,8 @@ exports.run = {
     let m = rgbX.exec("rgb(255, 255, 255)");
     let n = rgbX.exec("yada blah blah");
 
+    console.log(args);
+
     if (m) console.log("m!");
     if (n) console.log("n!");
 

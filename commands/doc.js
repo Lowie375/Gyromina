@@ -31,7 +31,7 @@ exports.run = {
       .setColor(0xffef80)
       .setTitle(`${q[gen[0]]} ${r[gen[1]]}`)
       .setDescription("Doc, my duck friend, will be here as long as you need.")
-      .setImage(`${cdn.smallDoc}`);
+      .setImage(`${cdn.doc}`);
     
     // Sends the embed
     message.channel.send({embed: embed});

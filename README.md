@@ -14,7 +14,7 @@
 Created by **L375 \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@Ausakura](https://github.com/Ausakura)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-alpha.5
+Latest indev build: v1.1.0-alpha.6
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
@@ -107,7 +107,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
 
 <!-- Banners -->
-[gyro-banner]: https://cdn.discordapp.com/attachments/429364141355171840/703428268501762119/GyrominaPlasmaBanner.png
+[gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png
 [gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/717147986186207343/GPBPride.jpg
 
 <!-- Labels -->

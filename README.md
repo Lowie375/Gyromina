@@ -116,14 +116,14 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/717147986186207343/GPBPride.jpg
 
 <!-- Labels -->
-[djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js?color=%23009663
-[version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina?color=%23009663
-[indev-version-img]: https://img.shields.io/github/package-json/version/Lowie375/Gyromina/indev-branch?color=%23009663&label=indev%20version
+[djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
+[version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
+[indev-version-img]: https://img.shields.io/github/package-json/version/Lowie375/Gyromina/indev-branch?label=indev%20version
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
 [master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
-[lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina?color=%23009663
+[lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf
 [min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-7effaf

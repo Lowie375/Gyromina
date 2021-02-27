@@ -2,10 +2,12 @@
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]](package.json)
+[![Indev Version][indev-version-img]][indev-pkg]
 [![Dependency Status][dependency-img]][dependency-link]
+[![Top Language][lang-img]][lang-link]
+[![License][license-img]](LICENSE)  
 [![Last Commit (master)][master-commit-img]][master-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
-[![License][license-img]](LICENSE)
 
 ## About
 
@@ -100,23 +102,28 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [invite]: https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot
 [log]: https://l375.weebly.com/gyro-log
 
+[indev-pkg]: https://github.com/Lowie375/Gyromina/blob/indev-branch/package.json
+
 [djs-link]: https://discord.js.org
 [dependency-link]: https://david-dm.org/Lowie375/Gyromina
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
 [master-tree-link]: https://github.com/Lowie375/Gyromina/tree/master
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
+[lang-link]: https://github.com/Lowie375/Gyromina/search?l=javascript
 
 <!-- Banners -->
 [gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png
 [gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/717147986186207343/GPBPride.jpg
 
 <!-- Labels -->
-[djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
-[version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
+[djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js?color=%23009663
+[version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina?color=%23009663
+[indev-version-img]: https://img.shields.io/github/package-json/version/Lowie375/Gyromina/indev-branch?color=%23009663&label=indev%20version
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
 [master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
+[lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina?color=%23009663
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf
 [min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-7effaf

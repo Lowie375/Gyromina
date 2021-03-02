@@ -94,7 +94,7 @@ exports.run = {
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
-      embed.setColor(0x7effaf);
+      embed.setColor(0x00b275);
       embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
       embed.setTimestamp();
       if (content != "")
@@ -180,7 +180,7 @@ exports.run = {
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
-      embed.setColor(0x7effaf);
+      embed.setColor(0x00b275);
       embed.setDescription(`${content}`);
       embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
       embed.setTimestamp();

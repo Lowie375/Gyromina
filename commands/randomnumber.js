@@ -71,7 +71,7 @@ exports.run = {
 
     const embed = new Discord.MessageEmbed()
       .setTitle(`\`${number}\``)
-      .setColor(0x7effaf);
+      .setColor(0x00b275);
 
     message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   }

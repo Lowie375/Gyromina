@@ -1,7 +1,7 @@
 # ​ [![Gyromina, a multipurpose Discord bot][gyro-banner]][info]
 
 [![Discord.js Version][djs-img]][djs-link]
-[![Bot Version][version-img]](package.json)
+[![Bot Version][version-img]][master-pkg]
 [![Indev Version][indev-version-img]][indev-pkg]
 [![Dependency Status][dependency-img]][dependency-link]
 [![Top Language][lang-img]][lang-link]
@@ -13,10 +13,10 @@
 
 ### "Fun + function, all in one."
 
-Created by **L375 \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@Ausakura](https://github.com/Ausakura)**, and **[@alazymeme](https://github.com/alazymeme)**
+Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@Ausakura](https://github.com/Ausakura)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-alpha.6
+Latest indev build: v1.1.0-alpha.7
 
 Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
 
@@ -86,7 +86,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 ### Author
 
-* 💻 L375 - [@Lowie375](https://github.com/Lowie375)
+* 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
 
 ### Repo Contributors
 
@@ -102,6 +102,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [invite]: https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot
 [log]: https://l375.weebly.com/gyro-log
 
+[master-pkg]: https://github.com/Lowie375/Gyromina/blob/master/package.json
 [indev-pkg]: https://github.com/Lowie375/Gyromina/blob/indev-branch/package.json
 
 [djs-link]: https://discord.js.org

@@ -507,7 +507,7 @@ exports.run = {
     // Creates and sends the embed
     const embed = new Discord.MessageEmbed()
       .setTitle(`${cArgs[0]}${name1} equals…\n\`${output}${name2}\``)
-      .setColor(0x7effaf);
+      .setColor(0x00b275);
 
     if(round != "null") embed.setDescription(`…or about ${round}${name2}`);
     message.channel.send(embed);

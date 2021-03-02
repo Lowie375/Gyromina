@@ -135,7 +135,7 @@ exports.run = {
       else if(cmdy.help.hide === 1)
         embed.setColor(0xfefefe);
       else
-        embed.setColor(0x7effaf);
+        embed.setColor(0x00b275);
 
       if(cmdy.help.name === commandName)
         embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}`);
@@ -185,7 +185,7 @@ exports.run = {
       else if(gmz.label.exclusive === 1)
         embed.setColor(0xfefefe);
       else
-        embed.setColor(0x7effaf);
+        embed.setColor(0x00b275);
       
       if(gmz.label.name === gameName)
         embed.setTitle(`${ext}${gmz.label.name}`);
@@ -213,7 +213,7 @@ exports.run = {
     } else if (conditions[1] == 1) { // General game help
 
       // Sets up the embed
-      embed.setColor(0x7effaf);
+      embed.setColor(0x00b275);
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
@@ -281,7 +281,7 @@ exports.run = {
     } else { // General command help
 
       // Sets up the embed
-      embed.setColor(0x7effaf);
+      embed.setColor(0x00b275);
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Master Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");

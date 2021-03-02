@@ -58,7 +58,7 @@ exports.run = {
     // Sets up the embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Uptime", client.user.avatarURL())
-      .setColor(0x7effaf)
+      .setColor(0x00b275)
       .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
       .setTimestamp();
 

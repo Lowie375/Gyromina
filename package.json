@@ -47,7 +47,7 @@
     "canvas": "^2.7.0",
     "colors": "^1.4.0",
     "discord.js": "^12.5.1",
-    "emoji-regex": "^9.2.1",
+    "emoji-regex": "^9.2.2",
     "heroku-client": "^3.1.0",
     "request": "^2.88.0",
     "ws": "^7.4.3"

@@ -60,9 +60,6 @@ exports.run = {
     var cmyk;
     var int;
 
-    // Test snippet
-    //message.channel.send(`Caught ${col[0]}`);
-
     // Colour conversions
     switch(col[0]) {
       case "hex": {

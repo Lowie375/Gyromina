@@ -16,7 +16,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@Ausakura](https://github.com/Ausakura)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-alpha.9
+Latest indev build: v1.1.0-alpha.10
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -41,7 +41,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
   * **Highly recommended**: **`Use External Emojis`**, **`Manage Messages`**)
 * You're good to go! Have fun!
 
-### Test Bots (for contributors/debuggers)
+### Test or Local Bots (for contributors/debuggers)
 
 #### Requirements
 
@@ -52,14 +52,14 @@ Gyromina contains an assortment of features, including a random colour and numbe
 * Fork/download source code + `npm install` in terminal
 * Configure environment variables
   * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
-  * `exp`: `"1"` to enable experimental commands, `"0"` to disable
+  * `exp`: `"1"` to enable experimental commands, `"0"` to disable (**warning**: these commands may break!)
   * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
 * Optional environment variable config
   * `progressLog`: Discord channel ID (used with `release`)
   * `gitToken`/`gitUsername`/`gitRepoName`: GitHub auth token/username/repo name (token scope = `repo`; used with `release`)
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
-* Run using your native runtime/debugger and you're good to go!
+* Run using your native runtime/debugger/host and you're good to go!
 
 ## Bug Reports
 

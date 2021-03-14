@@ -33,7 +33,7 @@ function runner(num, runoff) {
 
 }
 
-function dedecimizer(num) {
+function dec(num) {
   // Puts decimal portion over a power of 10 + makes note of how many times the number can be divided
   var nFrac = num[1];
   var div = nFrac.length;
@@ -48,6 +48,7 @@ function dedecimizer(num) {
       j++;
     }
   }
+  return [nFrac, dFrac];
 }
 
 exports.run = {
@@ -57,7 +58,7 @@ exports.run = {
 
     var type = typeComb(args);
 
-    var num = args[0].split(".");
+    var num = args[0].split(".").slice(1);
   }
 };
 

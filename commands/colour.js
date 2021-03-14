@@ -17,15 +17,8 @@ function extract(xc) {
   } else if(n) {
     // xc -> CMKY object
     return ["cmyk", 2, {c: minMax(n[1], 0, 100), m: minMax(n[2], 0, 100), y: minMax(n[3], 0, 100), k: minMax(n[4], 0, 100)}];
-  } /*else if(!isNaN(parseInt(xc, 10))) {
-    // xc -> int
-    return ["int", 3, parseInt(xc, 10)];
-  } else if(hexX.exec(xc)) {
-    // xc -> hex code
-    return ["hex", 0, hexX.exec(xc)[2]];
-  } */
-  else if(!isNaN(parseInt(xc, 10)) || o) {
-  // xc -> int or hex, secondary check needed
+  } else if(!isNaN(parseInt(xc, 10)) || o) {
+    // xc -> int or hex, secondary check needed
     if(o && (xc.startsWith("#") || xc.startsWith("0x") || /[a-f]+/i.exec(xc) || /^0+/.exec(o))) { // hex check
       // xc -> hex code
       return ["hex", 0, o[2]];

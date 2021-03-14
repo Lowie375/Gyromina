@@ -7,7 +7,7 @@ const regex = emojiRegex();
 
 /**
  * Writes to the console with time when it was ran
- * @author Laica#4351 (Altenhh)
+ * @author Laica (Altenhh)
  * @param message
  * @param startTime
  * @param useLocale
@@ -29,7 +29,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
 
 /**
  * Clears out any @Everyone's.
- * @author Laica#4351 (Altenhh)
+ * @author Laica (Altenhh)
  * @return {string}
  */
 
@@ -120,7 +120,7 @@ exports.p = function(message, perm = [""]) {
 
 /**
  * Converts a hexadecimal colour code to RGB format
- * @author Homura#5331 (Homurasama)
+ * @author Jeanne D'Arc (Ausakura)
  * @param {string} hex The hexadecimal colour code (preceded by a #)
  * @return {JSON<number>}
  */

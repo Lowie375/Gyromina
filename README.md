@@ -16,9 +16,9 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@Ausakura](https://github.com/Ausakura)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-alpha.8
+Latest indev build: v1.1.0-alpha.9
 
-Gyromina is entirely open source and is licensed under the terms of the [MIT license](LICENSE)
+Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
 ### External Links
 
@@ -36,7 +36,9 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 * Follow this link: **[https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot][invite]**
 * Choose a server to add Gyromina to
-* Make sure all requested permissions are enabled (critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**, **`Use External Emojis`**, and **`Manage Messages`**)
+* Make sure all requested permissions are enabled
+  * **Critical**: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**
+  * **Highly recommended**: **`Use External Emojis`**, **`Manage Messages`**)
 * You're good to go! Have fun!
 
 ### Test Bots (for contributors/debuggers)
@@ -73,7 +75,7 @@ The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](doc
 
 ## Contributing
 
-Contributions to Gyromina are always welcome! I'm a novice, so I don't know all the best tips, tricks, and optimizations for JavaScript and Node. A little help can go a long way.
+Contributions to Gyromina are always welcome! I'm a novice, so I don't know the best tips, tricks, and optimizations for JavaScript/Node. A little help can go a long way.
 
 Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
 

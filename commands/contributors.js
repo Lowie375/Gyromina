@@ -19,6 +19,7 @@ exports.run = {
     // Creates the list of contributors
     if (package.contributors.length > 0) {
       let c;
+      // Maps the first contributor
       if (package.contributorLinks[0] != "") 
         c = `[${package.contributors[0]}](${package.contributorLinks[0]}) - [@${package.contributorGits[0]}](https://github.com/${package.contributorGits[0]})`;
       else
@@ -35,10 +36,18 @@ exports.run = {
 
     // Creates the list of testers
     if (package.testers.length > 0) {
-      let t = `${package.testers[0]}`;
+      let t;
+      // Maps the first tester
+      if (package.testerLinks[0] != "")
+        t = `[${package.testers[0]}](${package.testerLinks[0]})`;
+      else
+        t = `${package.testers[0]}`;
       // Maps the remaining testers
-      for (let i = 1; i < package.contributors.length; i++) {
-        t += `, ${package.testers[i]}`;
+      for (let i = 1; i < package.testers.length; i++) {
+        if (package.testerLinks[i] != "")
+          t += `, [${package.testers[i]}](${package.testerLinks[i]})`;
+        else
+          t += `, ${package.testers[i]}`;
       }
       embed.addField("Helpers - 🦟 ⌚", t);
     }

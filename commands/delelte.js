@@ -10,10 +10,10 @@ exports.run = {
     let max = getRandomInt(1, 3);
     var del = getRandomInt(0, max);
 
-    if (del == 0) {
+    if (del == 0 || !p(message, ['MANAGE_MESSAGES'])) {
       setTimeout(() => {
         message.channel.send(`${nope} Content could not be delelte'd`);
-      }, 350);
+      }, getRandomInt(250, 450));
     } else {
       message.delete()
         .then(() => {

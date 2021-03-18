@@ -1,4 +1,4 @@
-// randomcolour V2 - Made by Ausakura
+// randomcolour V2 - Made by nakanino
 
 // Require discord.js and the RNG
 const Discord = require('discord.js');

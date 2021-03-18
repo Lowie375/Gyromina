@@ -47,16 +47,20 @@ else, assume t
 */
 }
 
-function runner(num, s) {
+function runner(num, s, runoff) {
 /* PSEUDO:
 determine runoff
 - if no runoff, determine repetition
 - else, use given runoff
-iterate runner
+split term + runoff
+- use dec() on term
+- store dec places as factor
+iterate runner (limit to 1023 for stability)
 - multiply current test denom by decimal given + take ceiling/floor
 - compare bounds to actual number
   - if match, break
-  - else, move to next non-power-of-2/5 number
+  - else, move to next non-power-of-2-or-5 number
+add term and runoff*factor
 add whole number
 return
 */

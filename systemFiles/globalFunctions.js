@@ -120,7 +120,7 @@ exports.p = function(message, perm = [""]) {
 
 /**
  * Converts a hexadecimal colour code to RGB format
- * @author Jeanne D'Arc (Ausakura)
+ * @author nakanino
  * @param {string} hex The hexadecimal colour code (preceded by a #)
  * @return {JSON<number>}
  */

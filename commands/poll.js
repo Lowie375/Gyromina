@@ -89,8 +89,8 @@ exports.run = {
         default: content = ``; break;
       }
 
-      // Deletes the poll creation message (for cleanliness)
-      message.delete();
+      // Deletes the poll creation message (for cleanliness), if possible
+      if (p(message, ['MANAGE_MESSAGES'])) message.delete();
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
@@ -175,8 +175,8 @@ exports.run = {
         content += `${rxns[i]} ${options[i][1]}\n`;
       }
 
-      // Deletes the poll creation message (for cleanliness)
-      message.delete();
+      // Deletes the poll creation message (for cleanliness), if possible
+      if (p(message, ['MANAGE_MESSAGES'])) message.delete();
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);

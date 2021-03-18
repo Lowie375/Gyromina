@@ -13,10 +13,10 @@
 
 ### "Fun + function, all in one."
 
-Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@Ausakura](https://github.com/Ausakura)**, and **[@alazymeme](https://github.com/alazymeme)**
+Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-alpha.10
+Latest indev build: v1.1.0-alpha.11
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -37,8 +37,8 @@ Gyromina contains an assortment of features, including a random colour and numbe
 * Follow this link: **[https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot][invite]**
 * Choose a server to add Gyromina to
 * Make sure all requested permissions are enabled
-  * **Critical**: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**
-  * **Highly recommended**: **`Use External Emojis`**, **`Manage Messages`**)
+  * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**
+  * Highly recommended: **`Use External Emojis`**, **`Manage Messages`**)
 * You're good to go! Have fun!
 
 ### Test or Local Bots (for contributors/debuggers)
@@ -52,7 +52,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
 * Fork/download source code + `npm install` in terminal
 * Configure environment variables
   * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
-  * `exp`: `"1"` to enable experimental commands, `"0"` to disable (**warning**: these commands may break!)
+  * `exp`: `"1"` to enable experimental commands, `"0"` to disable (WARNING: these commands may break!)
   * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
 * Optional environment variable config
@@ -93,7 +93,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 ### Repo Contributors
 
 * 💻 Laica - [@Altenhh](https://github.com/Altenhh)
-* 💻 Ausakura - [@Ausakura](https://github.com/Homurasama)
+* 💻 nakanino - [@nakanino](https://github.com/nakanino)
 * 💾 alazymeme - [@alazymeme](https://github.com/alazymeme)
 
 <!-- ### Helpers -->

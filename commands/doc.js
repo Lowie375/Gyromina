@@ -34,7 +34,7 @@ exports.run = {
       .setImage(`${cdn.doc}`);
     
     // Sends the embed
-    message.channel.send({embed: embed});
+    return message.channel.send({embed: embed});
   },
 };
 

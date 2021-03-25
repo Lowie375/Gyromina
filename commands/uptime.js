@@ -1,7 +1,8 @@
-// Require discord.js, the Heroku client, and the emoji file
+// Require discord.js, the Heroku client, the emoji + style files, and the permission checker
 const Discord = require('discord.js');
 const Heroku = require('heroku-client');
 const e = require('../systemFiles/emojis.json');
+const style = require('../systemFiles/style.json');
 const {p} = require('../systemFiles/globalFunctions.js');
 
 // Extra setup
@@ -58,7 +59,7 @@ exports.run = {
     // Sets up the embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Uptime", client.user.avatarURL())
-      .setColor(0x00b275)
+      .setColor(style.e.default)
       .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
       .setTimestamp();
 
@@ -75,7 +76,7 @@ exports.run = {
         embed.addField(`${dyno}  Dyno Uptime`, dOut);
 
         // Sends the embed
-        message.channel.send({embed: embed});
+        return message.channel.send({embed: embed});
       })
       .catch (err => { // Could not pull API data
         console.error("API request failed; defaulting to minimal uptime report", err);
@@ -85,7 +86,7 @@ exports.run = {
         embed.setDescription(`That's ${dMillival} milliseconds, wow!`);
 
         // Sends the embed
-        message.channel.send({embed: embed});
+        return message.channel.send({embed: embed});
     });  
   },
 };

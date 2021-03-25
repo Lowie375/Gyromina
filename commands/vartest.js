@@ -1,4 +1,4 @@
-// Require the package file and emoji file
+// Require the package file, emoji file, and permission checker
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
 const {p} = require('../systemFiles/globalFunctions.js');
@@ -49,13 +49,13 @@ exports.run = {
         const filter = (msg) => msg.author.id == message.author.id;
         const finder = message.channel.createMessageCollector(filter, {time: 30000, idle: 30000});
 
-        finder.on('collect', msg => {
+        finder.on('collect', () => {
           tMsg++;
           console.log(tMsg);
           finder.resetTimer({time: 30000, idle: 30000})
         });
 
-        finder.on('end', (c, r) => {
+        finder.on('end', () => {
           message.channel.send("The Test has concluded. Thank you for your participation.")
         })
       });

@@ -1,7 +1,8 @@
-// Require discord.js, the cdn file, and the package file
+// Require discord.js, the package file, and the cdn + style files
 const Discord = require('discord.js');
-const cdn = require('../systemFiles/cdn.json');
 const botinfo = require('../package.json');
+const cdn = require('../systemFiles/cdn.json');
+const style = require('../systemFiles/style.json');
 
 exports.run = {
   execute(message, args, client) {
@@ -33,7 +34,7 @@ exports.run = {
     // Creates the info embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
-      .setColor(0x00b275)
+      .setColor(style.e.default)
       .setTitle("Gy·ro·mi·na\n/jīräminə/")
       .setDescription(desc)
       .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())
@@ -44,13 +45,14 @@ exports.run = {
         + " / [Report a Bug](https://github.com/Lowie375/Gyromina/issues) / [Bug Tracker](https://github.com/Lowie375/Gyromina/projects/2)*")
       .setThumbnail(cdn.avatar);
 
-    message.channel.send({embed: embed});
+    // Sends the embed
+    return message.channel.send({embed: embed});
   },
 };
 
 exports.help = {
   "name": "info",
-  "aliases": "information",
+  "aliases": ["information", "about"],
   "description": "Displays Gyromina's info.",
   "usage": `${process.env.prefix}info`,
   "weight": 1,

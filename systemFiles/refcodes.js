@@ -1,7 +1,8 @@
-// Require discord.js, the permission checker, the RNG, and the emoji file
+// Require discord.js, the permission checker, the RNG, and the emoji + style files
 const Discord = require('discord.js');
 const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
+const style = require('../systemFiles/style.json');
 
 // Declares CBX characters for future use
 const genChars = ["0", "1", "2", "3", "5", "8", "l", "a", "w", "n", "p", "x", "-", "i", "_", "y", "h", "b", "t", "q", "j", "s", "r", "v", "k", "c", "g", "f", "m", "z", "e", "u"];
@@ -60,7 +61,7 @@ exports.genErrorMsg = function(message, client, error) {
   // Sends a warning message in the channel
   const embed3 = new Discord.MessageEmbed()
     .setTitle(`${warning} Something went wrong...`)
-    .setColor(0xffcc4d)
+    .setColor(style.e.error)
     .setDescription(`\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`${newRef}\``);
   message.channel.send(embed3);
   

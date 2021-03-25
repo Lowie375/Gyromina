@@ -1,6 +1,7 @@
-// Require discord.js, the refcode generator, and the permission checker
+// Require discord.js, the emoji + style files, and the permission checker
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
+const style = require('../systemFiles/style.json');
 const {p} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
@@ -129,13 +130,13 @@ exports.run = {
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       if(cmdy.help.dead === 1)
-        embed.setColor(0xff4d4d);
+        embed.setColor(style.e.dead);
       else if(cmdy.help.wip === 1)
-        embed.setColor(0xffcc4d);
+        embed.setColor(style.e.wip);
       else if(cmdy.help.hide === 1)
-        embed.setColor(0xfefefe);
+        embed.setColor(style.e.hide);
       else
-        embed.setColor(0x00b275);
+        embed.setColor(style.e.default);
 
       if(cmdy.help.name === commandName)
         embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}`);
@@ -179,13 +180,13 @@ exports.run = {
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       if(gmz.label.deleted === 1)
-        embed.setColor(0xff4d4d);
+        embed.setColor(style.e.dead);
       else if(gmz.label.indev === 1)
-        embed.setColor(0xffcc4d);
+        embed.setColor(style.e.wip);
       else if(gmz.label.exclusive === 1)
-        embed.setColor(0xfefefe);
+        embed.setColor(style.e.hide);
       else
-        embed.setColor(0x00b275);
+        embed.setColor(style.e.default);
       
       if(gmz.label.name === gameName)
         embed.setTitle(`${ext}${gmz.label.name}`);
@@ -213,7 +214,7 @@ exports.run = {
     } else if (conditions[1] == 1) { // General game help
 
       // Sets up the embed
-      embed.setColor(0x00b275);
+      embed.setColor(style.e.default);
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
@@ -281,7 +282,7 @@ exports.run = {
     } else { // General command help
 
       // Sets up the embed
-      embed.setColor(0x00b275);
+      embed.setColor(style.e.default);
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Master Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
@@ -348,7 +349,7 @@ exports.run = {
       }
     }
     // Sends the embed
-    message.channel.send({embed: embed});
+    return message.channel.send({embed: embed});
   },
 };
 

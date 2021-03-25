@@ -1,4 +1,4 @@
-// Require discord.js, fs, the package file, the emoji file, and the refcode generator
+// Require discord.js, fs, the package file, the emoji file, the permission checker, and the refcode generator
 const Discord = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');

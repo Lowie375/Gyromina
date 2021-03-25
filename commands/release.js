@@ -1,4 +1,4 @@
-// Require the permission checker, Write function, Clean function, and colors
+// Require the permission checker, some global functions (Write + Clean), colors, the package file, the emoji file, and request
 const {p, Write, Clean} = require("../systemFiles/globalFunctions.js");
 const colors = require('colors');
 const package = require('../package.json');

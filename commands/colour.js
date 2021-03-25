@@ -1,4 +1,4 @@
-// Require discord.js and some global functions (colour + Clean)
+// Require discord.js and some global functions (colour conversions + Clean)
 const Discord = require('discord.js');
 const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, Clean, minMax} = require('../systemFiles/globalFunctions.js');
 
@@ -40,7 +40,7 @@ function extract(xc) {
 
 exports.run = {
   execute(message, args, client) {
-    if (args.length == 0)
+    if (args.length === 0)
       return message.channel.send(`I can't get colour data for a non-existent colour, <@${message.author.id}>!`)
 
     // Decoding
@@ -103,8 +103,8 @@ exports.run = {
       
     // Sends the embed
     switch (col[0]) {
-      case "amb": message.channel.send(`Ambiguous input detected, <@${message.author.id}>, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, {embed: embed}); break;
-      default: message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed}); break;
+      case "amb": return message.channel.send(`Ambiguous input detected, <@${message.author.id}>, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, {embed: embed});
+      default: return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
     }
   }
 }

@@ -1,6 +1,7 @@
-// Require discord.js and the package file
+// Require discord.js, the package file, and the style file
 const Discord = require('discord.js');
 const package = require('../package.json');
+const style = require('../systemFiles/style.json');
 
 exports.run = {
   execute(message, args, client) {
@@ -8,13 +9,13 @@ exports.run = {
     // Creates the crediting embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Contributors", client.user.avatarURL())
-      .setColor(0x00b275)
+      .setColor(style.e.default)
       .setTitle("A huge thanks to everyone who has contributed to Gyromina!")
       .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())
       .setTimestamp();
 
     // Creates the author field
-    embed.addField("Author - 💻", `[${package.author}](${package.authorLink}) - [@${package.authorGit}](https://github.com/Lowie375)`)
+    embed.addField("Author  💻", `[${package.author}](${package.authorLink}) - [@${package.authorGit}](https://github.com/Lowie375)`)
     
     // Creates the list of contributors
     if (package.contributors.length > 0) {
@@ -31,7 +32,7 @@ exports.run = {
         else
           c += `\n${package.contributors[i]} - [@${package.contributorGits[i]}](https://github.com/${package.contributorGits[i]})`;
       }
-      embed.addField("Repo Contributors - 💻 💾", c);
+      embed.addField("Repo Contributors  💻 💾", c);
     }
 
     // Creates the list of testers
@@ -49,11 +50,11 @@ exports.run = {
         else
           t += `, ${package.testers[i]}`;
       }
-      embed.addField("Helpers - 🦟 ⌚", t);
+      embed.addField("Helpers 🦟 ⌚", t);
     }
 
     // Sends the embed
-    message.channel.send({embed: embed});
+    return message.channel.send({embed: embed});
   },
 };
 

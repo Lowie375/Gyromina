@@ -1,4 +1,4 @@
-// Require discord.js, bent, canvas, the RNG, the permission checker, the refcode generator, the emoji file, and the cdn file
+// Require discord.js, bent, canvas, the RNG, the permission checker, the refcode generator, and the emoji + cdn files
 const Discord = require('discord.js');
 const bent = require('bent');
 const {createCanvas, loadImage} = require('canvas');

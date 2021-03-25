@@ -38,7 +38,7 @@ exports.run = {
       }
     } else { 
       // Checks if game options were passed
-      if (Array.isArray(args) && args.length != 0) {
+      if (Array.isArray(args) && args.length !== 0) {
         // Runs the game with options
         game.exe.start(message, client, player, args);
       } else {

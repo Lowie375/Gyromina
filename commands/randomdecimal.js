@@ -1,5 +1,6 @@
-// Require discord.js
+// Require discord.js and the style file
 const Discord = require('discord.js');
+const style = require('../systemFiles/style.json');
 
 function getRandomDecimal(min, max, decims) {
 
@@ -23,18 +24,20 @@ exports.run = {
   execute(message, args, client) {
     var number = 0;
 
-    if (args.length == 0)
+    if (args.length === 0)
       number = getRandomDecimal(0, 1, 10);
     else if (args[0] < 0)
       return message.channel.send(`I can\'t generate a decimal number to a negative amount of decimal places, <@${message.author.id}>!`);
     else if (args[0] >= 0)
       number = getRandomDecimal(0, 1, args[0]);
-
+    
+    // Creates the embed
     const embed = new Discord.MessageEmbed()
       .setTitle(`\`${number}\``)
-      .setColor(0x00b275);
+      .setColor(style.e.default);
 
-    message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
+    // Sends the embed
+    return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   }
 };
 

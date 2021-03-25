@@ -1,3 +1,4 @@
+// Negative number regex
 const negNum = /^-\d/;
 
 function argComb(args) {
@@ -91,7 +92,7 @@ function dec(num, s) {
 
 exports.run = {
   execute(message, args, client) {
-    if (args.length == 0)
+    if (args.length === 0)
       return message.channel.send(`I need a number to convert to a fraction, <@${message.author.id}>!`);
 
     // Prepares the number and handles queries

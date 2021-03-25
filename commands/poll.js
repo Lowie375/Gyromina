@@ -1,6 +1,7 @@
-// Require discord.js, the emoji file, the permission checker, and the emoji checker
+// Require discord.js, the emoji + style files, the permission checker, and the emoji checker
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
+const style = require('../systemFiles/style.json');
 const {p, emojiCheck} = require('../systemFiles/globalFunctions.js');
 
 // Preset poll types - types[array#][obj#]
@@ -94,7 +95,7 @@ exports.run = {
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
-      embed.setColor(0x00b275);
+      embed.setColor(style.e.default);
       embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
       embed.setTimestamp();
       if (content != "")
@@ -180,7 +181,7 @@ exports.run = {
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
-      embed.setColor(0x00b275);
+      embed.setColor(style.e.default);
       embed.setDescription(`${content}`);
       embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
       embed.setTimestamp();

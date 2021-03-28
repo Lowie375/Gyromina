@@ -1,8 +1,9 @@
-// Require discord.js, the package file, and the cdn + style files
+// Require discord.js, the package file, the cdn + style files, and the embed colour checker
 const Discord = require('discord.js');
 const botinfo = require('../package.json');
 const cdn = require('../systemFiles/cdn.json');
 const style = require('../systemFiles/style.json');
+const {eCol} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
@@ -34,7 +35,7 @@ exports.run = {
     // Creates the info embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
-      .setColor(style.e.default)
+      .setColor(eCol(style.e.default))
       .setTitle("Gy·ro·mi·na\n/jīräminə/")
       .setDescription(desc)
       .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())

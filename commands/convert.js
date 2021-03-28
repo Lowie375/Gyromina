@@ -1,6 +1,6 @@
-// Require discord.js, some global functions (temperature conversions), and the style file
+// Require discord.js, some global functions (temperature conversions + embed colour checker), and the style file
 const Discord = require('discord.js');
-const {FtoC, CtoF, CtoK, KtoC, FtoR, RtoF} = require('../systemFiles/globalFunctions.js');
+const {FtoC, CtoF, CtoK, KtoC, FtoR, RtoF, eCol} = require('../systemFiles/globalFunctions.js');
 const style = require('../systemFiles/style.json');
 
 // Array V4: names[array#][object#] + metricNames[array#][object#] --> converter[array#][object#] + metrics[array#][object#] (0-9/10-19/20-29/etc.)
@@ -508,7 +508,7 @@ exports.run = {
     // Creates the embed
     const embed = new Discord.MessageEmbed()
       .setTitle(`${cArgs[0]}${name1} equals…\n\`${output}${name2}\``)
-      .setColor(style.e.default);
+      .setColor(eCol(style.e.default));
     // Adds a rounded output, if suitable
     if(round != "null") embed.setDescription(`…or about ${round}${name2}`);
 

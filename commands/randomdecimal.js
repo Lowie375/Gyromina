@@ -1,6 +1,7 @@
-// Require discord.js and the style file
+// Require discord.js, the style file, and the emoji colour checker
 const Discord = require('discord.js');
 const style = require('../systemFiles/style.json');
+const {eCol} = require('../systemFiles/globalFunctions.js');
 
 function getRandomDecimal(min, max, decims) {
 
@@ -34,7 +35,7 @@ exports.run = {
     // Creates the embed
     const embed = new Discord.MessageEmbed()
       .setTitle(`\`${number}\``)
-      .setColor(style.e.default);
+      .setColor(eCol(style.e.default));
 
     // Sends the embed
     return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});

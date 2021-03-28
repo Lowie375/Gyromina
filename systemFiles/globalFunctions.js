@@ -1,7 +1,8 @@
-// Require colors and the emoji regex
+// Require colors, the emoji regex, and the style file
 const color = require('colors');
 const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
+const style = require('../systemFiles/style.json');
 
 // UTIL
 
@@ -113,6 +114,43 @@ exports.p = function(message, perm = [""]) {
       return true;
     else
       return false;
+  }
+}
+
+/**
+ * Checks whether an embed's colour should be changed due to the current season
+ * @param def The standard colour for the embed in question
+ * @return {String}
+ */
+
+exports.eCol = function(def) {
+  let d = new Date();
+  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDay(), d.getUTCMonth(), d.getUTCFullYear()];
+  if(now[4] == 5 || process.env.season === "1") { // June: rainbow randomizer
+    let col = Math.min(Math.floor(Math.random() * 193) + 63, 255);
+    let pos = [Math.min(Math.floor(Math.random()*3), 2), Math.min(Math.floor(Math.random()*2), 1)];
+    if(pos[1] === 0) { // 255 before 63
+      switch(pos[0]) {
+        case 0: return `${col.toString(16)}ff3f`;
+        case 1: return `ff${col.toString(16)}3f`;
+        case 2: return `ff3f${col.toString(16)}`;
+        default: return def; // fallback
+      }
+    } else if(pos[1] === 1) { // 63 before 255
+      switch(pos[0]) {
+        case 0: return `${col.toString(16)}3fff`;
+        case 1: return `3f${col.toString(16)}ff`;
+        case 2: return `3fff${col.toString(16)}`;
+        default: return def; // fallback
+      }
+    } else { // fallback: default to standard
+      return def;
+    }
+  } else if(now[4] == 11 || process.env.season == "2") { // December: blue theme
+    // return style.e.winter; - TBD
+    return def;
+  } else { // Default
+    return def;
   }
 }
 

@@ -1,7 +1,7 @@
 // Require discord.js, the style file, and the RNG
 const Discord = require('discord.js');
 const style = require('../systemFiles/style.json');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;
@@ -57,6 +57,7 @@ exports.run = {
   execute(message, args, client) {
     var number;
 
+    // Checks if no bounds were set
     if (args.length === 0)
       return message.channel.send(`I can\'t generate a number in a non-existent range, <@${message.author.id}>!`)
 
@@ -66,7 +67,7 @@ exports.run = {
         number = getRandomNumber(args[0], args[1]);
       else
         return message.channel.send(`I can\'t generate a random number between non-numerical values, <@${message.author.id}>!`);
-    } else if (args.length === 1) {
+    } else {
       if (!isNaN(args[0]))
         number = getRandomNumber(0, args[0]);
       else
@@ -76,9 +77,9 @@ exports.run = {
     // Creates the embed
     const embed = new Discord.MessageEmbed()
       .setTitle(`\`${number}\``)
-      .setColor(style.e.default);
+      .setColor(eCol(style.e.default));
 
-    // Sends the embed
+    // Sends the emksbed
     return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   }
 };

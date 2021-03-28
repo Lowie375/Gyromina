@@ -1,8 +1,8 @@
-// Require discord.js, the emoji + style files, and the permission checker
+// Require discord.js, the emoji + style files, the permission checker, and the embed colour checker
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
-const {p} = require('../systemFiles/globalFunctions.js');
+const {p, eCol} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
   var list = "\• " + process.env.prefix + "**" + c.help.name + "**"
@@ -136,7 +136,7 @@ exports.run = {
       else if(cmdy.help.hide === 1)
         embed.setColor(style.e.hide);
       else
-        embed.setColor(style.e.default);
+        embed.setColor(eCol(style.e.default));
 
       if(cmdy.help.name === commandName)
         embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}`);
@@ -186,7 +186,7 @@ exports.run = {
       else if(gmz.label.exclusive === 1)
         embed.setColor(style.e.hide);
       else
-        embed.setColor(style.e.default);
+        embed.setColor(eCol(style.e.default));
       
       if(gmz.label.name === gameName)
         embed.setTitle(`${ext}${gmz.label.name}`);
@@ -214,7 +214,7 @@ exports.run = {
     } else if (conditions[1] == 1) { // General game help
 
       // Sets up the embed
-      embed.setColor(style.e.default);
+      embed.setColor(eCol(style.e.default));
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
@@ -282,7 +282,7 @@ exports.run = {
     } else { // General command help
 
       // Sets up the embed
-      embed.setColor(style.e.default);
+      embed.setColor(eCol(style.e.default));
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Master Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");

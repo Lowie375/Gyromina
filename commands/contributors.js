@@ -1,7 +1,8 @@
-// Require discord.js, the package file, and the style file
+// Require discord.js, the package file, the style file, and the embed colour checker
 const Discord = require('discord.js');
 const package = require('../package.json');
 const style = require('../systemFiles/style.json');
+const {eCol} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
@@ -9,7 +10,7 @@ exports.run = {
     // Creates the crediting embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Contributors", client.user.avatarURL())
-      .setColor(style.e.default)
+      .setColor(eCol(style.e.default))
       .setTitle("A huge thanks to everyone who has contributed to Gyromina!")
       .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())
       .setTimestamp();

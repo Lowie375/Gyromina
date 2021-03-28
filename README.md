@@ -8,7 +8,7 @@
 [![License][license-img]](LICENSE)  
 [![Last Commit (master)][master-commit-img]][master-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
-[![Scrutinizer Code Analysis][code-analysis-img]][code-analysis-link]
+[![Scrutinizer Code Quality][code-quality-img]][code-quality-link]
 
 ## About
 
@@ -17,7 +17,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-alpha.12
+Latest indev build: v1.1.0-alpha.13
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -51,9 +51,10 @@ Gyromina contains an assortment of features, including a random colour and numbe
 #### Config
 
 * Fork/download source code + `npm install` in terminal
-* Configure environment variables
+* Configure environment variables (`1.1.x` = **`v9`** setup)
   * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
   * `exp`: `"1"` to enable experimental commands, `"0"` to disable (WARNING: these commands may break!)
+  * `season`: Embed colour override; `"0"` to disable, `"1"` for pride colours, `"2"` for winter colours
   * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
 * Optional environment variable config
@@ -114,7 +115,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [master-tree-link]: https://github.com/Lowie375/Gyromina/tree/master
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
 [lang-link]: https://github.com/Lowie375/Gyromina/search?l=javascript
-[code-analysis-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina/inspections
+[code-quality-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
 
 <!-- Banners -->
 [gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png
@@ -129,7 +130,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 [lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina
-[code-analysis-img]: https://img.shields.io/scrutinizer/quality/g/Lowie375/Gyromina
+[code-quality-img]: https://img.shields.io/scrutinizer/quality/g/Lowie375/Gyromina
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf
 [min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-7effaf

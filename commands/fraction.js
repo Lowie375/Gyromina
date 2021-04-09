@@ -39,20 +39,38 @@ function argComb(args) {
   }
 }
 
-function analyze(num, s) {
+function analyze(num, set) {
+  let numArr = num[1].split("");
+  let l = num[1].length;
+  let lim = Math.floor(l / 2);
+  let c = 1;
+  let m = 0;
+
+  while (m === 0 && c <= lim) { // comb spacer loop
+    m = 1;
+    for (let i = 1; i <= c; i++) { // comb loob
+      if (numArr[-i] !== numArr[-i-c]) {
+        m = 0;
+      } // ...more?
+    }
+    if (m === 1) {
+      break;
+    }
+    c++;
+  } 
 /* PSEUDO:
 assume r when:
-- ending repetition pattern
+- ending repetition pattern (shell?)
 - ...
 else, assume t
 */
 }
 
-function runner(num, s, runoff) {
+function runner(num, set, runoff) {
 /* PSEUDO:
 determine runoff
-- if no runoff, determine repetition
-- else, use given runoff
+- if runoff, use it
+- else, determine repetition
 split term + runoff
 - use dec() on term
 - store dec places as factor
@@ -67,7 +85,7 @@ return
 */
 }
 
-function dec(num, s) {
+function dec(num, set) {
   // Puts decimal portion over a power of 10 + makes note of how many times the number can be divided
   var nFrac = parseInt(num[1]);
   var div = num[1].length;
@@ -83,7 +101,7 @@ function dec(num, s) {
     }
   }
   // Adds the whole number component, if present and mixed not specified
-  if (s[1] == 0) {
+  if (set[1] == 0) {
     nFrac += num[0] * dFrac;
   }
   // Returns the fraction
@@ -96,18 +114,18 @@ exports.run = {
       return message.channel.send(`I need a number to convert to a fraction, <@${message.author.id}>!`);
 
     // Prepares the number and handles queries
-    var settings = argComb(args);
-    var num = args[0].split(".").slice(1);
+    var set = argComb(args);
+    var num = args[0].split(".");
     var frac;
 
     // Determines the fraction algorithm to run based on decimal type
-    switch (settings[0]) {
+    switch (set[0]) {
       case "t": // terminating
-        frac = dec(num, settings); break;
+        frac = dec(num, set); break;
       case "r": // repeating
-        frac = runner(num, settings); break;
+        frac = runner(num, set); break;
       case "x": // indeterminate; further analysis needed
-        frac = analyze(num, settings); break;
+        frac = analyze(num, set); break;
       default: // conflicting; throw error
         return message.channel.send(`I'm not sure what kind of decimal this is, <@${message.author.id}>.\n(Please choose either **\`-r\`**epeating or **\`-t\`**erminating, not both.)`);
     }

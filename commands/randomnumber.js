@@ -79,7 +79,7 @@ exports.run = {
       .setTitle(`\`${number}\``)
       .setColor(eCol(style.e.default));
 
-    // Sends the emksbed
+    // Sends the embed
     return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   }
 };

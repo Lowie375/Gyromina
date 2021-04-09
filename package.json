@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "1.1.0-alpha.13",
+  "version": "1.1.0-alpha.14",
   "description": "Gyromina, a multipurpose Discord bot",
   "homepage": "https://l375.weebly.com/gyromina",
   "repository": {
@@ -53,7 +53,7 @@
     "bent": "^7.3.12",
     "canvas": "^2.7.0",
     "colors": "^1.4.0",
-    "discord.js": "^12.5.1",
+    "discord.js": "^12.5.3",
     "emoji-regex": "^9.2.2",
     "heroku-client": "^3.1.0",
     "request": "^2.88.0",

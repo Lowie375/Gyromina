@@ -1,5 +1,6 @@
 // Negative number regex
 const negNum = /^-\d/;
+const dots = /(\.\.+|…+)$/;
 
 function argComb(args) {
   let save = [];
@@ -12,12 +13,12 @@ function argComb(args) {
         case "t":
         case "d":
         case "n":
-          output.push("t");
+          save.push("t");
           break;
         case "r":
         case "_":
-          output.push("r");
-          run = runoffCheck(args, i);
+          save.push("r");
+          run = i;
           break;
         case "m":
           mixed = 1;
@@ -25,11 +26,16 @@ function argComb(args) {
       }
       args.splice(i, 1);
       i--;
+    } else if(dots.exec(args[i])) {
+      save.push("r");
+      run = i;
+      let d = dots.exec(args[i]);
+      args[i].slice(0, -d.length);
     }
-  }
+  } 
   switch(save.length) {
     case 0: return ["x", mixed, 0];
-    case 1: return [save[0], mixed, run];
+    case 1: return [save[0], mixed, runoffCheck(args, run)];
     default: {
       for (let j = 1; j < save.length; j++) {
         if (save[0] != save[j]) return ["n", mixed, 0];
@@ -66,11 +72,17 @@ else, assume t
 */
 }
 
-function runner(num, set, runoff) {
+function runoffCheck(args, run) {
 /* PSEUDO:
 determine runoff
-- if runoff, use it
-- else, determine repetition
+- if runoff after arg, use it + splice
+- else, iterate to predict runoff
+*/
+}
+
+function runner(num, set, runoff) {
+/* PSEUDO:
+runoffCheck()
 split term + runoff
 - use dec() on term
 - store dec places as factor
@@ -89,12 +101,12 @@ function dec(num, set) {
   // Puts decimal portion over a power of 10 + makes note of how many times the number can be divided
   var nFrac = parseInt(num[1]);
   var div = num[1].length;
-  var dFrac = Math.pow(10, div[0]);
+  var dFrac = Math.pow(10, div);
 
   // Divides numbers
   for(let i = 2; i <= 5; i+=3) {
     let j = 0;
-    while(Math.mod(nFrac/i, 1) == 0 && j < div) {
+    while((nFrac/i) % 1 === 0 && j < div) {
       nFrac /= i;
       dFrac /= i;
       j++;
@@ -115,7 +127,7 @@ exports.run = {
 
     // Prepares the number and handles queries
     var set = argComb(args);
-    var num = args[0].split(".");
+    var num = args[0].split(".").slice(0, 2);
     var frac;
 
     // Determines the fraction algorithm to run based on decimal type
@@ -129,6 +141,10 @@ exports.run = {
       default: // conflicting; throw error
         return message.channel.send(`I'm not sure what kind of decimal this is, <@${message.author.id}>.\n(Please choose either **\`-r\`**epeating or **\`-t\`**erminating, not both.)`);
     }
+
+    // Temp return snippets
+    console.log(frac);
+    return console.log(`${frac[0]}/${frac[1]}`);
   }
 };
 

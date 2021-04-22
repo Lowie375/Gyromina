@@ -19,7 +19,7 @@ exports.run = {
     let tag = client.user.tag;
     await message.channel.send(`${yep}`);
     await client.user.setStatus("invisible");
-    console.log(`Shutting down ${tag}...\n- - - - - - - - - - -`);
+    console.log(`Shutting down ${tag}…\n- - - - - - - - - - -`);
     await client.destroy();
   },
 };

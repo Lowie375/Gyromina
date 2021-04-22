@@ -239,7 +239,7 @@ exports.rgbToCmyk = function(rgb) {
 }
 
 /**
- * Converts a hexidecimal colour code to a colour integer
+ * Converts a hexadecimal colour code to a colour integer
  * @param {String} hex The hexadecimal colour code (raw; no #)
  * @return {Number}
  */
@@ -249,7 +249,7 @@ exports.hexToInt = function(hex) {
 }
 
 /**
- * Converts a colour integer to a hexidecimal colour code
+ * Converts a colour integer to a hexadecimal colour code
  * @param {Number} int The colour integer
  * @return {String}
  */

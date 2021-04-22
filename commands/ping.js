@@ -2,7 +2,7 @@ exports.run = {
   execute(message, args, client) {
     // Pings the channel by sending a message
     let start = Date.now();
-    message.channel.send('Pinging... 🏓')
+    message.channel.send('Pinging… 🏓')
       .then(newMsg => {
         let end = Date.now();
         // Edits the message to include Gyromina's latency and Discord's latency.

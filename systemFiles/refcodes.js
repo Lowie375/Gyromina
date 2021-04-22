@@ -60,9 +60,9 @@ exports.genErrorMsg = function(message, client, error) {
 
   // Sends a warning message in the channel
   const embed3 = new Discord.MessageEmbed()
-    .setTitle(`${warning} Something went wrong...`)
+    .setTitle(`${warning} Something went wrong…`)
     .setColor(style.e.error)
-    .setDescription(`\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`${newRef}\``);
+    .setDescription(`Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``);
   message.channel.send(embed3);
   
   // Sends the error to the Gyromina log channel

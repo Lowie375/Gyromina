@@ -61,7 +61,7 @@ exports.run = {
       
 
     function main() {
-      message.channel.send("Releasing...")
+      message.channel.send("Releasing…")
         .then(relMsg => {
 
           Write(`Releasing version ${version} ${forceVerification === true ? "(Forced)" : ""}`);
@@ -100,7 +100,7 @@ function CreateGithubRelease (changeLogText) {
     })
   };
 
-  Write(`Creating release ${version}...`.blue, startTime, false);
+  Write(`Creating release ${version}…`.blue, startTime, false);
 
   AuthenticatedBlockingPerform(options, (res, bod) => {
     Write(`Version ${version} released!`);

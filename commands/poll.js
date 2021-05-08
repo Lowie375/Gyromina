@@ -4,6 +4,9 @@ const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
 const {p, emojiCheck, eCol} = require('../systemFiles/globalFunctions.js');
 
+// Cleanup regex
+const cleaner = /^ +/
+
 // Preset poll types - types[array#][obj#]
 const types = [
   ["yn", e.poll.yes, e.poll.no],
@@ -142,7 +145,7 @@ exports.run = {
       }
 
       for (const shell of pollRoot) {
-        let x = shell.split(" ");
+        let x = shell.replace(cleaner, "").split(" ");
         let e = x.shift();
         let s = x.join(" ");
         options.push([e, s]);

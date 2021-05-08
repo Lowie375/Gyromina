@@ -1,4 +1,4 @@
-// Require discord.js, the style file, and the RNG
+// Require discord.js, the style file, the RNG, and the embed colour checker
 const Discord = require('discord.js');
 const style = require('../systemFiles/style.json');
 const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');

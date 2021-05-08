@@ -54,8 +54,7 @@ client.on('ready', () => {
 client.on('message', message => {
 
   // Filters out messages that don't begin with Gyromina's prefix, as well as messages sent by bots
-  if (!message.content.startsWith(process.env.prefix) 
-    || message.author.bot) return;
+  if (!message.content.startsWith(process.env.prefix) || message.author.bot) return;
 
   // Checks if the message was sent in a non-voice guild channel where Gyromina has message-sending and channel-viewing permissions. If not, returns
   if (message.channel.type != "dm" && message.channel.type != "voice" && !p(message, ['SEND_MESSAGES', 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'])) return;

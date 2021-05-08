@@ -1,3 +1,8 @@
+// Require discord.js, the style file, the RNG, and the embed colour checker
+const Discord = require('discord.js');
+const style = require('../systemFiles/style.json');
+const {eCol} = require('../systemFiles/globalFunctions.js');
+
 // Negative number regex
 const negNum = /^-\d/;
 const dots = /(\.\.+|…+)$/;
@@ -30,7 +35,7 @@ function argComb(args) {
       save.push("r");
       run = i;
       let d = dots.exec(args[i]);
-      args[i].slice(0, -d.length);
+      args[i].slice(0, -d[1].length);
     }
   } 
   switch(save.length) {

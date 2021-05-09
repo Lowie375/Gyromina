@@ -108,7 +108,7 @@ exports.run = {
       .setTitle(`\`${decim}\``)
       .setColor(eCol(style.e.default));
 
-    // sends the message and mebed
+    // sends the message and embed
     return message.channel.send(statement, {embed: embed});
   }
 };

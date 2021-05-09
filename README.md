@@ -8,6 +8,7 @@
 [![License][license-img]](LICENSE)  
 [![Last Commit (master)][master-commit-img]][master-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
+[![Build Status][build-img]][build-link]
 [![Scrutinizer Code Quality][code-quality-img]][code-quality-link]
 
 ## About
@@ -110,6 +111,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [master-tree-link]: https://github.com/Lowie375/Gyromina/tree/master
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
 [lang-link]: https://github.com/Lowie375/Gyromina/search?l=javascript
+[build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
 [code-quality-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
 
 <!-- Banners -->
@@ -125,6 +127,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 [lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina
+[build-img]: https://img.shields.io/scrutinizer/build/g/Lowie375/Gyromina
 [code-quality-img]: https://img.shields.io/scrutinizer/quality/g/Lowie375/Gyromina
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf

@@ -54,6 +54,36 @@ function argComb(args) {
   }
 } 
 
+function notLoggable(n) {
+  if(n/3 % 1 === 0 || n/7 % 1 === 0 || n/11 % 1 === 0 || n/13 % 1 === 0
+    || n/17 % 1 === 0 || n/19 % 1 === 0 || n/23 % 1 === 0 || n/29 % 1 === 0 || n/31 % 1 === 0)
+    return 1;
+  else
+    return 0;
+}
+
+function loggable(n) {
+  if(n < 1)
+    return 0; // not loggable
+  else if(Math.log(n)/Math.log(2) % 1 === 0 || Math.log(n)/Math.log(5) % 1 === 0) // basic check
+    return 1; // loggable
+  else // remove a 10 (2*5) + re-iterate
+    loggable(n/10);
+  
+  /* alternate framework (if first breaks)
+  do { // check if a pure power of 2 or 5
+    if(Math.log(n)/Math.log(2) % 1 === 0 || Math.log(n)/Math.log(5) % 1 === 0)
+      return 1;
+    else
+      n /= 10; // remove a 10 (2*5)
+  } while(n/10 % 1 === 0);
+  // final check
+  if(Math.log(n)/Math.log(2) % 1 === 0 || Math.log(n)/Math.log(5) % 1 === 0)
+    return 1;
+  else
+    return 0;*/
+}
+
 function analyze(num) {
   let numArr = num[1].split("");
   let lim = Math.floor(num[1].length/2);
@@ -64,7 +94,7 @@ function analyze(num) {
     rMatch = 1;
     for (let i = 1; i <= cSp; i++) { // comb loob
       // assume match until disproven
-      if (numArr[-i] !== numArr[-i-cSp]) rMatch = 0; 
+      if (numArr[numArr.length-i] !== numArr[numArr.length-i-cSp]) rMatch = 0; 
     }
     if (rMatch === 1) return ["r", cSp]; // match = likely pattern!
     cSp++; // else, bump comb + try again
@@ -87,29 +117,73 @@ function runoffCheck(args, run, rSave) {
 }
 
 function runner(num, set) {
-  if(set[2] === 0) { // finds runoff if not yet determined
+  var runStart = 0;
+  var factor = 1;
+  var numDiv;
+  var check;
+  var runFrac;
+  var decFrac;
+
+  // find runoff if not yet determined
+  if(set[2] === 0) {
     let s2 = analyze(num)[1];
     if(s2 === 0)
-      set[2] = num[1].length
+      set[2] = num[1].length;
     else
       set[2] = s2;
   }
+
+  // find the start of the runner
+  for(let i = 0; i < num[1].length - 2*set[2] + 1; i++) {
+    if(num[1].slice(i,i+set[2]) === num[1].slice(i+set[2],i+2*set[2])) {
+      runStart = i;
+      factor = Math.pow(10, i); // numDiv = [term, cleanRunner, rawRunner]
+      numDiv = [num[1].slice(0, i), num[1].slice(i,i+set[2]), `0.${num[1].slice(i)}`];
+      check = `0.${numDiv[1]}${numDiv[1]}`;
+      i = num[1].length; // break
+    }
+  }
+
+  // iterator (find the most likely fraction by brute force, fun!)
+  let j = 3;
+  while(j <= 999) {
+    if(notLoggable(j) || !loggable(j)) { // skips terminating decimals (notLoggable = simple check, loggable = secondary check)
+      let high = Math.ceil(j*numDiv[2]);
+      if((high/j).toString().slice(0, check.length) == check) {
+        runFrac = [parseInt(high), j];
+        break; // ceiling matches, push
+      } else {
+        let low = Math.floor(j*numDiv[2]);
+        if((low/j).toString().slice(0, check.length) == check) {
+          runFrac = [parseInt(low), j];
+          break; // floor matches, push
+        }
+      }
+    }
+    j++;
+  }
+  if(j > 999) return "lim"; // too complex, can't handle it (hard limit enforced to save processing power)
+  decFrac = dec([0, numDiv[0]], set);
+
+
 /* PSEUDO:
 if no runoff given, analyze()
+
 find start of runoff
 - start at start, compare strings using runoff length
 split term + runoff
 - use dec() on term
 - store dec places as factor
-iterate runner (limit to 1023 for stability)
-- multiply current test denom by decimal given + take ceiling/floor
+iterate runner (limit to 999 for stability)
+- multiply current test denom by decimal given + take ceiling/floor + divide by test
 - compare bounds to actual number
   - if match, break
   - else, move to next non-power-of-2-or-5 number
   //Math.log(x)/Math.log(2) % 1 === 0 || Math.log(x)/Math.log(5) % 1 === 0
-add term and runoff*factor
-- find gcf + add
-add whole number
+
+add term and runoff/factor
+- find gcf/lcm + add
+add whole number (either as mixed or denom*whole)
 return
 */
 }
@@ -166,16 +240,28 @@ exports.run = {
         return message.channel.send(`I'm not sure what kind of decimal to treat this as, <@${message.author.id}>.\n(Please choose either **\`-r\`**epeating or **\`-t\`**erminating, not both.)`);
     }
 
+    if(!Array.isArray(frac)) { // error thrown
+      switch(frac) {
+        case "lim": return message.channel.send(`That fraction is far too complex for me to handle, <@${message.author.id}>! Sorry about that!`);
+        default: return message.channel.send(`Something went wrong when processing that fraction, <@${message.author.id}>! Sorry about that!`);
+      }
+    }
+
     // creates the embed
     const embed = new Discord.MessageEmbed()
       .setColor(eCol(style.e.default));
     
-    if (set[1] === 1 && num[0] !== "0")
-      embed.setTitle(`\`${num[0]} ${frac[0]}/${frac[1]}\``);
+    if(set[0] == "r" || results[0] == "r")
+      embed.setTitle(`${num[0]}.${frac[2]}… is…\n\`${num[0] === "0" ? "" : `${num[0]} `}${frac[0]}/${frac[1]}\``); 
+    else
+      embed.setTitle(`${num[0]}.${num[1]} is…\n\`${num[0] === "0" ? "" : `${num[0]} `}${frac[0]}/${frac[1]}\``); 
+    /*if (set[1] === 1 && num[0] !== "0") // this is flawed ("r" type won't look good)
+      embed.setTitle(`${num[0]}.${num[1]}${ext} is…\n\`${num[0]} ${frac[0]}/${frac[1]}\``); 
     else 
-      embed.setTitle(`\`${frac[0]}/${frac[1]}\``)
+      embed.setTitle(`${num[0]}.${num[1]}${ext} is…\n\`${frac[0]}/${frac[1]}\``);
+    */
 
-    // sends the embedd
+    // sends the embed
     if(set[0] == "x") {
       switch(results[0]) {
         case "t": // terminating
@@ -186,8 +272,6 @@ exports.run = {
     } else {
       return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
     }
-    
-    
   }
 };
 

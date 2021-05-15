@@ -105,7 +105,7 @@ exports.run = {
 
     // creates the embed
     const embed = new Discord.MessageEmbed()
-      .setTitle(`\`${decim}\``)
+      .setTitle(`${nums[0] === 0 ? "" : `${nums[0]} `}${nums[1]}/${nums[2]} is…\n\`${decim}\``)
       .setColor(eCol(style.e.default));
 
     // sends the message and embed

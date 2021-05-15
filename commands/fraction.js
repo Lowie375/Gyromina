@@ -168,10 +168,14 @@ exports.run = {
 
     // creates the embed
     const embed = new Discord.MessageEmbed()
-      .setTitle(`\`${frac[0]}/${frac[1]}\``)
       .setColor(eCol(style.e.default));
+    
+    if (set[1] === 1 && num[0] !== "0")
+      embed.setTitle(`\`${num[0]} ${frac[0]}/${frac[1]}\``);
+    else 
+      embed.setTitle(`\`${frac[0]}/${frac[1]}\``)
 
-    // sends the embed
+    // sends the embedd
     if(set[0] == "x") {
       switch(results[0]) {
         case "t": // terminating

@@ -151,7 +151,7 @@ exports.eCol = function(def) {
     return def;
   } else { // Default
     return def;
-  }
+  } // TODO: add blurple period (1wk before may 13?)
 }
 
 // COLOUR

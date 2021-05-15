@@ -18,7 +18,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-alpha.18
+Latest indev build: v1.1.0-alpha.19
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -31,6 +31,12 @@ Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 Gyromina is a multipurpose Discord bot, made to be a fun and functional addition to any Discord server.
 
 Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
+
+### Seasons
+
+Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
+
+There is currently no seasonal event active.
 
 ## Setup
 
@@ -55,7 +61,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
 * Configure environment variables (`1.1.x` = **`v9`** setup)
   * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
   * `exp`: `"1"` to enable experimental commands, `"0"` to disable (WARNING: these commands may break!)
-  * `season`: Embed colour override; `"0"` to disable, `"1"` for pride colours, `"2"` for winter colours
+  * `season`: Style override; `"0"` to disable, `"1"` for pride, `"2"` for winter
   * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
 * Optional environment variable config
@@ -116,7 +122,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 <!-- Banners -->
 [gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png
-[gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/717147986186207343/GPBPride.jpg
+[gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/842935847594491924/GyrominaBannerRMOpen-pride.png
 
 <!-- Labels -->
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js

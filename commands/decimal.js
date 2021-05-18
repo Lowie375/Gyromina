@@ -119,6 +119,7 @@ exports.help = {
   "description": "Converts a fraction (in base 10) to a decimal.",
   "usage": `${process.env.prefix}decimal [whole] <num>/<denom>`,
   "params": "[whole] <num>/<denom>",
+  "weight": 2,
   "hide": 0,
   "wip": 0,
   "dead": 0,

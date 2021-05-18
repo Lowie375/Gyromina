@@ -43,13 +43,17 @@ function argComb(args) {
     }
   } 
   switch(save.length) {
-    case 0: return ["x", mixed, 0];
-    case 1: return [save[0], mixed, runoffCheck(args, run, rSave)];
+    case 0: return ["x", mixed, 0, 0];
+    case 1: {
+      let rCheck = runoffCheck(args, run, rSave);
+      return [save[0], mixed, rCheck[0], rCheck[1]];
+    } 
     default: {
       for (let j = 1; j < save.length; j++) {
-        if (save[0] != save[j]) return ["n", mixed, 0];
+        if (save[0] != save[j]) return ["n", mixed, 0, 0];
       }
-      return [save[0], mixed, runoffCheck(args, run, rSave)];
+      let rCheck = runoffCheck(args, run, rSave);
+      return [save[0], mixed, rCheck[0], rCheck[1]];
     }
   }
 } 
@@ -69,78 +73,110 @@ function loggable(n) {
     return 1; // loggable
   else // remove a 10 (2*5) + re-iterate
     loggable(n/10);
-  
-  /* alternate framework (if first breaks)
-  do { // check if a pure power of 2 or 5
-    if(Math.log(n)/Math.log(2) % 1 === 0 || Math.log(n)/Math.log(5) % 1 === 0)
-      return 1;
-    else
-      n /= 10; // remove a 10 (2*5)
-  } while(n/10 % 1 === 0);
-  // final check
-  if(Math.log(n)/Math.log(2) % 1 === 0 || Math.log(n)/Math.log(5) % 1 === 0)
-    return 1;
-  else
-    return 0;*/
 }
 
 function analyze(num) {
-  let numArr = num[1].split("");
-  let lim = Math.floor(num[1].length/2);
-  let cSp = 1;
-  let rMatch = 0;
-
-  while (rMatch === 0 && cSp <= lim) { // comb spacer loop
-    rMatch = 1;
-    for (let i = 1; i <= cSp; i++) { // comb loob
-      // assume match until disproven
-      if (numArr[numArr.length-i] !== numArr[numArr.length-i-cSp]) rMatch = 0; 
-    }
-    if (rMatch === 1) return ["r", cSp]; // match = likely pattern!
-    cSp++; // else, bump comb + try again
+  for(let i = Math.floor(num[1].length/2); i > 0; i--) { // comb spacer loop
+    if(num[1].slice(-i) === num[1].slice(-2*i, -i)) return ["r", i];
   }
   return ["t", 0]; // no pattern, assume terminating
 }
 
 function runoffCheck(args, run, rSave) {
   // cancels runoff check for terminating decimals (does not apply)
-  if(!run) return 0;
+  if(!run) return [0, 0];
 
   // checks if a specific runoff has been given
   if(rSave && !isNaN(parseInt(rSave))) { // snapped together
-    return rSave;
+    return [parseInt(rSave), 1];
   } else if(args[run] && !isNaN(parseInt(args[run]))) { // next arg
-    return args[run];
+    return [parseInt(args[run]), 1];
   } else { // no runoff given, calculate later
-    return 0;
+    return [0, 0];
   }
 }
 
+function factorize10(rn, dt) { // one number must be a power of 10
+  let common = 1;
+  // Divides numbers
+  for(let i = 2; i <= 5; i+=3) {
+    while(rn/i % 1 === 0 && dt/i % 1 === 0) {
+      rn /= i;
+      dt /= i;
+      common *= i;
+    }
+  }
+  return [dt, rn, common*rn*dt]; // [runFact, decFact, lcm]
+}
+
+function getGCF(n1, n2) {
+  let gcf = 1;
+  let lim = Math.min(n1, n2);
+  // irregular checks:
+  for(let i = 2; i <= Math.min(lim, 3); i++) {
+    while(n1/i % 1 === 0 && n2/i % 1 === 0) {
+      n1 /= i;
+      n2 /= i;
+      gcf *= i;
+    }
+  }
+  // regular checks (2n±1):
+  for(let i = 6; (i-1) <= lim; i+=6) {
+    while(n1/(i-1) % 1 === 0 && n2/(i-1) % 1 === 0) {
+      n1 /= (i-1);
+      n2 /= (i-1);
+      gcf *= (i-1);
+    }
+    if(i+1 <= lim) {
+      while(n1/(i+1) % 1 === 0 && n2/(i+1) % 1 === 0) {
+        n1 /= (i+1);
+        n2 /= (i+1);
+        gcf *= (i+1);
+      }
+    }
+  }
+  return gcf;
+}
+
 function runner(num, set) {
-  var runStart = 0;
-  var factor = 1;
-  var numDiv;
-  var check;
-  var runFrac;
-  var decFrac;
+  let runStart = 0;
+  let factor = 1;
+  let numDiv;
+  let check;
+  let runFrac;
+  let decFrac;
+  let frac;
+
+  // checks if run length is out of range
+  if(set[2] <= 0 && set[3] === 1) return "badRun";
 
   // find runoff if not yet determined
   if(set[2] === 0) {
     let s2 = analyze(num)[1];
-    if(s2 === 0)
+    if(s2 === 0) {
       set[2] = num[1].length;
-    else
+      set[3] = 1;
+    } else {
       set[2] = s2;
-  }
+    }
+  } 
 
-  // find the start of the runner
-  for(let i = 0; i < num[1].length - 2*set[2] + 1; i++) {
-    if(num[1].slice(i,i+set[2]) === num[1].slice(i+set[2],i+2*set[2])) {
-      runStart = i;
-      factor = Math.pow(10, i); // numDiv = [term, cleanRunner, rawRunner]
-      numDiv = [num[1].slice(0, i), num[1].slice(i,i+set[2]), `0.${num[1].slice(i)}`];
-      check = `0.${numDiv[1]}${numDiv[1]}`;
-      i = num[1].length; // break
+  if(set[3] === 1) { // runoff given, do setup assuming from end
+    // yes, this is technically a simplification, but not doing this would massively overcomplicate everything
+    runStart = num[1].length - set[2];
+    factor = Math.pow(10, runStart); // numDiv = [term, cleanRunner, rawRunner]
+    numDiv = [num[1].slice(0, runStart), num[1].slice(runStart), `0.${num[1].slice(runStart)}`];
+    check = `0.${numDiv[1]}${numDiv[1]}`;
+  } else {
+    // find the start of the runner ("setup")
+    for(let i = 0; i < num[1].length - 2*set[2] + 1; i++) {
+      if(num[1].slice(i,i+set[2]) === num[1].slice(i+set[2],i+2*set[2])) {
+        runStart = i;
+        factor = Math.pow(10, i); // numDiv = [term, cleanRunner, rawRunner]
+        numDiv = [num[1].slice(0, i), num[1].slice(i,i+set[2]), `0.${num[1].slice(i)}`];
+        check = `0.${numDiv[1]}${numDiv[1]}`;
+        i = num[1].length; // break
+      }
     }
   }
 
@@ -150,12 +186,12 @@ function runner(num, set) {
     if(notLoggable(j) || !loggable(j)) { // skips terminating decimals (notLoggable = simple check, loggable = secondary check)
       let high = Math.ceil(j*numDiv[2]);
       if((high/j).toString().slice(0, check.length) == check) {
-        runFrac = [parseInt(high), j];
+        runFrac = [parseInt(high), j*factor];
         break; // ceiling matches, push
       } else {
         let low = Math.floor(j*numDiv[2]);
         if((low/j).toString().slice(0, check.length) == check) {
-          runFrac = [parseInt(low), j];
+          runFrac = [parseInt(low), j*factor];
           break; // floor matches, push
         }
       }
@@ -163,36 +199,45 @@ function runner(num, set) {
     j++;
   }
   if(j > 999) return "lim"; // too complex, can't handle it (hard limit enforced to save processing power)
-  decFrac = dec([0, numDiv[0]], set);
 
+  // handle the terminating portion (if present)
+  if(numDiv[0] != "")
+    decFrac = dec([0, numDiv[0]], set);
+  else
+    decFrac = [0, 1, num[0]];
 
-/* PSEUDO:
-if no runoff given, analyze()
+  // multiplies fractions by a common factor (for fraction addition)
+  let lcm = factorize10(runFrac[1], decFrac[1]);
+  for(let i = 0; i <= 1; i++) {
+    runFrac[i] *= lcm[0];
+  }
+  for(let i = 0; i <= 1; i++) {
+    decFrac[i] *= lcm[1];
+  }
+  if(runFrac[1] !== lcm[2] || decFrac[1] !== lcm[2]) return "err"; // throw calculation error
 
-find start of runoff
-- start at start, compare strings using runoff length
-split term + runoff
-- use dec() on term
-- store dec places as factor
-iterate runner (limit to 999 for stability)
-- multiply current test denom by decimal given + take ceiling/floor + divide by test
-- compare bounds to actual number
-  - if match, break
-  - else, move to next non-power-of-2-or-5 number
-  //Math.log(x)/Math.log(2) % 1 === 0 || Math.log(x)/Math.log(5) % 1 === 0
+  // Prepares the output fraction
+  frac = [runFrac[0] + decFrac[0], lcm[2], num[0], `${numDiv[0]}${numDiv[1]}${numDiv[1]}`];
+  // Simplifies the fraction (if necessary)
+  let gcf = getGCF(frac[0], frac[1]);
+  for(let i = 0; i <= 1; i++) {
+    frac[i] /= gcf;
+  }
+  // Adds the whole number component (if mixed not specified)
+  if (set[1] === 0) {
+    frac[0] += frac[2] * frac[1];
+    frac[2] = "0";
+  }
 
-add term and runoff/factor
-- find gcf/lcm + add
-add whole number (either as mixed or denom*whole)
-return
-*/
+  // Returns the fraction
+  return frac;
 }
 
 function dec(num, set) {
   // Puts decimal portion over a power of 10 + makes note of how many times the number can be divided
-  var nFrac = parseInt(num[1]);
-  var div = num[1].length;
-  var dFrac = Math.pow(10, div);
+  let nFrac = parseInt(num[1]);
+  let div = num[1].length;
+  let dFrac = Math.pow(10, div);
 
   // Divides numbers
   for(let i = 2; i <= 5; i+=3) {
@@ -203,12 +248,14 @@ function dec(num, set) {
       j++;
     }
   }
-  // Adds the whole number component, if present and mixed not specified
-  if (set[1] == 0) {
+
+  // Checks if the whole number component should be added
+  if (set[1] === 0) { // improper, add if present
     nFrac += num[0] * dFrac;
+    return [nFrac, dFrac, 0];
+  } else { // mixed, do not add
+    return [nFrac, dFrac, num[0]];
   }
-  // Returns the fraction
-  return [nFrac, dFrac];
 }
 
 exports.run = {
@@ -221,6 +268,10 @@ exports.run = {
     var num = args[0].split(".").slice(0, 2);
     var frac;
     var results;
+
+    // converts num[0] to an integer
+    num[0] = parseInt(num[0]);
+    if(isNaN(num[0])) num[0] = 0;
 
     // Determines the fraction algorithm to run based on decimal type
     switch(set[0]) {
@@ -243,6 +294,7 @@ exports.run = {
     if(!Array.isArray(frac)) { // error thrown
       switch(frac) {
         case "lim": return message.channel.send(`That fraction is far too complex for me to handle, <@${message.author.id}>! Sorry about that!`);
+        case "badRun": return message.channel.send(`That's not a valid repeating decimal length, <@${message.author.id}>! Please enter a valid positive integer and try again.`);
         default: return message.channel.send(`Something went wrong when processing that fraction, <@${message.author.id}>! Sorry about that!`);
       }
     }
@@ -252,14 +304,9 @@ exports.run = {
       .setColor(eCol(style.e.default));
     
     if(set[0] == "r" || results[0] == "r")
-      embed.setTitle(`${num[0]}.${frac[2]}… is…\n\`${num[0] === "0" ? "" : `${num[0]} `}${frac[0]}/${frac[1]}\``); 
+      embed.setTitle(`${num[0]}.${frac[3]}… is\n\`${frac[2] === 0 ? "" : `${frac[2]} `}${frac[0]}/${frac[1]}\``); 
     else
-      embed.setTitle(`${num[0]}.${num[1]} is…\n\`${num[0] === "0" ? "" : `${num[0]} `}${frac[0]}/${frac[1]}\``); 
-    /*if (set[1] === 1 && num[0] !== "0") // this is flawed ("r" type won't look good)
-      embed.setTitle(`${num[0]}.${num[1]}${ext} is…\n\`${num[0]} ${frac[0]}/${frac[1]}\``); 
-    else 
-      embed.setTitle(`${num[0]}.${num[1]}${ext} is…\n\`${frac[0]}/${frac[1]}\``);
-    */
+      embed.setTitle(`${num[0]}.${num[1]} is\n\`${frac[2] === 0 ? "" : `${frac[2]} `}${frac[0]}/${frac[1]}\``); 
 
     // sends the embed
     if(set[0] == "x") {
@@ -281,7 +328,8 @@ exports.help = {
   "description": "Converts a decimal to a simplified fraction (in base 10).\nDefaults to an improper fraction.",
   "usage": `${process.env.prefix}fraction <decimal> [queries]`,
   "params": "<decimal> [queries]",
+  "weight": 2,
   "hide": 0,
-  "wip": 1,
+  "wip": 0,
   "dead": 0,
 };

@@ -6,9 +6,6 @@ const {p} = require('../systemFiles/globalFunctions.js');
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 
-// Test regex
-const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
-
 exports.run = {
   execute(message, args, client) {
     // Emoji setup

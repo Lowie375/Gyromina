@@ -17,8 +17,7 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-pre.2
+Latest stable build: v1.1.1
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -70,6 +69,10 @@ There is currently no seasonal event active.
   * `gitToken`/`gitUsername`/`gitRepoName`: GitHub auth token/username/repo name (token scope = `repo`; used with `release`)
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
 * Run using your native runtime/debugger/host and you're good to go!
+
+## Bug Reports
+
+Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
 
 ## Bug Reports
 

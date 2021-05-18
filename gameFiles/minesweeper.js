@@ -591,7 +591,6 @@ exports.exe = {
               }
               // Resets the timer
               finder.resetTimer({time: 120000, idle: 120000});
-
               // Filter setup
               const attachFilter = (a) => a.name == flagID;
               const msgFilter = (msgx) => msgx.author.id == client.user.id && msgx.attachments.some(attachFilter) && msgx.mentions.users.has(player) && !msgx.deleted;

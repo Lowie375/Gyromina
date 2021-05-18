@@ -46,7 +46,7 @@ There is currently no seasonal event active.
 * Choose a server to add Gyromina to
 * Make sure all requested permissions are enabled
   * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**
-  * Highly recommended: **`Use External Emojis`**, **`Manage Messages`**)
+  * Highly recommended: **`Use External Emojis`**, **`Manage Messages`**
 * You're good to go! Have fun!
 
 ### Test or Local Bots (for contributors/debuggers)

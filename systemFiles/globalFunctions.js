@@ -146,12 +146,13 @@ exports.eCol = function(def) {
     } else { // fallback: default to standard
       return def;
     }
-  } else if(now[4] == 11 || process.env.season == "2") { // December: blue theme
-    // return style.e.winter; - TBD
-    return def;
+  } else if(now[4] == 11 || process.env.season === "2") { // December: blue theme
+    return style.e.winter; // subject to change
+  } else if((now[4] == 4 && now[3] >= 9 && now[3] <= 15) || process.env.season === "3") { // May 13th-ish: blurple theme
+    return style.e.blurple; // subject to change
   } else { // Default
     return def;
-  } // TODO: add blurple period (1wk before may 13?)
+  }
 }
 
 // COLOUR

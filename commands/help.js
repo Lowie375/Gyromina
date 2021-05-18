@@ -73,14 +73,20 @@ function splitCore(splitList, count, weight, totWeight) {
   let weightLists = [0, 0, 0];
 
   // Calcuates the target weight for each embed field
-  let target = Math.ceil(totWeight/count);
+  let target = totWeight/count;
 
   // Splits everything into lists
   for (let i = 0; i < count; i++) {
     while(splitList.length != 0 && weightLists[i] < target) {
+      // Checks if adding new element would imbalance the list too much
+      let w = weight.shift();
+      if(i != count-1 && weightLists[i] + w > target && Math.abs(target-weightLists[i]-w) > Math.abs(target-weightLists[i])) {
+        weight.unshift(w);
+        break;
+      }
       // Adds an element
       endLists[i].push(splitList.shift());
-      weightLists[i] += weight.shift();
+      weightLists[i] += w;
       while(splitList.length != 0 && splitList[0].startsWith("or")) {
         // Adds linked elements
         endLists[i].push(splitList.shift());

@@ -18,7 +18,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.0.8  
-Latest indev build: v1.1.0-pre.1
+Latest indev build: v1.1.0-pre.2
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -60,11 +60,12 @@ There is currently no seasonal event active.
 * Fork/download source code + `npm install` in terminal
 * Configure environment variables (`1.1.x` = **`v9`** setup)
   * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
-  * `exp`: `"1"` to enable experimental commands, `"0"` to disable (WARNING: these commands may break!)
-  * `season`: Style override; `"0"` to disable, `"1"` for pride, `"2"` for winter
+  * `exp`: `"1"` to enable experimental commands, `"0"` to disable  
+  (WARNING: experimental commands may break! use at your own risk!)
   * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
 * Optional environment variable config
+  * `season`: Style override; `"0"` to disable, `"1"` for pride, `"2"` for winter, `"3"` for blurple
   * `progressLog`: Discord channel ID (used with `release`)
   * `gitToken`/`gitUsername`/`gitRepoName`: GitHub auth token/username/repo name (token scope = `repo`; used with `release`)
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)

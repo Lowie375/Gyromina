@@ -51,7 +51,7 @@
   "license": "MIT",
   "dependencies": {
     "bent": "^7.3.12",
-    "canvas": "^2.7.0",
+    "canvas": "^2.8.0",
     "colors": "^1.4.0",
     "discord.js": "^12.5.3",
     "emoji-regex": "^9.2.2",

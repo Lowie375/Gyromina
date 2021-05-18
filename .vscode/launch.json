@@ -1,6 +1,6 @@
 {
   "tooltip": "Use IntelliSense to learn about possible attributes. Hover to view descriptions of existing attributes. For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387",
-  "version": "8",
+  "version": "9",
   "configurations": [
     {
       "type": "node",
@@ -11,6 +11,7 @@
         "token": "",
         "prefix": "",
         "exp": "",
+        "season": "",
         "progressLog": "",
         "errorLog": "",
         "eventLog": "",

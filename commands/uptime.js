@@ -1,7 +1,9 @@
-// Require discord.js, the Heroku client, and the emoji file
+// Require discord.js, the Heroku client, the emoji + style files, the permission checker, and the emoji colour checker
 const Discord = require('discord.js');
 const Heroku = require('heroku-client');
 const e = require('../systemFiles/emojis.json');
+const style = require('../systemFiles/style.json');
+const {p, eCol} = require('../systemFiles/globalFunctions.js');
 
 // Extra setup
 const hData = new Heroku({token: process.env.herokuAuth});
@@ -37,14 +39,14 @@ function reDate(ms) {
     case 1: display += `${secs} second, `; break;
     default: display += `${secs} seconds, `; break;
   }
-  // Returns the cleanted output
+  // Returns the cleaned output
   return display.slice(0, -2);
 }
 
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const dyno = client.emojis.cache.get(e.dyno);
+    const dyno = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.dyno) : e.alt.dyno;
 
     // Gets the current time and the ready time
     var dUp = Date.parse(client.readyAt);
@@ -57,7 +59,7 @@ exports.run = {
     // Sets up the embed
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Uptime", client.user.avatarURL())
-      .setColor(0x7effaf)
+      .setColor(eCol(style.e.default))
       .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
       .setTimestamp();
 
@@ -74,7 +76,7 @@ exports.run = {
         embed.addField(`${dyno}  Dyno Uptime`, dOut);
 
         // Sends the embed
-        message.channel.send({embed: embed});
+        return message.channel.send({embed: embed});
       })
       .catch (err => { // Could not pull API data
         console.error("API request failed; defaulting to minimal uptime report", err);
@@ -84,7 +86,7 @@ exports.run = {
         embed.setDescription(`That's ${dMillival} milliseconds, wow!`);
 
         // Sends the embed
-        message.channel.send({embed: embed});
+        return message.channel.send({embed: embed});
     });  
   },
 };

@@ -1,5 +1,5 @@
-// Require the Write function, the Clean function, and colors
-const {Write, Clean} = require("../systemFiles/globalFunctions.js");
+// Require the permission checker, some global functions (Write + Clean), colors, the package file, the emoji file, and request
+const {p, Write, Clean} = require("../systemFiles/globalFunctions.js");
 const colors = require('colors');
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
@@ -19,7 +19,7 @@ exports.run = {
     const softRelease = args.join(" ").toString().includes("-s");
 
     // Emoji setup
-    const nope = client.emojis.cache.get(e.nope);
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
 
     version = vers;
 
@@ -61,7 +61,7 @@ exports.run = {
       
 
     function main() {
-      message.channel.send("Releasing...")
+      message.channel.send("Releasing…")
         .then(relMsg => {
 
           Write(`Releasing version ${version} ${forceVerification === true ? "(Forced)" : ""}`);
@@ -100,7 +100,7 @@ function CreateGithubRelease (changeLogText) {
     })
   };
 
-  Write(`Creating release ${version}...`.blue, startTime, false);
+  Write(`Creating release ${version}…`.blue, startTime, false);
 
   AuthenticatedBlockingPerform(options, (res, bod) => {
     Write(`Version ${version} released!`);

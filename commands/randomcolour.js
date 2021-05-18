@@ -1,6 +1,6 @@
-// randomcolour V2 - Made by Homura#5311
+// randomcolour V2 - Made by nakanino
 
-// Require discord.js and the RNG
+// Require discord.js, the RNG, and some colour conversions
 const Discord = require('discord.js');
 const {getRandomInt, hexToRgb, rgbToCmyk, hexToInt} = require('../systemFiles/globalFunctions.js');
 
@@ -19,13 +19,14 @@ exports.run = {
     let cmyk = rgbToCmyk(rgb);
     let int = hexToInt(hex);
 
+    // Creates the embed
     const embed = new Discord.MessageEmbed()
       .setTitle(`#${hex}`)
       .setDescription(`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})\ncmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)\nint: ${int}`)
       .setColor(parseInt(`0x${hex}`));
 
-    message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
-
+    // Sends the embed
+    return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   },
 };
 

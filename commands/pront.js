@@ -22,7 +22,10 @@ const excuses = ["The pronter ran out of black ink",
   "The pronter caved in on itself",
   "The pronter ran away",
   "The pronter had an existential crisis",
-  "The pronter mysteriously vanished"];
+  "The pronter mysteriously vanished",
+  "The pronter short-circuited",
+  "The pronter was too busy eating ice cream",
+  "The pronter forgot how to pront"];
 
 function makeExcuse() {
   let num = getRandomInt(0, excuses.length-1);
@@ -31,7 +34,7 @@ function makeExcuse() {
 
 exports.run = {
   execute(message, args, client) {
-    if (args.length == 0) {
+    if (args.length === 0) {
       let excuse = makeExcuse();
       return message.channel.send(`${excuse}, <@${message.author.id}>. ¯\\_(ツ)_/¯\n(No emoji entered. Please enter a valid emoji and try again.)`);
     }
@@ -56,7 +59,7 @@ exports.run = {
     }
     
     // Sends the printed emojis
-    message.channel.send(`${pront}\n${emoji}\n${emoji}\n${emoji}`);
+    return message.channel.send(`${pront}\n${emoji}\n${emoji}\n${emoji}`);
   },
 };
 

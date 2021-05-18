@@ -1,4 +1,4 @@
-// Require discord.js and some global functions (colour + Clean)
+// Require discord.js and some global functions (colour conversions + Clean)
 const Discord = require('discord.js');
 const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, Clean, minMax} = require('../systemFiles/globalFunctions.js');
 
@@ -17,15 +17,8 @@ function extract(xc) {
   } else if(n) {
     // xc -> CMKY object
     return ["cmyk", 2, {c: minMax(n[1], 0, 100), m: minMax(n[2], 0, 100), y: minMax(n[3], 0, 100), k: minMax(n[4], 0, 100)}];
-  } /*else if(!isNaN(parseInt(xc, 10))) {
-    // xc -> int
-    return ["int", 3, parseInt(xc, 10)];
-  } else if(hexX.exec(xc)) {
-    // xc -> hex code
-    return ["hex", 0, hexX.exec(xc)[2]];
-  } */
-  else if(!isNaN(parseInt(xc, 10)) || o) {
-  // xc -> int or hex, secondary check needed
+  } else if(!isNaN(parseInt(xc, 10)) || o) {
+    // xc -> int or hex, secondary check needed
     if(o && (xc.startsWith("#") || xc.startsWith("0x") || /[a-f]+/i.exec(xc) || /^0+/.exec(o))) { // hex check
       // xc -> hex code
       return ["hex", 0, o[2]];
@@ -47,7 +40,7 @@ function extract(xc) {
 
 exports.run = {
   execute(message, args, client) {
-    if (args.length == 0)
+    if (args.length === 0)
       return message.channel.send(`I can't get colour data for a non-existent colour, <@${message.author.id}>!`)
 
     // Decoding
@@ -59,9 +52,6 @@ exports.run = {
     var rgb;
     var cmyk;
     var int;
-
-    // Test snippet
-    //message.channel.send(`Caught ${col[0]}`);
 
     // Colour conversions
     switch(col[0]) {
@@ -113,8 +103,8 @@ exports.run = {
       
     // Sends the embed
     switch (col[0]) {
-      case "amb": message.channel.send(`Ambiguous input detected, <@${message.author.id}>, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, {embed: embed}); break;
-      default: message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed}); break;
+      case "amb": return message.channel.send(`Ambiguous input detected, <@${message.author.id}>, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, {embed: embed});
+      default: return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
     }
   }
 }

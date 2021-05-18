@@ -1,19 +1,19 @@
-// Require the RNG and the emoji file
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+// Require the RNG, permission checker, and emoji file
+const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 exports.run = {
   execute(message, args, client) {
-    const yep = client.emojis.cache.get(e.yep);
-    const nope = client.emojis.cache.get(e.nope);
+    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
 
     let max = getRandomInt(1, 3);
     var del = getRandomInt(0, max);
 
-    if (del == 0) {
+    if (del == 0 || !p(message, ['MANAGE_MESSAGES'])) {
       setTimeout(() => {
         message.channel.send(`${nope} Content could not be delelte'd`);
-      }, 350);
+      }, getRandomInt(250, 450));
     } else {
       message.delete()
         .then(() => {

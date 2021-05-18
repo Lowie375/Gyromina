@@ -7,6 +7,7 @@ const quips = [["Casserole in the closet!", 1],
   ["Who took the casserole out of the closet?", 1],
   ["Who put the casserole on the window sill?", 0],
   ["Eggplant casserole… what do I do with *this*?", 0],
+  ["Come get your casserole, fresh out the closet!", 1]
 ];
 
 exports.run = {
@@ -16,10 +17,10 @@ exports.run = {
     var time = new Date();
     // Checks if the quip is pride-related
     var output = quips[quip][0];
-    if (quips[quip][1] == 1 && time.getUTCMonth() == 5)
+    if (quips[quip][1] === 1 && time.getUTCMonth() == 5)
       output += ` ${flag}`;
     // Sends the quip
-    message.channel.send(output);
+    return message.channel.send(output);
   },
 };
 

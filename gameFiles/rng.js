@@ -1,5 +1,5 @@
-// Require the RNG (obviously) and the emoji file
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+// Require the RNG (obviously), permission checker, and emoji file
+const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
 const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit"];
@@ -48,8 +48,8 @@ exports.exe = {
     var content = "";
 
     // Emoji setup
-    const yep = client.emojis.cache.get(e.yep);
-    const nope = client.emojis.cache.get(e.nope);
+    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
+    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.yep;
 
     if (!options)
       max = 10;
@@ -154,6 +154,7 @@ exports.label = {
   "name": "rng",
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
   "players": [1],
+  "reactions": 0,
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
   "helpurl": "https://l375.weebly.com/gyrogame-rng",
   "options": "[max/preset]",

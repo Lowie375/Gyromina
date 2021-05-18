@@ -11,6 +11,7 @@ exports.label = {
   "name": "kingsmagic",
   "aliases": ["kings", "kings-magic"],
   "players": [1],
+  "reactions": 0,
   "description": "An original card game. Try your luck, but don't hit the king!",
   "helpurl": "https://l375.weebly.com/gyrogame-kingsmagic",
   "options": "[mode]",

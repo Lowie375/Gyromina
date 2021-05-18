@@ -16,19 +16,24 @@ const proof = ["because that's just how it is.",
   "because… why not.",
   "because Gyromina is never gonna tell a lie… and hurt you. _\\\*insert rickroll here\\\*_",
   "because… yes.",
-  "because it helps Gyromina sleep at night."];
+  "because it helps Gyromina sleep at night.",
+  "for whatever reason.",
+  "because you just have to face the facts sometimes.",
+  "because Gyromina is too busy eating ice cream to argue."];
 
 exports.run = {
   execute(message, args, client) {
-    if (args.length == 0)
+    if (args.length === 0)
       return message.channel.send(`You didn't give me anything to prove, <@${message.author.id}>!`);
     
     const [...statement] = Clean(args);
 
+    // Generates a 'proof'
     var num = getRandomInt(0, proof.length-1);
     const selected = proof[num];
 
-    message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
+    // Sends the evidence ('proof')
+    return message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
   }
 };
 

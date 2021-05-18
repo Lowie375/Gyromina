@@ -1,7 +1,8 @@
-// Require discord.js and the RNG
+// Require discord.js, the permission checker, the RNG, and the emoji + style files
 const Discord = require('discord.js');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
+const style = require('../systemFiles/style.json');
 
 // Declares CBX characters for future use
 const genChars = ["0", "1", "2", "3", "5", "8", "l", "a", "w", "n", "p", "x", "-", "i", "_", "y", "h", "b", "t", "q", "j", "s", "r", "v", "k", "c", "g", "f", "m", "z", "e", "u"];
@@ -50,18 +51,18 @@ function genCode() {
 // Reference code generator
 exports.genErrorMsg = function(message, client, error) {
   // Emoji setup
-  const warning = client.emojis.cache.get(e.warn);
+  const warning = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.warn) : e.alt.warn;
 
   // Generates a reference code
   const newRef = genCode();
   // Logs the error
-  console.error(`REFCODE: ${newRef}\n- - - - - - - - - - -`, error);
+  console.error(`REFCODE: ${newRef}\n`, error);
 
   // Sends a warning message in the channel
   const embed3 = new Discord.MessageEmbed()
-    .setTitle(`${warning} Something went wrong...`)
-    .setColor(0xffcc4d)
-    .setDescription(`\• Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\n\• Reference code: \`${newRef}\``);
+    .setTitle(`${warning} Something went wrong…`)
+    .setColor(style.e.error)
+    .setDescription(`Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``);
   message.channel.send(embed3);
   
   // Sends the error to the Gyromina log channel

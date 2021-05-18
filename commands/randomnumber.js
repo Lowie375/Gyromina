@@ -1,6 +1,7 @@
-// Require discord.js and the RNG
+// Require discord.js, the style file, the RNG, and the embed colour checker
 const Discord = require('discord.js');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const style = require('../systemFiles/style.json');
+const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;
@@ -14,7 +15,7 @@ function getRandomNumber(min, max) {
   altMinDecim = altMin % 1;
   altMaxDecim = altMax % 1;
 
-  if (altMinDecim == 0 && altMaxDecim == 0) {
+  if (altMinDecim === 0 && altMaxDecim === 0) {
     factor = 1;
     factorPower = 0;
   } else if (altMin.toString().split(".").pop().length >= altMax.toString().split(".").pop().length) {
@@ -23,6 +24,9 @@ function getRandomNumber(min, max) {
   } else if (altMin.toString().split(".").pop().length < altMax.toString().split(".").pop().length) {
     factor = Math.pow(10, altMax.toString().split(".").pop().length);
     factorPower = altMax.toString().split(".").pop().length;
+  } else { // fallback
+    factor = 1;
+    factorPower = 0;
   }
 
   altMin -= altMin % 1;
@@ -30,7 +34,7 @@ function getRandomNumber(min, max) {
 
   num = getRandomInt(altMin, altMax);
 
-  if (factor != 1) {
+  if (factor !== 1) {
     switch (num) {
       case altMin: numDecim = getRandomInt(altMinDecim*factor, factor-1)/factor; break;
       case altMax: numDecim = getRandomInt(0, altMaxDecim*factor-1)/factor; break;
@@ -51,35 +55,38 @@ function getRandomNumber(min, max) {
 
 exports.run = {
   execute(message, args, client) {
+    var number;
 
-    var number = 0;
-
-    if (args.length == 0)
+    // Checks if no bounds were set
+    if (args.length === 0)
       return message.channel.send(`I can\'t generate a number in a non-existent range, <@${message.author.id}>!`)
 
+    // Checks numbers and generates
     if (args.length >= 2) {
       if (!isNaN(args[0]) && !isNaN(args[1]))
         number = getRandomNumber(args[0], args[1]);
       else
         return message.channel.send(`I can\'t generate a random number between non-numerical values, <@${message.author.id}>!`);
-    } else if (args.length = 1) {
+    } else {
       if (!isNaN(args[0]))
         number = getRandomNumber(0, args[0]);
       else
         return message.channel.send(`I can\'t generate a random number between non-numerical values, <@${message.author.id}>!`);
     }
 
+    // Creates the embed
     const embed = new Discord.MessageEmbed()
       .setTitle(`\`${number}\``)
-      .setColor(0x7effaf);
+      .setColor(eCol(style.e.default));
 
-    message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
+    // Sends the embed
+    return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
   }
 };
 
 exports.help = {
   "name": "randomnumber",
-  "aliases": ["number", "num", "rn"],
+  "aliases": ["number", "num", "rn", "rnum"],
   "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates between 0 and that number, inclusive.",
   "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
   "params": "<num1> [num2]",

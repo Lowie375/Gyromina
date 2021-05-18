@@ -1,13 +1,14 @@
-// Require colors and the emoji regex
+// Require colors, the emoji regex, and the style file
 const color = require('colors');
 const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
+const style = require('../systemFiles/style.json');
 
 // UTIL
 
 /**
  * Writes to the console with time when it was ran
- * @author Laica#4351 (Altenhh)
+ * @author Laica (Altenhh)
  * @param message
  * @param startTime
  * @param useLocale
@@ -29,7 +30,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
 
 /**
  * Clears out any @Everyone's.
- * @author Laica#4351 (Altenhh)
+ * @author Laica (Altenhh)
  * @return {string}
  */
 
@@ -85,11 +86,80 @@ exports.emojiCheck = function(e) {
   }
 };
 
+/**
+ * Constrains a number between a minimum and a maximum value
+ * @param {Number} n The number to constrain
+ * @param {Number} min The minimum
+ * @param {Number} max The maximum
+ * @return {Number}
+ */
+
+exports.minMax = function(n, min, max) {
+  return Math.max(min, Math.min(max, n));
+}
+
+/**
+ * Checks whether Gyromina has a certain permission in the channel a message was sent in
+ * @param message The message object
+ * @param perm An array containing the permissions to check for
+ * @return {Boolean}
+ */
+
+exports.p = function(message, perm = [""]) {
+  if (message.channel.type == "dm" || message.channel.type == "voice") {
+    return true;
+  } else {
+    let gPerm = message.channel.permissionsFor(message.guild.me);
+    if (gPerm.has(perm))
+      return true;
+    else
+      return false;
+  }
+}
+
+/**
+ * Checks whether an embed's colour should be changed due to the current season
+ * @param def The standard colour for the embed in question
+ * @return {String}
+ */
+
+exports.eCol = function(def) {
+  let d = new Date();
+  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDay(), d.getUTCMonth(), d.getUTCFullYear()];
+  if(now[4] == 5 || process.env.season === "1") { // June: rainbow randomizer
+    let col = Math.min(Math.floor(Math.random() * 193) + 63, 255);
+    let pos = [Math.min(Math.floor(Math.random()*3), 2), Math.min(Math.floor(Math.random()*2), 1)];
+    if(pos[1] === 0) { // 255 before 63
+      switch(pos[0]) {
+        case 0: return `${col.toString(16)}ff3f`;
+        case 1: return `ff${col.toString(16)}3f`;
+        case 2: return `ff3f${col.toString(16)}`;
+        default: return def; // fallback
+      }
+    } else if(pos[1] === 1) { // 63 before 255
+      switch(pos[0]) {
+        case 0: return `${col.toString(16)}3fff`;
+        case 1: return `3f${col.toString(16)}ff`;
+        case 2: return `3fff${col.toString(16)}`;
+        default: return def; // fallback
+      }
+    } else { // fallback: default to standard
+      return def;
+    }
+  } else if(now[4] == 11 || process.env.season === "2") { // December: blue theme
+    return style.e.winter; // subject to change
+  } else if((now[4] == 4 && now[3] >= 9 && now[3] <= 15) || process.env.season === "3") { // May 13th-ish: blurple theme
+    return style.e.blurple; // subject to change
+  } else { // Default
+    return def;
+  }
+}
+
 // COLOUR
 
 /**
  * Converts a hexadecimal colour code to RGB format
- * @author Homura#5331 (Homurasama)
+ * @author nakanino
  * @param {string} hex The hexadecimal colour code (preceded by a #)
  * @return {JSON<number>}
  */
@@ -170,7 +240,7 @@ exports.rgbToCmyk = function(rgb) {
 }
 
 /**
- * Converts a hexidecimal colour code to a colour integer
+ * Converts a hexadecimal colour code to a colour integer
  * @param {String} hex The hexadecimal colour code (raw; no #)
  * @return {Number}
  */
@@ -180,7 +250,7 @@ exports.hexToInt = function(hex) {
 }
 
 /**
- * Converts a colour integer to a hexidecimal colour code
+ * Converts a colour integer to a hexadecimal colour code
  * @param {Number} int The colour integer
  * @return {String}
  */
@@ -193,16 +263,66 @@ exports.intToHex = function(int) {
   return res;
 }
 
+// TEMPERATURE
+
 /**
- * Constrains a number between a minimum and a maximum value
- * @param {Number} x The number to constrain
- * @param {Number} min The minimum
- * @param {Number} max The maximum
+ * Converts a temperature in degrees Fahrenheit to degrees Celcius
+ * @param {Number} F The temperature, in degrees Fahrenheit
  * @return {Number}
  */
 
-exports.minMax = function(n, min, max) {
-  return Math.max(min, Math.min(max, n));
+exports.FtoC = function(F) {
+  return (F - 32) * 5/9;
+}
+
+/**
+ * Converts a temperature in degrees Celcius to degrees Fahrenheit
+ * @param {Number} C The temperature, in degrees Celcius
+ * @return {Number}
+ */
+
+exports.CtoF = function(C) {
+  return C * 9/5 + 32;
+}
+
+/**
+ * Converts a temperature in degrees Celcius to Kelvins
+ * @param {Number} C The temperature, in degrees Celcius
+ * @return {Number}
+ */
+
+exports.CtoK = function(C) {
+  return C + 273.15;
+}
+
+/**
+ * Converts a temperature in Kelvins to degrees Celcius
+ * @param {Number} K The temperature, in Kelvins
+ * @return {Number}
+ */
+
+exports.KtoC = function(K) {
+  return K - 273.15;
+}
+
+/**
+ * Converts a temperature in degrees Fahrenheit to degrees Rankine
+ * @param {Number} K The temperature, in degrees Fahrenheit
+ * @return {Number}
+ */
+
+exports.FtoR = function(F) {
+  return F + 459.67;
+}
+
+/**
+ * Converts a temperature in degrees Rankine to degrees Fahrenheit
+ * @param {Number} K The temperature, in degrees Rankine
+ * @return {Number}
+ */
+
+exports.RtoF = function(R) {
+  return R - 459.67;
 }
 
 /**

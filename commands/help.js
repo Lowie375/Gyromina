@@ -1,6 +1,8 @@
-// Require discord.js and the refcode generator
+// Require discord.js, the emoji + style files, the permission checker, and the embed colour checker
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
+const style = require('../systemFiles/style.json');
+const {p, eCol} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
   var list = "\• " + process.env.prefix + "**" + c.help.name + "**"
@@ -71,14 +73,20 @@ function splitCore(splitList, count, weight, totWeight) {
   let weightLists = [0, 0, 0];
 
   // Calcuates the target weight for each embed field
-  let target = Math.ceil(totWeight/count);
+  let target = totWeight/count;
 
   // Splits everything into lists
   for (let i = 0; i < count; i++) {
     while(splitList.length != 0 && weightLists[i] < target) {
+      // Checks if adding new element would imbalance the list too much
+      let w = weight.shift();
+      if(i != count-1 && weightLists[i] + w > target && Math.abs(target-weightLists[i]-w) > Math.abs(target-weightLists[i])) {
+        weight.unshift(w);
+        break;
+      }
       // Adds an element
       endLists[i].push(splitList.shift());
-      weightLists[i] += weight.shift();
+      weightLists[i] += w;
       while(splitList.length != 0 && splitList[0].startsWith("or")) {
         // Adds linked elements
         endLists[i].push(splitList.shift());
@@ -97,10 +105,10 @@ function splitCore(splitList, count, weight, totWeight) {
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const ghost = client.emojis.cache.get(e.ghost);
-    const beta = client.emojis.cache.get(e.beta);
-    const main = client.emojis.cache.get(e.main);
-    const dead = client.emojis.cache.get(e.dead);
+    const ghost = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.ghost) : e.alt.ghost;
+    const beta = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.beta) : e.alt.beta;
+    const main = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.main) : e.alt.main;
+    const dead = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.dead) : e.alt.dead;
 
     // Checks for special arguments
     var conditions = [];
@@ -128,13 +136,13 @@ exports.run = {
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       if(cmdy.help.dead === 1)
-        embed.setColor(0xff4d4d);
+        embed.setColor(style.e.dead);
       else if(cmdy.help.wip === 1)
-        embed.setColor(0xffcc4d);
+        embed.setColor(style.e.wip);
       else if(cmdy.help.hide === 1)
-        embed.setColor(0xfefefe);
+        embed.setColor(style.e.hide);
       else
-        embed.setColor(0x7effaf);
+        embed.setColor(eCol(style.e.default));
 
       if(cmdy.help.name === commandName)
         embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}`);
@@ -178,13 +186,13 @@ exports.run = {
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       if(gmz.label.deleted === 1)
-        embed.setColor(0xff4d4d);
+        embed.setColor(style.e.dead);
       else if(gmz.label.indev === 1)
-        embed.setColor(0xffcc4d);
+        embed.setColor(style.e.wip);
       else if(gmz.label.exclusive === 1)
-        embed.setColor(0xfefefe);
+        embed.setColor(style.e.hide);
       else
-        embed.setColor(0x7effaf);
+        embed.setColor(eCol(style.e.default));
       
       if(gmz.label.name === gameName)
         embed.setTitle(`${ext}${gmz.label.name}`);
@@ -212,7 +220,7 @@ exports.run = {
     } else if (conditions[1] == 1) { // General game help
 
       // Sets up the embed
-      embed.setColor(0x7effaf);
+      embed.setColor(eCol(style.e.default));
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
@@ -280,7 +288,7 @@ exports.run = {
     } else { // General command help
 
       // Sets up the embed
-      embed.setColor(0x7effaf);
+      embed.setColor(eCol(style.e.default));
       embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
       embed.setTimestamp();
       embed.setAuthor("Master Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
@@ -347,7 +355,7 @@ exports.run = {
       }
     }
     // Sends the embed
-    message.channel.send({embed: embed});
+    return message.channel.send({embed: embed});
   },
 };
 

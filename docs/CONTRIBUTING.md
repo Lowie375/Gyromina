@@ -32,16 +32,16 @@ These are some of the major conventions I've tried to follow within Gyromina's c
 * Put spaces around operators, except when used for math inside arguments or long calculations (`myVar = 5` over `myVar=5` and `myOtherVar += m * 9` over `myOtherVar+=m*9`, but `arr[i+2]` and `myFunc(n*5)` are okay)
 * No spaces inside single line blocks (`if (foo === true) {return bar;}` over `if (foo === true) { return bar; }`)
 * Add function definitions for all exported functions in the 'systemFiles' folder
-* Make things look nice! Add whitespace between large segments of code and include brief comments wherever you see fit. Gyromina is an open source project, so keeping things clean and easy to read for all contributors is a must. Plus, comments help everyone (especially myself) see what certain segments of code do so that we don't end up breaking them later on.
+* Make things look nice! Add whitespace between large segments of code and include brief comments wherever you see fit. Gyromina is an open source project, so keeping things clean and easy to read for future contributors is a must. Comments also help everyone (especially myself) see what certain segments of code do so that we don't end up breaking them later on.
 
 ## Crediting
 
 If you have contributed or tested code:
 
 * Feel free to add yourself to the list of contributors or testers in the **[package](/package.json)** file, if you'd like to
-  * **Contributors**: Add your name or Discord tag to `contributors[]`, your Discord **ID** (not tag) to `contributorIDs[]`, and a link of your choice to `contributorLinks[]`, all at the same array index
-  * **Testers**: Add your name or Discord tag to `testers[]` and your Discord user ID to `testerIDs[]`, both at the same array index
+  * **Contributors**: Add your name or a nickname to `contributors[]` and your GitHub username to `contributorGits[]`, both at the same array index. If you'd like, you can also add your Discord **ID** (not tag) to `contributorIDs[]` and a link of your choice to `contributorLinks[]`, both at the same array index as the other two
+  * **Testers**: Add your name or a nickname to `testers[]`. If you'd like, you can also add your Discord **ID** (not tag) to `testerIDs[]` and a link of your choice to `testerLinks[]`, both at the same array index as your username.
 * Feel free to add your name to the list of contributors in the **[README](/README)** file as well
-  * **Contributors**: Add your Discord tag, name, and/or GitHub username under the **Repo Contributors** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate contributor marker once your contribution is pushed.
-  * **Testers**: Add your Discord tag, name, and/or GitHub username under the **Helpers** heading. Feel free to link any of your names/usernames to personal websites or social profiles, as you choose. I will add an appropriate tester marker with the next repo push.
-* If you do not add yourself to the package or README files, I will do that before your contributions are pushed, unless you specify otherwise.
+  * **Contributors**: Add your name, nickname, and/or GitHub username under the **Repo Contributors** heading. Feel free to link any of your names/usernames to personal websites or social profiles. I will add an appropriate contributor marker once your contribution is pushed.
+  * **Testers**: Add your name, nickname, and/or GitHub username under the **Helpers** heading. Feel free to link any of your names/usernames to personal websites or social profiles, if you'd like. I will add an appropriate tester marker with the next repo push.
+* If you do not add yourself to the package or README files, I will do that before your contributions are pushed (unless you tell me otherwise).

@@ -74,10 +74,6 @@ There is currently no seasonal event active.
 
 Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
 
-## Bug Reports
-
-Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
-
 ## Changelog
 
 Gyromina's changelog can be found at **[https://l375.weebly.com/gyro-log][log]**.

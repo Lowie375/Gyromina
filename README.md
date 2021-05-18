@@ -17,7 +17,7 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.1.1
+Latest stable build: v1.1.2
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -136,7 +136,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [build-img]: https://img.shields.io/scrutinizer/build/g/Lowie375/Gyromina
 [code-quality-img]: https://img.shields.io/scrutinizer/quality/g/Lowie375/Gyromina
 
-[maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf
-[min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-7effaf
-[debugger-label]: https://img.shields.io/badge/debugger-%F0%9F%A6%9F-7effaf
-[tester-label]: https://img.shields.io/badge/beta%20tester-%E2%8C%9A-7effaf
+[maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-00b275
+[min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-00b275
+[debugger-label]: https://img.shields.io/badge/debugger-%F0%9F%A6%9F-00b275
+[tester-label]: https://img.shields.io/badge/beta%20tester-%E2%8C%9A-00b275

@@ -1,4 +1,4 @@
-# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner]][info]
+# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner-pride]][info]
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]][master-pkg]
@@ -31,11 +31,12 @@ Gyromina is a multipurpose Discord bot, made to be a fun and functional addition
 
 Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
 
-### Seasons
+### Events + Seasons 🏳️‍🌈 🏳️‍⚧️
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-There is currently no seasonal event active.
+The **pride** event is currently active and will remain active throughout the month of June!  
+Gyromina was created by an openly LGBTQIA+ creator who is absolutely proud to be who they are and eternally grateful to be residing in an accepting area of the world. As a show of support for the LGBTQIA+ community, Gyromina will don a rainbow profile picture and have some special easter eggs enabled.
 
 ## Setup
 
@@ -127,7 +128,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 <!-- Labels -->
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
-[indev-version-img]: https://img.shields.io/github/package-json/version/Lowie375/Gyromina/indev-branch?label=indev%20version
+[indev-version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina/indev-branch?label=indev%20version
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
 [master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29

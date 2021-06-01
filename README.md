@@ -38,6 +38,8 @@ Occasionally, Gyromina will get some special features and UI changes during cert
 The **pride** event is currently active and will remain active throughout the month of June!  
 Gyromina was created by an openly LGBTQIA+ creator who is absolutely proud to be who they are and eternally grateful to be residing in an accepting area of the world. As a show of support for the LGBTQIA+ community, Gyromina will don a rainbow profile picture and have some special easter eggs enabled.
 
+💗💛💙 💛🤍💜🖤 💙❤️🖤
+
 ## Setup
 
 ### General (for server owners/admins)

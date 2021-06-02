@@ -116,6 +116,22 @@ exports.p = function(message, perm = [""]) {
       return false;
   }
 }
+/**
+ * Creates a custom date timestamp for embed usage
+ * @return {String}
+ */
+
+exports.stamp = function() {
+  let d = new Date();
+  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth()+1, d.getUTCFullYear()];
+  for(let i = 0; i <= 4; i++) {
+    if(now[i].toString().length <= 1)
+      now[i] = `0${now[i]}`;
+  }
+  return `${now[5]}/${now[4]}/${now[3]} @ ${now[2]}:${now[1]}:${now[0]} UTC`;
+}
+
+// STYLE
 
 /**
  * Checks whether an embed's colour should be changed due to the current season
@@ -125,7 +141,7 @@ exports.p = function(message, perm = [""]) {
 
 exports.eCol = function(def) {
   let d = new Date();
-  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDay(), d.getUTCMonth(), d.getUTCFullYear()];
+  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()];
   if(now[4] == 5 || process.env.season === "1") { // June: rainbow randomizer
     let col = Math.min(Math.floor(Math.random() * 193) + 63, 255);
     let pos = [Math.min(Math.floor(Math.random()*3), 2), Math.min(Math.floor(Math.random()*2), 1)];
@@ -153,6 +169,25 @@ exports.eCol = function(def) {
   } else { // Default
     return def;
   }
+}
+
+/**
+ * Checks whether an avatar should be changed due to the current season
+ * @param cdn The CDN constant
+ * @return {String}
+ */
+
+exports.avCol = function(cdn) {
+  let d = new Date();
+  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()];
+  if(now[4] == 5 || process.env.season === "1") // June: rainbow
+    return cdn.avatar.pride;
+  else if(now[4] == 11 || process.env.season === "2") // December: blue theme
+    return cdn.avatar.winter;
+  else if((now[4] == 4 && now[3] >= 9 && now[3] <= 15) || process.env.season === "3") // May 13th-ish: blurple theme
+    return cdn.avatar.blurple;
+  else // Default
+    return cdn.avatar.default;
 }
 
 // COLOUR
@@ -264,66 +299,6 @@ exports.intToHex = function(int) {
 }
 
 // TEMPERATURE
-
-/**
- * Converts a temperature in degrees Fahrenheit to degrees Celcius
- * @param {Number} F The temperature, in degrees Fahrenheit
- * @return {Number}
- */
-
-exports.FtoC = function(F) {
-  return (F - 32) * 5/9;
-}
-
-/**
- * Converts a temperature in degrees Celcius to degrees Fahrenheit
- * @param {Number} C The temperature, in degrees Celcius
- * @return {Number}
- */
-
-exports.CtoF = function(C) {
-  return C * 9/5 + 32;
-}
-
-/**
- * Converts a temperature in degrees Celcius to Kelvins
- * @param {Number} C The temperature, in degrees Celcius
- * @return {Number}
- */
-
-exports.CtoK = function(C) {
-  return C + 273.15;
-}
-
-/**
- * Converts a temperature in Kelvins to degrees Celcius
- * @param {Number} K The temperature, in Kelvins
- * @return {Number}
- */
-
-exports.KtoC = function(K) {
-  return K - 273.15;
-}
-
-/**
- * Converts a temperature in degrees Fahrenheit to degrees Rankine
- * @param {Number} K The temperature, in degrees Fahrenheit
- * @return {Number}
- */
-
-exports.FtoR = function(F) {
-  return F + 459.67;
-}
-
-/**
- * Converts a temperature in degrees Rankine to degrees Fahrenheit
- * @param {Number} K The temperature, in degrees Rankine
- * @return {Number}
- */
-
-exports.RtoF = function(R) {
-  return R - 459.67;
-}
 
 /**
  * Converts a temperature in degrees Fahrenheit to degrees Celcius

@@ -1,4 +1,4 @@
-# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner]][info]
+# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner-pride]][info]
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]][master-pkg]
@@ -17,7 +17,8 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.1.1
+Latest stable build: v1.1.3  
+Lastes indev build: v1.2.0-alpha.1
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -31,11 +32,14 @@ Gyromina is a multipurpose Discord bot, made to be a fun and functional addition
 
 Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
 
-### Seasons
+### Events + Seasons 🏳️‍🌈 🏳️‍⚧️
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-There is currently no seasonal event active.
+The **pride** event is currently active and will remain active throughout the month of June!  
+Gyromina was created by an openly LGBTQIA+ creator who is absolutely proud to be who they are and eternally grateful to be residing in an accepting area of the world. As a show of support for the LGBTQIA+ community, Gyromina will don a rainbow profile picture and have some special easter eggs enabled.
+
+💗💛💙 💛🤍💜🖤 💙❤️🖤
 
 ## Setup
 
@@ -69,10 +73,6 @@ There is currently no seasonal event active.
   * `gitToken`/`gitUsername`/`gitRepoName`: GitHub auth token/username/repo name (token scope = `repo`; used with `release`)
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
 * Run using your native runtime/debugger/host and you're good to go!
-
-## Bug Reports
-
-Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
 
 ## Bug Reports
 
@@ -131,7 +131,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 <!-- Labels -->
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
-[indev-version-img]: https://img.shields.io/github/package-json/version/Lowie375/Gyromina/indev-branch?label=indev%20version
+[indev-version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina/indev-branch?label=indev%20version
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
 [master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
@@ -140,7 +140,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [build-img]: https://img.shields.io/scrutinizer/build/g/Lowie375/Gyromina
 [code-quality-img]: https://img.shields.io/scrutinizer/quality/g/Lowie375/Gyromina
 
-[maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-7effaf
-[min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-7effaf
-[debugger-label]: https://img.shields.io/badge/debugger-%F0%9F%A6%9F-7effaf
-[tester-label]: https://img.shields.io/badge/beta%20tester-%E2%8C%9A-7effaf
+[maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-00b275
+[min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-00b275
+[debugger-label]: https://img.shields.io/badge/debugger-%F0%9F%A6%9F-00b275
+[tester-label]: https://img.shields.io/badge/beta%20tester-%E2%8C%9A-00b275

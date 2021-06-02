@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
-const {p, eCol} = require('../systemFiles/globalFunctions.js');
+const {p, eCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
   var list = "\• " + process.env.prefix + "**" + c.help.name + "**"
@@ -133,8 +133,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
-      embed.setTimestamp();
+      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
       if(cmdy.help.dead === 1)
         embed.setColor(style.e.dead);
       else if(cmdy.help.wip === 1)
@@ -183,8 +182,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
-      embed.setTimestamp();
+      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
       if(gmz.label.deleted === 1)
         embed.setColor(style.e.dead);
       else if(gmz.label.indev === 1)
@@ -221,8 +219,7 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
-      embed.setTimestamp();
+      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
       embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
       embed.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
 
@@ -289,8 +286,7 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} • <> is required, [] is optional`, message.author.avatarURL());
-      embed.setTimestamp();
+      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
       embed.setAuthor("Master Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
       embed.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 

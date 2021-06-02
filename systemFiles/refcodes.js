@@ -33,7 +33,7 @@ function genCode() {
   const d = new Date();
   var yr = d.getUTCFullYear();
   var mn = d.getUTCMonth() + 1;
-  var dy = d.getUTCDay();
+  var dy = d.getUTCDate();
   var time = d.getUTCHours() * 10000 + d.getUTCMinutes() * 100 + d.getUTCSeconds() + 10101;
   var inte1 = getRandomInt(1024, 32767);
   var inte2 = getRandomInt(32, 1023);

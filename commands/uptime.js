@@ -1,9 +1,9 @@
-// Require discord.js, the Heroku client, the emoji + style files, the permission checker, and the emoji colour checker
+// Require discord.js, the Heroku client, the emoji + style files, the permission checker, the emoji colour checker, and the timestamp generator
 const Discord = require('discord.js');
 const Heroku = require('heroku-client');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
-const {p, eCol} = require('../systemFiles/globalFunctions.js');
+const {p, eCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 // Extra setup
 const hData = new Heroku({token: process.env.herokuAuth});
@@ -60,8 +60,7 @@ exports.run = {
     const embed = new Discord.MessageEmbed()
       .setAuthor("Gyromina Uptime", client.user.avatarURL())
       .setColor(eCol(style.e.default))
-      .setFooter(`Requested by ${message.author.tag}`, message.author.avatarURL())
-      .setTimestamp();
+      .setFooter(`Requested by ${message.author.tag} - ${stamp()}`, message.author.avatarURL())
 
     hData.get(`/apps/${process.env.herokuID}`)
       .then(app => {

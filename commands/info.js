@@ -1,9 +1,9 @@
-// Require discord.js, the package file, the cdn + style files, and the embed colour checker
+// Require discord.js, the package file, the cdn + style files, the embed colour checker, and the timestamp generator
 const Discord = require('discord.js');
 const botinfo = require('../package.json');
 const cdn = require('../systemFiles/cdn.json');
 const style = require('../systemFiles/style.json');
-const {eCol} = require('../systemFiles/globalFunctions.js');
+const {eCol, avCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
@@ -38,13 +38,12 @@ exports.run = {
       .setColor(eCol(style.e.default))
       .setTitle("Gy·ro·mi·na\n/jīräminə/")
       .setDescription(desc)
-      .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())
-      .setTimestamp()
+      .setFooter(`Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, message.author.avatarURL())
       .addField("*Origin:*", "​***\`    L-V3R7     --->    Gyromina   \`***\n*\` Jul 07, 2018        Sep 15, 2018 \`\nMore information: [https://l375.weebly.com/gyromina](https://l375.weebly.com/gyromina)*")
       .addField("*Usage:*", "*\"You can invite Gyromina to your Discord server using this link: [https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot](https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot)\"*")
       .addField("*See also:*", "​*\`GitHub repository\`: [https://github.com/Lowie375/Gyromina](https://github.com/Lowie375/Gyromina)\n​[Project Manager](https://github.com/Lowie375/Gyromina/projects/1)"
         + " / [Report a Bug](https://github.com/Lowie375/Gyromina/issues) / [Bug Tracker](https://github.com/Lowie375/Gyromina/projects/2)*")
-      .setThumbnail(cdn.avatar);
+      .setThumbnail(avCol(cdn));
 
     // Sends the embed
     return message.channel.send({embed: embed});

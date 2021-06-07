@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const package = require('../package.json');
 const style = require('../systemFiles/style.json');
-const {eCol} = require('../systemFiles/globalFunctions.js');
+const {eCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
@@ -12,29 +12,23 @@ exports.run = {
       .setAuthor("Gyromina Contributors", client.user.avatarURL())
       .setColor(eCol(style.e.default))
       .setTitle("A huge thanks to everyone who has contributed to Gyromina!")
-      .setFooter(`Requested by ${message.author.tag} • Source: package.json`, message.author.avatarURL())
-      .setTimestamp();
-
-    // Creates the author field
-    embed.addField("Author  💻", `[${package.author}](${package.authorLink}) - [@${package.authorGit}](https://github.com/Lowie375)`)
+      .setFooter(`Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, message.author.avatarURL())
     
     // Creates the list of contributors
-    if (package.contributors.length > 0) {
-      let c;
-      // Maps the first contributor
-      if (package.contributorLinks[0] != "") 
-        c = `[${package.contributors[0]}](${package.contributorLinks[0]}) - [@${package.contributorGits[0]}](https://github.com/${package.contributorGits[0]})`;
+    let c;
+    // Maps the author (first contributor)
+    if (package.authorLink != "") 
+      c = `[${package.author}](${package.authorLink}) - [@${package.authorGit}](https://github.com/${package.authorGit})`;
+    else
+      c = `${package.author} - [@${package.authorGit}](https://github.com/${package.authorGit})`;
+    // Maps the remaining contributors
+    for (let i = 0; i < package.contributors.length; i++) {
+      if (package.contributorLinks[i] != "") 
+        c += `\n[${package.contributors[i]}](${package.contributorLinks[i]}) - [@${package.contributorGits[i]}](https://github.com/${package.contributorGits[i]})`;
       else
-        c = `${package.contributors[0]} - [@${package.contributorGits[0]}](https://github.com/${package.contributorGits[0]})`;
-      // Maps the remaining contributors
-      for (let i = 1; i < package.contributors.length; i++) {
-        if (package.contributorLinks[i] != "") 
-          c += `\n[${package.contributors[i]}](${package.contributorLinks[i]}) - [@${package.contributorGits[i]}](https://github.com/${package.contributorGits[i]})`;
-        else
-          c += `\n${package.contributors[i]} - [@${package.contributorGits[i]}](https://github.com/${package.contributorGits[i]})`;
-      }
-      embed.addField("Repo Contributors  💻 💾", c);
+        c += `\n${package.contributors[i]} - [@${package.contributorGits[i]}](https://github.com/${package.contributorGits[i]})`;
     }
+    embed.addField("Repo Contributors  💻 💾", c);
 
     // Creates the list of testers
     if (package.testers.length > 0) {

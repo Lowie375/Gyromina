@@ -429,22 +429,24 @@ exports.exe = {
         `•  If you think a tile is a mine, you can flag it by typing **\`f:X#\`** (where \`X\` = row and \`#\` = column, as above). Flagged tiles can not be uncovered. To remove a flag, type the flagging command again.\n` +
         `•  If you are unsure about whether a tile is a mine or not, you can mark it as uncertain by typing **\`q:X#\`** (where \`X\` = row and \`#\` = column, as above). You will be warned when trying to uncover a tile marked as uncertain. To remove an uncertanty marker, type the uncertainty command again.\n` +
         `**Good luck and have fun!**\n\n` +
-        `\*This \`mswp\` instance will time out if you do not make a move within 2 minutes.\nYou can quit the game at any time by typing \`mswp stop\`.\nIf you need more time to think about your next move, you can reset the timer to 5 minutes by typing \`mswp time\`.\*`;
+        `\*This \`mswp\` instance will time out if you do not make a move within 2 minutes and 30 seconds.\nYou can quit the game at any time by typing \`mswp stop\`.\nIf you need more time to think about your next move, you can reset the timer to 10 minutes by typing \`mswp time\`.\*`;
         
         // Sends the board
         let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), "mswp_initField.png");
         message.channel.send(tooltip, attach)
           .then(game => {
 
-            // Sets up a message collector
+            // Sets up a message collector + time reset objects
             var moves = 0;
             const filter = (msg) => msg.author.id == player && ((cancelRegex.exec(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
-            const finder = game.channel.createMessageCollector(filter, {time: 210000, idle: 210000});  // First timer is longer to allow for rule reading
-    
+            const finder = game.channel.createMessageCollector(filter, {time: 240000, idle: 240000});  // First timer is longer to allow for rule reading
+            const longTime = {time: 600000, idle: 600000};
+            const shortTime = {time: 150000, idle: 150000};
+
             finder.on('collect', async msg => {
               // Checks if the collected message was a time or cancellation message
-              if (msg.content.includes("time")) {
-                finder.resetTimer({time: 300000, idle: 300000}); // Resets the timer
+              if (msg.content.includes("time")) { // Resets the timer
+                finder.resetTimer(longTime);
                 // Sends a confirmation reaction/message
                 if (p(msg, ['ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS']))
                   msg.react(e.yep);
@@ -520,7 +522,7 @@ exports.exe = {
                       });
                     }
                   } else { // Rejection thrown; check outcome
-                    finder.resetTimer({time: 120000, idle: 120000});
+                    finder.resetTimer(shortTime);
                     switch(move) {
                       case 1: // Already cleared
                         return msg.channel.send(`That tile can't be cleared any further, <@${player}>!`);
@@ -553,7 +555,7 @@ exports.exe = {
                     flags++;
                     content = `Flag on tile **\`${caught[2].toUpperCase()}${caught[3]}\`** removed, <@${player}>!\n${stats(moves, flags)}`;
                   } else {
-                    finder.resetTimer({time: 120000, idle: 120000});
+                    finder.resetTimer(shortTime);
                     return msg.channel.send(`That tile can't be flagged, <@${player}>.`);
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
@@ -577,7 +579,7 @@ exports.exe = {
                     unrev++;
                     content = `Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed, <@${player}>!\n${stats(moves, flags)}`;
                   } else {
-                    finder.resetTimer({time: 120000, idle: 120000});
+                    finder.resetTimer(shortTime);
                     return msg.channel.send(`That tile can't be marked as uncertain, <@${player}>.`);
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
@@ -590,7 +592,7 @@ exports.exe = {
                 }
               }
               // Resets the timer
-              finder.resetTimer({time: 120000, idle: 120000});
+              finder.resetTimer(shortTime);
               // Filter setup
               const attachFilter = (a) => a.name == flagID;
               const msgFilter = (msgx) => msgx.author.id == client.user.id && msgx.attachments.some(attachFilter) && msgx.mentions.users.has(player) && !msgx.deleted;

@@ -1,8 +1,8 @@
-// Require discord.js, the emoji + style files, the permission checker, the emoji checker, and the embed colour checker
+// Require discord.js, the emoji + style files, the permission checker, the emoji checker, the embed colour checker, and the timestamp generator
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
-const {p, emojiCheck, eCol} = require('../systemFiles/globalFunctions.js');
+const {p, emojiCheck, eCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 // Cleanup regex
 const cleaner = /^ +/
@@ -99,8 +99,7 @@ exports.run = {
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
-      embed.setTimestamp();
+      embed.setFooter(`Poll created by ${message.author.tag} - ${stamp()}`, message.author.avatarURL());
       if (content != "")
         embed.setDescription(`${content}`);
 
@@ -186,8 +185,7 @@ exports.run = {
       embed.setTitle(`${prompt}`);
       embed.setColor(eCol(style.e.default));
       embed.setDescription(`${content}`);
-      embed.setFooter(`Poll created by ${message.author.tag}`, message.author.avatarURL());
-      embed.setTimestamp();
+      embed.setFooter(`Poll created by ${message.author.tag} - ${stamp()}`, message.author.avatarURL());
 
       // Sends the embed
       message.channel.send({embed: embed})

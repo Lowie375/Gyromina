@@ -1,7 +1,7 @@
-// Require the package file, emoji file, and permission checker
+// Require the package file, emoji file, permission checker, and timestamp generator
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
-const {p} = require('../systemFiles/globalFunctions.js');
+const {p, stamp} = require('../systemFiles/globalFunctions.js');
 
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
@@ -26,6 +26,8 @@ exports.run = {
 
     if (m) console.log("m!");
     if (n) console.log("n!");
+
+    console.log(stamp());
 
     console.log(message.channel);
     console.log(message.channel.type)

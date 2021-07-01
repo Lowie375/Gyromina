@@ -57,7 +57,7 @@
     "emoji-regex": "^9.2.2",
     "heroku-client": "^3.1.0",
     "request": "^2.88.0",
-    "ws": "^7.4.6"
+    "ws": "^7.5.1"
   },
   "devDependencies": {},
   "keywords": [

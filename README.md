@@ -1,4 +1,4 @@
-# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner-pride]][info]
+# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner]][info]
 
 [![Discord.js Version][djs-img]][djs-link]
 [![Bot Version][version-img]][master-pkg]
@@ -17,7 +17,8 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.1.4  
+Latest stable build: v1.1.5  
+<!-- Latest indev build: 1.2.0-alpha.2 -->
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -31,14 +32,12 @@ Gyromina is a multipurpose Discord bot, made to be a fun and functional addition
 
 Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
 
-### Events + Seasons 🏳️‍🌈 🏳️‍⚧️
+### Events/Seasons
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-The **pride** event is currently active and will remain active throughout the month of June!  
-Gyromina was created by an openly LGBTQIA+ creator who is absolutely proud to be who they are and eternally grateful to be residing in an accepting area of the world. As a show of support for the LGBTQIA+ community, Gyromina will don a rainbow profile picture and have some special easter eggs enabled.
-
-💗💛💙 💛🤍💜🖤 💙❤️🖤
+Currently, there is no event active.  
+The last event that took place was the pride event (June 2021)
 
 ## Setup
 

@@ -318,8 +318,8 @@ function nameCases(x, args, i, plural) {
     result = pluralHandler(x);
   }
   // Metric space handling (1)
-  if(result.slice(0, 1) == "/") {
-    result.slice(1);
+  if(result.startsWith("/")) {
+    result = result.slice(1);
     spaceCheck = 1;
   }
   // Metric prefix handling

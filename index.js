@@ -39,11 +39,11 @@ client.on('ready', () => {
   if(process.env.exp === "1") {
     // Debug/test status
     client.user.setStatus("idle");
-    client.user.setActivity(`with the debugger! / ${process.env.prefix}vt / ${package.version}`);
+    client.user.setActivity(`with the debugger! / ${process.env.prefix}vt / v${package.version}`);
   } else {
     // Normal status
     client.user.setStatus("online");
-    client.user.setActivity(`with Discord! / ${process.env.prefix}help / ${package.version}`);
+    client.user.setActivity(`math games! / ${process.env.prefix}help / v${package.version}`);
   }
 
   // Emoji setup

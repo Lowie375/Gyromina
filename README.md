@@ -15,7 +15,7 @@
 
 ### "Fun + function, all in one."
 
-Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
+Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.1.5  
 <!-- Latest indev build: 1.2.0-alpha.2 -->
@@ -98,8 +98,8 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [![Beta Tester ⌚][tester-label]][tester-label]
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
-* 💻 Nao - [@Altenhh](https://github.com/Altenhh)
-* 💻 nakanino - [@nakanino](https://github.com/nakanino)
+* 💻 Nao - [@naoei](https://github.com/naoei)
+* 💻 Irisu - [@irisuwastaken](https://github.com/irisuwastaken)
 * 💾 alazymeme - [@alazymeme](https://github.com/alazymeme)
 
 <!-- ### Helpers -->

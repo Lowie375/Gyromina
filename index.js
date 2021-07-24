@@ -8,6 +8,7 @@ const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
+//const client = new Discord.Client({ws: {intents: ['GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_EMOJIS', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS']}});
 client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
 

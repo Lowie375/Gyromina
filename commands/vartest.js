@@ -1,4 +1,4 @@
-// Require the package file, emoji file, and permission checker
+// Require the package file, emoji file, permission checker, and timestamp generator
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
 const {p, stamp} = require('../systemFiles/globalFunctions.js');

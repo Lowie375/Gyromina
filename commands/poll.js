@@ -1,4 +1,4 @@
-// Require discord.js, the emoji + style files, the permission checker, the emoji checker, and the embed colour checker
+// Require discord.js, the emoji + style files, the permission checker, the emoji checker, the embed colour checker, and the timestamp generator
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');

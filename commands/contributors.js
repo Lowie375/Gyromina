@@ -1,4 +1,4 @@
-// Require discord.js, the package file, the style file, and the embed colour checker
+// Require discord.js, the package file, the style file, the embed colour checker, and the timestamp generator
 const Discord = require('discord.js');
 const package = require('../package.json');
 const style = require('../systemFiles/style.json');

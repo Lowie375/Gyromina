@@ -1,4 +1,4 @@
-// randomcolour V2 - Made by nakanino
+// randomcolour V2 - Made by Irisu (irisuwastaken)
 
 // Require discord.js, the RNG, and some colour conversions
 const Discord = require('discord.js');

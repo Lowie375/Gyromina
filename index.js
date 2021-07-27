@@ -8,6 +8,7 @@ const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
 // Creates a new instance of the Discord Client
 const client = new Discord.Client();
+//const client = new Discord.Client({ws: {intents: ['GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_EMOJIS', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS']}});
 client.commands = new Discord.Collection();
 client.games = new Discord.Collection();
 
@@ -39,11 +40,11 @@ client.on('ready', () => {
   if(process.env.exp === "1") {
     // Debug/test status
     client.user.setStatus("idle");
-    client.user.setActivity(`with the debugger! / ${process.env.prefix}vt / ${package.version}`);
+    client.user.setActivity(`with the debugger! / ${process.env.prefix}vt / v${package.version}`);
   } else {
     // Normal status
     client.user.setStatus("online");
-    client.user.setActivity(`with Discord! / ${process.env.prefix}help / ${package.version}`);
+    client.user.setActivity(`math games! / ${process.env.prefix}help / v${package.version}`);
   }
 
   // Emoji setup

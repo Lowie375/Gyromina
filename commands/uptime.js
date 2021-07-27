@@ -1,4 +1,4 @@
-// Require discord.js, the Heroku client, the emoji + style files, the permission checker, and the emoji colour checker
+// Require discord.js, the Heroku client, the emoji + style files, the permission checker, the emoji colour checker, and the timestamp generator
 const Discord = require('discord.js');
 const Heroku = require('heroku-client');
 const e = require('../systemFiles/emojis.json');

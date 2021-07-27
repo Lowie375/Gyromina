@@ -8,7 +8,7 @@ const style = require('../systemFiles/style.json');
 
 /**
  * Writes to the console with time when it was ran
- * @author Laica (Altenhh)
+ * @author Nao (naoei)
  * @param message
  * @param startTime
  * @param useLocale
@@ -30,7 +30,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
 
 /**
  * Clears out any @Everyone's.
- * @author Laica (Altenhh)
+ * @author Nao (naoei)
  * @return {string}
  */
 
@@ -194,7 +194,7 @@ exports.avCol = function(cdn) {
 
 /**
  * Converts a hexadecimal colour code to RGB format
- * @author nakanino
+ * @author Irisu (irisuwastaken)
  * @param {string} hex The hexadecimal colour code (preceded by a #)
  * @return {JSON<number>}
  */

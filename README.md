@@ -1,12 +1,12 @@
-# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner-pride]][info]
+# ​ [![Gyromina, a multipurpose Discord bot][gyro-banner]][info]
 
 [![Discord.js Version][djs-img]][djs-link]
-[![Bot Version][version-img]][master-pkg]
+[![Bot Version][version-img]][main-pkg]
 [![Indev Version][indev-version-img]][indev-pkg]
 [![Dependency Status][dependency-img]][dependency-link]
 [![Top Language][lang-img]][lang-link]
 [![License][license-img]](LICENSE)  
-[![Last Commit (master)][master-commit-img]][master-tree-link]
+[![Last Commit (main)][main-commit-img]][main-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
 [![Build Status][build-img]][build-link]
 [![Scrutinizer Code Quality][code-quality-img]][code-quality-link]
@@ -15,10 +15,10 @@
 
 ### "Fun + function, all in one."
 
-Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Laica \([@Altenhh](https://github.com/Altenhh)\)**, **[@nakanino](https://github.com/nakanino)**, and **[@alazymeme](https://github.com/alazymeme)**
+Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.1.3  
-Lastes indev build: v1.2.0-alpha.1
+Latest stable build: v1.1.7  
+Latest indev build: 1.2.0-alpha.2
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -32,14 +32,12 @@ Gyromina is a multipurpose Discord bot, made to be a fun and functional addition
 
 Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
 
-### Events + Seasons 🏳️‍🌈 🏳️‍⚧️
+### Events/Seasons
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-The **pride** event is currently active and will remain active throughout the month of June!  
-Gyromina was created by an openly LGBTQIA+ creator who is absolutely proud to be who they are and eternally grateful to be residing in an accepting area of the world. As a show of support for the LGBTQIA+ community, Gyromina will don a rainbow profile picture and have some special easter eggs enabled.
-
-💗💛💙 💛🤍💜🖤 💙❤️🖤
+Currently, there is no event active.  
+The last event that took place was the pride event (June 2021)
 
 ## Setup
 
@@ -100,8 +98,8 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [![Beta Tester ⌚][tester-label]][tester-label]
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
-* 💻 Laica - [@Altenhh](https://github.com/Altenhh)
-* 💻 nakanino - [@nakanino](https://github.com/nakanino)
+* 💻 Nao - [@naoei](https://github.com/naoei)
+* 💻 Irisu - [@irisuwastaken](https://github.com/irisuwastaken)
 * 💾 alazymeme - [@alazymeme](https://github.com/alazymeme)
 
 <!-- ### Helpers -->
@@ -112,13 +110,13 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [invite]: https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot
 [log]: https://l375.weebly.com/gyro-log
 
-[master-pkg]: https://github.com/Lowie375/Gyromina/blob/master/package.json
+[main-pkg]: https://github.com/Lowie375/Gyromina/blob/main/package.json
 [indev-pkg]: https://github.com/Lowie375/Gyromina/blob/indev-branch/package.json
 
 [djs-link]: https://discord.js.org
 [dependency-link]: https://david-dm.org/Lowie375/Gyromina
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
-[master-tree-link]: https://github.com/Lowie375/Gyromina/tree/master
+[main-tree-link]: https://github.com/Lowie375/Gyromina/tree/main
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
 [lang-link]: https://github.com/Lowie375/Gyromina/search?l=javascript
 [build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
@@ -133,7 +131,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
 [indev-version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina/indev-branch?label=indev%20version
 [dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
-[master-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28master%29
+[main-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28main%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 [lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina

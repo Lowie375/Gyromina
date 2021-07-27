@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "1.2.0-alpha.1",
+  "version": "1.2.0-alpha.2",
   "description": "Gyromina, a multipurpose Discord bot",
   "homepage": "https://l375.weebly.com/gyromina",
   "repository": {
@@ -26,13 +26,13 @@
   "authorID": "334335706740686849",
   "authorLink": "https://l375.weebly.com/about",
   "contributors": [
-    "Laica",
-    "nakanino",
+    "Nao",
+    "Irisu",
     "alazymeme"
   ],
   "contributorGits": [
-    "Altenhh",
-    "nakanino",
+    "naoei",
+    "irisuwastaken",
     "alazymeme"
   ],
   "contributorIDs": [
@@ -57,7 +57,7 @@
     "emoji-regex": "^9.2.2",
     "heroku-client": "^3.1.0",
     "request": "^2.88.0",
-    "ws": "^7.4.6"
+    "ws": "^7.5.3"
   },
   "devDependencies": {},
   "keywords": [

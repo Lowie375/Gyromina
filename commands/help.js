@@ -1,4 +1,4 @@
-// Require discord.js, the emoji + style files, the permission checker, and the embed colour checker
+// Require discord.js, the emoji + style files, the permission checker, the embed colour checker, and the timestamp generator
 const Discord = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
@@ -287,7 +287,7 @@ exports.run = {
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
       embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
-      embed.setAuthor("Master Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
+      embed.setAuthor("Main Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
       embed.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
       var cmdlist = "";
@@ -357,7 +357,7 @@ exports.run = {
 
 exports.help = {
   "name": "help",
-  "aliases": ["commands", "cmds", "command", "cmd", "gamelist", "cmdlist", "commandlist"],
+  "aliases": ["commands", "cmds", "command", "cmd", "gamelist", "cmdlist", "commandlist", "whatis"],
   "description": "Provides command and game help.",
   "usage": `${process.env.prefix}help [command/game] [queries]`,
   "params": "[command/game] [queries]",

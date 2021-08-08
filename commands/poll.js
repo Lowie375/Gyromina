@@ -1,5 +1,5 @@
 // Require discord.js, the emoji + style files, the permission checker, the emoji checker, the embed colour checker, and the timestamp generator
-const Discord = require('discord.js');
+const D = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
 const {p, emojiCheck, eCol, stamp} = require('../systemFiles/globalFunctions.js');
@@ -60,17 +60,17 @@ exports.run = {
   execute(message, args, client) {
     // Argument check
     if (args.length <= 1)
-      return message.channel.send(`I can't make a poll if no type or prompt is specified, <@${message.author.id}>!`);
+      return message.reply(`I can't make a poll if no type or prompt is specified!`);
 
     // Permission check: add reactions
-    if (!p(message, ['ADD_REACTIONS']))
-      return message.channel.send(`I can't make a poll if I can't add any reactions, <@${message.author.id}>! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
+    if (!p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+      return message.reply(`I can't make a poll if I can't add any reactions! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
 
     // Permission check: external emojis
-    var perms = p(message, ['USE_EXTERNAL_EMOJIS']);
+    var perms = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]);
 
     // Embed setup
-    const embed = new Discord.MessageEmbed();
+    const embed = new D.MessageEmbed();
     var content = "";
 
     // Checks the poll type
@@ -94,7 +94,7 @@ exports.run = {
       }
 
       // Deletes the poll creation message (for cleanliness), if possible
-      if (p(message, ['MANAGE_MESSAGES'])) message.delete();
+      if (p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES])) message.delete();
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
@@ -104,7 +104,7 @@ exports.run = {
         embed.setDescription(`${content}`);
 
       // Sends the embed
-      message.channel.send({embed: embed})
+      message.channel.send({embeds: [embed]})
         .then (async poll => {
           // Awaits reactions
           switch (type) {
@@ -132,7 +132,7 @@ exports.run = {
       let options = [];
 
       if (pollRoot.length == 0)
-        return message.channel.send(`I can't make a poll without any poll options, <@${message.author.id}>!`);
+        return message.reply(`I can't make a poll without any poll options!`);
       
       // Escaped dash handler
       for (let i = 0; i < pollRoot.length; i++) {
@@ -171,7 +171,7 @@ exports.run = {
       }
 
       if(fails.length != 0)
-        return message.channel.send(`Some custom emojis (\#${fails.join(", \#")}) were invalid, <@${message.author.id}>. Please check your emojis and try again.`);
+        return message.reply(`Some custom emojis (\#${fails.join(", \#")}) were invalid. Please check your emojis and try again.`);
       
       // Merges content together
       for (let i = 0; i < rxns.length; i++) {
@@ -179,7 +179,7 @@ exports.run = {
       }
 
       // Deletes the poll creation message (for cleanliness), if possible
-      if (p(message, ['MANAGE_MESSAGES'])) message.delete();
+      if (p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES])) message.delete();
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
@@ -188,7 +188,7 @@ exports.run = {
       embed.setFooter(`Poll created by ${message.author.tag} - ${stamp()}`, message.author.avatarURL());
 
       // Sends the embed
-      message.channel.send({embed: embed})
+      message.channel.send({embeds: [embed]})
         .then (async poll => {
           // Awaits reactions
           for (rx of rxns) {

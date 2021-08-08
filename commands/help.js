@@ -1,5 +1,5 @@
 // Require discord.js, the emoji + style files, the permission checker, the embed colour checker, and the timestamp generator
-const Discord = require('discord.js');
+const D = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
 const {p, eCol, stamp} = require('../systemFiles/globalFunctions.js');
@@ -105,17 +105,17 @@ function splitCore(splitList, count, weight, totWeight) {
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const ghost = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.ghost) : e.alt.ghost;
-    const beta = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.beta) : e.alt.beta;
-    const main = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.main) : e.alt.main;
-    const dead = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.dead) : e.alt.dead;
+    const ghost = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.ghost) : e.alt.ghost;
+    const beta = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.beta) : e.alt.beta;
+    const main = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.main) : e.alt.main;
+    const dead = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.dead) : e.alt.dead;
 
     // Checks for special arguments
     var conditions = [];
     if (args) conditions = checkArgs(args);
 
     // Creates an embed shell
-    const embed = new Discord.MessageEmbed();
+    const embed = new D.MessageEmbed();
 
     if (args.length >= 1 && conditions[1] == 0) { // Detailed command help
 
@@ -351,7 +351,7 @@ exports.run = {
       }
     }
     // Sends the embed
-    return message.channel.send({embed: embed});
+    return message.channel.send({embeds: [embed]});
   },
 };
 

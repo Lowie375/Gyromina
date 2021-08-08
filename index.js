@@ -1,5 +1,5 @@
 // Require discord.js, fs, the package file, the emoji file, the permission checker, and the refcode generator
-const Discord = require('discord.js');
+const D = require('discord.js');
 const fs = require('fs');
 const package = require('./package.json');
 const e = require('./systemFiles/emojis.json');
@@ -7,10 +7,9 @@ const {p} = require('./systemFiles/globalFunctions.js');
 const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
 // Creates a new instance of the Discord Client
-const client = new Discord.Client();
-//const client = new Discord.Client({ws: {intents: ['GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS', 'GUILD_EMOJIS', 'DIRECT_MESSAGES', 'DIRECT_MESSAGE_REACTIONS']}});
-client.commands = new Discord.Collection();
-client.games = new Discord.Collection();
+const client = new D.Client({intents: [D.Intents.FLAGS.GUILDS, D.Intents.FLAGS.GUILD_MESSAGES, D.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, D.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, D.Intents.FLAGS.DIRECT_MESSAGES, D.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS]});
+client.commands = new D.Collection();
+client.games = new D.Collection();
 
 // Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
@@ -52,13 +51,12 @@ client.on('ready', () => {
   warning = client.emojis.cache.get(e.warn);
 });
 
-client.on('message', message => {
-
+client.on('messageCreate', message => {
   // Filters out messages that don't begin with Gyromina's prefix, as well as messages sent by bots
   if (!message.content.startsWith(process.env.prefix) || message.author.bot) return;
 
   // Checks if the message was sent in a non-voice guild channel where Gyromina has message-sending and channel-viewing permissions. If not, returns
-  if (message.channel.type != "dm" && message.channel.type != "voice" && !p(message, ['SEND_MESSAGES', 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY'])) return;
+  if (message.channel.type != "DM" && !message.channel.isVoice() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES, D.Permissions.FLAGS.VIEW_CHANNEL, D.Permissions.FLAGS.READ_MESSAGE_HISTORY])) return;
 
   // Initializes arguments
   var args;
@@ -81,9 +79,9 @@ client.on('message', message => {
   // Checks if the command is experimental/unstable. If so, displays a warning instead of running the command
   if(process.env.exp === "0" && command.help.wip === 1) {
     if(message.author.id === process.env.hostID) {
-      message.channel.send(`${p(message, ['USE_EXTERNAL_EMOJIS']) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, ['USE_EXTERNAL_EMOJIS']) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`);
+      message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`);
     } else {
-      message.channel.send(`${p(message, ['USE_EXTERNAL_EMOJIS']) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`);
+      message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`);
     }
 } else { 
     try {
@@ -95,6 +93,11 @@ client.on('message', message => {
     }
   }
 });
+
+// todo: add interaction pickup snippet
+/* client.on('interactionCreate', interact => {
+  // handle the interaction, begin implementing some alternate code for things?
+});*/
 
 // Catches emitted warnings
 client.on('warn', w => {

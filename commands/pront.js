@@ -36,7 +36,7 @@ exports.run = {
   execute(message, args, client) {
     if (args.length === 0) {
       let excuse = makeExcuse();
-      return message.channel.send(`${excuse}, <@${message.author.id}>. ¯\\_(ツ)_/¯\n(No emoji entered. Please enter a valid emoji and try again.)`);
+      return message.reply(`${excuse}. ¯\\_(ツ)_/¯\n(No emoji entered. Please enter a valid emoji and try again.)`);
     }
 
     var uni = emojiCheck(args[0]);
@@ -50,12 +50,12 @@ exports.run = {
       if (emoji == undefined) {
         // Emoji not found, make an excuse
         let excuse = makeExcuse();
-        return message.channel.send(`${excuse}, <@${message.author.id}>. ¯\\_(ツ)_/¯\n(That emoji is from a server Gyromina can't access. Please choose a different emoji and try again.)`);
+        return message.reply(`${excuse}. ¯\\_(ツ)_/¯\n(That emoji is from a server Gyromina can't access. Please choose a different emoji and try again.)`);
       }
     } else {
       // Not an emoji, make an excuse
       let excuse = makeExcuse();
-      return message.channel.send(`${excuse}, <@${message.author.id}>. ¯\\_(ツ)_/¯\n(That's not a valid emoji. Please enter a valid emoji and try again.)`);
+      return message.reply(`${excuse}. ¯\\_(ツ)_/¯\n(That's not a valid emoji. Please enter a valid emoji and try again.)`);
     }
     
     // Sends the printed emojis

@@ -1,4 +1,5 @@
-// Require the RNG (obviously), permission checker, and emoji file
+// Require discord.js, the RNG (obviously), permission checker, and emoji file
+const D = require('discord.js');
 const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 
@@ -48,8 +49,8 @@ exports.exe = {
     var content = "";
 
     // Emoji setup
-    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.yep;
+    const yep = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.yep) : e.alt.yep;
+    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.yep;
 
     if (!options)
       max = 10;
@@ -58,7 +59,7 @@ exports.exe = {
 
     // Checks if options are valid
     if(isNaN(max))
-      return message.channel.send(`that's not a valid maximum/preset, <@${player}>! Please enter a valid positive integer less than 16777216 or a valid preset and try again.`);
+      return message.reply(`that's not a valid maximum/preset! Please enter a valid positive integer less than 16777216 or a valid preset and try again.`);
 
     // Adjusts max, if necessary
     if (max < 2)
@@ -92,7 +93,7 @@ exports.exe = {
     message.channel.send(`${content}`);
 
     const filter = (msg) => msg.author.id == player && (!isNaN(parseInt(msg.content, 10)) || cancelWords.includes(msg.content));
-    const finder = message.channel.createMessageCollector(filter, {time: 60000, idle: 60000});
+    const finder = message.channel.createMessageCollector({filter, time: 60000, idle: 60000});
     
     finder.on('collect', msg => {
       // Checks if the collected message was a cancellation message
@@ -111,10 +112,10 @@ exports.exe = {
         return;
       } else if (guess > num) { // Too high
         high = Math.min(high, guess);
-        alert += `⬇️ Lower, <@${player}>!\n\*Current range: ${low} to ${high} (inclusive)\*`;
+        alert += `⬇️ Lower!\n\*Current range: ${low} to ${high} (inclusive)\*`;
       } else if (guess < num) { // Too low
         low = Math.max(low, guess);
-        alert += `⬆️ Higher, <@${player}>!\n\*Current range: ${low} to ${high} (inclusive)\*`;
+        alert += `⬆️ Higher!\n\*Current range: ${low} to ${high} (inclusive)\*`;
       }
 
       if (guesses == 0) { // Out of guesses; stops the game
@@ -127,7 +128,7 @@ exports.exe = {
       }
 
       // Sends update and resets the timer
-      message.channel.send(alert)
+      message.reply(alert)
       finder.resetTimer({time: 60000, idle: 60000});
     });
 
@@ -136,15 +137,15 @@ exports.exe = {
       switch (reason) {
         case "time": // Timeouts
         case "idle":
-          message.channel.send(`your \`rng\` instance timed out due to inactivity, <@${player}>. Please restart the game if you would like to play again.`); return;
+          message.reply(`Your \`rng\` instance timed out due to inactivity. Please restart the game if you would like to play again.`); return;
         case "cancel": // Manually cancelled
-          message.channel.send(`your \`rng\` instance has been stopped, <@${player}>. Please restart the game if you would like to play again.`); return;
+          message.reply(`Your \`rng\` instance has been stopped. Please restart the game if you would like to play again.`); return;
         case "win": // Correct guess!
-          message.channel.send(`${yep} You guessed the right number, <@${player}>!\n**YOU WIN**`); return;
+          message.reply(`${yep} Congratulations! You guessed the right number!\n**YOU WIN**`); return;
         case "out": // Out of guesses
-          message.channel.send(`${nope} You ran out of guesses, <@${player}>.\nThe number was ${num}.\n**YOU LOSE**`); return;
+          message.reply(`${nope} Oh no, you ran out of guesses!\nThe number was **${num}**.\n**YOU LOSE**`); return;
         default: // Other (error!)
-          message.channel.send(`your \`rng\` instance has encountered an unknown error and has been stopped, <@${player}>. Please restart the game if you would like to play again.`); return;
+          message.reply(`Your \`rng\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.`); return;
       }
     });
   }

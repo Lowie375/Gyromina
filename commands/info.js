@@ -1,5 +1,5 @@
 // Require discord.js, the package file, the cdn + style files, the embed colour checker, and the timestamp generator
-const Discord = require('discord.js');
+const D = require('discord.js');
 const botinfo = require('../package.json');
 const cdn = require('../systemFiles/cdn.json');
 const style = require('../systemFiles/style.json');
@@ -33,7 +33,7 @@ exports.run = {
     desc += `currently running v${botinfo.version} on ${client.guilds.cache.size} servers\n[2] \"${botinfo.tagline}\"`;
 
     // Creates the info embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
       .setColor(eCol(style.e.default))
       .setTitle("Gy·ro·mi·na\n/jīräminə/")
@@ -46,7 +46,7 @@ exports.run = {
       .setThumbnail(avCol(cdn));
 
     // Sends the embed
-    return message.channel.send({embed: embed});
+    return message.channel.send({embeds: [embed]});
   },
 };
 

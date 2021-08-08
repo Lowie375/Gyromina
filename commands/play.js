@@ -1,4 +1,5 @@
-// Require the package file, emoji file, and permission checker
+// Require the discord.js, the package file, the emoji file, and the permission checker
+const D = require('discord.js');
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
 const {p} = require('../systemFiles/globalFunctions.js');
@@ -6,8 +7,8 @@ const {p} = require('../systemFiles/globalFunctions.js');
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
-    const warning = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.warn) : e.alt.warn;
+    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const warning = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.warn) : e.alt.warn;
     
     // Finds the requested game file
     const gameName = args.shift();
@@ -16,11 +17,11 @@ exports.run = {
     
     // Checks if the game exists
     if (!game)
-      return message.channel.send(`I couldn't load the game you were looking for, <@${message.author.id}>. Please check your spelling and try again.`);
+      return message.reply(`I couldn't load the game you were looking for. Please check your spelling and try again.`);
 
     // Checks if Gyromina has permission to add reactions (if the game requires them)
-    if(game.label.reactions == 1 && !p(message, ['ADD_REACTIONS']))
-      return message.channel.send(`I can't run this game if I can't add any reactions, <@${message.author.id}>! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
+    if(game.label.reactions == 1 && !p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+      return message.reply(`I can't run this game if I can't add any reactions! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
 
     // Determines the main player(s)
     var player;

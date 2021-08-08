@@ -1,5 +1,5 @@
 // Require discord.js, the permission checker, the RNG, and the emoji + style files
-const Discord = require('discord.js');
+const D = require('discord.js');
 const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
@@ -30,11 +30,11 @@ function toCBX(num, mul) {
 }
 
 function genCode() {
-  const d = new Date();
-  var yr = d.getUTCFullYear();
-  var mn = d.getUTCMonth() + 1;
-  var dy = d.getUTCDate();
-  var time = d.getUTCHours() * 10000 + d.getUTCMinutes() * 100 + d.getUTCSeconds() + 10101;
+  const dt = new Date();
+  var yr = dt.getUTCFullYear();
+  var mn = dt.getUTCMonth() + 1;
+  var dy = dt.getUTCDate();
+  var time = dt.getUTCHours() * 10000 + dt.getUTCMinutes() * 100 + dt.getUTCSeconds() + 10101;
   var inte1 = getRandomInt(1024, 32767);
   var inte2 = getRandomInt(32, 1023);
   var rCode = `${toCBX(inte1, 32)}${toCBX(dy, 32)}${toCBX(mn, 32)}${toCBX(inte2, 32)}${toCBX(time, 32)}${toCBX(yr, 32)}`;
@@ -51,7 +51,7 @@ function genCode() {
 // Reference code generator
 exports.genErrorMsg = function(message, client, error) {
   // Emoji setup
-  const warning = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.warn) : e.alt.warn;
+  const warning = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.warn) : e.alt.warn;
 
   // Generates a reference code
   const newRef = genCode();
@@ -59,11 +59,11 @@ exports.genErrorMsg = function(message, client, error) {
   console.error(`REFCODE: ${newRef}\n`, error);
 
   // Sends a warning message in the channel
-  const embed3 = new Discord.MessageEmbed()
+  const embed = new D.MessageEmbed()
     .setTitle(`${warning} Something went wrong…`)
     .setColor(style.e.error)
     .setDescription(`Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``);
-  message.channel.send(embed3);
+  message.channel.send({embeds: [embed]});
   
   // Sends the error to the Gyromina log channel
   const log = client.channels.cache.get(process.env.errorLog);

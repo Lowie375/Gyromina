@@ -105,12 +105,12 @@ exports.minMax = function(n, min, max) {
  * @return {Boolean}
  */
 
-exports.p = function(message, perm = [""]) {
-  if (message.channel.type == "dm" || message.channel.type == "voice") {
+exports.p = function(message, perm) {
+  if (message.channel.type == "DM" || message.channel.isVoice()) {
     return true;
   } else {
     let gPerm = message.channel.permissionsFor(message.guild.me);
-    if (gPerm.has(perm))
+    if (perm && gPerm.has(perm))
       return true;
     else
       return false;
@@ -122,8 +122,8 @@ exports.p = function(message, perm = [""]) {
  */
 
 exports.stamp = function() {
-  let d = new Date();
-  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth()+1, d.getUTCFullYear()];
+  let dt = new Date();
+  let now = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth()+1, dt.getUTCFullYear()];
   for(let i = 0; i <= 4; i++) {
     if(now[i].toString().length <= 1)
       now[i] = `0${now[i]}`;
@@ -140,8 +140,8 @@ exports.stamp = function() {
  */
 
 exports.eCol = function(def) {
-  let d = new Date();
-  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()];
+  let dt = new Date();
+  let now = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth(), dt.getUTCFullYear()];
   if(now[4] == 5 || process.env.season === "1") { // June: rainbow randomizer
     let col = Math.min(Math.floor(Math.random() * 193) + 63, 255);
     let pos = [Math.min(Math.floor(Math.random()*3), 2), Math.min(Math.floor(Math.random()*2), 1)];
@@ -178,8 +178,8 @@ exports.eCol = function(def) {
  */
 
 exports.avCol = function(cdn) {
-  let d = new Date();
-  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()];
+  let dt = new Date();
+  let now = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth(), dt.getUTCFullYear()];
   if(now[4] == 5 || process.env.season === "1") // June: rainbow
     return cdn.avatar.pride;
   else if(now[4] == 11 || process.env.season === "2") // December: blue theme
@@ -231,11 +231,11 @@ exports.rgbToHex = function(rgb) {
  */
 
 exports.cmykToRgb = function(cmyk) {
-  let d = [cmyk.c/100, cmyk.m/100, cmyk.y/100, cmyk.k/100];
+  let div = [cmyk.c/100, cmyk.m/100, cmyk.y/100, cmyk.k/100];
 
-  let c = Math.min(1, d[0] * (1 - d[3]) + d[3]);
-  let m = Math.min(1, d[1] * (1 - d[3]) + d[3]);
-  let y = Math.min(1, d[2] * (1 - d[3]) + d[3]);
+  let c = Math.min(1, div[0] * (1 - div[3]) + div[3]);
+  let m = Math.min(1, div[1] * (1 - div[3]) + div[3]);
+  let y = Math.min(1, div[2] * (1 - div[3]) + div[3]);
 
   return {
     r: Math.round((1 - c) * 255),

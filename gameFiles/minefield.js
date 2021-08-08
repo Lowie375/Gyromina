@@ -250,6 +250,9 @@ function removeRxnLoop(urxn, player, n = 0) {
 
 exports.exe = {
   start(message, client, player, options) {
+    // Sends a typing indicator to show that board generation is in progress
+    message.channel.sendTyping();
+
     // Minefield shell
     var field = [
       [wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll, wll],
@@ -282,7 +285,7 @@ exports.exe = {
     
     // Checks if options are valid
     if (isNaN(bombs))
-      return message.channel.send(`That's not a valid mine count/preset, <@${player}>! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.`);
+      return message.reply(`That's not a valid mine count/preset! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.`);
 
     // Adjusts bomb count, if necessary
     if (bombs > 20) {
@@ -316,7 +319,7 @@ exports.exe = {
     }
     
     // Puts the whole shebang into one variable (wow!)
-    content += `Your minefield has been generated, <@${player}>!\n\n${output}\n` +
+    content += `Your minefield has been generated!\n\n${output}\n` +
     `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
     `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
     `\`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n` +
@@ -324,7 +327,7 @@ exports.exe = {
     `\*This \`minefield\` instance will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
 
     // Post the field + instructions
-    message.channel.send(`${content}\n\*Waiting for emojis to load…\*`)
+    message.reply(`${content}\n\*Waiting for emojis to load…\*`)
       .then (async board => {         
         // Add reactions (in order, yay!)
         for (let i = 0; i < rxns.length; i++) {
@@ -333,8 +336,7 @@ exports.exe = {
 
         // Set up a collection filter and collector
         const filter = (reaction, user) => rxns.includes(reaction.emoji.name) && user.id == player;
-
-        const builder = board.createReactionCollector(filter, {time: 95000, idle: 95000}); // First timer is longer to allow for rule reading
+        const builder = board.createReactionCollector({filter, time: 95000, idle: 95000}); // First timer is longer to allow for rule reading
         // .then await a 'collect', if none return shutdown and stop
         
         board.edit(content + "\n\*\*GO!\*\*");
@@ -365,7 +367,7 @@ exports.exe = {
               break;
           }
           // Removes the corresponding reaction (if not in a DM channel)
-          if(board.channel.type != "dm") {
+          if(board.channel.type != "DM") {
             const userReaction = board.reactions.cache.filter(reaction => reaction.users.cache.has(player) && reaction.emoji.name == r.emoji.name);
             for (const urxn of userReaction.values()) {
               removeRxnLoop(urxn, player);

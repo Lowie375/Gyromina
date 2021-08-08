@@ -1,5 +1,5 @@
 // Require discord.js, the style file, the RNG, and the embed colour checker
-const Discord = require('discord.js');
+const D = require('discord.js');
 const style = require('../systemFiles/style.json');
 const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js')
 
@@ -74,7 +74,7 @@ exports.run = {
     }
 
     // prepares the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setColor(eCol(style.e.default));
 
     if(results.length <= 1 && modifier === 0) {

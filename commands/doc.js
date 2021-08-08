@@ -1,5 +1,5 @@
 // Require discord.js, the cdn file, and the RNG
-const Discord = require('discord.js');
+const D = require('discord.js');
 const cdn = require('../systemFiles/cdn.json');
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
@@ -27,14 +27,14 @@ exports.run = {
     let gen = [getRandomInt(0, q.length-1), getRandomInt(0, r.length-1)]
 
     // Sets up the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setColor(0xffef80)
       .setTitle(`${q[gen[0]]} ${r[gen[1]]}`)
       .setDescription("Doc, my duck friend, will be here as long as you need.")
       .setImage(`${cdn.doc}`);
     
     // Sends the embed
-    return message.channel.send({embed: embed});
+    return message.channel.send({embeds: [embed]});
   },
 };
 

@@ -1,12 +1,13 @@
-// Require the package file and the permission checker
+// Require discord.js, the package file, and the permission checker
+const D = require('discord.js');
 const e = require('../systemFiles/emojis.json');
 const {p} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   async execute(message, args, client) {
     // Emoji setup
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
-    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
+    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const yep = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.yep) : e.alt.yep;
     
     // Checks to see if the bot host sent the message.
     if(message.author.id !== process.env.hostID) {

@@ -1,5 +1,5 @@
 // Require discord.js and some global functions (colour conversions + Clean)
-const Discord = require('discord.js');
+const D = require('discord.js');
 const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, Clean, minMax} = require('../systemFiles/globalFunctions.js');
 
 // Regex setup
@@ -41,7 +41,7 @@ function extract(xc) {
 exports.run = {
   execute(message, args, client) {
     if (args.length === 0)
-      return message.channel.send(`I can't get colour data for a non-existent colour, <@${message.author.id}>!`)
+      return message.reply(`I can't get colour data for a non-existent colour!`)
 
     // Decoding
     var [...code] = Clean(args);
@@ -85,7 +85,7 @@ exports.run = {
         break;
       }
       case null:
-        return message.channel.send(`Invalid colour code, <@${message.author.id}>. Please check your syntax and try again.`);
+        return message.reply(`Invalid colour code. Please check your syntax and try again.`);
     }
 
     // Encoding
@@ -93,7 +93,7 @@ exports.run = {
     var head = strand.splice(col[1], 1);
 
     // Output setup
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setTitle(head)
       .setDescription(strand.join("\n"));
     switch(hex) {
@@ -103,8 +103,8 @@ exports.run = {
       
     // Sends the embed
     switch (col[0]) {
-      case "amb": return message.channel.send(`Ambiguous input detected, <@${message.author.id}>, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, {embed: embed});
-      default: return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
+      case "amb": return message.reply({content: `Ambiguous input detected, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, embeds: [embed]});
+      default: return message.reply({content: `Here you go!`, embeds: [embed]});
     }
   }
 }

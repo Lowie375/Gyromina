@@ -1,5 +1,5 @@
 // Require discord.js, some global functions (temperature conversions + embed colour checker), and the style file
-const Discord = require('discord.js');
+const D = require('discord.js');
 const {FtoC, CtoF, CtoK, KtoC, FtoR, RtoF, eCol} = require('../systemFiles/globalFunctions.js');
 const style = require('../systemFiles/style.json');
 
@@ -379,8 +379,8 @@ function searchCheck(save, ctr) {
 
 function errorPull(x, message, arg) {
   switch (x) {
-    case "err": message.channel.send(`the unit you specified (${arg}) couldn\'t be found, <@${message.author.id}>! Please check your spelling and try again.`); return 1;
-    case "null": message.channel.send(`the unit you specified (${arg}) wasn\'t specific enough, <@${message.author.id}>! Please check your spelling and try again.`); return 1;
+    case "err": message.reply(`The unit you specified (${arg}) couldn\'t be found! Please check your spelling and try again.`); return 1;
+    case "null": message.reply(`The unit you specified (${arg}) wasn\'t specific enough! Please check your spelling and try again.`); return 1;
     default: return 0;
   }
 }
@@ -388,9 +388,9 @@ function errorPull(x, message, arg) {
 exports.run = {
   execute(message, args, client) {
     switch(args.length) {
-      case 0: return message.channel.send(`I can\'t convert something if I don't have any values or units to convert between, <@${message.author.id}>! Please add a value and try again.`);
-      case 1: return message.channel.send(`I can\'t convert something if you don't tell me its unit, <@${message.author.id}>! Please add the appropriate unit and try again.`);
-      case 2: return message.channel.send(`I can\'t convert something if you don't tell me what unit to convert it to, <@${message.author.id}>! Please add the desired unit and try again.`);
+      case 0: return message.reply(`I can\'t convert something if I don't have any values or units to convert between! Please add a value and try again.`);
+      case 1: return message.reply(`I can\'t convert something if you don't tell me its unit! Please add the appropriate unit and try again.`);
+      case 2: return message.reply(`I can\'t convert something if you don't tell me what unit to convert it to! Please add the desired unit and try again.`);
     }
     
     var cArgs = cleanArgs(args);
@@ -408,7 +408,7 @@ exports.run = {
 
     // Checks if the units can be converted between
     if (type1 != type2)
-      return message.channel.send(`I can\'t convert between 2 unlike units (${expandUnit(type1)} & ${expandUnit(type2)}), <@${message.author.id}>! Please check your units and try again.`);
+      return message.reply(`I can\'t convert between 2 unlike units (${expandUnit(type1)} & ${expandUnit(type2)})! Please check your units and try again.`);
     
     var name1 = nameCases(converter[0][pos1], cArgs, 4, 1);
     var name2 = nameCases(converter[0][pos2], cArgs, 5, 0);
@@ -485,7 +485,7 @@ exports.run = {
       output = output / Math.pow(metrics[1][cArgs[4]], powerCheck(cArgs[1]));
     // Checks if the conversion was valid
     if (isNaN(output))
-      return message.channel.send(`I can't convert non-numerical values, <@${message.author.id}>! Please enter a valid number and try again.`);
+      return message.reply(`I can't convert non-numerical values! Please enter a valid number and try again.`);
 
     // Creates an approximation to go alongside the full conversion, if necessary
     if(!cArgs[3] || cArgs[3] < 0) {
@@ -506,14 +506,14 @@ exports.run = {
     if((round == output && output % 1 == 0) || round == 0) round = "null";
 
     // Creates the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setTitle(`${cArgs[0]}${name1} equals…\n\`${output}${name2}\``)
       .setColor(eCol(style.e.default));
     // Adds a rounded output, if suitable
     if(round != "null") embed.setDescription(`…or about ${round}${name2}`);
 
     // Sends the embed
-    return message.channel.send(embed);
+    return message.channel.send({embeds: [embed]});
   }
 }
 

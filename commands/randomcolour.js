@@ -1,7 +1,7 @@
 // randomcolour V2 - Made by Irisu (irisuwastaken)
 
 // Require discord.js, the RNG, and some colour conversions
-const Discord = require('discord.js');
+const D = require('discord.js');
 const {getRandomInt, hexToRgb, rgbToCmyk, hexToInt} = require('../systemFiles/globalFunctions.js');
 
 function getRandomHex() {
@@ -20,13 +20,13 @@ exports.run = {
     let int = hexToInt(hex);
 
     // Creates the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setTitle(`#${hex}`)
       .setDescription(`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})\ncmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)\nint: ${int}`)
       .setColor(parseInt(`0x${hex}`));
 
     // Sends the embed
-    return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
+    return message.reply({content: `Here you go!`, embeds: [embed]});
   },
 };
 

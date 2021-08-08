@@ -1,5 +1,5 @@
 // Require discord.js, the style file, the RNG, and the embed colour checker
-const Discord = require('discord.js');
+const D = require('discord.js');
 const style = require('../systemFiles/style.json');
 const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
 
@@ -84,13 +84,13 @@ exports.run = {
   execute(message, args, client) {
     var statement;
     if(args.length === 0)
-      return message.channel.send(`I need a fraction to convert to a decimal, <@${message.author.id}>!`);
+      return message.reply(`I need a fraction to convert to a decimal!`);
     
     var nums = argComb(args);
     if(!Array.isArray(nums)) {
       switch (nums) {
-        case "null": return message.channel.send(`That doesn't look like a fraction, <@${message.author.id}>. Please check your formatting and try again.`);
-        case "err": return message.channel.send(`I can't convert multiple different fractions into a single decimal, <@${message.author.id}>!`);
+        case "null": return message.reply(`That doesn't look like a fraction. Please check your formatting and try again.`);
+        case "err": return message.reply(`I can't convert multiple different fractions into a single decimal!`);
       }
     }
     var decim = nums[1]/nums[2] + nums[0];
@@ -98,18 +98,18 @@ exports.run = {
     // checks for an improper/mixed fraction combo
     if(nums[0] !== 0 && nums[1] >= nums[2]) { // yes: send quippy message
       var seed = getRandomInt(0, quips.length-1);
-      statement = `${quips[seed][0]} ${qExt[getRandomInt(0, qExt.length-1)][quips[seed][1]]} here you go, <@${message.author.id}>.`;
+      statement = `${quips[seed][0]} ${qExt[getRandomInt(0, qExt.length-1)][quips[seed][1]]} here you go.`;
     } else { // no: send regular message
-      statement = `Here you go, <@${message.author.id}>!`;
+      statement = `Here you go!`;
     }
 
     // creates the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setTitle(`${nums[0] === 0 ? "" : `${nums[0]} `}${nums[1]}/${nums[2]} is…\n\`${decim}\``)
       .setColor(eCol(style.e.default));
 
     // sends the message and embed
-    return message.channel.send(statement, {embed: embed});
+    return message.reply({content: statement, embeds: [embed]});
   }
 };
 

@@ -1,4 +1,5 @@
-// Require the permission checker, some global functions (Write + Clean), colors, the package file, the emoji file, and request
+// Require discord.js, the permission checker, some global functions (Write + Clean), colors, the package file, the emoji file, and request
+const D = require('discord.js');
 const {p, Write, Clean} = require("../systemFiles/globalFunctions.js");
 const colors = require('colors');
 const package = require('../package.json');
@@ -19,7 +20,7 @@ exports.run = {
     const softRelease = args.join(" ").toString().includes("-s");
 
     // Emoji setup
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.nope;
 
     version = vers;
 
@@ -32,14 +33,12 @@ exports.run = {
 
     if (!forceVerification) {
       let filter = m => m.author.id === message.author.id;
-      const input = message.channel.createMessageCollector(filter);
+      const input = message.channel.createMessageCollector({filter});
 
       message.channel.send(`Are you absolutely sure you want to release ${Clean(version)}?`);
 
       filter = m => m.content.toLowerCase().trim() === "cancel" && m.author.id === message.author.id;
-      const cancelChecker = message.channel.createMessageCollector(filter, {
-        time: 60000
-      });
+      const cancelChecker = message.channel.createMessageCollector({filter, time: 60000});
 
       cancelChecker.on('collect', m => {
         cancelChecker.stop();
@@ -207,5 +206,5 @@ exports.help = {
   "weight": 1,
   "hide": 1,
   "wip": 0,
-  "dead": 0,
+  "dead": 1,
 };

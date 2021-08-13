@@ -155,7 +155,7 @@ exports.run = {
       let fails = [];
       let i = 1;
       for (const op of options) {
-        let u = emojiCheck(op);
+        let u = emojiCheck([op]);
         if (u[0] == "u") { // Unicode, push normally
           rxns.push(u[1]);
         } else if (u[0] == "c") { // Custom, check if accessible

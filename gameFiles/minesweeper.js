@@ -441,7 +441,7 @@ exports.exe = {
 
             // Sets up a message collector + time reset objects
             var moves = 0;
-            const filter = (msg) => msg.author.id == player && ((cancelRegex.exec(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
+            const filter = (msg) => msg.author.id == player && ((cancelRegex.test(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
             const finder = game.channel.createMessageCollector({filter, time: 240000, idle: 240000});  // First timer is longer to allow for rule reading
             const longTime = {time: 600000, idle: 600000};
             const shortTime = {time: 150000, idle: 150000};
@@ -460,7 +460,7 @@ exports.exe = {
                 else
                   msg.reply(`${e.alt.yep} Timer reset!`);
                 return;
-              } else if (cancelRegex.exec(msg.content)) {
+              } else if (cancelRegex.test(msg.content)) {
                 finder.stop("cancel");
                 return; // Stops the game
               }

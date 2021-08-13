@@ -43,7 +43,7 @@ client.on('ready', () => {
   } else {
     // Normal status
     client.user.setStatus("online");
-    client.user.setActivity(`math games! / ${process.env.prefix}help / v${package.version}`);
+    client.user.setActivity(`with threads! / ${process.env.prefix}help / v${package.version}`);
   }
 
   // Emoji setup
@@ -69,9 +69,7 @@ client.on('messageCreate', message => {
   }
   
   const commandName = args.shift().toLowerCase();
-
-  const command = client.commands.get(commandName)
-    || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
+  const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
   // Checks if the command exists. If not, returns
   if(!command) return;
@@ -109,7 +107,7 @@ client.on('warn', w => {
 // Emits uncaught promise rejection warnings
 process.on('unhandledRejection', error => {
   genWarningMsg(client, error);
-  console.error('Promise Rejection', error)
+  console.error('Promise Rejection -', error)
 });
 
 // Logs into Discord with Gyromina's token

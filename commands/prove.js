@@ -26,14 +26,14 @@ exports.run = {
     if (args.length === 0)
       return message.reply(`You didn't give me anything to prove!`);
     
-    const [...statement] = Clean(args);
+    const [...statement] = args;
 
     // Generates a 'proof'
     var num = getRandomInt(0, proof.length-1);
     const selected = proof[num];
 
     // Sends the evidence ('proof')
-    return message.channel.send(`${statement.join(" ")} ${selected}\n**Deal with it.**`);
+    return message.channel.send(`${Clean(statement.join(" "))}${selected == "." ? "" : " "}${selected}\n**Deal with it.**`);
   }
 };
 

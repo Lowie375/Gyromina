@@ -9,4 +9,4 @@ Older versions will be left "as-is" for simplicity's sake, since differences bet
 
 If you find a security vulnerability, please email me at lowie375@gmail.com, explaining the vulnerability in-depth (similar to how you would in a bug report, see the template [here](.github/ISSUE_TEMPLATE/bug_report.md)). Be sure to include "Gyromina Security" in the email's subject line so that I don't accidentally misplace the email and can get to work on a patch ASAP. Security vulnerabilities are serious matters, so I want to resolve them as quickly as possible.  
 
-While preparing a patch, I may arequest more information about certain vulnerabilities. Please try to answer these requests as quickly as possible and to the best of your ability.
+While preparing a patch, I may request more information about certain vulnerabilities. Please try to answer these requests as quickly as possible and to the best of your ability.

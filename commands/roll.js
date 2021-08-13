@@ -1,7 +1,9 @@
-// Require discord.js, the style file, the RNG, and the embed colour checker
+// Require discord.js, the style file, the RNG, the Clean function, and the embed colour checker
 const D = require('discord.js');
 const style = require('../systemFiles/style.json');
-const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js')
+const {getRandomInt, Clean, eCol} = require('../systemFiles/globalFunctions.js')
+
+const d6X = /1d6|d6|6/i
 
 function checkDice(faces) {
   // checks for specialty dice types
@@ -51,14 +53,18 @@ exports.run = {
     var resArr = [];
     var total = 0;
     var modifier = 0;
-    var dice = "";
+    var dice = [];
     
-    if(args.length === 0) { // default roll: 1d6
-      dice = "1d6";
+    if(args.length === 0 || (args.length === 1 && d6X.test(args))) { // default roll: 1d6
+      dice.push("1d6");
       total += rollDice(6, 1, resArr);
     } else { // custom roll
-      // split off info...
+      
+      // process + split dice
+      var [...rawDice] = args;
+      Clean(rawDice.join(" ")).replace(/ +/, "").split(/\+-/);
 
+      // split off info...
       var info = checkDice("...");
       if(info[0] == "m") {
         rollMansionsDice()
@@ -77,7 +83,7 @@ exports.run = {
     const embed = new D.MessageEmbed()
       .setColor(eCol(style.e.default));
 
-    if(results.length <= 1 && modifier === 0) {
+    if(resArr.length <= 1 && modifier === 0) {
       embed.setTitle(``)
     }
 
@@ -91,6 +97,7 @@ exports.help = {
   "aliases": ['dice', 'r'],
   "description": 'Rolls dice. Defaults to 1d6 (a standard 6-sided dice).',
   "usage": `${process.env.prefix}roll [dice] [modifier]`,
+  "params": "[dice] [modifier]",
   "weight": 1,
   "hide": 0,
   "wip": 1,

@@ -8,6 +8,7 @@ const flow = ["Anyway,", "Regardless,", "Either way,"];
 // Negative number regex
 const negNum = /^-\d/;
 const dots = /(\.\.+|…+)$/;
+const decimX = /\d{0,}\.\d+/
 
 function argComb(args) {
   let save = []; // = [type, mixedBool, runoffLength]
@@ -16,7 +17,7 @@ function argComb(args) {
   let rSave;
   // Checks for queries
   for (let i = 0; i < args.length; i++) {
-    if(args[i].startsWith("-") && !negNum.exec(args[i])) {
+    if(args[i].startsWith("-") && !negNum.test(args[i])) {
       switch(args[i].slice(1, 2)) {
         case "t":
         case "d":
@@ -35,7 +36,7 @@ function argComb(args) {
       }
       args.splice(i, 1);
       i--;
-    } else if(dots.exec(args[i])) {
+    } else if(dots.test(args[i])) {
       save.push("r");
       run = i;
       let dot = dots.exec(args[i]);
@@ -260,11 +261,16 @@ function dec(num, set) {
 
 exports.run = {
   execute(message, args, client) {
-    if (args.length === 0)
-      return message.reply(`I need a number to convert to a fraction!`);
-
-    // Prepares the number and handles queries
+    // Handles queries
     var set = argComb(args);
+
+    // Checks that there is a number, and that it is actually a decimal number
+    if(args.length === 0)
+      return message.reply(`I need a number to convert to a fraction!`);
+    else if(!decimX.test(args[0]))
+      return message.reply(`That's not a decimal! Please enter a valid one and try again.`);
+
+    // Prepares the number
     var num = args[0].split(".").slice(0, 2);
     var frac;
     var results;
@@ -295,7 +301,7 @@ exports.run = {
       switch(frac) {
         case "lim": return message.reply(`That fraction is far too complex for me to handle! Sorry about that!`);
         case "badRun": return message.reply(`That's not a valid repeating decimal length! Please enter a valid positive integer and try again.`);
-        default: return message.reply(`Something went wrong when processing that fraction! Sorry about that!`);
+        default: return message.reply(`Something went wrong when processing that fraction. Sorry about that!`);
       }
     }
 
@@ -304,17 +310,17 @@ exports.run = {
       .setColor(eCol(style.e.default));
     
     if(set[0] == "r" || results[0] == "r")
-      embed.setTitle(`${num[0]}.${frac[3]}… is\n\`${frac[2] === 0 ? "" : `${frac[2]} `}${frac[0]}/${frac[1]}\``); 
+      embed.setTitle(`${num[0]}.${frac[3]}… is\n\`${parseInt(frac[2]) === 0 ? "" : `${parseInt(frac[2])} `}${frac[0]}/${frac[1]}\``); 
     else
-      embed.setTitle(`${num[0]}.${num[1]} is\n\`${frac[2] === 0 ? "" : `${frac[2]} `}${frac[0]}/${frac[1]}\``); 
+      embed.setTitle(`${num[0]}.${num[1]} is\n\`${parseInt(frac[2]) === 0 ? "" : `${parseInt(frac[2])} `}${frac[0]}/${frac[1]}\``); 
 
     // sends the embed
     if(set[0] == "x") {
       switch(results[0]) {
         case "t": // terminating
-          return message.reply({content: `I think this is a terminating decimal. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0,2)]} here you go!`, embeds: [embed]});
+          return message.reply({content: `I think this is a terminating decimal. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, embeds: [embed]});
         default: // repeating
-          return message.reply({content: `I think this is a repeating decimal. If I'm wrong, try this command again with a **\`-t\`** at the end.\n${flow[getRandomInt(0,2)]} here you go!`, embeds: [embed]});
+          return message.reply({content: `I think this is a repeating decimal. If I'm wrong, try this command again with a **\`-t\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, embeds: [embed]});
       }
     } else {
       return message.reply({content: `Here you go!`, embeds: [embed]});

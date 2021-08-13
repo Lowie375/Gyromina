@@ -8,18 +8,21 @@ const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 const cmykX = /^cmyk\((\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?\)/i;
 
 function extract(xc) {
-  let m = rgbX.exec(xc);
-  let n = cmykX.exec(xc);
-  let o = hexX.exec(xc);
-  if(m) {
+  let mTest = rgbX.test(xc);
+  let nTest = cmykX.test(xc);
+  let oTest = hexX.test(xc);
+  if(mTest) {
     // xc -> RGB object
+    let m = rgbX.exec(xc);
     return ["rgb", 1, {r: minMax(m[1], 0, 255), g: minMax(m[2], 0, 255), b: minMax(m[3], 0, 255)}];
-  } else if(n) {
+  } else if(nTest) {
     // xc -> CMKY object
+    let n = cmykX.exec(xc);
     return ["cmyk", 2, {c: minMax(n[1], 0, 100), m: minMax(n[2], 0, 100), y: minMax(n[3], 0, 100), k: minMax(n[4], 0, 100)}];
-  } else if(!isNaN(parseInt(xc, 10)) || o) {
+  } else if(!isNaN(parseInt(xc, 10)) || oTest) {
     // xc -> int or hex, secondary check needed
-    if(o && (xc.startsWith("#") || xc.startsWith("0x") || /[a-f]+/i.exec(xc) || /^0+/.exec(o))) { // hex check
+    let o = hexX.exec(xc);
+    if(o && (xc.startsWith("#") || xc.startsWith("0x") || /[a-f]+/i.test(xc) || /^0+/.test(o))) { // hex check
       // xc -> hex code
       return ["hex", 0, o[2]];
     } else if(!isNaN(parseInt(xc, 10)) && /(\d+)/i.exec(xc)[1].length != 6) { // int check
@@ -44,8 +47,8 @@ exports.run = {
       return message.reply(`I can't get colour data for a non-existent colour!`)
 
     // Decoding
-    var [...code] = Clean(args);
-    var col = extract(code.join(" "));
+    var [...code] = args;
+    var col = extract(Clean(code.join(" ")));
     
     // Individual colour setup
     var hex;
@@ -94,7 +97,7 @@ exports.run = {
 
     // Output setup
     const embed = new D.MessageEmbed()
-      .setTitle(head)
+      .setTitle(head[0])
       .setDescription(strand.join("\n"));
     switch(hex) {
       case "ffffff": embed.setColor(0xfefefe); break; // override because #ffffff is transparent

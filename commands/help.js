@@ -114,8 +114,9 @@ exports.run = {
     var conditions = [];
     if (args) conditions = checkArgs(args);
 
-    // Creates an embed shell
+    // Creates embed + button row shells
     const embed = new D.MessageEmbed();
+    const buttons = new D.MessageActionRow();
 
     if (args.length >= 1 && conditions[1] == 0) { // Detailed command help
 
@@ -133,7 +134,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       if(cmdy.help.dead === 1)
         embed.setColor(style.e.dead);
       else if(cmdy.help.wip === 1)
@@ -148,23 +149,34 @@ exports.run = {
       else
         embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName})`);
 
-      let desc = cmdy.help.description;
+      let desc = `${cmdy.help.description}`;
+
       if(cmdy.help.aliases && Array.isArray(cmdy.help.aliases) == false)
-        desc += `\n\• Alias: ${process.env.prefix}${cmdy.help.aliases}`;
+        desc += `\n*Alias: ${process.env.prefix}**${cmdy.help.aliases}***`;
       else if(cmdy.help.aliases)
-        desc += `\n\• Aliases: ${process.env.prefix}${cmdy.help.aliases.join(`, ${process.env.prefix}`)}`;
+        desc += `\n*Aliases: ${process.env.prefix}**${cmdy.help.aliases.join(`**, ${process.env.prefix}**`)}***`;
       
       if(Array.isArray(cmdy.help.usage) == false) {
-        desc += `\n\• Usage: ${cmdy.help.usage}`;
+        desc += `\n*Usage: ${cmdy.help.usage}*`;
       } else {
-        desc += `\n\• Usage: ${cmdy.help.usage[0]}`;
-        for(let i = 1; i < cmdy.help.usage.length; i++) {desc += `\n   **or** ${process.env.prefix}${cmdy.help.name} ${cmdy.help.usage[i]}`;}
+        desc += `\n*Usage: ${cmdy.help.usage[0]}*`;
+        for(let i = 1; i < cmdy.help.usage.length; i++) {desc += `\n   ***or** ${cmdy.help.usage[i]}*`;}
       }
 
-      if(cmdy.help.helpurl)
-        desc += `\n\nFor more information, [tap/click here](${cmdy.help.helpurl})`;
-      
+      // Sets the embed description
       embed.setDescription(desc);
+
+      // Adds a button if a helpurl is present
+      if(cmdy.help.helpurl) {
+        buttons.addComponents(
+          new D.MessageButton()
+          .setStyle('LINK')
+          .setLabel(`More information about ${process.env.prefix}${cmdy.help.name}`)
+          .setURL(cmdy.help.helpurl)
+        );
+      }
+      
+
 
     } else if (args.length >= 1 && conditions[1] == 1) { // Detailed game help
 
@@ -182,7 +194,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       if(gmz.label.deleted === 1)
         embed.setColor(style.e.dead);
       else if(gmz.label.indev === 1)
@@ -197,29 +209,38 @@ exports.run = {
       else
         embed.setTitle(`${ext}${gmz.label.name} (${gameName})`);
 
-      let desc = gmz.label.description;
-      if(Array.isArray(gmz.label.aliases) == false)
-        desc += `\n\• Alias: ${gmz.label.aliases}`;
-      else if(gmz.label.aliases >= 2)
-        desc += `\n\• Aliases: ${gmz.label.aliases.join(`, `)}`;
+      let desc = `${gmz.label.description}`;
+
+      if(gmz.label.aliases && Array.isArray(gmz.label.aliases) == false)
+        desc += `\n*Alias: **${gmz.label.aliases}***`;
+      else if(gmz.label.aliases)
+        desc += `\n*Aliases: **${gmz.label.aliases.join(`**, **`)}***`;
       
       if (gmz.label.options && !Array.isArray(gmz.label.optionsdesc)) {
-        desc += `\n\nOptions:\n\• ${gmz.label.optionsdesc}`;
-      } else if (gmz.label.options && Array.isArray(gmz.label.optionsdesc)) {
-        desc += `\n\nOptions:\n\• ${gmz.label.optionsdesc[0]}`;
-        for(let i = 1; i < gmz.label.optionsdesc.length; i++) {desc += `\n\• ${gmz.label.optionsdesc[i]}`;}
+        desc += `\n*Options:*\n*${gmz.label.optionsdesc}*`;
+      } else if (gmz.label.options) {
+        desc += `\n*Options:*\n*${gmz.label.optionsdesc[0]}*`;
+        for(let i = 1; i < gmz.label.optionsdesc.length; i++) {desc += `\n*${gmz.label.optionsdesc[i]}*`;}
       }
 
-      if(gmz.label.helpurl)
-        desc += `\n\nFor more information, [tap/click here](${gmz.label.helpurl})`
-
+      // Sets the embed description
       embed.setDescription(desc);
+
+      // Adds a button if a helpurl is present
+      if(gmz.label.helpurl) {
+        buttons.addComponents(
+          new D.MessageButton()
+          .setStyle('LINK')
+          .setLabel(`More information about ${gmz.label.name}`)
+          .setURL(gmz.label.helpurl)
+        );
+      }
 
     } else if (conditions[1] == 1) { // General game help
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
       embed.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
 
@@ -237,10 +258,10 @@ exports.run = {
         // Checks if a list split is needed
         let splitList = split(glist, gweight);
         if(!Array.isArray(splitList)) { // Short list, no splitting needed
-          embed.addField(`Ready to Launch ${main}`, `${splitList}`, true);
+          embed.addField(`Ready to launch ${main}`, `${splitList}`, true);
         } else { // Splitting needed
           let inlineCtr = 1;
-          embed.addField(`Ready to Launch [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
+          embed.addField(`Ready to launch [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
           for(l of splitList) {
             inlineCtr++;
             embed.addField(`[${inlineCtr}]`, `${l}`, true);
@@ -286,7 +307,7 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       embed.setAuthor("Main Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
       embed.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
@@ -350,8 +371,11 @@ exports.run = {
         if(cmdctr != 0) embed.addField(`Deprecated Commands ${dead}`, `${cmdlist}`, true);
       }
     }
-    // Sends the embed
-    return message.channel.send({embeds: [embed]});
+    // Sends the embed (and buttons, if present)
+    if(buttons.components.length === 0)
+      return message.channel.send({embeds: [embed]});
+    else
+      return message.channel.send({embeds: [embed], components: [buttons]});
   },
 };
 

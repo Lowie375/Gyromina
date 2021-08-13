@@ -34,14 +34,14 @@ function argComb(args) {
   if (args.length >= 3) { // advanced (space-wise) comb
     for(let i = 0; i < args.length-2; i++) {
       let concat = `${args[i]}${args[i+1]}${args[i+2]}`;
-      if(div.exec(args[i+1]) && frac.exec(concat)) {
+      if(div.test(args[i+1]) && frac.test(concat)) {
         args.splice(i, 3, concat);
       }
     }
   }
   // run through and classify matching args
   for(const arg of args) {
-    if(whole.exec(arg)) {
+    if(whole.test(arg)) {
       wSave.push(arg);
     } else {
       let f = frac.exec(arg);

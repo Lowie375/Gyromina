@@ -36,7 +36,7 @@ exports.run = {
     const embed = new Discord.MessageEmbed()
       .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
       .setColor(eCol(style.e.default))
-      .setTitle("Gy·ro·mi·na\n/jīräminə/")
+      .setTitle("**Gy·ro·mi·na**\n\`/ˈdʒaɪrɔmɪnə/\`")
       .setDescription(desc)
       .setFooter(`Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, message.author.avatarURL())
       .addField("*Origin:*", "​***\`    L-V3R7     --->    Gyromina   \`***\n*\` Jul 07, 2018        Sep 15, 2018 \`\nMore information: [https://l375.weebly.com/gyromina](https://l375.weebly.com/gyromina)*")

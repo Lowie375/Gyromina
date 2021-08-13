@@ -45,7 +45,7 @@ exports.run = {
 
     // Decoding
     var [...code] = Clean(args);
-    var col = extract(code.join(" "));
+    var col = extract(Clean(code.join(" ")));
     
     // Individual colour setup
     var hex;

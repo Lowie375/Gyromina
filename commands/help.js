@@ -133,7 +133,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       if(cmdy.help.dead === 1)
         embed.setColor(style.e.dead);
       else if(cmdy.help.wip === 1)
@@ -158,7 +158,7 @@ exports.run = {
         desc += `\n\• Usage: ${cmdy.help.usage}`;
       } else {
         desc += `\n\• Usage: ${cmdy.help.usage[0]}`;
-        for(let i = 1; i < cmdy.help.usage.length; i++) {desc += `\n   **or** ${process.env.prefix}${cmdy.help.name} ${cmdy.help.usage[i]}`;}
+        for(let i = 1; i < cmdy.help.usage.length; i++) {desc += `\n   **or** ${cmdy.help.usage[i]}`;}
       }
 
       if(cmdy.help.helpurl)
@@ -182,7 +182,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       if(gmz.label.deleted === 1)
         embed.setColor(style.e.dead);
       else if(gmz.label.indev === 1)
@@ -198,9 +198,9 @@ exports.run = {
         embed.setTitle(`${ext}${gmz.label.name} (${gameName})`);
 
       let desc = gmz.label.description;
-      if(Array.isArray(gmz.label.aliases) == false)
+      if(gmz.label.aliases && Array.isArray(gmz.label.aliases) == false)
         desc += `\n\• Alias: ${gmz.label.aliases}`;
-      else if(gmz.label.aliases >= 2)
+      else if(gmz.label.aliases)
         desc += `\n\• Aliases: ${gmz.label.aliases.join(`, `)}`;
       
       if (gmz.label.options && !Array.isArray(gmz.label.optionsdesc)) {
@@ -219,7 +219,7 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
       embed.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
 
@@ -237,10 +237,10 @@ exports.run = {
         // Checks if a list split is needed
         let splitList = split(glist, gweight);
         if(!Array.isArray(splitList)) { // Short list, no splitting needed
-          embed.addField(`Ready to Launch ${main}`, `${splitList}`, true);
+          embed.addField(`Ready to launch ${main}`, `${splitList}`, true);
         } else { // Splitting needed
           let inlineCtr = 1;
-          embed.addField(`Ready to Launch [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
+          embed.addField(`Ready to launch [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
           for(l of splitList) {
             inlineCtr++;
             embed.addField(`[${inlineCtr}]`, `${l}`, true);
@@ -286,7 +286,7 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} - <> is required, [] is optional - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
       embed.setAuthor("Main Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
       embed.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 

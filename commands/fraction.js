@@ -318,7 +318,7 @@ exports.run = {
     if(set[0] == "x") {
       switch(results[0]) {
         case "t": // terminating
-          return message.channel.send(`I think this is a terminating decimalm, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, {embed: embed});
+          return message.channel.send(`I think this is a terminating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, {embed: embed});
         default: // repeating
           return message.channel.send(`I think this is a repeating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-t\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, {embed: embed});
       }

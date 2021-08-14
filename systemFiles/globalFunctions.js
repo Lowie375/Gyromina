@@ -1,6 +1,6 @@
 // Require colors, the emoji regex, and the style file
 const color = require('colors');
-const emojiRegex = require('emoji-regex');
+const emojiRegex = require('emoji-regex/RGI_Emoji.js');
 const regex = emojiRegex();
 const style = require('../systemFiles/style.json');
 
@@ -36,7 +36,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
 
 exports.Clean = function(text) {
   if (typeof(text) === "string")
-    return text.replace(/`/g, "`" + String.fromCharCode(8203).replace(/@/g, "@" + String.fromCharCode(8203)))
+    return text.replace(/`/g, `\`${String.fromCharCode(8203)}`).replace(/@/g, `@${String.fromCharCode(8203)}`);
   else
     return text;
 };
@@ -57,32 +57,34 @@ exports.getRandomInt = function(min, max) {
 };
 
 /**
- * Checks whether an emoji is part of the unicode set, a custom Discord emoji, or not an emoji at all.
- * @param e The emoji to check
+ * Checks whether there are any valid emojis in a list. Returns the first emoji that is part of the unicode set or a custom Discord emoji, or ["n", "null"] if there are none.
+ * @param eList The list to check
  * @return {Array<string>}
  */
 
-exports.emojiCheck = function(e) {
+exports.emojiCheck = function(eList = []) {
   let match;
   let save = [];
-  while (match = regex.exec(e)) {
-    save.push(match[0]);
+  for(const e of eList) {
+    match = regex.exec(e);
+    if(match)
+      save.push(match[0]);
   }
-  if(save.length != 0) {
+  if(save.length !== 0) {
     // Unicode emoji found!
     return ["u", save[0]];
   } else {
     // Discord custom emoji (or random string), checks for proper custom emoji formatting
-    let pEmojiID = e[0].split("<")[1]
-    if (!pEmojiID)
+    for(const e of eList) {
+      let pEmojiID = e.split("<")[1]
+      if (pEmojiID) { // initial check passed, does the rest of it look good?
+        let qEmojiID = pEmojiID.split(":");
+        let junk = e.split("<")[0].length;
+        if (qEmojiID[2] && e.slice(junk).startsWith("<") && qEmojiID[2].slice(-1) == ">")
+          return ["c", qEmojiID[2].slice(0, -1)];
+      }
       return ["n", "null"]; // Not an emoji
-
-    let qEmojiID = pEmojiID.split(":");
-    let junk = e[0].split("<")[0].length;
-    if (!qEmojiID[2] || !e[0].slice(junk).startsWith("<") || qEmojiID[2].slice(-1) != ">")
-      return ["n", "null"]; // Not an emoji
-
-    return ["c", qEmojiID[2].slice(0, -1)];
+    }
   }
 };
 
@@ -122,13 +124,10 @@ exports.p = function(message, perm = [""]) {
  */
 
 exports.stamp = function() {
-  let d = new Date();
-  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth()+1, d.getUTCFullYear()];
-  for(let i = 0; i <= 4; i++) {
-    if(now[i].toString().length <= 1)
-      now[i] = `0${now[i]}`;
-  }
-  return `${now[5]}/${now[4]}/${now[3]} @ ${now[2]}:${now[1]}:${now[0]} UTC`;
+  let dt = new Date();
+  let rawNow = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth()+1, dt.getUTCFullYear()];
+  let now = rawNow.map(elem => elem.toString().padStart(2, '0'));
+  return `${now[5]}-${now[4]}-${now[3]} @ ${now[2]}:${now[1]} UTC`;
 }
 
 // STYLE

@@ -8,6 +8,7 @@ const flow = ["Anyway,", "Regardless,", "Either way,"];
 // Negative number regex
 const negNum = /^-\d/;
 const dots = /(\.\.+|…+)$/;
+const decimX = /\d{0,}\.\d+/
 
 function argComb(args) {
   let save = []; // = [type, mixedBool, runoffLength]
@@ -260,11 +261,16 @@ function dec(num, set) {
 
 exports.run = {
   execute(message, args, client) {
-    if (args.length === 0)
-      return message.channel.send(`I need a number to convert to a fraction, <@${message.author.id}>!`);
-
-    // Prepares the number and handles queries
+    // Handles queries
     var set = argComb(args);
+
+    // Checks that there is a number, and that it is actually a decimal number
+    if(args.length === 0)
+      return message.reply(`I need a number to convert to a fraction!`);
+    else if(!decimX.test(args[0]))
+      return message.reply(`That's not a decimal! Please enter a valid one and try again.`);
+
+    // Prepares the number
     var num = args[0].split(".").slice(0, 2);
     var frac;
     var results;
@@ -304,17 +310,17 @@ exports.run = {
       .setColor(eCol(style.e.default));
     
     if(set[0] == "r" || results[0] == "r")
-      embed.setTitle(`${num[0]}.${frac[3]}… is\n\`${frac[2] === 0 ? "" : `${frac[2]} `}${frac[0]}/${frac[1]}\``); 
+      embed.setTitle(`${num[0]}.${frac[3]}… is\n\`${parseInt(frac[2]) === 0 ? "" : `${parseInt(frac[2])} `}${frac[0]}/${frac[1]}\``); 
     else
-      embed.setTitle(`${num[0]}.${num[1]} is\n\`${frac[2] === 0 ? "" : `${frac[2]} `}${frac[0]}/${frac[1]}\``); 
+      embed.setTitle(`${num[0]}.${num[1]} is\n\`${parseInt(frac[2]) === 0 ? "" : `${parseInt(frac[2])} `}${frac[0]}/${frac[1]}\``); 
 
     // sends the embed
     if(set[0] == "x") {
       switch(results[0]) {
         case "t": // terminating
-          return message.channel.send(`I think this is a terminating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0,2)]} here you go!`, {embed: embed});
+          return message.channel.send(`I think this is a terminating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, {embed: embed});
         default: // repeating
-          return message.channel.send(`I think this is a repeating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-t\`** at the end.\n${flow[getRandomInt(0,2)]} here you go!`, {embed: embed});
+          return message.channel.send(`I think this is a repeating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-t\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, {embed: embed});
       }
     } else {
       return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});

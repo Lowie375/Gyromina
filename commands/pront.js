@@ -39,7 +39,7 @@ exports.run = {
       return message.channel.send(`${excuse}, <@${message.author.id}>. ¯\\_(ツ)_/¯\n(No emoji entered. Please enter a valid emoji and try again.)`);
     }
 
-    var uni = emojiCheck(args[0]);
+    var uni = emojiCheck(args);
     var emoji;
     
     // Checks if the emoji check passed

@@ -127,9 +127,6 @@ exports.stamp = function() {
   let dt = new Date();
   let rawNow = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth()+1, dt.getUTCFullYear()];
   let now = rawNow.map(elem => elem.toString().padStart(2, '0'));
-  /*for(let i = 0; i <= 4; i++) {
-    now[i].padStart(2, '0');
-  }*/
   return `${now[5]}-${now[4]}-${now[3]} @ ${now[2]}:${now[1]} UTC`;
 }
 
@@ -298,6 +295,160 @@ exports.intToHex = function(int) {
     res = "0".concat(res);
   }
   return res;
+}
+
+/**
+ * Converts an RGB colour code to HSL format
+ * @param rgb The RGB colour object
+ * @return {JSON<number>}
+ */
+
+exports.rgbToHsl = function(rgb) {
+  let v = Math.max(rgb.r, rgb.g, rgb.b);
+  let m = Math.min(rgb.r, rgb.g, rgb.b);
+  let c = (v - m);
+
+  let h;
+  switch(v) {
+    case m: h = 0; break; // all the same, fallback to 0
+    case rgb.r: h = ((rgb.g-rgb.b) / c) + 0; break; // v = r
+    case rgb.g: h = ((rgb.b-rgb.r) / c) + 2; break; // v = g
+    case rgb.b: h = ((rgb.r-rgb.g) / c) + 4; break; // v = b
+    default: return "err"; // error
+  }
+  if(h < 0) h += 6;
+  if(h >= 6) h -= 6;
+
+  let l = (v + m) * 0.5;
+  let s;
+  switch(l) {
+    case 255:
+    case 0:
+      s = 0; break;
+    default:
+      s = c / (255 - Math.abs(2*l - 255)); break;
+  }
+
+  return {
+    h: Math.round(h * 60),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100/255),
+  };
+}
+
+/**
+ * Converts an HSL colour code to RGB format
+ * @param hsl The HSL colour object
+ * @return {JSON<number>}
+ */
+
+exports.hslToRgb = function(hsl) {
+  let div = [hsl.h/60, hsl.s/100, hsl.l/100];
+  let c = (1 - Math.abs(2 * div[2] - 1)) * div[1];
+  let x = (1 - Math.abs(div[0] % 2 - 1)) * c;
+  let rgb;
+
+  if(div[0] >= 6) div[0] -= 6;
+  if(div[0] < 0) div[0] += 6;
+
+  if(div[0] >= 0 && div[0] < 1)
+    rgb = [c, x, 0];
+  else if(div[0] >= 1 && div[0] < 2)
+    rgb = [x, c, 0];
+  else if(div[0] >= 2 && div[0] < 3)
+    rgb = [0, c, x];
+  else if(div[0] >= 3 && div[0] < 4)
+    rgb = [0, x, c];
+  else if(div[0] >= 4 && div[0] < 5)
+    rgb = [x, 0, c];
+  else if(div[0] >= 5 && div[0] < 6)
+    rgb = [c, 0, x];
+  else
+    return "err";
+
+  let m = div[2] - (c * 0.5)
+
+  return {
+    r: Math.round((rgb[0] + m) * 255),
+    g: Math.round((rgb[1] + m) * 255),
+    b: Math.round((rgb[2] + m) * 255)
+  }
+}
+
+/**
+ * Converts an RGB colour code to HSV format
+ * @param rgb The RGB colour object
+ * @return {JSON<number>}
+ */
+
+exports.rgbToHsv = function(rgb) {
+  let v = Math.max(rgb.r, rgb.g, rgb.b);
+  let m = Math.min(rgb.r, rgb.g, rgb.b);
+  let c = (v - m);
+
+  let h;
+  switch(v) {
+    case m: h = 0; break; // all the same, fallback to 0
+    case rgb.r: h = ((rgb.g-rgb.b) / c) + 0; break; // v = r
+    case rgb.g: h = ((rgb.b-rgb.r) / c) + 2; break; // v = g
+    case rgb.b: h = ((rgb.r-rgb.g) / c) + 4; break; // v = b
+    default: return "err"; // error
+  }
+  if(h < 0) h += 6;
+  if(h >= 6) h -= 6;
+
+  let s;
+  switch(v) {
+    case 0:
+      s = 0; break;
+    default:
+      s = c / v; break;
+  }
+  
+  return {
+    h: Math.round(h * 60),
+    s: Math.round(s * 100),
+    v: Math.round(v * 100/255),
+  };
+}
+
+/**
+ * Converts an HSV colour code to RGB format
+ * @param hsv The HSV colour object
+ * @return {JSON<number>}
+ */
+
+exports.hsvToRgb = function(hsv) {
+  let div = [hsv.h/60, hsv.s/100, hsv.v/100];
+  let c = div[1] * div[2];
+  let x = (1 - Math.abs(div[0] % 2 - 1)) * c;
+  let rgb;
+
+  if(div[0] >= 6) div[0] -= 6;
+  if(div[0] < 0) div[0] += 6;
+
+  if(div[0] >= 0 && div[0] < 1)
+    rgb = [c, x, 0];
+  else if(div[0] >= 1 && div[0] < 2)
+    rgb = [x, c, 0];
+  else if(div[0] >= 2 && div[0] < 3)
+    rgb = [0, c, x];
+  else if(div[0] >= 3 && div[0] < 4)
+    rgb = [0, x, c];
+  else if(div[0] >= 4 && div[0] < 5)
+    rgb = [x, 0, c];
+  else if(div[0] >= 5 && div[0] < 6)
+    rgb = [c, 0, x];
+  else
+    return "err";
+
+  let m = div[2] - c;
+
+  return {
+    r: Math.round((rgb[0] + m) * 255),
+    g: Math.round((rgb[1] + m) * 255),
+    b: Math.round((rgb[2] + m) * 255)
+  }  
 }
 
 // TEMPERATURE

@@ -67,6 +67,7 @@ exports.emojiCheck = function(eList = []) {
   let save = [];
   for(const e of eList) {
     match = regex.exec(e);
+    regex.lastIndex = 0; // emojiRegex is global
     if(match)
       save.push(match[0]);
   }

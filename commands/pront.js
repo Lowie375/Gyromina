@@ -65,7 +65,7 @@ exports.run = {
 
 exports.help = {
   "name": "pront",
-  "aliases": "print",
+  "aliases": ["print"],
   "description": "Prints emojis.",
   "usage": `${process.env.prefix}pront <emoji>`,
   "params": "<emoji>",

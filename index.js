@@ -69,7 +69,8 @@ client.on('messageCreate', message => {
   }
   
   const commandName = args.shift().toLowerCase();
-  const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
+  const command = client.commands.get(commandName)
+    || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
   // Checks if the command exists. If not, returns
   if(!command) return;

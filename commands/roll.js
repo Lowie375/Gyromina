@@ -3,26 +3,32 @@ const D = require('discord.js');
 const style = require('../systemFiles/style.json');
 const {getRandomInt, Clean, eCol} = require('../systemFiles/globalFunctions.js')
 
-const d6X = /1d6|d6|6/i
+// regexes + arrays
+const d6X = /1d6|d6/i;
+const standardDice = [2, 4, 6, 8, 10, 12, 20, 100];
 
-function checkDice(faces) {
+function checkDice(faces, count) {
   // checks for specialty dice types
-  switch(faces) {
+  switch(faces.replaceAll(/[\[\]\(\)\{\}]+/g, "")) {
     case "b":
+    case "bahoth":
+    case "babg":
     case "betrayal": // betrayal dice (custom d6)
-      return ["c", "[betrayal]", 0, 0, 1, 1, 2, 2];
+      return ["c", count, "[b]", 0, 0, 1, 1, 2, 2];
     case "m":
     case "mom":
     case "mansions":
     case "mansionsofmadness": // mansions of madness dice (custom d8)
-      return ["m", "[mansions]"];
+      return ["m", count, "[m]"];
     default:
-      return ["s", `${max(1, parseInt(faces))}`, 1, max(1, parseInt(faces))];
+      return ["s", count, `${Math.max(1, parseInt(faces))}`];
   }
 }
 
-function rollDice(faces, count, resArr) {
+function rollDice(infoArr, resArr) {
   let tot = 0;
+  let count = infoArr[1];
+  let faces = parseInt(infoArr[2]);
 
   // rolls the dice the specified amount of times
   for(let i = 1; i <= count; i++) {
@@ -33,71 +39,176 @@ function rollDice(faces, count, resArr) {
   return tot;
 }
 
-function rollMansionsDice(count, resArr) {
-  resArr = [0, 0, 0]
+function rollCustomDice(infoArr, resArr) {
+  let tot = 0;
+  let count = infoArr[1];
+  let faces = infoArr.slice(3);
+
+  // rolls the dice the specified amount of times
+  for(let i = 1; i <= count; i++) {
+    let r = getRandomInt(0, faces.length-1);
+    resArr.push(faces[r]);
+    tot += faces[r];
+  }
+  return tot;
+}
+
+function rollMansionsDice(count, mArr) {
   for(let i = 1; i <= count; i++) {
     let r = getRandomInt(1, 8);
     if(r >= 6) // success
-      resArr[0] += 1;
+      mArr[0] += 1;
     else if(r >= 4) // investigation/clue
-      resArr[1] += 1;
+      mArr[1] += 1;
     else // failure
-      resArr[2] += 1;
+      mArr[2] += 1;
   }
-  return resArr;
 }
 
 exports.run = {
   execute(message, args, client) {
     // variable setup
     var resArr = [];
+    var mArr = [0, 0, 0]; // 💥, 🔍, ➖
+    var dice = [];
     var total = 0;
     var modifier = 0;
-    var dice = [];
     
     if(args.length === 0 || (args.length === 1 && d6X.test(args))) { // default roll: 1d6
       dice.push("1d6");
-      total += rollDice(6, 1, resArr);
+      total += rollDice(["s", 1, "6"], resArr);
     } else { // custom roll
       
-      // process + split dice
-      var [...rawDice] = args;
-      Clean(rawDice.join(" ")).replace(/ +/, "").split(/\+-/);
+      // clean + split dice
+      var rawDice = Clean(args.join("").toLowerCase()).split(/[+-]/);
 
-      // split off info...
-      var info = checkDice("...");
-      if(info[0] == "m") {
-        rollMansionsDice()
+      // handle dice individually
+      for(let i = 0; i < rawDice.length; i++) {
+        // split apart count and faces
+        let rawInfo = rawDice[i].split('d');
+        let info = rawInfo.filter(e => e.length >= 1 && !/^ +$/.test(e));
+        if(rawInfo[0] == "") info.unshift(""); // retain a blank element at the start of info, if one was present
+        switch(info.length) {
+          case 0: { // something went wrong
+            resArr.push("err");
+            break;
+          }
+          case 1: { // likely a modifier, check just in case
+            if(isNaN(parseInt(info[0])) || info[0] == "") { 
+              // not a modifier, log a dice error
+              resArr.push("err");
+              break;
+            } else { 
+              // modifier!
+              modifier += parseInt(info[0], 10);
+              break;
+            }
+          }
+          default: { // likely dice, check just in case
+            if((isNaN(parseInt(info[0])) && info[0] !== "") || isNaN(parseInt(info[1]))) {
+              // not dice, log a dice error
+              resArr.push("err");
+              break;
+            } else { // dice!
+              if(info[0] == "") info[0] = "1"; // if no dice count specified, default to 1
+              let dInfo = checkDice(info[1], parseInt(info[0], 10));
+              dice.push(`${dInfo[1]}d${dInfo[2]}`);
+              switch(dInfo[0]) {
+                case "m":
+                  rollMansionsDice(dInfo[1], mArr); break;
+                case "c":
+                  total += rollCustomDice(dInfo, resArr); break;
+                case "s":
+                  total += rollDice(dInfo, resArr); break;
+              }
+            }
+          }
+        }
       }
-
-      // PSEUDO:
-      // split '+-' and 'd'
-      // repeat and roll
-      // output individuals + total
-
-      // TODO:
-      // canvas drawing for common polyhedrals
     }
 
-    // prepares the embed
-    const embed = new D.MessageEmbed()
-      .setColor(eCol(style.e.default));
+    // output individuals + total
 
-    if(resArr.length <= 1 && modifier === 0) {
-      embed.setTitle(``)
+    // TODO:
+    // canvas drawing for common polyhedrals
+    // have each "set" of dice be a different colour?
+      // use gyrDefault for 1 set, then distribute hues evenly depending on number of sets
+
+    // prepares the embed
+    const embed = new D.MessageEmbed();
+
+    // prepares the message that gets sent with the embed
+    var desc;
+    if(resArr.includes("err")) {
+      resArr.filter(e => e != "err");
+      if(resArr.length === 0) {
+        return message.reply("None of those dice could be rolled! Please check your syntax and try again.")
+      } else {
+        desc = "Some of your dice couldn't be rolled, sorry about that! You may want to check your syntax next time.\nHere are the dice I did manage to roll for you!"
+      }
+    } else {
+      desc = "Here you go!"
+    }
+
+    // custom colour checker for crits/fails
+    if(resArr.length === 1) { // crit colouring applies
+      let dFaces = parseInt(dice[0].split('d')[1]);
+      if(dFaces == resArr[0] && standardDice.includes(dFaces))
+        embed.setColor(style.dice.crit);
+      else if(resArr[0] === 1 && standardDice.includes(dFaces))
+        embed.setColor(style.dice.fail);
+      else
+        embed.setColor(eCol(style.e.default));
+    } else { // crit colouring does not apply: use default
+      embed.setColor(eCol(style.e.default));
+    }
+
+    // set up embed title
+    if(mArr.filter(e => e !== 0).length !== 0) { // mansions dice rolled, report in title
+      let eTitle;
+      if(total !== 0 || modifier !== 0) // regular rolls
+        eTitle.push(`${total + modifier}`);
+      if(mArr[0] !== 0) // successes
+        eTitle.push(`${mArr[0]}💥`);
+      if(mArr[1] !== 0) // investigation/clue results
+        eTitle.push(`${mArr[1]}🔍`);
+      if(mArr[2] !== 0) // failures
+        eTitle.push(`${mArr[2]}➖`);
+      // set the title
+      embed.setTitle(`${eTitle.join(" + ")}`);
+    } else { // standard title
+      embed.setTitle(`${total + modifier}`);
+    }
+
+    // set up embed description if applicable (roll breakdown)
+    if(resArr.length > 1 || (modifier !== 0 && resArr.length !== 0)) {
+      let eDesc = "";
+      for(let i = 0; i < dice.length; i++) {
+        let dCount = parseInt(dice[i].split('d')[0]);
+        eDesc += `${dice[i]}(`
+        let resCache = [];
+        for(let j = 0; j < dCount; j++) {
+          resCache.push(resArr.shift());
+        }
+        eDesc += `**\`${resCache.join("\`**+**\`")}\`**) + `
+      }
+      if(modifier !== 0)
+        embed.setDescription(`${eDesc}${modifier}`);
+      else
+        embed.setDescription(eDesc.slice(0, -3));
     }
 
     // returns the result of the roll
-    return 
+    return message.reply({content: desc, embeds: [embed]});
   },
 };
   
 exports.help = {
   "name": 'roll',
-  "aliases": ['dice', 'r'],
+  "aliases": ["dice", "r"],
   "description": 'Rolls dice. Defaults to 1d6 (a standard 6-sided dice).',
-  "usage": `${process.env.prefix}roll [dice] [modifier]`,
-  "params": "[dice] [modifier]",
+  "usage": `${process.env.prefix}roll [dice/modifiers/queries]`,
+  "params": "[dice/modifiers/queries]",
   "weight": 1,
   "hide": 0,
   "wip": 1,

@@ -428,9 +428,9 @@ exports.exe = {
         `Tiles with numbers indicate how many of the surrounding 8 tiles contain mines. Blanks act as zeroes (0).\n` +
         `(ex: 1 of the 8 tiles surrounding a "1" will contain a mine, 2 of the 8 tiles surrounding a "2" will contain mines, etc.)\n` +
         `**Uncover all the tiles WITHOUT mines to win!**\n\n` +
-        `•  To uncover a tile, type **\`c:X#\`**, replacing \`X\` with a row letter and \`#\` with a column number. If you uncover a mine, you will lose!\n` +
-        `•  If you think a tile is a mine, you can flag it by typing **\`f:X#\`** (where \`X\` = row and \`#\` = column, as above). Flagged tiles can not be uncovered. To remove a flag, type the flagging command again.\n` +
-        `•  If you are unsure about whether a tile is a mine or not, you can mark it as uncertain by typing **\`q:X#\`** (where \`X\` = row and \`#\` = column, as above). You will be warned when trying to uncover a tile marked as uncertain. To remove an uncertanty marker, type the uncertainty command again.\n` +
+        `•  To uncover a tile, type **\`c.X#\`**, replacing \`X\` with a row letter and \`#\` with a column number. If you uncover a mine, you will lose!\n` +
+        `•  If you think a tile is a mine, you can flag it by typing **\`f.X#\`** (where \`X\` = row and \`#\` = column, as above). Flagged tiles can not be uncovered. To remove a flag, type the flagging command again.\n` +
+        `•  If you are unsure about whether a tile is a mine or not, you can mark it as uncertain by typing **\`q.X#\`** (where \`X\` = row and \`#\` = column, as above). You will be warned when trying to uncover a tile marked as uncertain. To remove an uncertanty marker, type the uncertainty command again.\n` +
         `**Good luck and have fun!**\n\n` +
         `\*This \`mswp\` instance will time out if you do not make a move within 2 minutes and 30 seconds.\nYou can quit the game at any time by typing \`mswp stop\`.\nIf you need more time to think about your next move, you can reset the timer to 10 minutes by typing \`mswp time\`.\*`;
         
@@ -491,7 +491,7 @@ exports.exe = {
                   case "q":
                   case "?":
                     // Invalid starter; reject
-                    return msg.reply(`Invalid starting move. Please open a tile using \`c:X#\` notation to begin.`);
+                    return msg.reply(`Invalid starting move. Please open a tile using \`c.X#\` notation to begin.`);
                 }
               }
               // Increments the move counter

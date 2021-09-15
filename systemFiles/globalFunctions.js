@@ -67,6 +67,7 @@ exports.emojiCheck = function(eList = []) {
   let save = [];
   for(const e of eList) {
     match = regex.exec(e);
+    regex.lastIndex = 0; // emojiRegex is global
     if(match)
       save.push(match[0]);
   }
@@ -187,6 +188,17 @@ exports.avCol = function(cdn) {
     return cdn.avatar.blurple;
   else // Default
     return cdn.avatar.default;
+}
+
+/**
+ * Responds to a message or interaction
+ * @param text A response object to send
+ * @param msg The message object
+ * @param options An options object with response-specific options
+ */
+
+exports.respond = function(response, msg, options = {interact: "msg", reply: false, ephemeral: false}) {
+
 }
 
 // COLOUR

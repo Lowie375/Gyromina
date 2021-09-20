@@ -8,33 +8,39 @@ const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit"];
 function numCheck(x) {
   switch(x) {
     case "easy":
+    case "basic":
     case "e":
+    case "b":
       return 10;
     case "medium":
     case "normal":
     case "moderate":
     case "regular":
     case "m":
+    case "r":
+    case "n":
       return 100;
     case "hard":
     case "difficult":
     case "h":
+    case "d":
       return 1000;
     case "insane":
     case "expert":
     case "x":
     case "i":
       return 7500;
-    case "master":
     case "ultimate":
-    case "xm":
+    case "extreme":
     case "u":
+    case "xe":
       return 50000;
     case "demonic":
     case "maximum":
-    case "xxm":
+    case "max":
+    case "xm":
     case "xu":
-    case "xxu":
+    case "xd":
       return 16777215;
     default:
       return parseInt(x);

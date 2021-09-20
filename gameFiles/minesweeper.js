@@ -16,28 +16,37 @@ const alphaFilter = a => b => a.length === b.length && a.every((v, i) => v === b
 function boardCheck(x) {
   switch (x) {
     case "easy":
+    case "basic":
     case "e":
+    case "b":
       return [10, 9, 9];
     case "medium":
     case "normal":
     case "moderate":
     case "regular":
     case "m":
+    case "r":
+    case "n":
       return [40, 16, 16];
     case "hard":
     case "difficult":
     case "h":
+    case "d":
       return [99, 30, 16];
     case "insane":
     case "expert":
     case "x":
     case "i":
       return [255, 30, 30];
-    case "master":
     case "ultimate":
-    case "xm":
+    case "extreme":
     case "u":
+    case "xe":
       return [390, 36, 36];
+    case "maximum":
+    case "max":
+    case "xm":
+      return [1225, 36, 36];
     default:
       return x;
   }

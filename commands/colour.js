@@ -8,7 +8,7 @@ const hexX = /^(0x|#|\b)([a-f\d]{6})/i;
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 const cmykX = /^cmyk\((\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?[, ]+(\d+)%?\)/i;
 const hslX = /^hsl\((\d+)°?[, ]+(\d+)%?[, ]+(\d+)%?\)/;
-const hsvX = /^hsv\((\d+)°?[, ]+(\d+)%?[, ]+(\d+)%?\)/;
+const hsvX = /^h[cs][vb]\((\d+)°?[, ]+(\d+)%?[, ]+(\d+)%?\)/;
 
 function extract(xc) {
   if(rgbX.test(xc)) {

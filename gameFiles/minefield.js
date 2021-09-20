@@ -17,27 +17,32 @@ const rxns = [dir[0], dir[1], dir[2], dir[3], dir[4], dir[5], bkd, ibx, ccl];
 function bombCheck(x) {
   switch(x) {
     case "easy":
+    case "basic":
     case "e":
+    case "b":
       return 4;
     case "medium":
     case "normal":
     case "moderate":
     case "regular":
     case "m":
+    case "r":
+    case "n":
       return 8;
     case "hard":
     case "difficult":
     case "h":
+    case "d":
       return 12;
     case "insane":
     case "expert":
     case "x":
     case "i":
       return 16;
-    case "master":
     case "ultimate":
-    case "xm":
+    case "extreme":
     case "u":
+    case "xe":
       return 20;
     default:
       return parseInt(x);

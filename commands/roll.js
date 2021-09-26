@@ -5,7 +5,7 @@ const {getRandomInt, Clean, eCol} = require('../systemFiles/globalFunctions.js')
 
 // regexes + arrays
 const d6X1 = /normal|regular|die|standard|single|one/i;
-const d6X2 = /dice|double|two/i;
+const d6X2 = /dice|doubles|double|two/i;
 const d20advX = /(advantage|a|adv)/i;
 const d20disX = /(disadvantage|d|dis)/i;
 const standardDice = [2, 4, 6, 8, 10, 12, 20, 100];
@@ -103,13 +103,14 @@ function rollAdvDis20(infoArr, resArr) { // WIP
   // sort the array in descending order
   res.sort((a, b) => b - a);
 
+  let finalRes;
   if(infoArr[1] == "adv")
-    let r = res[0]; // advantage: take higher result
+    finalRes = res[0]; // advantage: take higher result
   else
-    let r = res[1]; // disadvantage: take lower result
+    finalRes = res[1]; // disadvantage: take lower result
   
-  resArr.push(`\`${r}\``);
-  tot += r;
+  resArr.push(`\`${finalRes}\``);
+  tot += finalRes;
 }
 
 exports.run = {
@@ -131,16 +132,17 @@ exports.run = {
       // handle dice individually
       for(let i = 0; i < rawDice.length; i++) {
         // split apart count and faces
+        let rawInfo;
         if(d6X1.test(args[i]))
-          let rawInfo = ["1", "6"];
+          rawInfo = ["1", "6"];
         else if(d6X2.test(args[i]))
-          let rawInfo = ["2", "6"];
+          rawInfo = ["2", "6"];
         /*else if(d20advX.test(args[i]))
-          let rawInfo = ["1", "adv"];
+          rawInfo = ["1", "adv"];
         else if(d20disX.test(args[i]))
-          let rawInfo = ["1", "dis"];*/
+          rawInfo = ["1", "dis"];*/
         else
-          let rawInfo = rawDice[i].split('d');
+          rawInfo = rawDice[i].split('d');
 
         let info = rawInfo.filter(e => e.length >= 1 && !/^ +$/.test(e));
           if(rawInfo[0] == "") info.unshift(""); // retain a blank element at the start of info, if one was present
@@ -269,7 +271,7 @@ exports.run = {
 exports.help = {
   "name": 'roll',
   "aliases": ["dice", "r"],
-  "description": 'Rolls dice. Defaults to 1d6 (a standard 6-sided dice).',
+  "description": 'Rolls dice. Defaults to 1d20 (a 20-sided dice).',
   "usage": `${process.env.prefix}roll [dice/modifiers/queries]`,
   "params": "[dice/modifiers/queries]",
   "weight": 1,

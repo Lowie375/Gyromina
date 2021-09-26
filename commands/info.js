@@ -1,9 +1,9 @@
-// Require discord.js, the package file, the cdn + style files, the embed colour checker, and the timestamp generator
+// Require discord.js, the package file, the cdn + style files, the responder, the embed colour checker, and the timestamp generator
 const D = require('discord.js');
 const botinfo = require('../package.json');
 const cdn = require('../systemFiles/cdn.json');
 const style = require('../systemFiles/style.json');
-const {eCol, avCol, stamp} = require('../systemFiles/globalFunctions.js');
+const {respond, eCol, avCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
@@ -75,7 +75,10 @@ exports.run = {
     );
 
     // Sends the embed
-    return message.channel.send({embeds: [embed], components: [inviteBtn, githubBtn]});
+    return respond({embeds: [embed], components: [inviteBtn, githubBtn]}, message, {type: message.gyrType});
+  },
+  slashArgs(interact) {
+    return []; // no arg template
   },
 };
 
@@ -88,4 +91,8 @@ exports.help = {
   "hide": 0,
   "wip": 0,
   "dead": 0,
+  "s": { // for slash-enabled commands
+    "name": "info",
+    "wip": true
+  }
 };

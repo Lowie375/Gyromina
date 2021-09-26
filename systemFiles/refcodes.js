@@ -1,5 +1,6 @@
-// Require discord.js, the permission checker, the RNG, and the emoji + style files
+// Require discord.js, colors, the permission checker, the RNG, and the emoji + style files
 const D = require('discord.js');
+const colors = require('colors');
 const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
@@ -56,7 +57,7 @@ exports.genErrorMsg = function(message, client, error) {
   // Generates a reference code
   const newRef = genCode();
   // Logs the error
-  console.error(`REFCODE: ${newRef}\n`, error);
+  console.error(`REFCODE: ${newRef}\n`.nope, error);
 
   // Sends a warning message in the channel
   const embed = new D.MessageEmbed()

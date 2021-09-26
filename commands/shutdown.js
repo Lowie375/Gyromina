@@ -1,5 +1,6 @@
-// Require discord.js, the package file, and the permission checker
+// Require discord.js, colors, the package file, and the permission checker
 const D = require('discord.js');
+const colors = require('colors');
 const e = require('../systemFiles/emojis.json');
 const {p} = require('../systemFiles/globalFunctions.js');
 
@@ -12,7 +13,7 @@ exports.run = {
     // Checks to see if the bot host sent the message.
     if(message.author.id !== process.env.hostID) {
       message.channel.send(`${nope} Error - Insufficient permissions!`)
-      console.log('A user attempted to shut me down, but was unsuccessful!')
+      console.log('A user attempted to shut me down, but was unsuccessful!'.nope)
       return;
     }
 
@@ -20,7 +21,7 @@ exports.run = {
     let tag = client.user.tag;
     await message.channel.send(`${yep}`);
     await client.user.setStatus("invisible");
-    console.log(`Shutting down ${tag}…\n- - - - - - - - - - -`);
+    console.log(`Shutting down ${tag}…\n- - - - - - - - - - -`.main);
     await client.destroy();
   },
 };

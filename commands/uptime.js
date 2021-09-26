@@ -1,6 +1,7 @@
-// Require discord.js, the Heroku client, the emoji + style files, the permission checker, the emoji colour checker, and the timestamp generator
+// Require discord.js, the Heroku client, colors, the emoji + style files, the permission checker, the emoji colour checker, and the timestamp generator
 const D = require('discord.js');
 const Heroku = require('heroku-client');
+const colors = require('colors');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
 const {p, eCol, stamp} = require('../systemFiles/globalFunctions.js');
@@ -78,7 +79,7 @@ exports.run = {
         return message.channel.send({embeds: [embed]});
       })
       .catch (err => { // Could not pull API data
-        console.error("API request failed; defaulting to minimal uptime report", err);
+        console.error("API request failed; defaulting to minimal uptime report".nope, err);
 
         // Minimal embed
         embed.setTitle(dOut);

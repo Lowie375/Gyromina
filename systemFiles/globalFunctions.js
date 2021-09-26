@@ -9,9 +9,9 @@ const style = require('../systemFiles/style.json');
 /**
  * Writes to the console with time when it was ran
  * @author Nao (naoei)
- * @param message
+ * @param message Message to log
  * @param startTime
- * @param useLocale
+ * @param useLocale Whether to use the user's locale or not
  */
 
 exports.Write = function(message, startTime = null, useLocale = true) {
@@ -31,6 +31,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
 /**
  * Clears out any @Everyone's.
  * @author Nao (naoei)
+ * @param text The text to clean
  * @return {string}
  */
 
@@ -43,9 +44,9 @@ exports.Clean = function(text) {
 
 /**
  * Generates a random integer.
- * @param min The minimum value that can be generated
- * @param max The maximumn value that can be generated
- * @return {number}
+ * @param {number} min The minimum value that can be generated
+ * @param {number} max The maximum value that can be generated
+ * @return {number} The random integer generated
  */
 
 exports.getRandomInt = function(min, max) {
@@ -58,11 +59,11 @@ exports.getRandomInt = function(min, max) {
 
 /**
  * Checks whether there are any valid emojis in a list. Returns the first emoji that is part of the unicode set or a custom Discord emoji, or ["n", "null"] if there are none.
- * @param eList The list to check
- * @return {Array<string>}
+ * @param {Array<string>} eList The list to check
+ * @return {Array<string>} An array with information about the emoji
  */
 
-exports.emojiCheck = function(eList = []) {
+exports.emojiCheck = function(eList) {
   let match;
   let save = [];
   for(const e of eList) {
@@ -94,7 +95,7 @@ exports.emojiCheck = function(eList = []) {
  * @param {Number} n The number to constrain
  * @param {Number} min The minimum
  * @param {Number} max The maximum
- * @return {Number}
+ * @return {Number} The number, constrained between `min` and `max`
  */
 
 exports.minMax = function(n, min, max) {
@@ -105,7 +106,7 @@ exports.minMax = function(n, min, max) {
  * Checks whether Gyromina has a certain permission in the channel a message was sent in
  * @param message The message object
  * @param perm An array containing the permissions to check for
- * @return {Boolean}
+ * @return {Boolean} "`true`" if Gyromina has permissions, "`false`" if not
  */
 
 exports.p = function(message, perm) {
@@ -113,15 +114,12 @@ exports.p = function(message, perm) {
     return true;
   } else {
     let gPerm = message.channel.permissionsFor(message.guild.me);
-    if (perm && gPerm.has(perm))
-      return true;
-    else
-      return false;
+    return perm && gPerm.has(perm); // this is much simpler
   }
 }
 /**
  * Creates a custom date timestamp for embed usage
- * @return {String}
+ * @return {String} The produced timestanp
  */
 
 exports.stamp = function() {
@@ -136,13 +134,15 @@ exports.stamp = function() {
 /**
  * Checks whether an embed's colour should be changed due to the current season
  * @param def The standard colour for the embed in question
- * @return {String}
+ * @return {String} The embed colour to use
  */
 
 exports.eCol = function(def) {
   let dt = new Date();
   let now = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth(), dt.getUTCFullYear()];
-  if(now[4] == 5 || process.env.season === "1") { // June: rainbow randomizer
+  if(process.env.season === "-1") { // Force default style
+    return def;
+  } else if(now[4] == 5 || process.env.season === "1") { // June: rainbow randomizer
     let col = Math.min(Math.floor(Math.random() * 193) + 63, 255);
     let pos = [Math.min(Math.floor(Math.random()*3), 2), Math.min(Math.floor(Math.random()*2), 1)];
     if(pos[1] === 0) { // 255 before 63
@@ -174,7 +174,7 @@ exports.eCol = function(def) {
 /**
  * Checks whether an avatar should be changed due to the current season
  * @param cdn The CDN constant
- * @return {String}
+ * @return {String} The avatar ID to use
  */
 
 exports.avCol = function(cdn) {
@@ -192,13 +192,56 @@ exports.avCol = function(cdn) {
 
 /**
  * Responds to a message or interaction
- * @param text A response object to send
- * @param msg The message object
- * @param options An options object with response-specific options
+ * @param {object|string} resp A response object to send
+ * @param {object} msg The message or interaction object
+ * @param {object} options An options object with response-specific options
+ * @param {string} options.type
+ * @param {boolean?} options.edit
+ * @param {boolean?} options.reply
+ * @param {boolean?} options.eph
+ * @param {boolean?} options.follow
+ * @return {function} The appropriate message or interaction response function
  */
+// options = {type: "msg", edit: false, reply: false, eph: false, follow: false}
 
-exports.respond = function(response, msg, options = {interact: "msg", reply: false, ephemeral: false}) {
-
+exports.respond = async function(resp, msg, options) {
+  let response = typeof(resp) == "string" ? {content: resp} : resp;
+  switch(options.type) {
+    case "msg": { // respond to command message/channel
+      // binary flags, wow!
+      let optsFlag = 0;
+      if(options.reply && options.reply === true) optsFlag += Math.pow(2, 0);
+      if(options.edit && options.edit === true) optsFlag += Math.pow(2, 1);
+      // check flags + react accordingly
+      switch (optsFlag) {
+        case 3:
+        case 2: // edit (reply ignored)
+          return msg.edit(response);
+        case 1: // reply
+          return msg.reply(response);
+        default: // default (standard)
+          return msg.channel.send(response);
+      }
+    }
+    case "interact": { // respond to slash command interaction
+      // binary flags, wow!
+      let optsFlag = 0;
+      if(options.follow && options.follow === true) optsFlag += Math.pow(2, 0);
+      if(options.edit && options.edit === true) optsFlag += Math.pow(2, 1);
+      response.ephemeral = options.eph ? options.eph : false; // if ephemeral, make it ephemeral
+      // check flags + react accordingly
+      switch(optsFlag) { // i'm using binary flags, wow!
+        case 3:
+        case 2: // edit (follow ignored)
+          return msg.editReply(response);
+        case 1: // follow
+          return msg.followUp(response);
+        default: // default (reply)
+          return msg.reply(response);
+      }
+    }
+    default: return undefined; // error
+  }
 }
 
 // COLOUR
@@ -207,7 +250,7 @@ exports.respond = function(response, msg, options = {interact: "msg", reply: fal
  * Converts a hexadecimal colour code to RGB format
  * @author Irisu (irisuwastaken)
  * @param {string} hex The hexadecimal colour code (preceded by a #)
- * @return {JSON<number>}
+ * @return {object<number>} An RGB colour object
  */
 
 exports.hexToRgb = function(hex) { 
@@ -226,8 +269,11 @@ exports.hexToRgb = function(hex) {
 
 /**
  * Converts an RGB colour code to hexadecimal format
- * @param rgb The RGB colour object
- * @return {String}
+ * @param {object} rgb The RGB colour object
+ * @param {number} rgb.r
+ * @param {number} rgb.g
+ * @param {number} rgb.b
+ * @return {String} A hexadecimal colour code
  */
 
 exports.rgbToHex = function(rgb) {
@@ -237,8 +283,12 @@ exports.rgbToHex = function(rgb) {
 
 /**
  * Converts a CMYK colour code to RGB format
- * @param cmyk The CMYK colour object
- * @return {JSON<number>}
+ * @param {object} cmyk The CMYK colour object
+ * @param {number} cmyk.c
+ * @param {number} cmyk.m
+ * @param {number} cmyk.y
+ * @param {number} cmyk.k
+ * @return {object} An RGB colour object
  */
 
 exports.cmykToRgb = function(cmyk) {
@@ -257,8 +307,11 @@ exports.cmykToRgb = function(cmyk) {
 
 /**
  * Converts an RGB colour code to CMYK format
- * @param rgb The RGB colour object
- * @return {JSON<number>}
+ * @param {object} rgb The RGB colour object
+ * @param {number} rgb.r
+ * @param {number} rgb.g
+ * @param {number} rgb.b
+ * @return {object} A CMYK colour object
  */
 
 exports.rgbToCmyk = function(rgb) {
@@ -288,7 +341,7 @@ exports.rgbToCmyk = function(rgb) {
 /**
  * Converts a hexadecimal colour code to a colour integer
  * @param {String} hex The hexadecimal colour code (raw; no #)
- * @return {Number}
+ * @return {Number} A colour integer
  */
 
 exports.hexToInt = function(hex) {
@@ -298,7 +351,7 @@ exports.hexToInt = function(hex) {
 /**
  * Converts a colour integer to a hexadecimal colour code
  * @param {Number} int The colour integer
- * @return {String}
+ * @return {String} A hexadecimal colour code
  */
 
 exports.intToHex = function(int) {
@@ -311,8 +364,11 @@ exports.intToHex = function(int) {
 
 /**
  * Converts an RGB colour code to HSL format
- * @param rgb The RGB colour object
- * @return {JSON<number>}
+ * @param {object} rgb The RGB colour object
+ * @param {number} rgb.r
+ * @param {number} rgb.g
+ * @param {number} rgb.b
+ * @return {object} An HSL colour object
  */
 
 exports.rgbToHsl = function(rgb) {
@@ -350,8 +406,11 @@ exports.rgbToHsl = function(rgb) {
 
 /**
  * Converts an HSL colour code to RGB format
- * @param hsl The HSL colour object
- * @return {JSON<number>}
+ * @param {object} hsl The HSL colour object
+ * @param {number} hsl.h
+ * @param {number} hsl.s
+ * @param {number} hsl.l
+ * @return {object<number>} An RGB colour object
  */
 
 exports.hslToRgb = function(hsl) {
@@ -389,8 +448,11 @@ exports.hslToRgb = function(hsl) {
 
 /**
  * Converts an RGB colour code to HSV format
- * @param rgb The RGB colour object
- * @return {JSON<number>}
+ * @param {object} rgb The RGB colour object
+ * @param {number} rgb.r
+ * @param {number} rgb.g
+ * @param {number} rgb.b
+ * @return {object<number>} An HSV colour object
  */
 
 exports.rgbToHsv = function(rgb) {
@@ -426,8 +488,11 @@ exports.rgbToHsv = function(rgb) {
 
 /**
  * Converts an HSV colour code to RGB format
- * @param hsv The HSV colour object
- * @return {JSON<number>}
+ * @param {object} hsv The HSV colour object
+ * @param {number} hsv.h
+ * @param {number} hsv.s
+ * @param {number} hsv.v
+ * @return {object<number>} An RGB colour object
  */
 
 exports.hsvToRgb = function(hsv) {
@@ -467,8 +532,8 @@ exports.hsvToRgb = function(hsv) {
 
 /**
  * Converts a temperature in degrees Fahrenheit to degrees Celcius
- * @param {Number} F The temperature, in degrees Fahrenheit
- * @return {Number}
+ * @param {Number} F The temperature in degrees Fahrenheit
+ * @return {Number} A temperature in degrees Celcius
  */
 
 exports.FtoC = function(F) {
@@ -477,8 +542,8 @@ exports.FtoC = function(F) {
 
 /**
  * Converts a temperature in degrees Celcius to degrees Fahrenheit
- * @param {Number} C The temperature, in degrees Celcius
- * @return {Number}
+ * @param {Number} C The temperature in degrees Celcius
+ * @return {Number} A temperature in degrees Fahrenheit
  */
 
 exports.CtoF = function(C) {
@@ -487,8 +552,8 @@ exports.CtoF = function(C) {
 
 /**
  * Converts a temperature in degrees Celcius to Kelvins
- * @param {Number} C The temperature, in degrees Celcius
- * @return {Number}
+ * @param {Number} C The temperature in degrees Celcius
+ * @return {Number} A temperature in Kelvins
  */
 
 exports.CtoK = function(C) {
@@ -497,8 +562,8 @@ exports.CtoK = function(C) {
 
 /**
  * Converts a temperature in Kelvins to degrees Celcius
- * @param {Number} K The temperature, in Kelvins
- * @return {Number}
+ * @param {Number} K The temperature in Kelvins
+ * @return {Number} A temperature in degrees Celcius
  */
 
 exports.KtoC = function(K) {
@@ -507,8 +572,8 @@ exports.KtoC = function(K) {
 
 /**
  * Converts a temperature in degrees Fahrenheit to degrees Rankine
- * @param {Number} K The temperature, in degrees Fahrenheit
- * @return {Number}
+ * @param {Number} F The temperature in degrees Fahrenheit
+ * @return {Number} A temperature in degrees Rankine
  */
 
 exports.FtoR = function(F) {
@@ -517,8 +582,8 @@ exports.FtoR = function(F) {
 
 /**
  * Converts a temperature in degrees Rankine to degrees Fahrenheit
- * @param {Number} K The temperature, in degrees Rankine
- * @return {Number}
+ * @param {Number} R The temperature in degrees Rankine
+ * @return {Number} A temperature in degrees Fahrenheit
  */
 
 exports.RtoF = function(R) {

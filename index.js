@@ -1,10 +1,17 @@
-// Require discord.js, fs, the package file, the emoji file, the permission checker, and the refcode generator
+// Require discord.js, fs, colors, the package file, the emoji file, the permission checker, and the refcode generator
 const D = require('discord.js');
 const fs = require('fs');
+const colors = require('colors');
 const package = require('./package.json');
 const e = require('./systemFiles/emojis.json');
 const {p} = require('./systemFiles/globalFunctions.js');
 const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
+
+// Console colour theme
+colors.setTheme({
+  main: "brightCyan",
+  nope: "brightRed",
+});
 
 // Creates a new instance of the Discord Client
 const client = new D.Client({intents: [D.Intents.FLAGS.GUILDS, D.Intents.FLAGS.GUILD_MESSAGES, D.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, D.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, D.Intents.FLAGS.DIRECT_MESSAGES, D.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS]});
@@ -30,7 +37,7 @@ for (const file of gameFiles) {
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`);
+  console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`.main);
   // Event logger
   const eventLog = client.channels.cache.get(process.env.eventLog);
   eventLog.send(`Logged in as ${client.user.tag}, ready for action!`);
@@ -68,6 +75,7 @@ client.on('messageCreate', message => {
     args = message.content.slice(process.env.prefix.length).split(/ +/);
   }
   
+  // Searches for the command
   const commandName = args.shift().toLowerCase();
   const command = client.commands.get(commandName)
     || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
@@ -82,9 +90,13 @@ client.on('messageCreate', message => {
     } else {
       message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`);
     }
-} else { 
+  } else {
+    // Final prep before running
+    message.gyrType = "msg"; // notes that this was triggered by a command message
+
     try {
       command.run.execute(message, args, client);
+      // 'message' = message or interaction object (outdated name is for consistency)
     }
     catch (error) {
       // Generates an error message & logs the error
@@ -94,21 +106,61 @@ client.on('messageCreate', message => {
 });
 
 // todo: add interaction pickup snippet
-/* client.on('interactionCreate', interact => {
+client.on('interactionCreate', async interact => {
   // handle the interaction, begin implementing some alternate code for things?
-});*/
+  if (interact.isCommand()) { // slash command
+    console.log(interact);
+
+    // Searches for the command
+    const commandName = interact.commandName;
+    const command = client.commands.get(commandName)
+      || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
+
+    // Checks if the command exists. If not, returns
+    if(!command) return;
+    // Checks if the command is interaction-enabled. If not, returns
+    if(!command.help.s) return;
+
+    if(process.env.exp === "0" && (command.help.wip === 1 || command.help.s.wip === true)) {
+      if(interact.user.id === process.env.hostID) {
+        await interact.reply({content: `${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`, ephemeral: true});
+      } else {
+        await interact.reply({content: `${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`, ephemeral: true});
+      }
+    } else {
+      // Pulls arguments (will likely integrate into individual commands as command.run.slashArgs() due to slash command framework)
+      var args = command.run.slashArgs(interact);  
+      // will also need to run tests on ping/pong haha
+
+      // Final prep before running
+      interact.gyrType = "interact"; // notes that this was triggered by a slash command interaction
+      interact.author = interact.user // for consistency w/ the "message" object
+
+      try {
+        command.run.execute(interact, args, client);
+        // 'message' = message or interaction object (outdated name is for consistency)
+      }
+      catch (error) {
+        // Generates an error message & logs the error
+        genErrorMsg(interact, client, error);
+      }
+    }
+  } else { // component interaction
+    return;
+  }
+});
 
 // Catches emitted warnings
 client.on('warn', w => {
   // Generates a warning message & logs the warning
   genWarningMsg(client, w);
-  console.warn(w);
+  console.warn(w.nope);
 });
 
 // Emits uncaught promise rejection warnings
 process.on('unhandledRejection', error => {
   genWarningMsg(client, error);
-  console.error('Promise Rejection -', error)
+  console.error('Promise Rejection -'.nope, error)
 });
 
 // Logs into Discord with Gyromina's token

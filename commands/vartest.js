@@ -2,7 +2,8 @@
 const D = require('discord.js');
 const package = require('../package.json');
 const e = require('../systemFiles/emojis.json');
-const {p, stamp} = require('../systemFiles/globalFunctions.js');
+const colors = require('colors');
+const {p, stamp, emojiCheck} = require('../systemFiles/globalFunctions.js');
 
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
@@ -14,7 +15,7 @@ exports.run = {
 
     // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== process.env.hostID && message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id) && !package.testerIDs.includes(message.author.id)) {
-      console.log('A user attempted to run a test, but was unsuccessful!');
+      console.log('A user attempted to run a test, but was unsuccessful!'.nope);
       return message.channel.send(`${nope} Insufficient permissions!`);
     }
 
@@ -44,6 +45,8 @@ exports.run = {
       console.log(gyr.permissionsIn(message.channel));
       console.log(message.channel.permissionsFor(gyr));
     }
+
+    emojiCheck();
 
     message.channel.send("The Test has been initiated. You may begin.")
       .then(tMsg => {

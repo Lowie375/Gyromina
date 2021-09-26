@@ -1,7 +1,8 @@
-// Require discord.js, bent, canvas, the RNG, the permission checker, the refcode generator, and the emoji + cdn files
+// Require discord.js, bent, canvas, colors, the RNG, the permission checker, the refcode generator, and the emoji + cdn files
 const D = require('discord.js');
 const bent = require('bent');
 const {createCanvas, loadImage} = require('canvas');
+const colors = require('colors');
 const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
 const {genErrorMsg, codeRNG} = require('../systemFiles/refcodes.js');
 const e = require('../systemFiles/emojis.json');
@@ -626,7 +627,7 @@ exports.exe = {
                 // Discards the old board
                 game.delete()
                   .catch(err => {
-                    console.error("E: mswp board could not be discarded", err)
+                    console.error("E: mswp board could not be discarded".nope, err)
                 });
               }
             });

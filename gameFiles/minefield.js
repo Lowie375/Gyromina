@@ -333,7 +333,7 @@ exports.exe = {
 
     // Post the field + instructions
     message.reply(`${content}\n\*Waiting for emojis to load…\*`)
-      .then (async board => {         
+      .then(async board => {         
         // Add reactions (in order, yay!)
         for (let i = 0; i < rxns.length; i++) {
           await board.react(rxns[i]);

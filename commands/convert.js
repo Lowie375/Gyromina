@@ -519,7 +519,7 @@ exports.run = {
 
 exports.help = {
   "name": "convert",
-  "aliases": "unit",
+  "aliases": ["unit"],
   "description": "Converts a value from one unit to another.",
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [places]`,
   "params": "<value> <unit> <newUnit> [places]",

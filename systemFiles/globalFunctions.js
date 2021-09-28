@@ -1,6 +1,6 @@
 // Require colors, the emoji regex, and the style file
 const color = require('colors');
-const emojiRegex = require('emoji-regex/RGI_Emoji.js');
+const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
 const style = require('../systemFiles/style.json');
 

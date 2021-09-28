@@ -66,7 +66,7 @@ exports.run = {
     
 exports.help = {
   "name": 'vartest',
-  "aliases": 'vt',
+  "aliases": ['vt'],
   "description": 'Miscellaneous test command. (Contributors/testers only)',
   "usage": `${process.env.prefix}vartest`,
   "params": "(contributors only)",

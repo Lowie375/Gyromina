@@ -1,7 +1,7 @@
 // [DEPRECATED AS OF 0.9.0]
 exports.run = {
   execute() {
-    return;
+
   }
 }
 

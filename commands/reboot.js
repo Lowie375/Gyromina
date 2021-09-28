@@ -1,8 +1,13 @@
 // [DEPRECATED AS OF 0.9.0]
+exports.run = {
+  execute() {
+
+  }
+}
 
 exports.help = {
   "name": "reboot",
-  "aliases": "restart",
+  "aliases": ["restart"],
   "description": "Reboots Gyromina. [DEPRECATED AS OF 0.9.0]",
   "usage": `${process.env.prefix}reboot`,
   "hide": 0,

@@ -17,8 +17,8 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.1.11  
-<!-- Latest indev build: v1.2.0-alpha.5 -->
+Latest stable build: v1.1.12  
+<!-- Latest indev build: v1.2.0-alpha.8 -->
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -72,30 +72,32 @@ The last event that took place was the pride event (June 2021)
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
 * Run using your native runtime/debugger/host and you're good to go!
 
-## Bug Reports
+## Additional Info
+
+### Bug Reports
 
 Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
 
-## Changelog
+### Changelog
 
 Gyromina's changelog can be found at **[https://l375.weebly.com/gyro-log][log]**.
 
-## Code of Conduct
+### Code of Conduct
 
 The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)**.
 
 ## Contributing
 
-Contributions to Gyromina are always welcome! I'm a novice, so I don't know the best tips, tricks, and optimizations for JavaScript/Node. A little help can go a long way.
-
-Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
-
-## Contributors
-
 [![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
 [![Minor Contributor 💾][min-contrib-label]][min-contrib-label]
 [![Debugger 🦟][debugger-label]][debugger-label]
 [![Beta Tester ⌚][tester-label]][tester-label]
+
+Contributions to Gyromina are always welcome! I'm a novice, so I don't know the best tips, tricks, and optimizations for JavaScript/Node. A little help can go a long way.
+
+Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
+
+### Contributors
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
 * 💻 Nao - [@naoei](https://github.com/naoei)

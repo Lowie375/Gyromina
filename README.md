@@ -88,16 +88,16 @@ The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](doc
 
 ## Contributing
 
+[![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
+[![Minor Contributor 💾][min-contrib-label]][min-contrib-label]
+[![Debugger 🦟][debugger-label]][debugger-label]
+[![Beta Tester ⌚][tester-label]][tester-label]
+
 Contributions to Gyromina are always welcome! I'm a novice, so I don't know the best tips, tricks, and optimizations for JavaScript/Node. A little help can go a long way.
 
 Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
 
 ### Contributors
-
-[![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
-[![Minor Contributor 💾][min-contrib-label]][min-contrib-label]
-[![Debugger 🦟][debugger-label]][debugger-label]
-[![Beta Tester ⌚][tester-label]][tester-label]
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
 * 💻 Nao - [@naoei](https://github.com/naoei)

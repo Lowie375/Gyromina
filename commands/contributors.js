@@ -59,7 +59,7 @@ exports.help = {
   "description": "Lists all of Gyromina's contributors.",
   "usage": `${process.env.prefix}contributors`,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

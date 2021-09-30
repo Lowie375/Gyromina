@@ -161,13 +161,13 @@ exports.label = {
   "name": "rng",
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
   "players": [1],
-  "reactions": 0,
+  "reactions": false,
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
   "helpurl": "https://l375.weebly.com/gyrogame-rng",
   "options": "[max/preset]",
-  "optionsdesc": "[max/preset]: The maximum number the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
+  "optionsdesc": "**[max/preset]**: The maximum number the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, ultimate = 50000). Defaults to easy (10)",
   "weight": 1,
-  "exclusive": 0,
-  "indev": 0,
-  "deleted": 0
+  "exclusive": false,
+  "indev": false,
+  "deleted": false,
 };

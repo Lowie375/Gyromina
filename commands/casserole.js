@@ -29,7 +29,7 @@ exports.help = {
   "description": 'Makes a quip about casseroles and closets.',
   "usage": `${process.env.prefix}casserole`,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

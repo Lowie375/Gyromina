@@ -206,7 +206,7 @@ exports.help = {
   "params": ["<type> <prompt> -[options]", "<prompt> -<e1> [o1] -[e2] [o2] …"],
   "helpurl": "https://l375.weebly.com/gyrocmd-poll",
   "weight": 4,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

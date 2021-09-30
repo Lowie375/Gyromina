@@ -1,6 +1,6 @@
 // Require colors, the emoji regex, and the style file
 const color = require('colors');
-const emojiRegex = require('emoji-regex/RGI_Emoji.js');
+const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
 const style = require('../systemFiles/style.json');
 
@@ -63,7 +63,7 @@ exports.getRandomInt = function(min, max) {
  * @return {Array<string>} An array with information about the emoji
  */
 
-exports.emojiCheck = function(eList) {
+exports.emojiCheck = function(eList = []) {
   let match;
   let save = [];
   for(const e of eList) {

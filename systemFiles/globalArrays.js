@@ -5,7 +5,7 @@
  * A list of unit-index pairs for conversions  
  * unitNames[array#][object#] --> converter[array#][object#]
   */
-exports.unitNames = [
+exports.unitNames = [ // unitNames[0] = input name
   ["metres", "meters", "m", "inches", "in", "foot", "feet", "ft", "yards", "yds",
    "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
    "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
@@ -43,8 +43,9 @@ exports.unitNames = [
    "ukpt", "ptuk", "ukfluidounces", "fluidouncesuk", "fluidounceuk", "ukfloz", "flozuk", "uktablespoons", "tablespoonsuk", "tablepsoonuk",
    "uktbsp", "tbspuk", "ukteaspoons", "teaspoonsuk", "teaspoonuk", "tspuk", "uktsp", "ukcups", "cupsuk", "cupuk",
    "ukc", "cuk", "quadrillionbritishthermalunits", "uktons", "tonsuk", "tonuk", "uktherm", "thermuk", "uktonsforce", "uktonforce",
-   "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk", "l",
-  ],
+   "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk", "l", "angstroms",
+   "Å", "A", "a", "å"
+  ], // unitNames[1] = output index
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
@@ -82,14 +83,15 @@ exports.unitNames = [
    "v029", "v029", "v028", "v028", "v028", "v028", "v028", "v030", "v030", "v030",
    "v030", "v030", "v031", "v031", "v031", "v031", "v031", "v034", "v034", "v034",
    "v034", "v034", "e061", "m050", "m050", "m050", "e060", "e060", "f078", "f078",
-   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078", "v016",
+   "f078", "f078", "f078", "f078", "f078", "f078", "f078", "f078", "v016", "d079",
+   "d079", "d079", "d079", "d079"
   ]
 ]; // d=distance // t=time // n=angle // v=vol // p=pressure // a=area // m=mass // e=energy // k=temperature // w=power // f=force/weight //
 
 /** 
  * A list of unit ratios for conversions
   */
-exports.converter = [
+exports.converter = [ // [0] = cleaned units, [1] = conversion factors
   ["m", "in", "ft", "yd", "mi", "nmi", "/sec", " min", " hrs", " days",
    " wks", " yrs", " gon", "°", "/rads", " mil", "L", "m³", "in³", "ft³",
    " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp", " Imperial gal", " Imperial qt", " Imperial floz", "Imperial pt",
@@ -97,7 +99,7 @@ exports.converter = [
    "mbar", "m²", "in²", "ft²", "yd²", "mi²", "ac", "ha", "g", " US ton",
    " Imperial ton", "lb", "oz", "st", "t", "sl", "J", "W·h", "cal", "BTU",
    " Imperial therm", "quad", " US therm", "ev", "ft⋅lb", "°C", "°F", "K", "°R", "W",
-   "hp", "TR", "BTU/h", "N", "gf", "ozf", "lbf", " US tonf", " Imperial tonf"],
+   "hp", "TR", "BTU/h", "N", "gf", "ozf", "lbf", " US tonf", " Imperial tonf", "Å"],
   [1609.344, 63360, 5280, 1760, 1, 1609.344/1852, 604800, 10080, 168, 7,
    1, 7/365, 200, 180, "π", "π*1000", 1, 0.001, 1/0.016387064, 1/28.316846592,
    1/3.785411784, 4/3.785411784, 128/3.785411784, 8/3.785411784, 256/3.785411784, 768/3.785411784, 1/4.546, 4/4.546, 160/4.546, 8/4.546,
@@ -105,7 +107,7 @@ exports.converter = [
    1013.25, 2589988.110336, 4014489600, 27878400, 3097600, 1, 1/640, 258.9988110336, 907184.74, 1,
    1/1.12, 2000, 32000, 2000/14, 90.718474, 907184.74/14593.903, 1, 1/3600, 1/4.184, 100/1.65923500225396087980032,
    10000000/1.65923500225396087980032, Math.pow(10, 17)/1.65923500225396087980032, 10000000/1.659631173184781539, Math.pow(10, 19)/1.602176565, 0.73756214927726542848, null, null, null, null, 1,
-   0.0013410220895949744128, 0.000284345136094, 3.412141633, 9.80665, 1000, 32000000/907184.74, 2000000/907184.74, 1000/907184.74, 1000/1016046.9088] 
+   0.0013410220895949744128, 0.000284345136094, 3.412141633, 9.80665, 1000, 32000000/907184.74, 2000000/907184.74, 1000/907184.74, 1000/1016046.9088, 1609.344*Math.pow(10, 10)] 
 ];
 
 /** 
@@ -163,7 +165,7 @@ exports.metricTriples = ["cubicmetres", "cubicmeters", "metrescubed", "meterscub
  * A list of colour names and their corresponding hex codes  
  * (Colour data taken from https://www.w3schools.com/colors/colors_hex.asp)
  */
-exports.colNames = [
+exports.colNames = [ // [0] = name, [1] = hex code
   [ // web block
    "Black", "Navy", "DarkBlue", "MediumBlue", "Blue", "DarkGreen", "Green", "Teal", "DarkCyan", "DeepSkyBlue",
    "DarkTurquoise", "MediumSpringGreen", "Lime", "SpringGreen", "Aqua", "Cyan", "MidnightBlue", "DodgerBlue", "LightSeaGreen", "ForestGreen",

@@ -394,7 +394,7 @@ exports.help = {
   "params": "<value> <unit> <newUnit> [places]",
   "helpurl": "https://l375.weebly.com/gyrocmd-convert",
   "weight": 3,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

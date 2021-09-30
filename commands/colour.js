@@ -161,7 +161,7 @@ exports.help = {
   "usage": `${process.env.prefix}colour <colour>`,
   "params": "<colour>",
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

@@ -271,11 +271,11 @@ exports.run = {
 exports.help = {
   "name": 'roll',
   "aliases": ["dice", "r"],
-  "description": 'Rolls dice. Defaults to 1d20 (a 20-sided dice).',
-  "usage": `${process.env.prefix}roll [dice/modifiers/queries]`,
-  "params": "[dice/modifiers/queries]",
+  "description": 'Rolls dice. Defaults to 1d20 (a 20-sided dice). [options] can include dice, modifiers, and queries.',
+  "usage": `${process.env.prefix}roll [options]`,
+  "params": "[options]",
   "weight": 1,
-  "hide": 0,
-  "wip": 1,
-  "dead": 0,
+  "hide": false,
+  "wip": true,
+  "dead": false
 };

@@ -20,7 +20,7 @@ exports.run = {
       return message.reply(`I couldn't load the game you were looking for. Please check your spelling and try again.`);
 
     // Checks if Gyromina has permission to add reactions (if the game requires them)
-    if(game.label.reactions == 1 && !p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+    if(game.label.reactions && !p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
       return message.reply(`I can't run this game if I can't add any reactions! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
 
     // Determines the main player(s)
@@ -31,7 +31,7 @@ exports.run = {
       player = [message.author.id];
     }
 
-    if(process.env.exp === "0" && game.label.indev === 1) {
+    if(process.env.exp === "0" && game.label.indev) {
       if(message.author.id === package.authorID) {
         message.channel.send(`${nope} The game \`${gameName}\` is still in development and thus has not been released to the public.\n\n${warning} Please enable **experimental mode** to play it.`);
       } else {
@@ -58,7 +58,7 @@ exports.help = {
   "params": "<game> [options]",
   "helpurl": "https://l375.weebly.com/gyrocmd-play",
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

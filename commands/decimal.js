@@ -120,7 +120,7 @@ exports.help = {
   "usage": `${process.env.prefix}decimal [whole] <num>/<denom>`,
   "params": "[whole] <num>/<denom>",
   "weight": 2,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

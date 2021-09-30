@@ -659,13 +659,13 @@ exports.label = {
   "name": "minesweeper",
   "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "mswp"],
   "players": [1],
-  "reactions": 0,
+  "reactions": false,
   "description": "An old classic, now in bot form!",
   "helpurl": "https://l375.weebly.com/gyrogame-minesweeper",
   "options": ["[preset]", "<mines> <length1> <length2>"],
-  "optionsdesc": ["<mines>/[preset]: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, master = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "<length1>: If no preset is specified, one dimension of the board (7-36)", "<length2>: If no preset is specified, the other dimension of the board (7-36)"],
+  "optionsdesc": ["**<mines>/[preset]**: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, ultimate = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "**<length1>**: If no preset is specified, one dimension of the board (7-36)", "**<length2>**: If no preset is specified, the other dimension of the board (7-36)"],
   "weight": 3,
-  "exclusive": 0,
-  "indev": 0,
-  "deleted": 0
+  "exclusive": false,
+  "indev": false,
+  "deleted": false,
 };

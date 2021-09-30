@@ -64,6 +64,8 @@ client.on('messageCreate', message => {
 
   // Checks if the message was sent in a non-voice guild channel where Gyromina has message-sending and channel-viewing permissions. If not, returns
   if (message.channel.type != "DM" && !message.channel.isVoice() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES, D.Permissions.FLAGS.VIEW_CHANNEL, D.Permissions.FLAGS.READ_MESSAGE_HISTORY])) return;
+  // Checks if the message was sent in a thread that Gyromina can't send messages in. If so, returns
+  if (message.channel.isThread() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES_IN_THREADS]))
 
   // Initializes arguments
   var args;
@@ -84,7 +86,7 @@ client.on('messageCreate', message => {
   if(!command) return;
 
   // Checks if the command is experimental/unstable. If so, displays a warning instead of running the command
-  if(process.env.exp === "0" && command.help.wip === 1) {
+  if(process.env.exp === "0" && command.help.wip) {
     if(message.author.id === process.env.hostID) {
       message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`);
     } else {
@@ -121,7 +123,7 @@ client.on('interactionCreate', async interact => {
     // Checks if the command is interaction-enabled. If not, returns
     if(!command.help.s) return;
 
-    if(process.env.exp === "0" && (command.help.wip === 1 || command.help.s.wip === true)) {
+    if(process.env.exp === "0" && (command.help.wip || command.help.s.wip)) {
       if(interact.user.id === process.env.hostID) {
         await interact.reply({content: `${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`, ephemeral: true});
       } else {

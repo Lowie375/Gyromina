@@ -200,11 +200,10 @@ function GetChangelogString (func) {
 exports.help = {
   "name": "release",
   "aliases": ["deploy", "rel", "dep"],
-  "description": "Deploys a new version of Gyromina. (Owner only)",
-  "usage": `${process.env.prefix}release <version> [queries]`,
-  "params": "<version> [queries] (owner only)",
+  "description": "Deploys a new version of Gyromina. [DEPRECATED AS OF VERSION 1.2.0]",
+  "usage": `${process.env.prefix}release`,
   "weight": 1,
-  "hide": 1,
-  "wip": 0,
-  "dead": 1,
+  "hide": true,
+  "wip": false,
+  "dead": true
 };

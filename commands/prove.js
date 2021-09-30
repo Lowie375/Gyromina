@@ -2,7 +2,8 @@
 const {getRandomInt, Clean} = require('../systemFiles/globalFunctions.js');
 
 // List of 'proofs'
-const proof = ["because that's just how it is.",
+const proof = [
+  "because that's just how it is.",
   "because smart people think so.",
   "because Gyromina said so.", 
   "for some odd reason.", 
@@ -19,7 +20,8 @@ const proof = ["because that's just how it is.",
   "because it helps Gyromina sleep at night.",
   "for whatever reason.",
   "because you just have to face the facts sometimes.",
-  "because Gyromina is too busy eating ice cream to argue."];
+  "because Gyromina is too busy eating ice cream to argue.",
+  "because."];
 
 exports.run = {
   execute(message, args, client) {
@@ -43,7 +45,7 @@ exports.help = {
   "usage": `${process.env.prefix}prove <statement>`,
   "params": "<statement>",
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

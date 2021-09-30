@@ -18,7 +18,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.1.11  
-Latest indev build: v1.2.0-alpha.8
+Latest indev build: v1.2.0-alpha.9
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -46,8 +46,8 @@ The last event that took place was the pride event (June 2021)
 * Follow this link: **[https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot][invite]**
 * Choose a server to add Gyromina to
 * Make sure all requested permissions are enabled
-  * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**
-  * Highly recommended: **`Use External Emojis`**, **`Manage Messages`**
+  * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**, **`Attach Files`**, **`Embed Links`**
+  * Highly recommended: **`Send Messages in Threads`**, **`Use External Emojis`**, **`Manage Messages`**
 * You're good to go! Have fun!
 
 ### Test or Local Bots (for contributors/debuggers)
@@ -70,22 +70,24 @@ The last event that took place was the pride event (June 2021)
   * `hostGuildID`: Discord server/guild ID (enables local registering of slash commands)
   * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
 * Optional environment variable config
-  * `season`: Style override; `"0"` to disable, `"1"` for pride, `"2"` for winter, `"3"` for blurple, `"-1"` to force default
+  * `season`: Seasonal style override; `"0"` to disable, `"1"` for pride, `"2"` for winter, `"3"` for blurple, `"-1"` to force default
   * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
 * Deprecated/out-of-use config
   * `progressLog`: Discord channel ID (used with `release`)
   * `gitToken`/`gitUsername`/`gitRepoName`: GitHub auth token/username/repo name (token scope = `repo`; used with `release`)
 * Run using your native runtime/debugger/host and you're good to go!
 
-## Bug Reports
+## Additional Info
+
+### Bug Reports
 
 Please see the "**[If you are reporting a bug](docs/CONTRIBUTING.md#if-you-are-reporting-a-bug)**" section of **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for bug-reporting protocol.
 
-## Changelog
+### Changelog
 
 Gyromina's changelog can be found at **[https://l375.weebly.com/gyro-log][log]**.
 
-## Code of Conduct
+### Code of Conduct
 
 The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)**.
 
@@ -95,7 +97,7 @@ Contributions to Gyromina are always welcome! I'm a novice, so I don't know the 
 
 Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
 
-## Contributors
+### Contributors
 
 [![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
 [![Minor Contributor 💾][min-contrib-label]][min-contrib-label]

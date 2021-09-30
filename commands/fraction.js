@@ -336,7 +336,7 @@ exports.help = {
   "params": "<decimal> [queries]",
   "helpurl": "https://l375.weebly.com/gyrocmd-fraction",
   "weight": 2,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

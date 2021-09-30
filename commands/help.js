@@ -9,7 +9,7 @@ function setParams(c) {
   // Checks for parameters, and adds them as necessary
   if(!c.help.params) {
     list += "\n";
-  } else if(Array.isArray(c.help.params) == false) {
+  } else if(!Array.isArray(c.help.params)) {
     list += ` ${c.help.params}\n`;
   } else {
     list += ` ${c.help.params[0]}\n`;
@@ -23,7 +23,7 @@ function setGameOptions(g) {
   // Checks for parameters, and adds them as necessary
   if(!g.label.options) {
     list += "\n";
-  } else if(Array.isArray(g.label.options) == false) {
+  } else if(!Array.isArray(g.label.options)) {
     list += ` ${g.label.options}\n`;
   } else {
     list += ` ${g.label.options[0]}\n`;
@@ -128,18 +128,18 @@ exports.run = {
 
       // Begins preparing embed data
       var ext = "";
-      if(cmdy.help.dead === 1) ext += `${dead} `;
-      if(cmdy.help.wip === 1) ext += `${beta} `;
-      if(cmdy.help.hide === 1) ext += `${ghost} `;
+      if(cmdy.help.dead) ext += `${dead} `;
+      if(cmdy.help.wip) ext += `${beta} `;
+      if(cmdy.help.hide) ext += `${ghost} `;
       ext += " ";
 
       // Sets up the embed
       embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
-      if(cmdy.help.dead === 1)
+      if(cmdy.help.dead)
         embed.setColor(style.e.dead);
-      else if(cmdy.help.wip === 1)
+      else if(cmdy.help.wip)
         embed.setColor(style.e.wip);
-      else if(cmdy.help.hide === 1)
+      else if(cmdy.help.hide)
         embed.setColor(style.e.hide);
       else
         embed.setColor(eCol(style.e.default));
@@ -151,12 +151,12 @@ exports.run = {
 
       let desc = `${cmdy.help.description}`;
 
-      if(cmdy.help.aliases && Array.isArray(cmdy.help.aliases) == false)
+      if(cmdy.help.aliases && !Array.isArray(cmdy.help.aliases))
         desc += `\n*Alias: ${process.env.prefix}**${cmdy.help.aliases}***`;
       else if(cmdy.help.aliases)
         desc += `\n*Aliases: ${process.env.prefix}**${cmdy.help.aliases.join(`**, ${process.env.prefix}**`)}***`;
       
-      if(Array.isArray(cmdy.help.usage) == false) {
+      if(!Array.isArray(cmdy.help.usage)) {
         desc += `\n*Usage: ${cmdy.help.usage}*`;
       } else {
         desc += `\n*Usage: ${cmdy.help.usage[0]}*`;
@@ -175,9 +175,6 @@ exports.run = {
           .setURL(cmdy.help.helpurl)
         );
       }
-      
-
-
     } else if (args.length >= 1 && conditions[1] == 1) { // Detailed game help
 
       const gameName = args[0];
@@ -188,18 +185,18 @@ exports.run = {
 
       // Begins preparing embed data
       var ext = "";
-      if(gmz.label.deleted === 1) ext += `${dead} `;
-      if(gmz.label.indev === 1) ext += `${beta} `;
-      if(gmz.label.exclusive === 1) ext += `${ghost} `;
+      if(gmz.label.deleted) ext += `${dead} `;
+      if(gmz.label.indev) ext += `${beta} `;
+      if(gmz.label.exclusive) ext += `${ghost} `;
       ext += " ";
 
       // Sets up the embed
       embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
-      if(gmz.label.deleted === 1)
+      if(gmz.label.deleted)
         embed.setColor(style.e.dead);
-      else if(gmz.label.indev === 1)
+      else if(gmz.label.indev)
         embed.setColor(style.e.wip);
-      else if(gmz.label.exclusive === 1)
+      else if(gmz.label.exclusive)
         embed.setColor(style.e.hide);
       else
         embed.setColor(eCol(style.e.default));
@@ -211,7 +208,7 @@ exports.run = {
 
       let desc = `${gmz.label.description}`;
 
-      if(gmz.label.aliases && Array.isArray(gmz.label.aliases) == false)
+      if(gmz.label.aliases && !Array.isArray(gmz.label.aliases))
         desc += `\n*Alias: **${gmz.label.aliases}***`;
       else if(gmz.label.aliases)
         desc += `\n*Aliases: **${gmz.label.aliases.join(`**, **`)}***`;
@@ -249,7 +246,7 @@ exports.run = {
       var gweight = [];
       // Creates the main game list
       client.games.forEach(g => {
-        if(g.label.exclusive === 1 || g.label.indev === 1 || g.label.deleted === 1) return;   
+        if(g.label.exclusive || g.label.indev || g.label.deleted) return;   
         glist = glist + setGameOptions(g);
         gctr++;
         gweight.push(g.label.weight);
@@ -277,7 +274,7 @@ exports.run = {
       }
       gctr = 0;
       client.games.forEach(g => {
-        if(g.label.exclusive === 1 || g.label.indev === 0 || g.label.deleted === 1) return;
+        if(g.label.exclusive || !g.label.indev || g.label.deleted) return;
         glist = glist + setGameOptions(g);
         gctr++;
       });
@@ -288,7 +285,7 @@ exports.run = {
         glist = "These games are only available to a small group of people.\n";      
         gctr = 0;
         client.games.forEach(g => {
-          if(g.label.exclusive === 0 || g.label.deleted === 1) return;
+          if(!g.label.exclusive || g.label.deleted) return;
           glist = glist + setGameOptions(g);
           gctr++;
         });
@@ -297,7 +294,7 @@ exports.run = {
         glist = "These games have been removed from the game library.\n";      
         gctr = 0;
         client.games.forEach(g => {
-          if(g.label.deleted === 0) return;
+          if(!g.label.deleted) return;
           glist = glist + setGameOptions(g);
           gctr++;
         });
@@ -316,7 +313,7 @@ exports.run = {
       var weight = [];
       // Creates the main command list
       client.commands.forEach(c => {
-        if(c.help.hide === 1 || c.help.wip === 1 || c.help.dead === 1) return;   
+        if(c.help.hide || c.help.wip || c.help.dead) return;   
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
         weight.push(c.help.weight);
@@ -325,10 +322,10 @@ exports.run = {
         // Checks if a list split is needed
         let splitList = split(cmdlist, weight);
         if(!Array.isArray(splitList)) { // Short list, no splitting needed
-          embed.addField(`Main Commands ${main}`, `${splitList}`, true);
+          embed.addField(`Main List ${main}`, `${splitList}`, true);
         } else { // Splitting needed
           let inlineCtr = 1;
-          embed.addField(`Main Commands [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
+          embed.addField(`Main List [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
           for(l of splitList) {
             inlineCtr++;
             embed.addField(`[${inlineCtr}]`, `${l}`, true);
@@ -344,31 +341,31 @@ exports.run = {
       }
       cmdctr = 0;
       client.commands.forEach(c => {
-        if(c.help.hide === 1 || c.help.wip === 0 || c.help.dead === 1) return;
+        if(c.help.hide || !c.help.wip || c.help.dead) return;
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
       });
-      if(cmdctr != 0) embed.addField(`Experimental (WIP) Commands ${beta}`, `${cmdlist}`, true);
+      if(cmdctr != 0) embed.addField(`Experimental (WIP) ${beta}`, `${cmdlist}`, true);
 
       // If specified, creates the hidden and depricated command lists
       if(conditions[0] == 1) {
         cmdlist = "Usage of these commands is restricted.\n";      
         cmdctr = 0;
         client.commands.forEach(c => {
-          if(c.help.hide === 0 || c.help.dead === 1) return;
+          if(!c.help.hide || c.help.dead) return;
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
         });
-        if(cmdctr != 0) embed.addField(`Hidden Commands ${ghost}`, `${cmdlist}`, true);
+        if(cmdctr != 0) embed.addField(`Hidden ${ghost}`, `${cmdlist}`, true);
 
-        cmdlist = "These commands no longer exist.\n";      
+        cmdlist = "These commands are no longer functional nor maintained.\n";      
         cmdctr = 0;
         client.commands.forEach(c => {
-          if(c.help.dead === 0) return;
+          if(!c.help.dead) return;
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
         });
-        if(cmdctr != 0) embed.addField(`Deprecated Commands ${dead}`, `${cmdlist}`, true);
+        if(cmdctr != 0) embed.addField(`Deprecated ${dead}`, `${cmdlist}`, true);
       }
     }
     // Sends the embed (and buttons, if present)
@@ -382,12 +379,17 @@ exports.run = {
 exports.help = {
   "name": "help",
   "aliases": ["commands", "cmds", "command", "cmd", "gamelist", "cmdlist", "commandlist", "whatis"],
-  "description": "Provides command and game help.",
-  "usage": `${process.env.prefix}help [command/game] [queries]`,
-  "params": "[command/game] [queries]",
+  "description": "Provides command and game help. [options] can include queries and a command/game.",
+  "usage": `${process.env.prefix}help [options]`,
+  "params": "[options]",
   "helpurl": "https://l375.weebly.com/gyrocmd-help",
-  "weight": 3,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "weight": 1,
+  "hide": false,
+  "wip": false,
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "name": "help",
+    "description": "Provides command and game help",
+    "wip": true
+  },
 };

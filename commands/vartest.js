@@ -19,7 +19,7 @@ exports.run = {
       return message.channel.send(`${nope} Insufficient permissions!`);
     }
 
-    message.channel.send(parseInt(0x707070));
+    message.channel.send(`${parseInt(0x707070)}`);
 
     let m = rgbX.exec("rgb(255, 255, 255)");
     let n = rgbX.exec("yada blah blah");
@@ -45,6 +45,14 @@ exports.run = {
       console.log(gyr.permissionsIn(message.channel));
       console.log(message.channel.permissionsFor(gyr));
     }
+
+    console.log(true ? true : false);
+    console.log(false ? true : false);
+    console.log(0 ? true : false);
+    console.log(1 ? true : false);
+    console.log(2 ? true : false);
+    console.log(undefined ? true : false);
+    console.log(null ? true : false);
 
     emojiCheck();
 
@@ -73,9 +81,9 @@ exports.help = {
   "aliases": ['vt'],
   "description": 'Miscellaneous test command. (Contributors/testers only)',
   "usage": `${process.env.prefix}vartest`,
-  "params": "(contributors only)",
+  "params": "(contributors)",
   "weight": 1,
-  "hide": 1,
-  "wip": 0,
-  "dead": 0,
+  "hide": true,
+  "wip": false,
+  "dead": false
 };

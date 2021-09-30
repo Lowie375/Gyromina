@@ -70,7 +70,7 @@ exports.help = {
   "usage": `${process.env.prefix}pront <emoji>`,
   "params": "<emoji>",
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

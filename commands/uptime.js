@@ -97,8 +97,8 @@ exports.help = {
   "description": 'Shows Gyromina\'s uptime.',
   "usage": `${process.env.prefix}uptime`,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };
   

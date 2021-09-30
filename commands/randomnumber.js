@@ -91,7 +91,7 @@ exports.help = {
   "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
   "params": "<num1> [num2]",
   "weight": 2,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

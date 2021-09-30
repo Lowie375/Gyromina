@@ -42,7 +42,7 @@ exports.help = {
   "description": "Returns a random colour in various formats.",
   "usage": `${process.env.prefix}randomcolour`,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

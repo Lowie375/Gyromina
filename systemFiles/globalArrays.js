@@ -205,3 +205,19 @@ exports.colNames = [ // [0] = name, [1] = hex code
    "009663", "7289da", "4e5d94", "5865f2", "57f287", "fee75c", "eb459e", "ed4245",
   ]
 ];
+
+// MISC
+
+/**
+ * A list of statuses for Gyromina to rotate through on each dyno refresh
+ */
+exports.statBlock = [ // [0] = standard, [1] = experimental mode
+  ["with threads!", "with dice!", "with slashes!", "critical hit!", "nat 1, sad…",
+   "with buttons!", "with fancy links!", "with Discord!", "with HSV colours!", "with HSL colours!",
+   "with new colours!", "shiny math rocks!", "with new stuff!"
+  ],
+  ["with the debugger!", "with variables!", "in experimental mode!", "in the editor!", "with programmers!",
+   "with bugs!", "around with code!", "console.log(\"haha\");", "console.log(\"oops\");", "with breakpoints!",
+   "with environment variables!", "with brand new code!", "the \"crash\" challenge", "with errors!", "in the backend!",
+   "spot the difference!", "red light, green light!", "the waiting game…"]
+]

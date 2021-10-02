@@ -1,10 +1,11 @@
-// Require discord.js, fs, colors, the package file, the emoji file, the permission checker, and the refcode generator
+// Require discord.js, fs, colors, the package file, the emoji file, the permission checker, the RNG, the status array, and the refcode generator
 const D = require('discord.js');
 const fs = require('fs');
 const colors = require('colors');
 const package = require('./package.json');
 const e = require('./systemFiles/emojis.json');
-const {p} = require('./systemFiles/globalFunctions.js');
+const {p, getRandomInt} = require('./systemFiles/globalFunctions.js');
+const {statBlock} = require('./systemFiles/globalArrays.js');
 const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
 // Splitter exception regex
@@ -52,13 +53,14 @@ client.on('ready', () => {
 
   // Sets Gyromina's current status
   if(process.env.exp === "1") {
+    
     // Debug/test status
     client.user.setStatus("idle");
-    client.user.setActivity(`with the debugger! / ${process.env.prefix}vt / v${package.version}`);
+    client.user.setActivity(`${statBlock[1][getRandomInt(0,statBlock[1].length-1)]} / ${process.env.prefix}vt / v${package.version}`);
   } else {
     // Normal status
     client.user.setStatus("online");
-    client.user.setActivity(`with threads! / ${process.env.prefix}help / v${package.version}`);
+    client.user.setActivity(`${statBlock[0][getRandomInt(0,statBlock[0].length-1)]} / ${process.env.prefix}help / v${package.version}`);
   }
 
   // Emoji setup

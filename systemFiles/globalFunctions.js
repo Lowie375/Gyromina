@@ -1,8 +1,9 @@
-// Require colors, the emoji regex, and the style file
+// Require colors, the emoji regex, the style file, and the cdn file;
 const color = require('colors');
 const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
 const style = require('../systemFiles/style.json');
+const cdn = require('../systemFiles/cdn.json');
 
 // UTIL
 
@@ -129,67 +130,6 @@ exports.stamp = function() {
   return `${now[5]}-${now[4]}-${now[3]} @ ${now[2]}:${now[1]} UTC`;
 }
 
-// STYLE
-
-/**
- * Checks whether an embed's colour should be changed due to the current season
- * @param def The standard colour for the embed in question
- * @return {String} The embed colour to use
- */
-
-exports.eCol = function(def) {
-  let dt = new Date();
-  let now = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth(), dt.getUTCFullYear()];
-  if(process.env.season === "-1") { // Force default style
-    return def;
-  } else if(now[4] == 5 || process.env.season === "1") { // June: rainbow randomizer
-    let col = Math.min(Math.floor(Math.random() * 193) + 63, 255);
-    let pos = [Math.min(Math.floor(Math.random()*3), 2), Math.min(Math.floor(Math.random()*2), 1)];
-    if(pos[1] === 0) { // 255 before 63
-      switch(pos[0]) {
-        case 0: return `${col.toString(16)}ff3f`;
-        case 1: return `ff${col.toString(16)}3f`;
-        case 2: return `ff3f${col.toString(16)}`;
-        default: return def; // fallback
-      }
-    } else if(pos[1] === 1) { // 63 before 255
-      switch(pos[0]) {
-        case 0: return `${col.toString(16)}3fff`;
-        case 1: return `3f${col.toString(16)}ff`;
-        case 2: return `3fff${col.toString(16)}`;
-        default: return def; // fallback
-      }
-    } else { // fallback: default to standard
-      return def;
-    }
-  } else if(now[4] == 11 || process.env.season === "2") { // December: blue theme
-    return style.e.winter; // subject to change
-  } else if((now[4] == 4 && now[3] >= 9 && now[3] <= 15) || process.env.season === "3") { // May 13th-ish: blurple theme
-    return style.e.blurple; // subject to change
-  } else { // Default
-    return def;
-  }
-}
-
-/**
- * Checks whether an avatar should be changed due to the current season
- * @param cdn The CDN constant
- * @return {String} The avatar ID to use
- */
-
-exports.avCol = function(cdn) {
-  let dt = new Date();
-  let now = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth(), dt.getUTCFullYear()];
-  if(now[4] == 5 || process.env.season === "1") // June: rainbow
-    return cdn.avatar.pride;
-  else if(now[4] == 11 || process.env.season === "2") // December: blue theme
-    return cdn.avatar.winter;
-  else if((now[4] == 4 && now[3] >= 9 && now[3] <= 15) || process.env.season === "3") // May 13th-ish: blurple theme
-    return cdn.avatar.blurple;
-  else // Default
-    return cdn.avatar.default;
-}
-
 /**
  * Responds to a message or interaction
  * @param {object|string} resp A response object to send
@@ -223,7 +163,7 @@ exports.respond = async function(resp, msg, options) {
           return msg.channel.send(response);
       }
     }
-    case "interact": { // respond to slash command interaction
+    case "intr": { // respond to slash command interaction
       // binary flags, wow!
       let optsFlag = 0;
       if(options.follow && options.follow === true) optsFlag += Math.pow(2, 0);
@@ -241,6 +181,105 @@ exports.respond = async function(resp, msg, options) {
       }
     }
     default: return undefined; // error
+  }
+}
+
+/**
+ * Function for (properly) sorting strings alphabetically, since 
+ * @param {string} strA The first string to check
+ * @param {string} strB The second string to check
+ */
+
+exports.alphaSortFxn = function(strA, strB) {
+
+}
+
+// STYLE
+
+/**
+ * Returns the current season, if one is active
+ * @return {number} The season ID
+ */
+
+exports.s = function() {
+  // gets the date + time
+  let dt = new Date();
+  let now = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth(), dt.getUTCFullYear()];
+  let season = process.env.season;
+
+  if(season === "-1")
+    return 0; // no season (forced)
+  else if(now[4] == 5 || season === "1")
+    return 1; // pride
+  else if(now[4] == 11 || season === "2")
+    return 2; // winter
+  else if((now[4] == 4 && now[3] >= 9 && now[3] <= 15) || season === "3")
+    return 3; // blurple
+  else
+    return 0; // no season
+}
+
+/**
+ * Checks whether an embed's colour should be changed due to the current season
+ * @param def The standard colour for the embed in question
+ * @return {String} The embed colour to use
+ */
+
+exports.eCol = function(def) {
+  // gets the current season
+  let s = exports.s();
+
+  // determines outcome based on season
+  switch(s) {
+    case 1: { // pride
+      let col = Math.min(Math.floor(Math.random() * 193) + 63, 255);
+      let pos = [Math.min(Math.floor(Math.random()*3), 2), Math.min(Math.floor(Math.random()*2), 1)];
+      if(pos[1] === 0) { // 255 before 63
+        switch(pos[0]) {
+          case 0: return `${col.toString(16)}ff3f`;
+          case 1: return `ff${col.toString(16)}3f`;
+          case 2: return `ff3f${col.toString(16)}`;
+          default: return def; // fallback
+        }
+      } else if(pos[1] === 1) { // 63 before 255
+        switch(pos[0]) {
+          case 0: return `${col.toString(16)}3fff`;
+          case 1: return `3f${col.toString(16)}ff`;
+          case 2: return `3fff${col.toString(16)}`;
+          default: return def; // fallback
+        }
+      } else { // fallback: default to standard
+        return def;
+      }
+    }
+    case 2: // winter
+      return style.e.winter; // subject to change
+    case 3: // blurple
+      return style.e.blurple; // subject to change
+    default: // no season, use default
+      return def;
+  }
+}
+
+/**
+ * Checks whether an avatar should be changed due to the current season
+ * @return {String} The avatar image to use
+ */
+
+exports.avCol = function() {
+  // gets the current season
+  let s = exports.s();
+
+  // determines outcome based on season
+  switch(s) {
+    case 1: // pride
+      return cdn.avatar.pride;
+    case 2: // winter
+      return cdn.avatar.winter;
+    case 3: // blurple
+      return cdn.avatar.blurple;
+    default: // no season, use default 
+      return cdn.avatar.default;
   }
 }
 

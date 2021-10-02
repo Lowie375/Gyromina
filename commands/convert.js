@@ -393,7 +393,7 @@ exports.help = {
   "usage": `${process.env.prefix}convert <value> <unit> <newUnit> [places]`,
   "params": "<value> <unit> <newUnit> [places]",
   "helpurl": "https://l375.weebly.com/gyrocmd-convert",
-  "weight": 3,
+  "weight": 2,
   "hide": false,
   "wip": false,
   "dead": false

@@ -269,7 +269,7 @@ exports.run = {
 };
   
 exports.help = {
-  "name": 'roll',
+  "name": "roll",
   "aliases": ["dice", "r"],
   "description": 'Rolls dice. Defaults to 1d20 (a 20-sided dice). [options] can include dice, modifiers, and queries.',
   "usage": `${process.env.prefix}roll [options]`,

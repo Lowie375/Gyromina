@@ -7,6 +7,9 @@ const e = require('./systemFiles/emojis.json');
 const {p} = require('./systemFiles/globalFunctions.js');
 const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
+// Splitter exception regex
+const excX = /^prove/i;
+
 // Console colour theme
 colors.setTheme({
   main: "brightCyan",
@@ -25,6 +28,7 @@ const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js'));
 // Declares emojis
 var nope, warning;
 
+// Collects a list of all commands and games
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.help.name, command);
@@ -33,6 +37,10 @@ for (const file of gameFiles) {
   const game = require(`./gameFiles/${file}`);
   client.games.set(game.label.name, game);
 }
+
+// Sorts the command and game lists
+client.commands.sort();
+client.games.sort();
 
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
@@ -70,8 +78,8 @@ client.on('messageCreate', message => {
   // Initializes arguments
   var args;
 
-  // Splits arguments: with spaces included if the command is "prove", normally otherwise
-  if (message.content.startsWith(`${process.env.prefix}prove`)) {
+  // Splits arguments: with spaces included if the command matches the exception regex, normally otherwise
+  if (excX.test(message.content.slice(process.env.prefix.length))) {
     args = message.content.slice(process.env.prefix.length).split(" ");
   } else {
     args = message.content.slice(process.env.prefix.length).split(/ +/);
@@ -135,7 +143,7 @@ client.on('interactionCreate', async interact => {
       // will also need to run tests on ping/pong haha
 
       // Final prep before running
-      interact.gyrType = "interact"; // notes that this was triggered by a slash command interaction
+      interact.gyrType = "intr"; // notes that this was triggered by a slash command interaction
       interact.author = interact.user // for consistency w/ the "message" object
 
       try {

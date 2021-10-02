@@ -1,11 +1,12 @@
-// Require discord.js, the emoji + style files, the permission checker, the embed colour checker, and the timestamp generator
+// Require discord.js, colors,  the emoji + style files, the permission checker, the embed colour checker, and the timestamp generator
 const D = require('discord.js');
+const colors = require('colors');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
 const {p, eCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
-  var list = "\• " + process.env.prefix + "**" + c.help.name + "**"
+  var list = `${process.env.prefix}**${c.help.name}**`
   // Checks for parameters, and adds them as necessary
   if(!c.help.params) {
     list += "\n";
@@ -13,13 +14,13 @@ function setParams(c) {
     list += ` ${c.help.params}\n`;
   } else {
     list += ` ${c.help.params[0]}\n`;
-    for(let i = 1; i < c.help.params.length; i++) {list += `or ${process.env.prefix}**${c.help.name}** ${c.help.params[i]}\n`;}
+    for(let i = 1; i < c.help.params.length; i++) {list += `*or* ${process.env.prefix}**${c.help.name}** ${c.help.params[i]}\n`;}
   }
   return list;
 }
 
 function setGameOptions(g) {
-  var list = "\• **" + g.label.name + "**"
+  var list = `**${g.label.name}**`
   // Checks for parameters, and adds them as necessary
   if(!g.label.options) {
     list += "\n";
@@ -33,13 +34,11 @@ function setGameOptions(g) {
 }
 
 function checkArgs(args) {
-  const checks = ["-sh", "-g"];
-  let output = [];
+  const checks = ["-sh", "-g", "-c"];
+  let output = 0;
   for (let i = 0; i < checks.length; i++) {
     if (args.includes(checks[i]))
-      output.push(1);
-    else
-      output.push(0);
+      output += Math.pow(2, i);
   }
   for (let j = 0; j < args.length; j++) {
     if (checks.includes(args[j])) {
@@ -87,7 +86,7 @@ function splitCore(splitList, count, weight, totWeight) {
       // Adds an element
       endLists[i].push(splitList.shift());
       weightLists[i] += w;
-      while(splitList.length != 0 && splitList[0].startsWith("or")) {
+      while(splitList.length != 0 && splitList[0].startsWith("*or*")) {
         // Adds linked elements
         endLists[i].push(splitList.shift());
       }
@@ -111,14 +110,14 @@ exports.run = {
     const dead = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.dead) : e.alt.dead;
 
     // Checks for special arguments
-    var conditions = [];
+    var conditions = 0;
     if (args) conditions = checkArgs(args);
 
     // Creates embed + button row shells
     const embed = new D.MessageEmbed();
     const buttons = new D.MessageActionRow();
 
-    if (args.length >= 1 && conditions[1] == 0) { // Detailed command help
+    if (args.length >= 1 && ((conditions & 2) === 0 || (conditions & 4) !== 0)) { // Detailed command help
 
       const commandName = args[0];
       const cmdy = client.commands.get(commandName)
@@ -175,7 +174,7 @@ exports.run = {
           .setURL(cmdy.help.helpurl)
         );
       }
-    } else if (args.length >= 1 && conditions[1] == 1) { // Detailed game help
+    } else if (args.length >= 1 && (conditions & 2) !== 0) { // Detailed game help
 
       const gameName = args[0];
       const gmz = client.games.get(gameName)
@@ -232,8 +231,7 @@ exports.run = {
           .setURL(gmz.label.helpurl)
         );
       }
-
-    } else if (conditions[1] == 1) { // General game help
+    } else if((conditions & 2) !== 0 && (conditions & 4) === 0) { // General game help
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
@@ -281,8 +279,8 @@ exports.run = {
       if(gctr != 0) embed.addField(`In Development ${beta}`, `${glist}`, true);
 
       // If specified, creates the hidden and depricated command lists
-      if(conditions[0] == 1) {
-        glist = "These games are only available to a small group of people.\n";      
+      if((conditions & 1) !== 0) {
+        glist = "These games are only available to contributors for testing.\n";      
         gctr = 0;
         client.games.forEach(g => {
           if(!g.label.exclusive || g.label.deleted) return;
@@ -348,7 +346,7 @@ exports.run = {
       if(cmdctr != 0) embed.addField(`Experimental (WIP) ${beta}`, `${cmdlist}`, true);
 
       // If specified, creates the hidden and depricated command lists
-      if(conditions[0] == 1) {
+      if((conditions & 1) !== 0) {
         cmdlist = "Usage of these commands is restricted.\n";      
         cmdctr = 0;
         client.commands.forEach(c => {
@@ -368,11 +366,50 @@ exports.run = {
         if(cmdctr != 0) embed.addField(`Deprecated ${dead}`, `${cmdlist}`, true);
       }
     }
+
     // Sends the embed (and buttons, if present)
-    if(buttons.components.length === 0)
-      return message.channel.send({embeds: [embed]});
-    else
-      return message.channel.send({embeds: [embed], components: [buttons]});
+    switch(args.length) {
+      case 0: { // tries to send generic help in DM
+        const user = client.users.cache.get(message.author.id);
+        if(buttons.components.length === 0) {
+          return user.send({embeds: [embed]})
+            .then(newMsg => { // reacts to show that the DM was successful
+              if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
+                message.react(e.yep);
+              else if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+                message.react(e.alt.yep);
+              else if (p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
+                message.reply(`${e.yep} Help sent in DMs!`);
+              else
+                message.reply(`${e.alt.yep} Help sent in DMs!`);
+          }).catch(error => { // sends in channel if DM fails
+              console.error(colors.nope(`Could not send generic help in DMs, defaulting to channel`), error)
+              message.channel.send({embeds: [embed]});
+          });
+        } else { // buttons!
+          return user.send({embeds: [embed], components: [buttons]})
+            .then(newMsg => { // reacts to show that the DM was successful
+              if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
+                message.react(e.yep);
+              else if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+                message.react(e.alt.yep);
+              else if (p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
+                message.reply(`${e.yep} Help sent in DMs!`);
+              else
+                message.reply(`${e.alt.yep} Help sent in DMs!`);
+          }).catch(error => { // sends in channel if DM fails
+              console.error(colors.nope(`Could not send generic help in DMs, defaulting to channel`), error)
+              message.channel.send({embeds: [embed], components: [buttons]});
+          });
+        }
+      }
+      default: { // sends detailed help in channel
+        if(buttons.components.length === 0)
+          return message.channel.send({embeds: [embed]});
+        else
+          return message.channel.send({embeds: [embed], components: [buttons]});
+      }
+    }
   },
 };
 

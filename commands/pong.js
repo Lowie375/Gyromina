@@ -14,12 +14,13 @@ exports.run = {
       });
   },
   slashArgs(interact) {
-    return []; // no arg template
+    // template: no args
+    return [];
   },
 };
   
 exports.help = {
-  "name": 'pong',
+  "name": "pong",
   "description": `Pongs Gyromina. (Functions similarly to ${process.env.prefix}ping)`,
   "usage": `${process.env.prefix}pong`,
   "weight": 1,

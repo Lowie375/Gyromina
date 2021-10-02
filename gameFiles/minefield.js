@@ -327,8 +327,8 @@ exports.exe = {
     content += `Your minefield has been generated!\n\n${output}\n` +
     `Now, using the reaction icons below, create a set of instructions get the robot (${dir[6]}) to the diamond (${dir[7]}) without running over any mines (${bmb})!\n` +
     `Remember, the robot (${dir[6]}) only moves when it is ON (${dir[0]}), and it must be turned OFF (${dir[1]}) once it reaches the diamond (${dir[7]}).\n` +
-    `\`\`\`${dir[0]} Turn robot ON  •  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  •  ${dir[3]} Up 1 space  •  ${dir[4]} Right 1 space  •  ${dir[5]} Down 1 space\n` +
-    `${bkd} Delete last instruction  •  ${ibx} Confirm instructions  •  ${ccl} Quit game\`\`\`` + 
+    `\`\`\`${dir[0]} Turn robot ON  -  ${dir[1]} Turn robot OFF\n${dir[2]} Left 1 space  -  ${dir[3]} Up 1 space  -  ${dir[4]} Right 1 space  -  ${dir[5]} Down 1 space\n` +
+    `${bkd} Delete last instruction  -  ${ibx} Confirm instructions  -  ${ccl} Quit game\`\`\`` + 
     `\*This \`minefield\` instance will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
 
     // Post the field + instructions

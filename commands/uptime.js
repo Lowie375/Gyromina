@@ -92,7 +92,7 @@ exports.run = {
 };
   
 exports.help = {
-  "name": 'uptime',
+  "name": "uptime",
   "aliases": ["up", "online", "readytime"],
   "description": 'Shows Gyromina\'s uptime.',
   "usage": `${process.env.prefix}uptime`,

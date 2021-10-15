@@ -116,7 +116,7 @@ exports.run = {
 exports.help = {
   "name": "decimal",
   "aliases": ["decim", "dec", "ftod", "fd"],
-  "description": "Converts a fraction (in base 10) to a decimal.",
+  "description": "Converts a fraction in base 10 to a decimal",
   "usage": `${process.env.prefix}decimal [whole] <num>/<denom>`,
   "params": "[whole] <num>/<denom>",
   "weight": 2,

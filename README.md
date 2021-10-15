@@ -18,7 +18,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.1.12  
-Latest indev build: v1.2.0-alpha.11
+Latest indev build: v1.2.0-alpha.12
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -64,7 +64,7 @@ The last event that took place was the pride event (June 2021)
   * `token`: Discord bot token
   * `prefix`: Discord bot prefix
   * `clientID`: Discord bot client ID
-  * `exp`: `"1"` to enable experimental commands, `"0"` to disable  
+  * `exp`: `"1"` to enable experimental commands + register slash commands locally, `"0"` to disable experimental commands  
   (WARNING: experimental commands may break! use at your own risk!)
   * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
   * `hostGuildID`: Discord server/guild ID (enables local registering of slash commands)

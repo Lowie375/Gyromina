@@ -8,6 +8,7 @@ const d6X1 = /normal|regular|die|standard|single|one/i;
 const d6X2 = /dice|doubles|double|two/i;
 const d20advX = /(advantage|a|adv)/i;
 const d20disX = /(disadvantage|d|dis)/i;
+const negX = /^-/i;
 const standardDice = [2, 4, 6, 8, 10, 12, 20, 100];
 
 // emojis
@@ -46,10 +47,27 @@ function checkDice(faces, count) {
       return diceArr.concat(faceArr);
     }
   }
-  
 }
 
-function rollDice(infoArr, resArr) {
+function getSplits(arg, split, start) {
+  let save = [start];
+  for(let i = 0; i < split.length-1; i++) {
+    arg = arg.replace(split[i], "");
+    if(arg.length > 0) {
+      switch(arg.charAt(0)) {
+        case "-":
+          save.push(-1); break;
+        case "+":
+        default:
+          save.push(1); break;
+      }
+      arg = arg.slice(1);
+    } 
+  }
+  return save;
+}
+
+function rollDice(infoArr, resArr, s) {
   let tot = 0;
   let count = infoArr[1];
   let faces = parseInt(infoArr[2]);
@@ -58,12 +76,12 @@ function rollDice(infoArr, resArr) {
   for(let i = 1; i <= count; i++) {
     let r = getRandomInt(1, faces);
     resArr.push(`\`${r}\``);
-    tot += r;
+    tot += s*r;
   }
   return tot;
 }
 
-function rollCustomDice(infoArr, resArr) {
+function rollCustomDice(infoArr, resArr, s) {
   let tot = 0;
   let count = infoArr[1];
   let faces = infoArr.slice(3);
@@ -72,7 +90,7 @@ function rollCustomDice(infoArr, resArr) {
   for(let i = 1; i <= count; i++) {
     let r = getRandomInt(0, faces.length-1);
     resArr.push(`\`${faces[r]}\``);
-    tot += faces[r];
+    tot += s*faces[r];
   }
   return tot;
 }
@@ -113,12 +131,17 @@ function rollAdvDis20(infoArr, resArr) { // WIP
   tot += finalRes;
 }
 
+function diceError(resArr) {
+  resArr.push("err");
+}
+
 exports.run = {
   execute(message, args, client) {
     // variable setup
     var resArr = [];
     var mArr = [0, 0, 0]; // 💥, 🔍, ❌
     var dice = [];
+    var cleanSplits = [];
     var total = 0;
     var modifier = 0;
     
@@ -127,8 +150,19 @@ exports.run = {
       total += rollDice(["s", 1, "20"], resArr); 
     } else { // custom roll
       // clean + split dice
-      var rawDice = Clean(args.join("").toLowerCase()).split(/[+-]/);
-
+      var rawArgs = Clean(args.join("").toLowerCase())
+      var rawDice = rawArgs.split(/[+-]/);
+      var splits;
+      // check for negative at start
+      if(negX.test(rawArgs)) { // negative
+        rawArgs = rawArgs.slice(1)
+        rawDice.splice(0, 1);
+        splits = getSplits(rawArgs, rawDice, -1);
+      } else { // no negative
+        splits = getSplits(rawArgs, rawDice, 1);
+      }
+      
+      
       // handle dice individually
       for(let i = 0; i < rawDice.length; i++) {
         // split apart count and faces
@@ -145,47 +179,49 @@ exports.run = {
           rawInfo = rawDice[i].split('d');
 
         let info = rawInfo.filter(e => e.length >= 1 && !/^ +$/.test(e));
-          if(rawInfo[0] == "") info.unshift(""); // retain a blank element at the start of info, if one was present
+        if(rawInfo[0] == "") info.unshift(""); // retain a blank element at the start of info, if one was present
+
         switch(info.length) {
           case 0: { // something went wrong
-            resArr.push("err");
+            diceError(resArr);
             break;
           }
           case 1: { // likely a modifier, check just in case
             if(isNaN(parseInt(info[0])) || info[0] == "") { 
               // not a modifier, log a dice error
-              resArr.push("err");
+              diceError(resArr);
               break;
             } else { 
               // modifier!
-              modifier += parseInt(info[0], 10);
+              modifier += splits[i]*parseInt(info[0], 10);
               break;
             }
           }
           default: { // likely dice, check just in case
             if((isNaN(parseInt(info[0])) && info[0] != "")/* || isNaN(parseInt(info[1]))*/) {
               // not dice, log a dice error
-              resArr.push("err");
+              diceError(resArr);
               break;
             } else { // probably dice!
               if(info[0] == "") info[0] = "1"; // if no dice count specified, default to 1
               let dInfo = checkDice(info[1], parseInt(info[0], 10));
               if(dInfo == "err") {
                 // not dice, log a dice error
-                resArr.push("err");
+                diceError(resArr);
               } else { // definitely dice!
                 dice.push(`${dInfo[1]}d${dInfo[2]}`);
+                cleanSplits.push(`${splits[i] == -1 ? "-" : "+"}`)
                 switch(dInfo[0]) {
                   case "m":
                     rollMansionsDice(dInfo[1], mArr, resArr); break;
                   case "c":
-                    total += rollCustomDice(dInfo, resArr); break;
+                    total += rollCustomDice(dInfo, resArr, splits[i]); break;
                   case "s":
-                    total += rollDice(dInfo, resArr); break;
+                    total += rollDice(dInfo, resArr, splits[i]); break;
                   case "a":
                     total += rollAdvDis20(dInfo, resArr); break;
                   default:
-                    resArr.push("err"); // error
+                    diceError(resArr); // error
                 }
               }
             }
@@ -248,7 +284,7 @@ exports.run = {
     }
 
     // set up embed description (roll breakdown)
-    let eDesc = "";
+    let eDesc = `${cleanSplits[0] === "-" ? "- " : ""}`;
     for(let i = 0; i < dice.length; i++) {
       let dCount = parseInt(dice[i].split('d')[0]);
       eDesc += `${dice[i]}(`
@@ -256,10 +292,13 @@ exports.run = {
       for(let j = 0; j < dCount; j++) {
         resCache.push(resArr.shift());
       }
-      eDesc += `**${resCache.join("**+**")}**) + `
+      eDesc += `**${resCache.join("**+**")}**) ${cleanSplits[i+1] ? cleanSplits[i+1] : "+"} `
     }
-    if(modifier !== 0)
+
+    if(modifier > 0)
       embed.setDescription(`${eDesc}${modifier}`);
+    else if(modifier < 0)
+      embed.setDescription(`${eDesc.slice(0, -3)} - ${modifier*-1}`);
     else
       embed.setDescription(eDesc.slice(0, -3));
 

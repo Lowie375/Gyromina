@@ -4,6 +4,7 @@ const fs = require('fs');
 const colors = require('colors');
 const package = require('./package.json');
 const e = require('./systemFiles/emojis.json');
+// const {localDeploy, globalDeploy} = require('./systemFiles/deploy.js');
 const {p, getRandomInt} = require('./systemFiles/globalFunctions.js');
 const {statBlock} = require('./systemFiles/globalArrays.js');
 const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
@@ -46,21 +47,30 @@ client.games.sort();
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}, ready for action!\n- - - - - - - - - - -`.main);
+  console.log(`Logged in as ${client.user.tag}, ready for action!`.main);
   // Event logger
   const eventLog = client.channels.cache.get(process.env.eventLog);
   eventLog.send(`Logged in as ${client.user.tag}, ready for action!`);
 
-  // Sets Gyromina's current status
+  // Sets Gyromina's current status + deploys commands
   if(process.env.exp === "1") {
-    
     // Debug/test status
     client.user.setStatus("idle");
     client.user.setActivity(`${statBlock[1][getRandomInt(0,statBlock[1].length-1)]} / ${process.env.prefix}vt / v${package.version}`);
+    // Deploys commands locally (to test guild)
+    // localDeploy(client);
+    console.log(`Local slash command deployment complete!\n- - - - - - - - - - -`.main);
+    eventLog.send(`Local slash command deployment complete!`);
   } else {
     // Normal status
     client.user.setStatus("online");
     client.user.setActivity(`${statBlock[0][getRandomInt(0,statBlock[0].length-1)]} / ${process.env.prefix}help / v${package.version}`);
+    // Deploys commands globally (if within 24h of last Gyromina deploy)
+    //if(true) {
+    //  globalDeploy(client);
+    console.log(`Global slash command deployment requested, commands should be deployed within the hour.\n- - - - - - - - - - -`.main);
+    eventLog.send(`Global slash command deployment requested, commands should be deployed within the hour.`);
+    //}
   }
 
   // Emoji setup

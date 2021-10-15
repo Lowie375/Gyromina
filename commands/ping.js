@@ -13,7 +13,7 @@ exports.run = {
 
 exports.help = {
   "name": "ping",
-  "description": 'Pings Gyromina.',
+  "description": "Pings Gyromina.",
   "usage": `${process.env.prefix}ping`,
   "weight": 1,
   "hide": false,

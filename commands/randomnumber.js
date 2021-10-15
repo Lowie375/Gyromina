@@ -87,7 +87,7 @@ exports.run = {
 exports.help = {
   "name": "randomnumber",
   "aliases": ["number", "num", "rn", "rnum"],
-  "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates between 0 and that number, inclusive.",
+  "description": "Generates a random number between two numbers, or one number and 0, inclusive.",
   "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
   "params": "<num1> [num2]",
   "weight": 2,

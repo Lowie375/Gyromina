@@ -331,7 +331,7 @@ exports.run = {
 exports.help = {
   "name": "fraction",
   "aliases": ["frac", "dtof", "df"],
-  "description": "Converts a decimal to a simplified fraction (in base 10).\nDefaults to an improper fraction.",
+  "description": "Converts a decimal to a simplified fraction in base 10. Defaults to an improper fraction.",
   "usage": `${process.env.prefix}fraction <decimal> [queries]`,
   "params": "<decimal> [queries]",
   "helpurl": "https://l375.weebly.com/gyrocmd-fraction",

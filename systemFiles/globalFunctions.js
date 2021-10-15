@@ -185,14 +185,47 @@ exports.respond = async function(resp, msg, options) {
 }
 
 /**
- * Function for (properly) sorting strings alphabetically, since 
- * @param {string} strA The first string to check
- * @param {string} strB The second string to check
+ * Function for (properly) sorting items alphabetically, since the standard algorithm hasn't been working properly
+ * @param {any} rawA The first item to check
+ * @param {any} rawB The second item to check (must be same tye as a)
+ * @return {boolean}
  */
 
-exports.alphaSortFxn = function(strA, strB) {
-
+/*
+exports.alphaSortFxn = (rawA, rawB) => {
+  let a, b;
+  if(rawA.help) { // "help" objects
+    a = rawA.help.name;
+    b = rawB.help.name;
+  } else if(rawA.label) { // "game" objects
+    a = rawA.label.name;
+    b = rawB.label.name;
+  } else if(typeof(rawA) == "object") { // standard objects
+    a = rawA.name;
+    b = rawB.name;
+  } else {
+    a = rawA; // non-object type
+    b = rawB;
+  }
+  for(let i = 0; i <= Math.min(a.length, b.length); i++) {
+    // gets characters at position i
+    let chars = [a.charCodeAt(i), b.charCodeAt(i)];
+    // compares characters
+    if(isNaN(chars[0]) || isNaN(chars[1])) {
+      if (isNaN(chars[0]) && isNaN(chars[1]))
+        return true; // identical strings, leave a first
+      else if(isNaN(chars[0]))
+        return true; // a is shorter than b, place a first
+      else
+        return false; // b is shorter than a, place b first
+    } else if(chars[0] !== chars[1]) {
+      // standard check on single char if (a != b)
+      return (chars[1] < chars[0]);
+    }
+  }
+  return true; // fallback
 }
+*/
 
 // STYLE
 

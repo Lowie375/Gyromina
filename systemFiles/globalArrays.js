@@ -1,11 +1,12 @@
 // CONVERSION
-// Convert array V4: unitNames[array#][object#] + metricNames[array#][object#] --> converter[array#][object#] + metrics[array#][object#] (0-9/10-19/20-29/etc.)
+// Convert array V4: unitNames[array][object] + metricNames[array][object] --> converter[array][object] + metrics[array][object]
+// - 10 elements per row (0-9/10-19/20-29/etc.)
 
-/** 
- * A list of unit-index pairs for conversions  
- * unitNames[array#][object#] --> converter[array#][object#]
-  */
-exports.unitNames = [ // unitNames[0] = input name
+/** A list of unit-index pairs for conversions  
+ * unitNames[array][object] --> converter[array][object]
+ * @summary [0] = input name, [1] = output index
+ */
+exports.unitNames = [
   ["metres", "meters", "m", "inches", "in", "foot", "feet", "ft", "yards", "yds",
    "miles", "mi", "nauticalmiles", "nmi", "seconds", "secs", "s", "minutes", "mins", "hours",
    "hrs", "days", "d", "weeks", "wks", "years", "yrs", "gradians", "grads", "gon",
@@ -45,7 +46,7 @@ exports.unitNames = [ // unitNames[0] = input name
    "ukc", "cuk", "quadrillionbritishthermalunits", "uktons", "tonsuk", "tonuk", "uktherm", "thermuk", "uktonsforce", "uktonforce",
    "tonsforceuk", "tonforceuk", "uktonsofforce", "uktonofforce", "tonsofforceuk", "tonofforceuk", "uktonf", "tonfuk", "l", "angstroms",
    "Å", "A", "a", "å"
-  ], // unitNames[1] = output index
+  ],
   ["d000", "d000", "d000", "d001", "d001", "d002", "d002", "d002", "d003", "d003",
    "d004", "d004", "d005", "d005", "t006", "t006", "t006", "t007", "t007", "t008",
    "t008", "t009", "t009", "t010", "t010", "t011", "t011", "n012", "n012", "n012",
@@ -88,10 +89,11 @@ exports.unitNames = [ // unitNames[0] = input name
   ]
 ]; // d=distance // t=time // n=angle // v=vol // p=pressure // a=area // m=mass // e=energy // k=temperature // w=power // f=force/weight //
 
-/** 
- * A list of unit ratios for conversions
-  */
-exports.converter = [ // [0] = cleaned units, [1] = conversion factors
+/** A list of unit ratios for conversions  
+ * unitNames[array][object] --> converter[array][object]
+ * @summary [0] = cleaned units, [1] = conversion factors
+ */
+exports.converter = [
   ["m", "in", "ft", "yd", "mi", "nmi", "/sec", " min", " hrs", " days",
    " wks", " yrs", " gon", "°", "/rads", " mil", "L", "m³", "in³", "ft³",
    " US gal", " US qt", " US floz", " US pt", " US tbsp", " US tsp", " Imperial gal", " Imperial qt", " Imperial floz", "Imperial pt",
@@ -110,10 +112,10 @@ exports.converter = [ // [0] = cleaned units, [1] = conversion factors
    0.0013410220895949744128, 0.000284345136094, 3.412141633, 9.80665, 1000, 32000000/907184.74, 2000000/907184.74, 1000/907184.74, 1000/1016046.9088, 1609.344*Math.pow(10, 10)] 
 ];
 
-/** 
- * A list of prefix-index pairs for conversions  
- * metricNames[array#][object#] --> metrics[array#][object#]
-  */
+/** A list of prefix-index pairs for conversions  
+ * metricNames[array][object] --> metrics[array][object]
+ * @summary [0] = prefix name, [1] = prefix index
+ */
 exports.metricNames = [
   ["deci", "d", "centi", "c", "milli", "m", "kilo", "k", "mega", "M",
    "giga", "G", "tera", "T", "peta", "P", "exa", "E", "zetta", "Z",
@@ -127,9 +129,10 @@ exports.metricNames = [
    19, 19]
 ];
 
-/** 
- * A list of metric prefix ratios for conversions
-  */
+/** A list of metric prefix ratios for conversions  
+ * metricNames[array][object] --> metrics[array][object]
+ * @summary [0] = cleaned prefix, [1] = conversion factor
+ */
 exports.metrics = [
   ["d", "c", "m", "k", "M", "G", "T", "P", "E", "Z", 
    "Y", "h", "n", "p", "f", "a", "z", "y", "μ", "da"],
@@ -139,9 +142,8 @@ exports.metrics = [
      Math.pow(10, 18), Math.pow(10, 21), Math.pow(10, 24), Math.pow(10, 6), Math.pow(10, -1)]
 ];
 
-/** 
- * A list of units that can be modified with metric prefixes in conversions
-  */
+/** A list of units that can be modified with metric prefixes in conversions
+ */
 exports.registeredMetrics = ["meters", "meters", "m", "seconds", "secs", "s", "radians", "rads", "litres", "liters",
   "L", "cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3",
   "pascals", "Pa", "squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2",
@@ -149,23 +151,21 @@ exports.registeredMetrics = ["meters", "meters", "m", "seconds", "secs", "s", "r
   "cal", "watts", "w", "newtons", "n", "gramsforce", "gramforce", "gramsofforce", "gramofforce", "gf",
   "l"];
 
-/**
- * A list of units that must have their metric prefix modifiers doubled in conversions
+/** A list of units that must have their metric prefix modifiers doubled in conversions
  */
 exports.metricDoubles = ["squaremetres", "squaremeters", "metressquared", "meterssquared", "metersquared", "metresquared", "m²", "m^2", "m2"];
 
-/**
- * A list of units that must have their metric prefix modifiers tripled in conversions
+/** A list of units that must have their metric prefix modifiers tripled in conversions
  */
 exports.metricTriples = ["cubicmetres", "cubicmeters", "metrescubed", "meterscubed", "metercubed", "metrecubed", "m³", "m3", "m^3"];
 
 // COLOUR
 
-/**
- * A list of colour names and their corresponding hex codes  
+/** A list of colour names and their corresponding hex codes  
  * (Colour data taken from https://www.w3schools.com/colors/colors_hex.asp)
+ * @summary [0] = name, [1] = hex code
  */
-exports.colNames = [ // [0] = name, [1] = hex code
+exports.colNames = [ 
   [ // web block
    "Black", "Navy", "DarkBlue", "MediumBlue", "Blue", "DarkGreen", "Green", "Teal", "DarkCyan", "DeepSkyBlue",
    "DarkTurquoise", "MediumSpringGreen", "Lime", "SpringGreen", "Aqua", "Cyan", "MidnightBlue", "DodgerBlue", "LightSeaGreen", "ForestGreen",
@@ -183,7 +183,8 @@ exports.colNames = [ // [0] = name, [1] = hex code
    "Gold", "PeachPuff", "NavajoWhite", "Moccasin", "Bisque", "MistyRose", "BlanchedAlmond", "PapayaWhip", "LavenderBlush", "SeaShell",
    "Cornsilk", "LemonChiffon", "FloralWhite", "Snow", "Yellow", "LightYellow", "Ivory", "White",
     // custom block
-   "Gyromina's favourite colour", "DiscordOldBlurple", "DiscordOldDarkBlurple", "DiscordBlurple", "DiscordGreen", "DiscordYellow", "DiscordFuchsia", "DiscordRed",
+   "DiscordOldBlurple", "DiscordOldDarkBlurple", "DiscordBlurple", "DiscordGreen", "DiscordYellow", "DiscordFuchsia", "DiscordRed",
+   "Gyromina's favourite colour", "Gyromina's favorite color", "Gyromina's favourite color", "Gyromina's favorite colour",
   ],
   [ // web block
    "000000", "000080", "00008B", "0000cd", "0000ff", "006400", "008000", "008080", "008b8b", "00bfff",
@@ -202,16 +203,17 @@ exports.colNames = [ // [0] = name, [1] = hex code
    "ffd700", "ffdab9", "ffdead", "ffe4b5", "ffe4c4", "ffe4e1", "ffebcd", "ffefd5", "fff0f5", "fff5ee",
    "fff8dc", "fffacd", "fffaf0", "fffafa", "ffff00", "ffffe0", "fffff0", "ffffff",
     // custom block
-   "009663", "7289da", "4e5d94", "5865f2", "57f287", "fee75c", "eb459e", "ed4245",
+   "7289da", "4e5d94", "5865f2", "57f287", "fee75c", "eb459e", "ed4245",
+   "009663", "009663", "009663", "009663",
   ]
 ];
 
 // MISC
 
-/**
- * A list of statuses for Gyromina to rotate through on each dyno refresh
+/** A list of statuses for Gyromina to rotate through on each dyno refresh
+ * @summary [0] = standard, [1] = experimental mode
  */
-exports.statBlock = [ // [0] = standard, [1] = experimental mode
+exports.statBlock = [
   ["with threads!", "with dice!", "with slashes!", "critical hit!", "nat 1, sad…",
    "with buttons!", "with fancy links!", "with Discord!", "with HSV colours!", "with HSL colours!",
    "with new colours!", "shiny math rocks!", "with new stuff!"

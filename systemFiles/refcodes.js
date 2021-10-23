@@ -42,8 +42,7 @@ function genCode() {
   return rCode;
 }
 
-/**
- * Generates an error message
+/** Generates an error message
  * @param message The Discord message object
  * @param client The Discord client object
  * @param error The error thrown
@@ -71,8 +70,7 @@ exports.genErrorMsg = function(message, client, error) {
   log.send(`REFCODE: \`${newRef}\`\n\`\`\`js${error.stack}\`\`\``);
 }
 
-/**
- * Generates a warning message
+/** Generates a warning message
  * @param client The Discord client object
  * @param w The warning thrown
  */
@@ -84,8 +82,7 @@ exports.genWarningMsg = function(client, w) {
   log.send(`WARNING\n\`\`\`js${w.stack}\`\`\``);
 }
 
-/**
- * Generates a raw reference code (for miscellaneous use)
+/** Generates a raw reference code (for miscellaneous use)
  * @return {string}
  */
 

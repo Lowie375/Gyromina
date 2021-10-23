@@ -1,9 +1,9 @@
-// Require discord.js, colors,  the emoji + style files, the permission checker, the embed colour checker, and the timestamp generator
-const D = require('discord.js');
-const colors = require('colors');
-const e = require('../systemFiles/emojis.json');
-const style = require('../systemFiles/style.json');
-const {p, eCol, stamp} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const S = require('@discordjs/builders'); // slash command builder
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+// permission checker, embed colour checker, timestamp generator, responder
+const {p, eCol, stamp, respond} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
   var list = `${process.env.prefix}**${c.help.name}**`
@@ -123,7 +123,12 @@ exports.run = {
       const cmdy = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
-      if(!cmdy) return;
+      if(!cmdy) {
+        if(message.gyrType == "msg") // do nothing
+          return;
+        else // return an ephemeral
+          return respond("Sorry, I couldn't find the command you were looking for. Please check your spelling and try again.", [message, message], {eph: true});
+      }
 
       // Begins preparing embed data
       var ext = "";
@@ -144,9 +149,9 @@ exports.run = {
         embed.setColor(eCol(style.e.default));
 
       if(cmdy.help.name === commandName)
-        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}`);
+        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}${cmdy.help.s ? ` (/${cmdy.help.name})` : ""}`);
       else
-        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName})`);
+        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName}${cmdy.help.s ? `, /${cmdy.help.name}` : ""})`);
 
       let desc = `${cmdy.help.description}`;
 
@@ -180,7 +185,12 @@ exports.run = {
       const gmz = client.games.get(gameName)
       || client.games.find(gm => gm.label.aliases && gm.label.aliases.includes(gameName));
 
-      if(!gmz) return;
+      if(!gmz) {
+        if(message.gyrType == "msg") // do nothing
+          return;
+        else // return an ephemeral
+          return respond("Sorry, I couldn't find the game you were looking for. Please check your spelling and try again.", [message, message], {eph: true});
+      }
 
       // Begins preparing embed data
       var ext = "";
@@ -370,46 +380,57 @@ exports.run = {
     // Sends the embed (and buttons, if present)
     switch(args.length) {
       case 0: { // tries to send generic help in DM
-        const user = client.users.cache.get(message.author.id);
+        const user = client.users.cache.get(message.author.id)
         if(buttons.components.length === 0) {
           return user.send({embeds: [embed]})
-            .then(newMsg => { // reacts to show that the DM was successful
-              if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
+            .then(() => { // reacts to show that the DM was successful
+              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
                 message.react(e.yep);
-              else if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+              else if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
                 message.react(e.alt.yep);
               else if (p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                message.reply(`${e.yep} Help sent in DMs!`);
+                respond(`${client.emojis.cache.get(e.yep)} Help sent in DMs!`, [message, message], {reply: true});
               else
-                message.reply(`${e.alt.yep} Help sent in DMs!`);
+                respond(`${e.alt.yep} Help sent in DMs!`, [message, message], {reply: true});
           }).catch(error => { // sends in channel if DM fails
-              console.error(colors.nope(`Could not send generic help in DMs, defaulting to channel`), error)
-              message.channel.send({embeds: [embed]});
+              console.error(`Could not send generic help in DMs, defaulting to channel`, error)
+              respond({embeds: [embed]}, [message, message], {eph: true});
           });
         } else { // buttons!
           return user.send({embeds: [embed], components: [buttons]})
-            .then(newMsg => { // reacts to show that the DM was successful
-              if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
+            .then(() => { // reacts to show that the DM was successful
+              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
                 message.react(e.yep);
-              else if (p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+              else if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
                 message.react(e.alt.yep);
               else if (p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                message.reply(`${e.yep} Help sent in DMs!`);
+                message.reply(`${client.emojis.cache.get(e.yep)} Help sent in DMs!`);
               else
                 message.reply(`${e.alt.yep} Help sent in DMs!`);
           }).catch(error => { // sends in channel if DM fails
-              console.error(colors.nope(`Could not send generic help in DMs, defaulting to channel`), error)
-              message.channel.send({embeds: [embed], components: [buttons]});
+              console.error(`Could not send generic help in DMs, defaulting to channel`, error)
+              respond({embeds: [embed], components: [buttons]}, [message, message], {eph: true});
           });
         }
       }
       default: { // sends detailed help in channel
         if(buttons.components.length === 0)
-          return message.channel.send({embeds: [embed]});
+          return respond({embeds: [embed]}, [message, message], {reply: true});
         else
-          return message.channel.send({embeds: [embed], components: [buttons]});
+          return respond({embeds: [embed], components: [buttons]}, [message, message], {reply: true});
       }
     }
+  },
+  slashArgs(interact) {
+    // template: "loose" args
+    let opts = [
+      interact.options.getString("options")
+    ];
+    for(let i = 0; i < opts.length; i++) {
+      if(opts[i] === null)
+        opts[i] = "";
+    }
+    return opts.join(" ");
   },
 };
 
@@ -425,8 +446,10 @@ exports.help = {
   "wip": false,
   "dead": false,
   "s": { // for slash-enabled commands
-    "name": "help",
-    "description": "Provides command and game help",
-    "wip": true
+    "wip": false,
+    "builder": new S.SlashCommandBuilder()
+      .setName("help")
+      .setDescription("Provides command and game help")
+      .addStringOption(o => o.setName("options").setDescription("Any queries and/or a command/game").setRequired(false))
   },
 };

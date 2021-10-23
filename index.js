@@ -1,13 +1,12 @@
-// Require discord.js, fs, colors, the package file, the emoji file, the permission checker, the RNG, the status array, and the refcode generator
-const D = require('discord.js');
-const fs = require('fs');
-const colors = require('colors');
-const package = require('./package.json');
-const e = require('./systemFiles/emojis.json');
-// const {localDeploy, globalDeploy} = require('./systemFiles/deploy.js');
-const {p, getRandomInt} = require('./systemFiles/globalFunctions.js');
-const {statBlock} = require('./systemFiles/globalArrays.js');
-const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
+const D = require('discord.js'); // discord.js
+const fs = require('fs'); // fs
+const colors = require('colors'); // colors
+const package = require('./package.json'); // package file
+const e = require('./systemFiles/emojis.json'); // emoji file
+const {localDeploy, globalDeploy} = require('./systemFiles/deploy.js'); // deploy functions
+const {p, getRandomInt} = require('./systemFiles/globalFunctions.js'); // permission checker, RNG
+const {statBlock} = require('./systemFiles/globalArrays.js'); // status array
+const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js'); // refcode generators
 
 // Splitter exception regex
 const excX = /^prove/i;
@@ -15,11 +14,13 @@ const excX = /^prove/i;
 // Console colour theme
 colors.setTheme({
   main: "brightCyan",
-  nope: "brightRed",
 });
 
 // Creates a new instance of the Discord Client
-const client = new D.Client({intents: [D.Intents.FLAGS.GUILDS, D.Intents.FLAGS.GUILD_MESSAGES, D.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, D.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, D.Intents.FLAGS.DIRECT_MESSAGES, D.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS]});
+const client = new D.Client({
+  intents: [D.Intents.FLAGS.GUILDS, D.Intents.FLAGS.GUILD_MESSAGES, D.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, D.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, D.Intents.FLAGS.DIRECT_MESSAGES, D.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS],
+  partials: ['CHANNEL']
+});
 client.commands = new D.Collection();
 client.games = new D.Collection();
 
@@ -40,13 +41,14 @@ for (const file of gameFiles) {
   client.games.set(game.label.name, game);
 }
 
-// Sorts the command and game lists
-client.commands.sort();
-client.games.sort();
-
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
-client.on('ready', () => {
+client.on('ready', async () => {
+
+  // Sorts the command and game lists
+  client.commands.sort();
+  client.games.sort();
+
   console.log(`Logged in as ${client.user.tag}, ready for action!`.main);
   // Event logger
   const eventLog = client.channels.cache.get(process.env.eventLog);
@@ -56,21 +58,45 @@ client.on('ready', () => {
   if(process.env.exp === "1") {
     // Debug/test status
     client.user.setStatus("idle");
-    client.user.setActivity(`${statBlock[1][getRandomInt(0,statBlock[1].length-1)]} / ${process.env.prefix}vt / v${package.version}`);
-    // Deploys commands locally (to test guild)
-    // localDeploy(client);
-    console.log(`Local slash command deployment complete!\n- - - - - - - - - - -`.main);
-    eventLog.send(`Local slash command deployment complete!`);
+    client.user.setActivity(`${statBlock[1][getRandomInt(0,statBlock[1].length-1)]} - ${process.env.prefix}vt - v${package.version}`);
+    // Deploys slash commands locally (to test guild)
+    await localDeploy(client).then(res => {
+      if(res === 0) {
+        console.log(colors.main(`Local slash command deployment complete!\n- - - - - - - - - - -`));
+        eventLog.send(`Local slash command deployment complete!`);
+      } else {
+        console.error(`Local slash command deployment failed.\n- - - - - - - - - - -`);
+        eventLog.send(`Local slash command deployment failed.`);
+      }
+    });
   } else {
     // Normal status
     client.user.setStatus("online");
-    client.user.setActivity(`${statBlock[0][getRandomInt(0,statBlock[0].length-1)]} / ${process.env.prefix}help / v${package.version}`);
-    // Deploys commands globally (if within 24h of last Gyromina deploy)
-    //if(true) {
-    //  globalDeploy(client);
-    console.log(`Global slash command deployment requested, commands should be deployed within the hour.\n- - - - - - - - - - -`.main);
-    eventLog.send(`Global slash command deployment requested, commands should be deployed within the hour.`);
-    //}
+    client.user.setActivity(`${statBlock[0][getRandomInt(0,statBlock[0].length-1)]} - ${process.env.prefix}help - v${package.version}`);
+    // Checks slash command deployment method
+    if(process.env.exp !== "0") {
+      // Deploys slash commands locally (to test guild)
+      await localDeploy(client).then(res => {
+        if(res === 0) {
+          console.log(colors.main(`Local slash command deployment complete!\n- - - - - - - - - - -`));
+          eventLog.send(`Local slash command deployment complete!`);
+        } else {
+          console.error(`Local slash command deployment failed.\n- - - - - - - - - - -`);
+          eventLog.send(`Local slash command deployment failed.`);
+        }
+      });
+    } else if(true) {
+      // Deploys slash commands globally (if within 24h of last Gyromina deploy)
+      await globalDeploy(client).then(res => {
+        if(res === 0) {
+          console.log(colors.main(`Global slash command deployment requested, commands should be deployed within the hour.\n- - - - - - - - - - -`));
+          eventLog.send(`Global slash command deployment requested, commands should be deployed within the hour.`);
+        } else {
+          console.error(`Global slash command deployment failed.\n- - - - - - - - - - -`);
+          eventLog.send(`Global slash command deployment failed.`);
+        }
+      });
+    }
   }
 
   // Emoji setup
@@ -127,7 +153,6 @@ client.on('messageCreate', message => {
   }
 });
 
-// todo: add interaction pickup snippet
 client.on('interactionCreate', async interact => {
   // handle the interaction, begin implementing some alternate code for things?
   if (interact.isCommand()) { // slash command
@@ -151,11 +176,17 @@ client.on('interactionCreate', async interact => {
       }
     } else {
       // Pulls arguments (will likely integrate into individual commands as command.run.slashArgs() due to slash command framework)
-      var args = command.run.slashArgs(interact);  
-      // will also need to run tests on ping/pong haha
+      var args = command.run.slashArgs(interact);
+      // Prepares arguments
+      if (excX.test(interact.commandName) && args.length !== 0)
+        args = args.split(" ");
+      else if(args.length !== 0)
+        args = args.split(/ +/);
+      else
+        args = [];
 
       // Final prep before running
-      interact.gyrType = "intr"; // notes that this was triggered by a slash command interaction
+      interact.gyrType = "slash"; // notes that this was triggered by a slash command interaction
       interact.author = interact.user // for consistency w/ the "message" object
 
       try {
@@ -176,13 +207,13 @@ client.on('interactionCreate', async interact => {
 client.on('warn', w => {
   // Generates a warning message & logs the warning
   genWarningMsg(client, w);
-  console.warn(w.nope);
+  console.warn(w);
 });
 
 // Emits uncaught promise rejection warnings
 process.on('unhandledRejection', error => {
   genWarningMsg(client, error);
-  console.error('Promise Rejection -'.nope, error)
+  console.error('Promise Rejection -', error.stack)
 });
 
 // Logs into Discord with Gyromina's token

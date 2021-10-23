@@ -1,8 +1,9 @@
-// Require discord.js, the package file, the cdn + style files, the responder, the embed colour checker, and the timestamp generator
-const D = require('discord.js');
-const botinfo = require('../package.json');
-const cdn = require('../systemFiles/cdn.json');
-const style = require('../systemFiles/style.json');
+const D = require('discord.js'); // discord.js
+const S = require('@discordjs/builders'); // slash command builder
+const botinfo = require('../package.json'); // package file
+const cdn = require('../systemFiles/cdn.json'); // cdn file
+const style = require('../systemFiles/style.json'); // style file
+// responder, embed colour checker, avatar checker, timestamp generator
 const {respond, eCol, avCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
@@ -75,10 +76,11 @@ exports.run = {
     );
 
     // Sends the embed
-    return respond({embeds: [embed], components: [inviteBtn, githubBtn]}, message, {type: message.gyrType});
+    return respond({embeds: [embed], components: [inviteBtn, githubBtn]}, [message, message]);
   },
   slashArgs(interact) {
-    return []; // no arg template
+    // template: no args
+    return "";
   },
 };
 
@@ -92,8 +94,9 @@ exports.help = {
   "wip": false,
   "dead": false,
   "s": { // for slash-enabled commands
-    "name": "info",
-    "description": "Displays Gyromina's info",
-    "wip": true
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("info")
+      .setDescription("Displays Gyromina's info")
   }
 };

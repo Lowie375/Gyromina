@@ -230,12 +230,11 @@ exports.run = {
       }
     }
 
-    // output individuals + total
-
     // TODO:
     // canvas drawing for common polyhedrals
     // have each "set" of dice be a different colour?
-      // use gyrDefault for 1 set, then distribute hues evenly depending on number of sets
+      // use gyrDefault for 1 set, then distribute hues evenly depending on number of sets?
+      // RNG sets (offsets of gyrDefault)?
 
     // prepares the embed
     const embed = new D.MessageEmbed();

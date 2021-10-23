@@ -4,11 +4,11 @@ const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
 const style = require('../systemFiles/style.json');
 const cdn = require('../systemFiles/cdn.json');
+const { Interaction } = require('discord.js');
 
 // UTIL
 
-/**
- * Writes to the console with time when it was ran
+/** Writes to the console with time when it was ran
  * @author Nao (naoei)
  * @param message Message to log
  * @param startTime
@@ -29,8 +29,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
   console.log(body)
 };
 
-/**
- * Clears out any @Everyone's.
+/** Clears out any @Everyone's.
  * @author Nao (naoei)
  * @param text The text to clean
  * @return {string}
@@ -43,8 +42,7 @@ exports.Clean = function(text) {
     return text;
 };
 
-/**
- * Generates a random integer.
+/** Generates a random integer.
  * @param {number} min The minimum value that can be generated
  * @param {number} max The maximum value that can be generated
  * @return {number} The random integer generated
@@ -58,8 +56,7 @@ exports.getRandomInt = function(min, max) {
   return output;
 };
 
-/**
- * Checks whether there are any valid emojis in a list. Returns the first emoji that is part of the unicode set or a custom Discord emoji, or ["n", "null"] if there are none.
+/** Checks whether there are any valid emojis in a list. Returns the first emoji that is part of the unicode set or a custom Discord emoji, or ["n", "null"] if there are none.
  * @param {Array<string>} eList The list to check
  * @return {Array<string>} An array with information about the emoji
  */
@@ -91,8 +88,7 @@ exports.emojiCheck = function(eList = []) {
   }
 };
 
-/**
- * Constrains a number between a minimum and a maximum value
+/** Constrains a number between a minimum and a maximum value
  * @param {Number} n The number to constrain
  * @param {Number} min The minimum
  * @param {Number} max The maximum
@@ -103,8 +99,7 @@ exports.minMax = function(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
 
-/**
- * Checks whether Gyromina has a certain permission in the channel a message was sent in
+/** Checks whether Gyromina has a certain permission in the channel a message was sent in
  * @param message The message object
  * @param perm An array containing the permissions to check for
  * @return {Boolean} "`true`" if Gyromina has permissions, "`false`" if not
@@ -118,8 +113,7 @@ exports.p = function(message, perm) {
     return perm && gPerm.has(perm); // this is much simpler
   }
 }
-/**
- * Creates a custom date timestamp for embed usage
+/** Creates a custom date timestamp for embed usage
  * @return {String} The produced timestanp
  */
 
@@ -130,23 +124,20 @@ exports.stamp = function() {
   return `${now[5]}-${now[4]}-${now[3]} @ ${now[2]}:${now[1]} UTC`;
 }
 
-/**
- * Responds to a message or interaction
+/** Responds to a message or interaction
  * @param {object|string} resp A response object to send
- * @param {object} msg The message or interaction object
+ * @param {string[]} msg The message or interaction object
  * @param {object} options An options object with response-specific options
- * @param {string} options.type
  * @param {boolean?} options.edit
  * @param {boolean?} options.reply
  * @param {boolean?} options.eph
  * @param {boolean?} options.follow
  * @return {function} The appropriate message or interaction response function
  */
-// options = {type: "msg", edit: false, reply: false, eph: false, follow: false}
-
-exports.respond = async function(resp, msg, options) {
+// options = {edit: false, reply: false, eph: false, follow: false}
+exports.respond = async function(resp, msg, options = {}) {
   let response = typeof(resp) == "string" ? {content: resp} : resp;
-  switch(options.type) {
+  switch(msg[0].gyrType) {
     case "msg": { // respond to command message/channel
       // binary flags, wow!
       let optsFlag = 0;
@@ -156,81 +147,37 @@ exports.respond = async function(resp, msg, options) {
       switch (optsFlag) {
         case 3:
         case 2: // edit (reply ignored)
-          return msg.edit(response);
+          return msg[1].edit(response);
         case 1: // reply
-          return msg.reply(response);
+          return msg[1].reply(response);
         default: // default (standard)
-          return msg.channel.send(response);
+          return msg[1].channel.send(response);
       }
     }
-    case "intr": { // respond to slash command interaction
+    case "slash": { // respond to slash command interaction
       // binary flags, wow!
       let optsFlag = 0;
       if(options.follow && options.follow === true) optsFlag += Math.pow(2, 0);
-      if(options.edit && options.edit === true) optsFlag += Math.pow(2, 1);
+      if((options.edit && options.edit === true) || msg[0].deferred === true) optsFlag += Math.pow(2, 1);
       response.ephemeral = options.eph ? options.eph : false; // if ephemeral, make it ephemeral
       // check flags + react accordingly
       switch(optsFlag) { // i'm using binary flags, wow!
         case 3:
-        case 2: // edit (follow ignored)
-          return msg.editReply(response);
+        case 2: // edit or deferred response (follow ignored)
+          return msg[0].editReply(response);
         case 1: // follow
-          return msg.followUp(response);
+          return msg[0].followUp(response);
         default: // default (reply)
-          return msg.reply(response);
+          return msg[0].reply(response);
       }
     }
     default: return undefined; // error
   }
 }
 
-/**
- * Function for (properly) sorting items alphabetically, since the standard algorithm hasn't been working properly
- * @param {any} rawA The first item to check
- * @param {any} rawB The second item to check (must be same tye as a)
- * @return {boolean}
- */
-
-/*
-exports.alphaSortFxn = (rawA, rawB) => {
-  let a, b;
-  if(rawA.help) { // "help" objects
-    a = rawA.help.name;
-    b = rawB.help.name;
-  } else if(rawA.label) { // "game" objects
-    a = rawA.label.name;
-    b = rawB.label.name;
-  } else if(typeof(rawA) == "object") { // standard objects
-    a = rawA.name;
-    b = rawB.name;
-  } else {
-    a = rawA; // non-object type
-    b = rawB;
-  }
-  for(let i = 0; i <= Math.min(a.length, b.length); i++) {
-    // gets characters at position i
-    let chars = [a.charCodeAt(i), b.charCodeAt(i)];
-    // compares characters
-    if(isNaN(chars[0]) || isNaN(chars[1])) {
-      if (isNaN(chars[0]) && isNaN(chars[1]))
-        return true; // identical strings, leave a first
-      else if(isNaN(chars[0]))
-        return true; // a is shorter than b, place a first
-      else
-        return false; // b is shorter than a, place b first
-    } else if(chars[0] !== chars[1]) {
-      // standard check on single char if (a != b)
-      return (chars[1] < chars[0]);
-    }
-  }
-  return true; // fallback
-}
-*/
-
 // STYLE
 
-/**
- * Returns the current season, if one is active
+/** Returns the current season, if one is active
  * @return {number} The season ID
  */
 
@@ -252,8 +199,7 @@ exports.s = function() {
     return 0; // no season
 }
 
-/**
- * Checks whether an embed's colour should be changed due to the current season
+/** Checks whether an embed's colour should be changed due to the current season
  * @param def The standard colour for the embed in question
  * @return {String} The embed colour to use
  */
@@ -294,8 +240,7 @@ exports.eCol = function(def) {
   }
 }
 
-/**
- * Checks whether an avatar should be changed due to the current season
+/** Checks whether an avatar should be changed due to the current season
  * @return {String} The avatar image to use
  */
 
@@ -318,8 +263,7 @@ exports.avCol = function() {
 
 // COLOUR
 
-/**
- * Converts a hexadecimal colour code to RGB format
+/** Converts a hexadecimal colour code to RGB format
  * @author Irisu (irisuwastaken)
  * @param {string} hex The hexadecimal colour code (preceded by a #)
  * @return {object<number>} An RGB colour object
@@ -339,8 +283,7 @@ exports.hexToRgb = function(hex) {
   } : null;
 }
 
-/**
- * Converts an RGB colour code to hexadecimal format
+/** Converts an RGB colour code to hexadecimal format
  * @param {object} rgb The RGB colour object
  * @param {number} rgb.r
  * @param {number} rgb.g
@@ -353,8 +296,7 @@ exports.rgbToHex = function(rgb) {
   return `${hex[0].length > 1 ? hex[0] : `0${hex[0]}`}${hex[1].length > 1 ? hex[1] : `0${hex[1]}`}${hex[2].length > 1 ? hex[2] : `0${hex[2]}`}`;
 }
 
-/**
- * Converts a CMYK colour code to RGB format
+/** Converts a CMYK colour code to RGB format
  * @param {object} cmyk The CMYK colour object
  * @param {number} cmyk.c
  * @param {number} cmyk.m
@@ -377,8 +319,7 @@ exports.cmykToRgb = function(cmyk) {
   };
 }
 
-/**
- * Converts an RGB colour code to CMYK format
+/** Converts an RGB colour code to CMYK format
  * @param {object} rgb The RGB colour object
  * @param {number} rgb.r
  * @param {number} rgb.g
@@ -410,8 +351,7 @@ exports.rgbToCmyk = function(rgb) {
   }
 }
 
-/**
- * Converts a hexadecimal colour code to a colour integer
+/** Converts a hexadecimal colour code to a colour integer
  * @param {String} hex The hexadecimal colour code (raw; no #)
  * @return {Number} A colour integer
  */
@@ -420,8 +360,7 @@ exports.hexToInt = function(hex) {
   return parseInt(parseInt(hex, 16).toString(10));
 }
 
-/**
- * Converts a colour integer to a hexadecimal colour code
+/** Converts a colour integer to a hexadecimal colour code
  * @param {Number} int The colour integer
  * @return {String} A hexadecimal colour code
  */
@@ -434,8 +373,7 @@ exports.intToHex = function(int) {
   return res;
 }
 
-/**
- * Converts an RGB colour code to HSL format
+/** Converts an RGB colour code to HSL format
  * @param {object} rgb The RGB colour object
  * @param {number} rgb.r
  * @param {number} rgb.g
@@ -476,8 +414,7 @@ exports.rgbToHsl = function(rgb) {
   };
 }
 
-/**
- * Converts an HSL colour code to RGB format
+/** Converts an HSL colour code to RGB format
  * @param {object} hsl The HSL colour object
  * @param {number} hsl.h
  * @param {number} hsl.s
@@ -518,8 +455,7 @@ exports.hslToRgb = function(hsl) {
   }
 }
 
-/**
- * Converts an RGB colour code to HSV format
+/** Converts an RGB colour code to HSV format
  * @param {object} rgb The RGB colour object
  * @param {number} rgb.r
  * @param {number} rgb.g
@@ -558,8 +494,7 @@ exports.rgbToHsv = function(rgb) {
   };
 }
 
-/**
- * Converts an HSV colour code to RGB format
+/** Converts an HSV colour code to RGB format
  * @param {object} hsv The HSV colour object
  * @param {number} hsv.h
  * @param {number} hsv.s
@@ -602,8 +537,7 @@ exports.hsvToRgb = function(hsv) {
 
 // TEMPERATURE
 
-/**
- * Converts a temperature in degrees Fahrenheit to degrees Celcius
+/** Converts a temperature in degrees Fahrenheit to degrees Celcius
  * @param {Number} F The temperature in degrees Fahrenheit
  * @return {Number} A temperature in degrees Celcius
  */
@@ -612,8 +546,7 @@ exports.FtoC = function(F) {
   return (F - 32) * 5/9;
 }
 
-/**
- * Converts a temperature in degrees Celcius to degrees Fahrenheit
+/** Converts a temperature in degrees Celcius to degrees Fahrenheit
  * @param {Number} C The temperature in degrees Celcius
  * @return {Number} A temperature in degrees Fahrenheit
  */
@@ -622,8 +555,7 @@ exports.CtoF = function(C) {
   return C * 9/5 + 32;
 }
 
-/**
- * Converts a temperature in degrees Celcius to Kelvins
+/** Converts a temperature in degrees Celcius to Kelvins
  * @param {Number} C The temperature in degrees Celcius
  * @return {Number} A temperature in Kelvins
  */
@@ -632,8 +564,7 @@ exports.CtoK = function(C) {
   return C + 273.15;
 }
 
-/**
- * Converts a temperature in Kelvins to degrees Celcius
+/** Converts a temperature in Kelvins to degrees Celcius
  * @param {Number} K The temperature in Kelvins
  * @return {Number} A temperature in degrees Celcius
  */
@@ -642,8 +573,7 @@ exports.KtoC = function(K) {
   return K - 273.15;
 }
 
-/**
- * Converts a temperature in degrees Fahrenheit to degrees Rankine
+/** Converts a temperature in degrees Fahrenheit to degrees Rankine
  * @param {Number} F The temperature in degrees Fahrenheit
  * @return {Number} A temperature in degrees Rankine
  */
@@ -652,8 +582,7 @@ exports.FtoR = function(F) {
   return F + 459.67;
 }
 
-/**
- * Converts a temperature in degrees Rankine to degrees Fahrenheit
+/** Converts a temperature in degrees Rankine to degrees Fahrenheit
  * @param {Number} R The temperature in degrees Rankine
  * @return {Number} A temperature in degrees Fahrenheit
  */

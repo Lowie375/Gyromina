@@ -53,7 +53,7 @@ exports.run = {
 exports.help = {
   "name": "play",
   "aliases": ["game", "playgame", "play-game"],
-  "description": "Starts a game.",
+  "description": `Starts a game. (Use **${process.env.prefix}help -g** to view the game library)`,
   "usage": `${process.env.prefix}play <game> [options]`,
   "params": "<game> [options]",
   "helpurl": "https://l375.weebly.com/gyrocmd-play",

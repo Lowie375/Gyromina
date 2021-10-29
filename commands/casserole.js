@@ -1,8 +1,6 @@
-// Require the RNG
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js'); // RNG
 
 const flag = "🏳️‍🌈";
-
 const quips = [["Casserole in the closet!", 1],
   ["Who took the casserole out of the closet?", 1],
   ["Who put the casserole on the window sill?", 0],

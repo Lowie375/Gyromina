@@ -156,6 +156,7 @@ client.on('messageCreate', message => {
 client.on('interactionCreate', async interact => {
   // handle the interaction, begin implementing some alternate code for things?
   if (interact.isCommand()) { // slash command
+    // debug snippet
     console.log(interact);
 
     // Searches for the command

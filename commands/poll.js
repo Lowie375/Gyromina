@@ -1,7 +1,7 @@
-// Require discord.js, the emoji + style files, the permission checker, the emoji checker, the embed colour checker, and the timestamp generator
-const D = require('discord.js');
-const e = require('../systemFiles/emojis.json');
-const style = require('../systemFiles/style.json');
+const D = require('discord.js'); // discord.js
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+// permission checker, emoji checker, embed colour checker, timestamp generator
 const {p, emojiCheck, eCol, stamp} = require('../systemFiles/globalFunctions.js');
 
 // Cleanup regex
@@ -113,7 +113,7 @@ exports.run = {
 
     // Permission check: add reactions
     if (!p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
-      return message.reply(`I can't make a poll if I can't add any reactions! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
+      return message.reply(`I can't make a poll if I can't add any reactions!\nPlease ask a server administrator to enable the 'Add Reactions' permission for ${client.user.tag} and try again.`);
 
     // Permission check: external emojis
     var perms = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]);
@@ -267,8 +267,8 @@ exports.run = {
 exports.help = {
   "name": "poll",
   "description": "Creates a poll in the current channel.",
-  "usage": [`${process.env.prefix}poll <type> <prompt> [options]`, `${process.env.prefix}poll <prompt> -<e1> [o1] -[e2] [o2] …`],
-  "params": ["<type> <prompt> [options]", "<prompt> -<e1> [o1] -[e2] [o2] …"],
+  "usage": [`${process.env.prefix}poll <type> <prompt> [options]`, `${process.env.prefix}poll <prompt> -<e1> [o1] [-<e2> [o2]] …`],
+  "params": ["<type> <prompt> [options]", "<prompt> -<e1> [o1] [-<e2> [o2]] …"],
   "helpurl": "https://l375.weebly.com/gyrocmd-poll",
   "weight": 4,
   "hide": false,

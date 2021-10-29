@@ -1,10 +1,11 @@
-// Require discord.js, the Heroku client, colors, the emoji + style files, the permission checker, the emoji colour checker, and the timestamp generator
-const D = require('discord.js');
-const Heroku = require('heroku-client');
-const colors = require('colors');
-const e = require('../systemFiles/emojis.json');
-const style = require('../systemFiles/style.json');
-const {p, eCol, stamp} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const S = require('@discordjs/builders'); // slash command builder
+const Heroku = require('heroku-client'); // Heroku client
+const colors = require('colors'); // colors
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+// permission checker, emoji colour checker, timestamp generator, responder
+const {p, eCol, stamp, respond} = require('../systemFiles/globalFunctions.js');
 
 // Extra setup
 const hData = new Heroku({token: process.env.herokuAuth});
@@ -76,29 +77,39 @@ exports.run = {
         embed.addField(`${dyno}  Dyno Uptime`, dOut);
 
         // Sends the embed
-        return message.channel.send({embeds: [embed]});
+        return respond({embeds: [embed]}, [message, message]);
       })
       .catch (err => { // Could not pull API data
-        console.error("API request failed; defaulting to minimal uptime report".nope, err);
+        console.error(colors.nope("API request failed; defaulting to minimal uptime report"), err);
 
         // Minimal embed
         embed.setTitle(dOut);
         embed.setDescription(`That's ${dMillival} milliseconds, wow!`);
 
         // Sends the embed
-        return message.channel.send({embeds: [embed]});
+        return respond({embeds: [embed]}, [message, message]);
     });  
+  },
+  slashArgs(interact) {
+    // template: no args
+    return "";
   },
 };
   
 exports.help = {
   "name": "uptime",
   "aliases": ["up", "online", "readytime"],
-  "description": 'Shows Gyromina\'s uptime.',
+  "description": "Shows Gyromina's uptime.",
   "usage": `${process.env.prefix}uptime`,
   "weight": 1,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": {
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("uptime")
+      .setDescription("Shows Gyromina's uptime")
+  }
 };
   

@@ -94,7 +94,7 @@ exports.help = {
   "wip": false,
   "dead": false,
   "s": { // for slash-enabled commands
-    "wip": true,
+    "wip": false,
     "builder": new S.SlashCommandBuilder()
       .setName("info")
       .setDescription("Displays Gyromina's info")

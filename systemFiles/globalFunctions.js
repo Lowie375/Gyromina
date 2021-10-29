@@ -4,7 +4,6 @@ const emojiRegex = require('emoji-regex');
 const regex = emojiRegex();
 const style = require('../systemFiles/style.json');
 const cdn = require('../systemFiles/cdn.json');
-const { Interaction } = require('discord.js');
 
 // UTIL
 
@@ -32,7 +31,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
 /** Clears out any @Everyone's.
  * @author Nao (naoei)
  * @param text The text to clean
- * @return {string}
+ * @return {string} The cleaned text
  */
 
 exports.Clean = function(text) {
@@ -57,8 +56,8 @@ exports.getRandomInt = function(min, max) {
 };
 
 /** Checks whether there are any valid emojis in a list. Returns the first emoji that is part of the unicode set or a custom Discord emoji, or ["n", "null"] if there are none.
- * @param {Array<string>} eList The list to check
- * @return {Array<string>} An array with information about the emoji
+ * @param {array<string>} eList The list to check
+ * @return {array<string>} An array with information about the emoji
  */
 
 exports.emojiCheck = function(eList = []) {
@@ -89,10 +88,10 @@ exports.emojiCheck = function(eList = []) {
 };
 
 /** Constrains a number between a minimum and a maximum value
- * @param {Number} n The number to constrain
- * @param {Number} min The minimum
- * @param {Number} max The maximum
- * @return {Number} The number, constrained between `min` and `max`
+ * @param {number} n The number to constrain
+ * @param {number} min The minimum
+ * @param {number} max The maximum
+ * @return {number} The number, constrained between `min` and `max`
  */
 
 exports.minMax = function(n, min, max) {
@@ -102,7 +101,7 @@ exports.minMax = function(n, min, max) {
 /** Checks whether Gyromina has a certain permission in the channel a message was sent in
  * @param message The message object
  * @param perm An array containing the permissions to check for
- * @return {Boolean} "`true`" if Gyromina has permissions, "`false`" if not
+ * @return {boolean} "`true`" if Gyromina has permissions, "`false`" if not
  */
 
 exports.p = function(message, perm) {
@@ -113,8 +112,9 @@ exports.p = function(message, perm) {
     return perm && gPerm.has(perm); // this is much simpler
   }
 }
+
 /** Creates a custom date timestamp for embed usage
- * @return {String} The produced timestanp
+ * @return {string} The produced timestanp
  */
 
 exports.stamp = function() {
@@ -201,7 +201,7 @@ exports.s = function() {
 
 /** Checks whether an embed's colour should be changed due to the current season
  * @param def The standard colour for the embed in question
- * @return {String} The embed colour to use
+ * @return {string} The embed colour to use
  */
 
 exports.eCol = function(def) {
@@ -241,7 +241,7 @@ exports.eCol = function(def) {
 }
 
 /** Checks whether an avatar should be changed due to the current season
- * @return {String} The avatar image to use
+ * @return {string} The avatar image to use
  */
 
 exports.avCol = function() {
@@ -288,7 +288,7 @@ exports.hexToRgb = function(hex) {
  * @param {number} rgb.r
  * @param {number} rgb.g
  * @param {number} rgb.b
- * @return {String} A hexadecimal colour code
+ * @return {string} A hexadecimal colour code
  */
 
 exports.rgbToHex = function(rgb) {
@@ -352,8 +352,8 @@ exports.rgbToCmyk = function(rgb) {
 }
 
 /** Converts a hexadecimal colour code to a colour integer
- * @param {String} hex The hexadecimal colour code (raw; no #)
- * @return {Number} A colour integer
+ * @param {string} hex The hexadecimal colour code (raw; no #)
+ * @return {number} A colour integer
  */
 
 exports.hexToInt = function(hex) {
@@ -361,8 +361,8 @@ exports.hexToInt = function(hex) {
 }
 
 /** Converts a colour integer to a hexadecimal colour code
- * @param {Number} int The colour integer
- * @return {String} A hexadecimal colour code
+ * @param {number} int The colour integer
+ * @return {string} A hexadecimal colour code
  */
 
 exports.intToHex = function(int) {
@@ -419,7 +419,7 @@ exports.rgbToHsl = function(rgb) {
  * @param {number} hsl.h
  * @param {number} hsl.s
  * @param {number} hsl.l
- * @return {object<number>} An RGB colour object
+ * @return {object} An RGB colour object
  */
 
 exports.hslToRgb = function(hsl) {
@@ -460,7 +460,7 @@ exports.hslToRgb = function(hsl) {
  * @param {number} rgb.r
  * @param {number} rgb.g
  * @param {number} rgb.b
- * @return {object<number>} An HSV colour object
+ * @return {object} An HSV colour object
  */
 
 exports.rgbToHsv = function(rgb) {
@@ -499,7 +499,7 @@ exports.rgbToHsv = function(rgb) {
  * @param {number} hsv.h
  * @param {number} hsv.s
  * @param {number} hsv.v
- * @return {object<number>} An RGB colour object
+ * @return {object} An RGB colour object
  */
 
 exports.hsvToRgb = function(hsv) {
@@ -538,8 +538,8 @@ exports.hsvToRgb = function(hsv) {
 // TEMPERATURE
 
 /** Converts a temperature in degrees Fahrenheit to degrees Celcius
- * @param {Number} F The temperature in degrees Fahrenheit
- * @return {Number} A temperature in degrees Celcius
+ * @param {number} F The temperature in degrees Fahrenheit
+ * @return {number} A temperature in degrees Celcius
  */
 
 exports.FtoC = function(F) {
@@ -547,8 +547,8 @@ exports.FtoC = function(F) {
 }
 
 /** Converts a temperature in degrees Celcius to degrees Fahrenheit
- * @param {Number} C The temperature in degrees Celcius
- * @return {Number} A temperature in degrees Fahrenheit
+ * @param {number} C The temperature in degrees Celcius
+ * @return {number} A temperature in degrees Fahrenheit
  */
 
 exports.CtoF = function(C) {
@@ -556,8 +556,8 @@ exports.CtoF = function(C) {
 }
 
 /** Converts a temperature in degrees Celcius to Kelvins
- * @param {Number} C The temperature in degrees Celcius
- * @return {Number} A temperature in Kelvins
+ * @param {number} C The temperature in degrees Celcius
+ * @return {number} A temperature in Kelvins
  */
 
 exports.CtoK = function(C) {
@@ -565,8 +565,8 @@ exports.CtoK = function(C) {
 }
 
 /** Converts a temperature in Kelvins to degrees Celcius
- * @param {Number} K The temperature in Kelvins
- * @return {Number} A temperature in degrees Celcius
+ * @param {number} K The temperature in Kelvins
+ * @return {number} A temperature in degrees Celcius
  */
 
 exports.KtoC = function(K) {
@@ -574,8 +574,8 @@ exports.KtoC = function(K) {
 }
 
 /** Converts a temperature in degrees Fahrenheit to degrees Rankine
- * @param {Number} F The temperature in degrees Fahrenheit
- * @return {Number} A temperature in degrees Rankine
+ * @param {number} F The temperature in degrees Fahrenheit
+ * @return {number} A temperature in degrees Rankine
  */
 
 exports.FtoR = function(F) {
@@ -583,8 +583,8 @@ exports.FtoR = function(F) {
 }
 
 /** Converts a temperature in degrees Rankine to degrees Fahrenheit
- * @param {Number} R The temperature in degrees Rankine
- * @return {Number} A temperature in degrees Fahrenheit
+ * @param {number} R The temperature in degrees Rankine
+ * @return {number} A temperature in degrees Fahrenheit
  */
 
 exports.RtoF = function(R) {

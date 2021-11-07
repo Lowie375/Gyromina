@@ -6,7 +6,7 @@ const style = require('../systemFiles/style.json'); // style file
 const {p, eCol, stamp, respond} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
-  var list = `${process.env.prefix}**${c.help.name}**`
+  var list = `${c.help.default === 1 ? "/" : process.env.prefix}**${c.help.name}**`
   // Checks for parameters, and adds them as necessary
   if(!c.help.params) {
     list += "\n";
@@ -148,11 +148,17 @@ exports.run = {
       else
         embed.setColor(eCol(style.e.default));
 
-      if(cmdy.help.name === commandName)
-        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}${cmdy.help.s ? ` (/${cmdy.help.name})` : ""}`);
-      else
-        embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName}${cmdy.help.s ? `, /${cmdy.help.name}` : ""})`);
-
+      if(cmdy.help.name === commandName) {
+        switch(cmdy.help.default) {
+          case 1: embed.setTitle(`${ext}/${cmdy.help.name} (${process.env.prefix}${cmdy.help.name})`); break;
+          default: embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name}${cmdy.help.s ? ` (/${cmdy.help.name})` : ""}`); break;
+        }
+      } else {
+        switch(cmdy.help.default) {
+          case 1: embed.setTitle(`${ext}/${cmdy.help.name} (${process.env.prefix}${commandName}, ${process.env.prefix}${cmdy.help.name})`); break;
+          default: embed.setTitle(`${ext}${process.env.prefix}${cmdy.help.name} (${process.env.prefix}${commandName}${cmdy.help.s ? `, /${cmdy.help.name}` : ""})`); break;
+        }
+      }
       let desc = `${cmdy.help.description}`;
 
       if(cmdy.help.aliases && !Array.isArray(cmdy.help.aliases))
@@ -440,6 +446,7 @@ exports.help = {
   "description": "Provides command and game help. [options] can include queries and a command/game.",
   "usage": `${process.env.prefix}help [options]`,
   "params": "[options]",
+  "default": 0,
   "helpurl": "https://l375.weebly.com/gyrocmd-help",
   "weight": 1,
   "hide": false,

@@ -25,8 +25,8 @@ client.commands = new D.Collection();
 client.games = new D.Collection();
 
 // Pulls out the command and game files
-const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js'));
-const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js')).sort();
+const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js')).sort();
 
 // Declares emojis
 var nope, warning;
@@ -44,10 +44,6 @@ for (const file of gameFiles) {
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', async () => {
-
-  // Sorts the command and game lists
-  client.commands.sort();
-  client.games.sort();
 
   console.log(`Logged in as ${client.user.tag}, ready for action!`.main);
   // Event logger

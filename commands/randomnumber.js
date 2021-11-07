@@ -90,6 +90,7 @@ exports.help = {
   "description": "Generates a random number between two numbers, or one number and 0, inclusive.",
   "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
   "params": "<num1> [num2]",
+  "default": 0,
   "weight": 2,
   "hide": false,
   "wip": false,

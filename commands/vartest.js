@@ -82,6 +82,7 @@ exports.help = {
   "description": 'Miscellaneous test command. (Contributors/testers only)',
   "usage": `${process.env.prefix}vartest`,
   "params": "(contributors)",
+  "default": 0,
   "weight": 1,
   "hide": true,
   "wip": false,

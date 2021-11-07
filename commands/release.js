@@ -202,6 +202,7 @@ exports.help = {
   "aliases": ["deploy", "rel", "dep"],
   "description": "Deploys a new version of Gyromina. [DEPRECATED AS OF VERSION 1.2.0]",
   "usage": `${process.env.prefix}release`,
+  "default": 0,
   "weight": 1,
   "hide": true,
   "wip": false,

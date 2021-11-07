@@ -312,6 +312,7 @@ exports.help = {
   "description": 'Rolls dice. Defaults to 1d20 (a 20-sided dice). [options] can include dice, modifiers, and queries.',
   "usage": `${process.env.prefix}roll [options]`,
   "params": "[options]",
+  "default": 0,
   "weight": 1,
   "hide": false,
   "wip": true,

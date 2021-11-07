@@ -23,12 +23,13 @@ exports.help = {
   "name": "getprefix",
   "description": "Gets Gyromina's message command prefix.",
   "usage": `/getprefix`,
+  "default": 1,
   "weight": 1,
   "hide": false,
-  "wip": true,
+  "wip": false,
   "dead": false,
   "s": { // for slash-enabled commands
-    "wip": true,
+    "wip": false,
     "builder": new S.SlashCommandBuilder()
       .setName("getprefix")
       .setDescription("Gets Gyromina's message command prefix")

@@ -22,6 +22,7 @@ exports.help = {
   "name": "pong",
   "description": `Pongs Gyromina. (Functions similarly to ${process.env.prefix}ping)`,
   "usage": `${process.env.prefix}pong`,
+  "default": 0,
   "weight": 1,
   "hide": false,
   "wip": false,

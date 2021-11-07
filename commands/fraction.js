@@ -334,6 +334,7 @@ exports.help = {
   "description": "Converts a decimal to a simplified fraction in base 10. Defaults to an improper fraction.",
   "usage": `${process.env.prefix}fraction <decimal> [queries]`,
   "params": "<decimal> [queries]",
+  "default": 0,
   "helpurl": "https://l375.weebly.com/gyrocmd-fraction",
   "weight": 2,
   "hide": false,

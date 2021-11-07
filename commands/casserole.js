@@ -26,6 +26,7 @@ exports.help = {
   "name": 'casserole',
   "description": 'Makes a quip about casseroles and closets.',
   "usage": `${process.env.prefix}casserole`,
+  "default": 0,
   "weight": 1,
   "hide": false,
   "wip": false,

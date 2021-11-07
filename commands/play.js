@@ -56,6 +56,7 @@ exports.help = {
   "description": `Starts a game. (Use **${process.env.prefix}help -g** to view the game library)`,
   "usage": `${process.env.prefix}play <game> [options]`,
   "params": "<game> [options]",
+  "default": 0,
   "helpurl": "https://l375.weebly.com/gyrocmd-play",
   "weight": 1,
   "hide": false,

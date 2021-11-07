@@ -41,6 +41,7 @@ exports.help = {
   "aliases": ["randomcolor", "rc", "rcol"],
   "description": "Returns a random colour in various formats.",
   "usage": `${process.env.prefix}randomcolour`,
+  "default": 0,
   "weight": 1,
   "hide": false,
   "wip": false,

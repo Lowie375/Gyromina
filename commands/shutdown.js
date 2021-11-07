@@ -32,6 +32,7 @@ exports.help = {
   "description": "Shuts down the current instance of Gyromina. (Owner/host only)",
   "usage": `${process.env.prefix}shutdown`,
   "params": "(owner/host)",
+  "default": 0,
   "weight": 2,
   "hide": true,
   "wip": false,

@@ -4,13 +4,11 @@
 [![Bot Version][version-img]][main-pkg]
 [![Indev Version][indev-version-img]][indev-pkg]
 [![Dependency Status][dependency-img]][dependency-link]
-<!-- [![Top Language][lang-img]][lang-link] -->
 [![License][license-img]](LICENSE)  
 [![Last Commit (main)][main-commit-img]][main-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
 [![Build Status][build-img]][build-link]
 <!-- [![Gyromina Dev Discord][discord-img]][discord-link] -->
-<!-- [![Scrutinizer Code Quality][code-quality-img]][code-quality-link] -->
 
 ## About
 
@@ -19,7 +17,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.1.12  
-Latest indev build: v1.2.0-beta.4
+Latest indev build: v1.2.0-beta.5
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -112,9 +110,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
 [main-tree-link]: https://github.com/Lowie375/Gyromina/tree/main
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
-[lang-link]: https://github.com/Lowie375/Gyromina/search?l=javascript
 [build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
-[code-quality-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
 <!-- [discord-link]: TBA -->
 
 <!-- Banners -->
@@ -129,9 +125,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [main-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28main%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
-[lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina
 [build-img]: https://img.shields.io/scrutinizer/build/g/Lowie375/Gyromina
-[code-quality-img]: https://img.shields.io/scrutinizer/quality/g/Lowie375/Gyromina
 <!-- [discord-img]: https://img.shields.io/discord/ID?color=5865f2&label=%20&logo=discord&logoColor=ffffff -->
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-00b275

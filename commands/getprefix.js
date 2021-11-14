@@ -21,6 +21,7 @@ exports.run = {
 
 exports.help = {
   "name": "getprefix",
+  "aliases": ["prefix"],
   "description": "Gets Gyromina's message command prefix.",
   "usage": `/getprefix`,
   "default": 1,

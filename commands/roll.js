@@ -6,8 +6,8 @@ const {getRandomInt, Clean, eCol} = require('../systemFiles/globalFunctions.js')
 // regexes + arrays
 const d6X1 = /regular|die|standard|single|one/i;
 const d6X2 = /dice|doubles|double|two/i;
-const d20advX = /advantage|a|adv/i;
-const d20disX = /disadvantage|d|dis/i;
+const d20advX = /^(advantage|adv|a)|(advantage|adv|a)$/i;
+const d20disX = /^(disadvantage|dis|d)|(disadvantage|dis|d)$/i;
 const negX = /^-/i;
 const standardDice = [2, 4, 6, 8, 10, 12, 20, 100];
 
@@ -67,7 +67,7 @@ function getSplits(arg, split, start) {
   return save;
 }
 
-function rollDice(infoArr, resArr, s) {
+function rollDice(infoArr, resArr, s = 1) {
   let tot = 0;
   let count = infoArr[1];
   let faces = parseInt(infoArr[2]);
@@ -81,7 +81,7 @@ function rollDice(infoArr, resArr, s) {
   return tot;
 }
 
-function rollCustomDice(infoArr, resArr, s) {
+function rollCustomDice(infoArr, resArr, s = 1) {
   let tot = 0;
   let count = infoArr[1];
   let faces = infoArr.slice(3);
@@ -111,39 +111,51 @@ function rollMansionsDice(count, mArr, resArr) {
   }
 }
 
-function rollAdvDis20(advDis, resArr, dice, i) { // WIP
+function rollAdvDis20(advDis, resArr, dice, splits, i = -1) { // WIP
   let res = [];
+  let tot;
+  let k = 0;
 
   // makes adjustments depending on whether a single d20 was already rolled or not
-  if(i) res.push(resArr[i]);
-  let n = (roll ? 1 : 2)
+  if(i !== -1) {
+    // finds the result that corresponds to the d20
+    for(let j = 0; j < i; j++) {
+      k += parseInt(dice[j].split('d')[0]);
+    }
+    // pushes the appropriate result
+    res.push(parseInt(resArr[k].slice(1, -1)));
+  }
+  let n = (i !== -1 ? 1 : 2)
 
   // rolls the dice the specified amount of times
-  for(let i = 1; i <= n; i++) {
+  for(let j = 1; j <= n; j++) {
     let r = getRandomInt(1, 20);
-    res.push(`\`${r}\``);
+    res.push(r);
   }
-  // sort the array in descending order
-  let cleanRes = res.sort((a, b) => b - a);
+  // sort the array in ascending order + format
+  let cleanRes = res.sort((a, b) => a - b);
 
   let finalRes;
-  if(advDis > 0)
-    finalRes = cleanRes[0]; // advantage: take higher result
+  if(advDis === 1)
+    finalRes = cleanRes[1]; // advantage: take higher result
   else
-    finalRes = cleanRes[1]; // disadvantage: take lower result
+    finalRes = cleanRes[0]; // disadvantage: take lower result
   
-  if(roll) {
-    dice[i] = `1d20[${advDis > 0 ? "adv" : "dis"}]`;
-    total += finalRes - resArr[i]; // adjust rolled value accordingly
-    resArr[i] = `\`${finalRes}\``;
+  if(i !== -1) {
+    dice[i] = `1d20\\\[${advDis === 1 ? "adv" : "dis"}\\\]`;
+    tot = finalRes - parseInt(resArr[k].slice(1, -1)); // adjust rolled value accordingly
+    resArr[k] = `\`${finalRes}\``;
   } else {
-    dice.push(`1d20[${advDis > 0 ? "adv" : "dis"}]`)
+    dice.push(`1d20\\\[${advDis === 1 ? "adv" : "dis"}\\\]`)
     resArr.push(`\`${finalRes}\``);
-    tot += finalRes;
+    tot = finalRes;
   }
 
-  // return both results for embed description
-  return res;
+  // return net total + both roll results for embed description
+  return {
+    ad: res.map(e => `\`${e}\``),
+    t: tot*(i !== -1 ? splits[i] : 1)
+  };
 }
 
 function diceError(resArr) {
@@ -177,22 +189,42 @@ exports.run = {
       } else { // no negative
         splits = getSplits(rawArgs, rawDice, 1);
       }
-      // check for advantage/disadvantage flags
-      if(d20advX.test(rawArgs)) advDis++;
-      if(d20disX.test(rawArgs)) advDis--;
       
+      let j = -1;
       // handle dice individually
       for(let i = 0; i < rawDice.length; i++) {
-        // split apart count and faces
+        // loop initializations
         let rawInfo;
-        if(d6X1.test(args[i]))
+        j++;
+
+        // split count and faces apart as needed
+        if(d20disX.test(rawDice[i])) { // dis present (check first b/c "disadvantage" contains "advantage")
+          advDis = (advDis | 2);
+          // slice appropriate portion of string
+          if(/^(disadvantage|dis|d)/i.test(rawDice[i]))
+            rawDice[i] = rawDice[i].slice(d20disX.exec(rawDice[i])[1].length)
+          else
+            rawDice[i] = rawDice[i].slice(0, rawDice[i].search(d20disX))
+          // rest is handled at end; break loop + repeat iteration
+          i--;
+          continue;
+        } else if(d20advX.test(rawDice[i])) { // adv present
+          advDis = (advDis | 1);
+          // slice appropriate portion of string
+          if(/^(advantage|adv|a)/i.test(rawDice[i]))
+            rawDice[i] = rawDice[i].slice(d20advX.exec(rawDice[i])[1].length)
+          else
+            rawDice[i] = rawDice[i].slice(0, rawDice[i].search(d20advX))
+          // rest is handled at end; break loop + repeat iteration
+          i--;
+          continue;
+        } else if(d6X1.test(rawDice[i])) { // 1d6 query present
           rawInfo = ["1", "6"];
-        else if(d6X2.test(args[i]))
+        } else if(d6X2.test(rawDice[i])) { // 2d6 query present
           rawInfo = ["2", "6"];
-        else if(advDis !== 0 && (d20advX.test(args[i]) || d20disX.test(args[i])))
-          continue; // advantage + disadvantage are handled at the end
-        else
+        } else {
           rawInfo = rawDice[i].split('d');
+        }
 
         let info = rawInfo.filter(e => e.length >= 1 && !/^ +$/.test(e));
         if(rawInfo[0] == "") info.unshift(""); // retain a blank element at the start of info, if one was present
@@ -202,19 +234,23 @@ exports.run = {
             diceError(resArr);
             break;
           }
-          case 1: { // likely a modifier, check just in case
+          case 1: { // modifier or adv/dis throw, check just in case
             if(isNaN(parseInt(info[0])) || info[0] == "") { 
-              // not a modifier, log a dice error
-              diceError(resArr);
-              break;
-            } else { 
-              // modifier!
+              // check if an adv/dis check result
+              if(i !== j) { // adv/dis throw!
+                j = i;
+                continue;
+              } else { // log a dice error
+                diceError(resArr);
+                break;
+              }
+            } else { // modifier!
               modifier += splits[i]*parseInt(info[0], 10);
               break;
             }
           }
           default: { // likely dice, check just in case
-            if((isNaN(parseInt(info[0])) && info[0] != "")/* || isNaN(parseInt(info[1]))*/) {
+            if((isNaN(parseInt(info[0])) && info[0] != "")) {
               // not dice, log a dice error
               diceError(resArr);
               break;
@@ -243,22 +279,25 @@ exports.run = {
             }
           }
         }
+        j = i;
       }
     }
 
-    // TODO:
-    // canvas drawing for common polyhedrals
-    // have each "set" of dice be a different colour?
-      // use gyrDefault for 1 set, then distribute hues evenly depending on number of sets?
-      // RNG sets (offsets of gyrDefault)?
-
     // handles advantage/disadvantage rolls
-    if(advDis !== 0) {
+    if(advDis == 3 && dice.findIndex(e => e == "1d20") === -1) { // cancellation + no roll: just roll a flat d20
+      dice.push("1d20");
+      total += rollDice(["s", 1, "20"], resArr);
+    } else if(advDis !== 0) { // apply adv or dis
       let d20i = dice.findIndex(e => e == "1d20");
-      if(d20i) // apply to existing d20 roll
-        advDis = rollAdvDis20(advDis, resArr, dice, d20i);
+      let res;
+      if(d20i !== -1) // apply to existing d20 roll
+        res = rollAdvDis20(advDis, resArr, dice, splits, d20i);
       else // add new roll
-        advDis = rollAdvDis20(advDis, resArr, dice);
+        res = rollAdvDis20(advDis, resArr, dice, splits);
+
+      // log rolls + adjust total
+      advDis = res.ad;
+      total += res.t;
     }
 
     // prepares the embed
@@ -313,12 +352,16 @@ exports.run = {
       let dCount = parseInt(dice[i].split('d')[0]);
       eDesc += `${dice[i]}(`
       // check if advantage/disadvantage formatting is needed
-      if(dice[i] == "1d20[adv]" || dice[i] == "1d20[dis]") {
-        let output = resArr.shift()
-        switch(output) { // highlights whichever result was used
-          case `\`${advDis[1].toString()}\``: eDesc += `~~\`${advDis[0].toString()}\`~~/**\`${advDis[1].toString()}\`**)`; break;
-          default: eDesc += `**\`${advDis[0].toString()}\`**~~\`${advDis[1].toString()}\`~~)`; break;
-        }
+      if(dice[i] == "1d20\\\[adv\\\]" || dice[i] == "1d20\\\[dis\\\]") {
+        let output = resArr.shift();
+        // hightlight whichever result is used
+        if(advDis[0] == advDis[1]) // dice are equal, highlight both
+          eDesc += `**${advDis[0]}**|**${advDis[1]}**)`;
+        else if (advDis[1] == output)
+          eDesc += `~~${advDis[0]}~~|**${advDis[1]}**)`;
+        else
+          eDesc += `**${advDis[0]}**|~~${advDis[1]}~~)`
+        // add split
         eDesc += ` ${cleanSplits[i+1] ? cleanSplits[i+1] : "+"} `
       } else { // standard formatting
         let resCache = [];
@@ -348,8 +391,9 @@ exports.help = {
   "usage": `${process.env.prefix}roll [options]`,
   "params": "[options]",
   "default": 0,
+  "helpurl": "https://l375.weebly.com/gyrocmd-roll",
   "weight": 1,
   "hide": false,
-  "wip": true,
+  "wip": false,
   "dead": false
 };

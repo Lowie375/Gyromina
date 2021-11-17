@@ -153,7 +153,7 @@ exports.run = {
         embed.setDescription(`${content}`);
 
       // Sends the embed
-      message.channel.send({embeds: [embed]})
+      return message.channel.send({embeds: [embed]})
         .then (async poll => {
           // Awaits reactions
           switch (type) {
@@ -179,6 +179,7 @@ exports.run = {
       // removes flags so that they don't interfere with the poll maker
       const checks = ["-nd"];
       var flags = 0;
+      var sliced = false;
 
       for (let i = 0; i < checks.length; i++) {
         if (args.includes(checks[i]))
@@ -196,7 +197,7 @@ exports.run = {
       let prompt = pollRoot.shift();
       let options = [];
 
-      if (pollRoot.length == 0)
+      if (pollRoot.length === 0)
         return message.reply(`I can't make a poll without any poll options!`);
       
       // Escaped dash handler
@@ -205,6 +206,20 @@ exports.run = {
           pollRoot[i] += `-${pollRoot[i+1]}`;
           pollRoot.splice(i+1, 1);
           i--;
+        }
+      }
+      
+      // Check if poll length needs to be chopped (anti-spam)
+      if(pollRoot.length > 4) {
+        const pollRoleX = /polls?/i
+        if (message.channel.guild.roles.cache.some(r => pollRoleX.test(r.name.toLowerCase()))) {
+          // poll role exists, check permissions + roles
+          let guildMember = message.channel.guild.members.cache.get(message.author.id);
+          if(!(message.author.id === message.guild.ownerId || guildMember.permissions.has(D.Permissions.FLAGS.MANAGE_MESSAGES, true) || guildMember.roles.cache.some(r => pollRoleX.test(r.name.toLowerCase())))) {
+            // no poll role or permissions for member: impose 4 option restriction for anti-spam protection
+            pollRoot = pollRoot.slice(0, 4);
+            sliced = true;
+          }
         }
       }
 
@@ -253,13 +268,25 @@ exports.run = {
       embed.setFooter(`Poll created by ${message.author.tag} - ${stamp()}`, message.author.avatarURL());
 
       // Sends the embed
-      message.channel.send({embeds: [embed]})
+      return message.channel.send({embeds: [embed]})
         .then (async poll => {
+          // Sends a temporary alert if the poll was trimmed (anti-spam)
+          let alert;
+          if(sliced)
+            alert = await poll.reply("*(This poll was trimmed down to 4 options to avoid spam)*");
           // Awaits reactions
           for (rx of rxns) {
             await poll.react(rx);
           }
-      });     
+          return alert;
+      }).then (async alert => {
+        // Deletes the alert after 5 seconds (if present)
+        if(sliced) {
+          setTimeout(() => {
+            alert.delete();
+          }, 5000);
+        }
+      });
     }
   },
 };

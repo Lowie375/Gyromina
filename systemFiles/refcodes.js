@@ -1,7 +1,7 @@
 // Require discord.js, colors, the permission checker, the RNG, and the emoji + style files
 const D = require('discord.js');
 const colors = require('colors');
-const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {p, getRandomInt, respond} = require('../systemFiles/globalFunctions.js');
 const e = require('../systemFiles/emojis.json');
 const style = require('../systemFiles/style.json');
 
@@ -63,7 +63,7 @@ exports.genErrorMsg = function(message, client, error) {
     .setTitle(`${warning} Something went wrong…`)
     .setColor(style.e.error)
     .setDescription(`Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``);
-  message.channel.send({embeds: [embed]});
+  respond({embeds: [embed]}, [message, message], {eph: true});
   
   // Sends the error to the Gyromina log channel
   const log = client.channels.cache.get(process.env.errorLog);

@@ -127,17 +127,17 @@ client.on('messageCreate', message => {
   // Checks if the command exists. If not, returns
   if(!command) return;
 
+  // Run prep
+  message.gyrType = "msg"; // notes that this was triggered by a command message
+
   // Checks if the command is experimental/unstable. If so, displays a warning instead of running the command
-  if(process.env.exp === "0" && command.help.wip) {
+  if(process.env.exp !== "1" && command.help.wip) {
     if(message.author.id === process.env.hostID) {
       message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`);
     } else {
       message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`);
     }
   } else {
-    // Final prep before running
-    message.gyrType = "msg"; // notes that this was triggered by a command message
-
     try {
       command.run.execute(message, args, client);
       // 'message' = message or interaction object (outdated name is for consistency)
@@ -152,9 +152,6 @@ client.on('messageCreate', message => {
 client.on('interactionCreate', async interact => {
   // handle the interaction, begin implementing some alternate code for things?
   if (interact.isCommand()) { // slash command
-    // debug snippet
-    console.log(interact);
-
     // Searches for the command
     const commandName = interact.commandName;
     const command = client.commands.get(commandName)
@@ -165,14 +162,18 @@ client.on('interactionCreate', async interact => {
     // Checks if the command is interaction-enabled. If not, returns
     if(!command.help.s) return;
 
-    if(process.env.exp === "0" && (command.help.wip || command.help.s.wip)) {
+    // Run prep
+    interact.gyrType = "slash"; // notes that this was triggered by a slash command interaction
+    interact.author = interact.user // for consistency w/ the "message" object
+
+    if(process.env.exp !== "1" && (command.help.wip || command.help.s.wip)) {
       if(interact.user.id === process.env.hostID) {
-        await interact.reply({content: `${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`, ephemeral: true});
+        await interact.reply({content: `${p(interact, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(interact, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`, ephemeral: true});
       } else {
-        await interact.reply({content: `${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`, ephemeral: true});
+        await interact.reply({content: `${p(interact, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`, ephemeral: true});
       }
     } else {
-      // Pulls arguments (will likely integrate into individual commands as command.run.slashArgs() due to slash command framework)
+      // Pulls arguments
       var args = command.run.slashArgs(interact);
       // Prepares arguments
       if (excX.test(interact.commandName) && args.length !== 0)
@@ -181,10 +182,6 @@ client.on('interactionCreate', async interact => {
         args = args.split(/ +/);
       else
         args = [];
-
-      // Final prep before running
-      interact.gyrType = "slash"; // notes that this was triggered by a slash command interaction
-      interact.author = interact.user // for consistency w/ the "message" object
 
       try {
         command.run.execute(interact, args, client);

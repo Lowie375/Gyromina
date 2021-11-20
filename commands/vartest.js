@@ -1,9 +1,9 @@
-// Require discord.js, the package file, the emoji file, the permission checker, and the timestamp generator
-const D = require('discord.js');
-const package = require('../package.json');
-const e = require('../systemFiles/emojis.json');
-const colors = require('colors');
-const {p, stamp, emojiCheck} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const package = require('../package.json'); // package file
+const e = require('../systemFiles/emojis.json'); // emoji file
+const colors = require('colors'); // colors
+// timestamp generator, emoji checker, emoji puller, rejection embed generator
+const {stamp, emojiCheck, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js'); 
 
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
@@ -11,12 +11,12 @@ const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const nope = getEmoji(message, e.nope, e.alt.nope);
 
     // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== process.env.hostID && message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id) && !package.testerIDs.includes(message.author.id)) {
       console.log('A user attempted to run a test, but was unsuccessful!'.nope);
-      return message.channel.send(`${nope} Insufficient permissions!`);
+      return message.channel.send({embeds: [genRejectEmbed(message, "Insufficient permissions")]});
     }
 
     message.channel.send(`${parseInt(0x707070)}`);
@@ -79,7 +79,7 @@ exports.run = {
 exports.help = {
   "name": "vartest",
   "aliases": ["vt"],
-  "description": 'Miscellaneous test command. (Contributors/testers only)',
+  "description": 'Miscellaneous test command. (contributors/testers only)',
   "usage": `${process.env.prefix}vartest`,
   "params": "(contributors)",
   "default": 0,

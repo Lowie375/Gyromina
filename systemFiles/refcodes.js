@@ -1,9 +1,9 @@
-// Require discord.js, colors, the permission checker, the RNG, and the emoji + style files
-const D = require('discord.js');
-const colors = require('colors');
-const {p, getRandomInt, respond} = require('../systemFiles/globalFunctions.js');
-const e = require('../systemFiles/emojis.json');
-const style = require('../systemFiles/style.json');
+const D = require('discord.js'); // discord.js
+const colors = require('colors'); // colors
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+// RNG, responder, emoji puller
+const {getRandomInt, respond, getEmoji} = require('../systemFiles/globalFunctions.js');
 
 // Declares CBX characters for future use
 const genChars = ["0", "1", "2", "3", "5", "8", "l", "a", "w", "n", "p", "x", "-", "i", "_", "y", "h", "b", "t", "q", "j", "s", "r", "v", "k", "c", "g", "f", "m", "z", "e", "u"];
@@ -43,15 +43,15 @@ function genCode() {
 }
 
 /** Generates an error message
- * @param message The Discord message object
- * @param client The Discord client object
- * @param error The error thrown
+ * @param {D.Message} message The Discord message object
+ * @param {D.Client} client The Discord client object
+ * @param {Error} error The error thrown
  */
 
 // Reference code generator
 exports.genErrorMsg = function(message, client, error) {
   // Emoji setup
-  const warning = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.warn) : e.alt.warn;
+  const warning = getEmoji(message, e.warn, e.alt.warn);
 
   // Generates a reference code
   const newRef = genCode();
@@ -71,8 +71,8 @@ exports.genErrorMsg = function(message, client, error) {
 }
 
 /** Generates a warning message
- * @param client The Discord client object
- * @param w The warning thrown
+ * @param {D.Client} client The Discord client object
+ * @param {Error} w The warning thrown
  */
 
 // Warning generator

@@ -1,12 +1,16 @@
-// Require discord.js, bent, canvas, colors, the RNG, the permission checker, the refcode generator, and the emoji + cdn files
-const D = require('discord.js');
-const bent = require('bent');
-const {createCanvas, loadImage} = require('canvas');
-const colors = require('colors');
-const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const bent = require('bent'); // bent
+const {createCanvas, loadImage} = require('canvas'); // canvas
+const colors = require('colors'); // colors
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+const cdn = require('../systemFiles/cdn.json'); // cdn file
+// error message generator, refcode generator
 const {genErrorMsg, codeRNG} = require('../systemFiles/refcodes.js');
-const e = require('../systemFiles/emojis.json');
-const cdn = require('../systemFiles/cdn.json');
+// RNG, permission checker, emoji puller, rejection embed generator, embed colour checker
+const {getRandomInt, p, getEmoji, genRejectEmbed, eCol} = require('../systemFiles/globalFunctions.js');
+
+
 
 // Additional setup
 const getBuffer = bent('buffer');
@@ -321,14 +325,10 @@ function stats(moves, flags) {
   }
   statOutput += "  -  "
   // Flag check
-  if (flags == 1)
-    statOutput += `${flags} flag left\``;
-  else if (flags >= 0)
-    statOutput += `${flags} flags left\``;
-  else if (flags == -1)
-    statOutput += `${flags * -1} flag too many\``;
+  if (flags >= 0)
+    statOutput += `${flags} flag${Math.abs(flags) === 1 ? "" : "s"} left\``;
   else
-    statOutput += `${flags * -1} flags too many\``;
+    statOutput += `${flags * -1} flag${Math.abs(flags) === 1 ? "" : "s"} too many\``;
   return statOutput;
 }
 
@@ -351,11 +351,11 @@ exports.exe = {
 
     // Extraneous case I: missing custom field options
     if (!Array.isArray(setup) && options.length < 3)
-      return message.reply(`I can't create a custom field without a valid mine count and 2 valid lengths! Please check your options and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "\`mines\`/\`length1\`/\`length2\` arguments not found", "Gyromina can't create a custom board without a mine count and 2 lengths!\nPlease check your options and try again.")]});
     else if (!Array.isArray(setup) && !isNaN(parseInt(options[0]) + parseInt(options[1]) + parseInt(options[2])))
       setup = [options[0], Math.min(Math.max(parseInt(options[1]), parseInt(options[2]), 7), 36), Math.max(7, Math.min(parseInt(options[1]), parseInt(options[2]), 36))];
     else if (!Array.isArray(setup))
-      return message.reply(`I can't create a custom field with invalid options! Please check your options and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Invalid \`mines\`/\`length1\`/\`length2\` arguments", "Gyromina can't create a custom board with invalid options!\nPlease check your options and try again.")]});
 
     // Fixes mine count
     if(setup[0] > (setup[1] - 1) * (setup[2] - 1)) {
@@ -451,7 +451,7 @@ exports.exe = {
 
             // Sets up a message collector + time reset objects
             var moves = 0;
-            const filter = (msg) => msg.author.id == player && ((cancelRegex.test(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
+            const filter = (msg) => msg.author.id == player && ((cancelRegex.test(msg.content) && (client.games.get("mswp").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("mswp"))) || catchRegex.exec(msg.content));
             const finder = game.channel.createMessageCollector({filter, time: 240000, idle: 240000});  // First timer is longer to allow for rule reading
             const longTime = {time: 600000, idle: 600000};
             const shortTime = {time: 150000, idle: 150000};
@@ -461,22 +461,16 @@ exports.exe = {
               if (msg.content.includes("time")) { // Resets the timer
                 finder.resetTimer(longTime);
                 // Sends a confirmation reaction/message
-                if (p(msg, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                  msg.react(e.yep);
-                else if (p(msg, [D.Permissions.FLAGS.ADD_REACTIONS]))
-                  msg.react(e.alt.yep);
-                else if (p(msg, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                  msg.reply(`${e.yep} Timer reset!`);
+                if (p(msg, [D.Permissions.FLAGS.ADD_REACTIONS]))
+                  return msg.react(getEmoji(msg, e.yep, e.alt.yep, true));
                 else
-                  msg.reply(`${e.alt.yep} Timer reset!`);
-                return;
+                  return msg.reply({embeds: [genRejectEmbed(msg, "Timer reset!", false, {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
               } else if (cancelRegex.test(msg.content)) {
-                finder.stop("cancel");
-                return; // Stops the game
+                return finder.stop("cancel"); // Stops the game
               }
 
               // Sends a typing indicator to show that the move is being processed
-              message.channel.sendTyping();
+              msg.channel.sendTyping();
 
               // Pre-check setup
               let caught = catchRegex.exec(msg.content);
@@ -485,7 +479,7 @@ exports.exe = {
 
               // Checks if the move is valid
               if (x >= field[0].length || x < 0 || y >= field.length || y < 0) {
-                return msg.reply(`That tile isn't on the grid. Please choose a valid tile and try again.`);
+                return msg.reply({embeds: [genRejectEmbed(msg, "Tile not on board", "Please choose a valid tile and try again.")]});
               }
 
               if (moves == 0) {
@@ -501,7 +495,7 @@ exports.exe = {
                   case "q":
                   case "?":
                     // Invalid starter; reject
-                    return msg.reply(`Invalid starting move. Please open a tile using \`c.X#\` notation to begin.`);
+                    return msg.reply({embeds: [genRejectEmbed(msg, "Invalid starting move", "Please open a tile using \`c.X#\` notation to begin.")]});
                 }
               }
               // Increments the move counter
@@ -541,11 +535,11 @@ exports.exe = {
                     finder.resetTimer(shortTime);
                     switch(move) {
                       case 1: // Already cleared
-                        return msg.reply(`That tile can't be cleared again!`);
+                        return msg.reply({embeds: [genRejectEmbed(msg, "Tile already cleared, can not clear again", "Please choose another tile and try again.")]});
                       case 2: // Flag
-                        return msg.reply(`That tile is flagged! I can't uncover a flagged tile!`);
+                        return msg.reply({embeds: [genRejectEmbed(msg, "Tile flagged, can not clear", "If you are absolutely certain you would like to clear this tile, unflag it using \`f.X#\` notation and try again.")]});
                       case 3: // QMC
-                        return msg.reply(`That tile is marked as uncertain!\nIf you are absolutely certain you want to reveal it, re-type the same command followed by \`-force\`.`);
+                        return msg.reply({embeds: [genRejectEmbed(msg, "Tile maked as uncertain, can not clear", "If you are absolutely certain you would like to clear this tile, re-type the same command followed by \`-force\`.")]});
                       case 4: { // Mine hit; reveal mines and end game
                         updateCanvas(board, revealMines(field, display), img);
                         let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
@@ -572,7 +566,7 @@ exports.exe = {
                     content = `[<@${player}>] Flag on tile **\`${caught[2].toUpperCase()}${caught[3]}\`** removed!\n${stats(moves, flags)}`;
                   } else {
                     finder.resetTimer(shortTime);
-                    return msg.reply(`That tile can't be flagged.`);
+                    return msg.reply({embeds: [genRejectEmbed(message, "Tile can not be flagged")]});
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
                   let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
@@ -596,7 +590,7 @@ exports.exe = {
                     content = `[<@${player}>] Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed!\n${stats(moves, flags)}`;
                   } else {
                     finder.resetTimer(shortTime);
-                    return msg.reply(`That tile can't be marked as uncertain.`);
+                    return msg.reply({embeds: [genRejectEmbed(message, "Tile can not be marked as uncertain", "Please choose another tile and try again.")]});
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
                   let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
@@ -639,11 +633,11 @@ exports.exe = {
                   return; // Handled elsewhere in a unique message
                 case "time": // Timeouts
                 case "idle":
-                  return message.reply(`Your \`minesweeper\` instance timed out due to inactivity. Please restart the game if you would like to play again.`);
+                  return message.reply({embeds: [genRejectEmbed(message, "Inactivity timeout; \`mswp\` instance stopped", "Please restart the game if you would like to play again.")]});
                 case "cancel": // Manually cancelled
-                  return message.reply(`Your \`minesweeper\` instance has been stopped. Please restart the game if you would like to play again.`);
+                  return message.reply({embeds: [genRejectEmbed(message, "\`mswp\` instance stopped", "Please restart the game if you would like to play again.", {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
                 default: // Other (error!)
-                  return message.reply(`Your \`minesweeper\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.`);
+                  return message.reply({embeds: [genRejectEmbed(message, "Unexpected error thrown; \`mswp\` instance stopped", "Please restart the game if you would like to play again.", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
               }
             });
         });

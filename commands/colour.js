@@ -1,6 +1,9 @@
-// Require discord.js and some global functions (colour conversions, Clean, minMax)
-const D = require('discord.js');
-const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb, Clean, minMax} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+// colour conversions, mention cleaner, minMax constrainer, rejection embed generator, emoji puller
+const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb, Clean, minMax, genRejectEmbed, getEmoji} = require('../systemFiles/globalFunctions.js');
+// colour name array
 const {colNames} = require('../systemFiles/globalArrays.js');
 
 // Regex setup
@@ -53,7 +56,7 @@ function extract(xc) {
 exports.run = {
   execute(message, args, client) {
     if (args.length === 0)
-      return message.reply(`I can't get colour data for a non-existent colour!`)
+      return message.reply({embeds: [genRejectEmbed(message, "No colour provided", "Gyromina can't get colour data for a non-existent colour! Please check your spelling and try again.")]})
 
     // Decoding
     var [...code] = args;
@@ -126,7 +129,7 @@ exports.run = {
         break;
       }
       default:
-        return message.reply(`Invalid colour code/name. Please check your syntax and try again.`);
+        return message.reply({embeds: [genRejectEmbed(message, "Invalid colour", "Please check your syntax and try again.")]});
     }
 
     // Encoding
@@ -148,7 +151,10 @@ exports.run = {
       
     // Sends the embed
     switch (col[0]) {
-      case "amb": return message.reply({content: `Ambiguous input detected, defaulting to a colour integer. If this is a hex code, add \`#\` or \`0x\` in front of it and try again.`, embeds: [embed]});
+      case "amb": {
+        let blurb = "Defaulted to a colour integer.\nIf this is a hex code, add \`#\` or \`0x\` in front of it and try again."
+        return message.reply({content: `Here you go!`, embeds: [genRejectEmbed(message, "Ambiguous input", blurb, {col: style.e.warn, e: getEmoji(e.warn, e.alt.warn)}), embed]});
+      }
       default: return message.reply({content: `Here you go!`, embeds: [embed]});
     }
   }

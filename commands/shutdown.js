@@ -1,27 +1,20 @@
-// Require discord.js, colors, the package file, and the permission checker
-const D = require('discord.js');
-const colors = require('colors');
-const e = require('../systemFiles/emojis.json');
-const {p} = require('../systemFiles/globalFunctions.js');
+const colors = require('colors'); // colors
+const e = require('../systemFiles/emojis.json'); // package file
+// emoji puller, rejection embed generator
+const {getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   async execute(message, args, client) {
-    // Emoji setup
-    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.nope;
-    const yep = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.yep) : e.alt.yep;
-    
     // Checks to see if the bot host sent the message.
     if(message.author.id !== process.env.hostID) {
-      message.channel.send(`${nope} Error - Insufficient permissions!`)
       console.log('A user attempted to shut me down, but was unsuccessful!'.nope)
-      return;
+      return message.channel.send({embeds: [genRejectEmbed(message, "Insufficient permissions")]});
     }
 
     // Shuts down the current instance of the Discord Client.
-    let tag = client.user.tag;
-    await message.channel.send(`${yep}`);
+    await message.channel.send(`${getEmoji(message, e.yep, e.alt.yep)}`);
     await client.user.setStatus("invisible");
-    console.log(`Shutting down ${tag}…\n- - - - - - - - - - -`.main);
+    console.log(`Shutting down ${client.user.tag}…\n- - - - - - - - - - -`.main);
     await client.destroy();
   },
 };
@@ -29,7 +22,7 @@ exports.run = {
 exports.help = {
   "name": "shutdown",
   "aliases": ["off", "stop", "quit", "shutoff"],
-  "description": "Shuts down the current instance of Gyromina. (Owner/host only)",
+  "description": "Shuts down the current instance of Gyromina. (host only)",
   "usage": `${process.env.prefix}shutdown`,
   "params": "(owner/host)",
   "default": 0,

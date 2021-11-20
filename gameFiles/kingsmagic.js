@@ -1,4 +1,4 @@
-// Require the RNG
+// RNG
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 exports.exe = {

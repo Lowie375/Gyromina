@@ -1,7 +1,8 @@
-// Require discord.js, the style file, the RNG, and the embed colour checker
-const D = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const style = require('../systemFiles/style.json'); // style file
+const e = require('../systemFiles/emojis.json'); // emoji file
+// RNG, embed colour checker, emoji puller, rejection embed generator
+const {getRandomInt, eCol, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 const flow = ["Anyway,", "Regardless,", "Either way,"];
 
@@ -266,9 +267,9 @@ exports.run = {
 
     // Checks that there is a number, and that it is actually a decimal number
     if(args.length === 0)
-      return message.reply(`I need a number to convert to a fraction!`);
+      return message.reply({embeds: [genRejectEmbed(message, "\`decimal\` argument not found", "Gyromina needs a decimal number to be able to convert something to a fraction!\nPlease add a decimal number and try again.")]});
     else if(!decimX.test(args[0]))
-      return message.reply(`That's not a decimal! Please enter a valid one and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Unrecognized \`decimal\` value", "You argument doesn't look like a decimal number.\nPlease add a valid decimal number and try again.")]});
 
     // Prepares the number
     var num = args[0].split(".").slice(0, 2);
@@ -294,14 +295,14 @@ exports.run = {
           frac = runner(num, set);
         break;
       } default: // conflicting; throw error
-        return message.reply(`I'm not sure what kind of decimal to treat this as.\n(Please choose either **\`-r\`**epeating or **\`-t\`**erminating, not both.)`);
+        return message.reply({embeds: [genRejectEmbed(message, "Decimal type conflict", "Gyromina isn't sure what kind of decimal to treat this as.\nPlease choose either **\`-r\`**epeating or **\`-t\`**erminating, not both, and try again.")]});
     }
 
     if(!Array.isArray(frac)) { // error thrown
       switch(frac) {
-        case "lim": return message.reply(`That fraction is far too complex for me to handle! Sorry about that!`);
-        case "badRun": return message.reply(`That's not a valid repeating decimal length! Please enter a valid positive integer and try again.`);
-        default: return message.reply(`Something went wrong when processing that fraction. Sorry about that!`);
+        case "lim": return message.reply({embeds: [genRejectEmbed(message, "Fraction too complex", "That fraction is far too complex for Gyromina to handle! Sorry about that!", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
+        case "badRun": return message.reply({embeds: [genRejectEmbed(message, "Invalid \`-r\` query \`[#]\` value", "That's not a valid repeating decimal length! Please enter a valid positive integer and try again.")]});
+        default: return message.reply({embeds: [genRejectEmbed(message, "Unexpected calculation error", "Something went wrong when processing that fraction. Sorry about that!", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
       }
     }
 

@@ -1,9 +1,11 @@
-// Require colors, the emoji regex, the style file, and the cdn file;
-const color = require('colors');
-const emojiRegex = require('emoji-regex');
+const D = require('discord.js'); // discord.js
+const colors = require('colors'); // colors
+const emojiRegex = require('emoji-regex'); // emoji regex
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+const cdn = require('../systemFiles/cdn.json'); // cdn file
+
 const regex = emojiRegex();
-const style = require('../systemFiles/style.json');
-const cdn = require('../systemFiles/cdn.json');
 
 // UTIL
 
@@ -56,8 +58,8 @@ exports.getRandomInt = function(min, max) {
 };
 
 /** Checks whether there are any valid emojis in a list. Returns the first emoji that is part of the unicode set or a custom Discord emoji, or ["n", "null"] if there are none.
- * @param {array<string>} eList The list to check
- * @return {array<string>} An array with information about the emoji
+ * @param {string[]} eList The list to check
+ * @return {string[]} An array with information about the emoji
  */
 
 exports.emojiCheck = function(eList = []) {
@@ -99,9 +101,9 @@ exports.minMax = function(n, min, max) {
 }
 
 /** Checks whether Gyromina has a certain permission in the channel a message was sent in
- * @param message The message object
- * @param perm An array containing the permissions to check for
- * @return {boolean} "`true`" if Gyromina has permissions, "`false`" if not
+ * @param {D.Message|D.Interaction} message The message object
+ * @param {D.Permissions[]} perm An array containing the permissions to check for
+ * @return {boolean} `true` if Gyromina has permissions, `false` if not
  */
 
 exports.p = function(message, perm) {
@@ -126,7 +128,7 @@ exports.stamp = function() {
 
 /** Responds to a message or interaction
  * @param {object|string} resp A response object to send
- * @param {string[]} msg The message or interaction objects [oldMsg, newMsg]
+ * @param {D.Message[]|D.Interaction[]} msg The message or interaction objects [oldMsg, newMsg]
  * @param {object} options An options object with response-specific options
  * @param {boolean?} options.edit
  * @param {boolean?} options.reply
@@ -175,6 +177,45 @@ exports.respond = async function(resp, msg, options = {}) {
   }
 }
 
+/** Generates an rejection embed (for a custom Gyromina error)
+ * @param {D.Message|D.Interaction} msg The message object
+ * @param {string} title The title of the error embed
+ * @param {string|false} sub The subtitle of the error embed (`false` if none)
+ * @param {object} opts An options object
+ * @param {number?} opts.col
+ * @param {string?} opts.e
+ * @return {D.MessageEmbed}
+ */
+
+exports.genRejectEmbed = function(msg, title, sub = false, opts = {}) {
+  // gets the error emoji to use
+  let emoji = (opts.e ? opts.e : exports.getEmoji(msg, e.nope, e.alt.nope));
+  // error embed setup
+  const embed = new D.MessageEmbed()
+    .setColor(opts.col ? opts.col : style.e.reject)
+    .setTitle(`${emoji}  ${title}`);
+  if(sub)
+    embed.setDescription(`${sub}`);
+
+  // returns the embed
+  return embed;
+}
+
+/** Determines which emoji to use in a message (custom or fallback)
+ * @param {D.Message|D.Interaction} msg The message object
+ * @param {string} emoji The custom emoji
+ * @param {string} fallback The fallback emoji
+ * @param {boolean} raw `true` to return raw emoji ID, `false` (default) to return emoji object
+ * @return {string}
+ */
+
+ exports.getEmoji = function(msg, emoji, fallback, raw = false) {
+  if(raw)
+    return exports.p(msg, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? emoji : fallback;
+  else
+    return exports.p(msg, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? msg.client.emojis.cache.get(emoji) : fallback;
+ }
+
 // STYLE
 
 /** Returns the current season, if one is active
@@ -200,7 +241,7 @@ exports.s = function() {
 }
 
 /** Checks whether an embed's colour should be changed due to the current season
- * @param def The standard colour for the embed in question
+ * @param {string} def The standard colour for the embed in question
  * @return {string} The embed colour to use
  */
 
@@ -302,7 +343,7 @@ exports.rgbToHex = function(rgb) {
  * @param {number} cmyk.m
  * @param {number} cmyk.y
  * @param {number} cmyk.k
- * @return {object} An RGB colour object
+ * @return {object<number>} An RGB colour object
  */
 
 exports.cmykToRgb = function(cmyk) {
@@ -324,7 +365,7 @@ exports.cmykToRgb = function(cmyk) {
  * @param {number} rgb.r
  * @param {number} rgb.g
  * @param {number} rgb.b
- * @return {object} A CMYK colour object
+ * @return {object<number>} A CMYK colour object
  */
 
 exports.rgbToCmyk = function(rgb) {
@@ -378,7 +419,7 @@ exports.intToHex = function(int) {
  * @param {number} rgb.r
  * @param {number} rgb.g
  * @param {number} rgb.b
- * @return {object} An HSL colour object
+ * @return {object<number>} An HSL colour object
  */
 
 exports.rgbToHsl = function(rgb) {
@@ -419,7 +460,7 @@ exports.rgbToHsl = function(rgb) {
  * @param {number} hsl.h
  * @param {number} hsl.s
  * @param {number} hsl.l
- * @return {object} An RGB colour object
+ * @return {object<number>} An RGB colour object
  */
 
 exports.hslToRgb = function(hsl) {
@@ -460,7 +501,7 @@ exports.hslToRgb = function(hsl) {
  * @param {number} rgb.r
  * @param {number} rgb.g
  * @param {number} rgb.b
- * @return {object} An HSV colour object
+ * @return {object<number>} An HSV colour object
  */
 
 exports.rgbToHsv = function(rgb) {
@@ -499,7 +540,7 @@ exports.rgbToHsv = function(rgb) {
  * @param {number} hsv.h
  * @param {number} hsv.s
  * @param {number} hsv.v
- * @return {object} An RGB colour object
+ * @return {object<number>} An RGB colour object
  */
 
 exports.hsvToRgb = function(hsv) {

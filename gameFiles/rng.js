@@ -1,7 +1,8 @@
-// Require discord.js, the RNG (obviously), permission checker, and emoji file
-const D = require('discord.js');
-const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
-const e = require('../systemFiles/emojis.json');
+const D = require('discord.js'); // discord.js
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // emoji file
+// RNG (obviously), emoji puller, rejection embed generator
+const {getRandomInt, getEmoji, genRejectEmbed, eCol} = require('../systemFiles/globalFunctions.js');
 
 const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit"];
 
@@ -55,8 +56,8 @@ exports.exe = {
     var content = "";
 
     // Emoji setup
-    const yep = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.yep) : e.alt.yep;
-    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.yep;
+    const yep = getEmoji(message, e.yep, e.alt.yep);
+    const nope = getEmoji(message, e.nope, e.alt.yep);
 
     if (!options)
       max = 10;
@@ -65,7 +66,7 @@ exports.exe = {
 
     // Checks if options are valid
     if(isNaN(max))
-      return message.reply(`that's not a valid maximum/preset! Please enter a valid positive integer less than 16777216 or a valid preset and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Invalid maximum/preset", "Please enter a positive integer less than 16777216 or a valid preset and try again.")]});
 
     // Adjusts max, if necessary
     if (max < 2)
@@ -81,7 +82,7 @@ exports.exe = {
       gPow++;
     }
     if (gPow <= 4)
-      guesses = gPow
+      guesses = gPow;
     else
       guesses = 4 + Math.floor((gPow-4)*0.75);
 
@@ -143,15 +144,15 @@ exports.exe = {
       switch (reason) {
         case "time": // Timeouts
         case "idle":
-          message.reply(`Your \`rng\` instance timed out due to inactivity. Please restart the game if you would like to play again.`); return;
+          return message.reply({embeds: [genRejectEmbed(message, "Inactivity timeout; \`rng\` instance stopped", "Please restart the game if you would like to play again.")]});
         case "cancel": // Manually cancelled
-          message.reply(`Your \`rng\` instance has been stopped. Please restart the game if you would like to play again.`); return;
+          return message.reply({embeds: [genRejectEmbed(message, "\`rng\` instance stopped", "Please restart the game if you would like to play again.", {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
         case "win": // Correct guess!
-          message.reply(`${yep} Congratulations! You guessed the right number!\n**YOU WIN**`); return;
+          return message.reply(`${yep} Congratulations! You guessed the right number!\n**YOU WIN**`);
         case "out": // Out of guesses
-          message.reply(`${nope} Oh no, you ran out of guesses!\nThe number was **${num}**.\n**YOU LOSE**`); return;
+          return message.reply(`${nope} Oh no, you ran out of guesses!\nThe number was **${num}**.\n**YOU LOSE**`);
         default: // Other (error!)
-          message.reply(`Your \`rng\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.`); return;
+          return message.reply({embeds: [genRejectEmbed(message, "Unexpected error thrown; \`rng\` instance stopped", "Please restart the game if you would like to play again.", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
       }
     });
   }

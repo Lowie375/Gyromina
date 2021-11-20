@@ -1,10 +1,12 @@
-// Require discord.js, the permission checker, some global functions (Write + Clean), colors, the package file, the emoji file, and request
-const D = require('discord.js');
-const {p, Write, Clean} = require("../systemFiles/globalFunctions.js");
-const colors = require('colors');
-const package = require('../package.json');
-const e = require('../systemFiles/emojis.json');
-let request = require('request');
+const bent = require('bent'); // bent
+const colors = require('colors'); // colors
+const package = require('../package.json'); // package file
+// console timestamper, mention cleaner, rejection embed generator
+const {Write, Clean, genRejectEmbed} = require("../systemFiles/globalFunctions.js"); 
+
+// replaced deprecated 'request' with 'bent': may not work the same, but this function is deprecated anyway, so hopefully it'll be fine
+const post = bent('POST', [200, 201, 202]);
+const get = bent('GET', [200, 202]);
 
 let startTime;
 const githubApiEndpoint = `https://api.github.com/repos/${process.env.gitUsername}/${process.env.gitRepoName}`;
@@ -19,17 +21,14 @@ exports.run = {
     const forceVerification = args.join(" ").toString().includes("-y");
     const softRelease = args.join(" ").toString().includes("-s");
 
-    // Emoji setup
-    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.nope;
-
     version = vers;
 
     //check stuff
     if (version === undefined)
-      return message.channel.send("You have not provided a version number.");
+      return message.channel.send({embeds: [genRejectEmbed(message, "No version number provided")]});
 
     if (message.author.id !== package.authorID)
-      return message.channel.send(`${nope} Error - Insufficient permissions!`);
+      return message.channel.send({embeds: [genRejectEmbed(message, "Insufficient permissions")]}); // replace w/ error embed
 
     if (!forceVerification) {
       let filter = m => m.author.id === message.author.id;
@@ -88,7 +87,6 @@ exports.run = {
 // Functions
 function CreateGithubRelease (changeLogText) {
   let options = {
-    method: "post",
     url: `${githubApiEndpoint}/releases`,
     body: JSON.stringify({
       name: `v${version}`,
@@ -101,19 +99,19 @@ function CreateGithubRelease (changeLogText) {
 
   Write(`Creating release ${version}…`.blue, startTime, false);
 
-  AuthenticatedBlockingPerform(options, (res, bod) => {
+  AuthenticatedBlockingPerform(options, post, (res, bod) => {
     Write(`Version ${version} released!`);
   });
 }
 
-function AuthenticatedBlockingPerform (options, func) {
+function AuthenticatedBlockingPerform (options, bentFunc, func) {
   options.headers = {
     'Authorization': `token ${process.env.gitToken}`,
     'User-Agent': 'Gyromina',
     'content-type': 'application/json',
   };
 
-  request(options, (err, res, bod) => { // Depricated; swap out snippet in future versions
+  bentFunc(options, (err, res, bod) => {
     if (err) console.error(err);
 
     func(res, bod);
@@ -144,11 +142,10 @@ function GetChangelogString (func) {
     // Gets the last release
     getLastGithubRelease(release => {
       let miniOptions = {
-        method: "get",
         url: `${githubApiEndpoint}/pulls?state=closed`
       };
 
-      AuthenticatedBlockingPerform(miniOptions, (resMini, bodMini) => {
+      AuthenticatedBlockingPerform(miniOptions, get, (resMini, bodMini) => {
         let miniJson = JSON.parse(bodMini);
         let releaseJson = release;
 
@@ -166,11 +163,10 @@ function GetChangelogString (func) {
           if (mergedAtDate < publishedatDate) continue;
 
           let prOption = {
-            method: "get",
             url: pr.url
           };
 
-          AuthenticatedBlockingPerform(prOption, (prRes, prBod) => {
+          AuthenticatedBlockingPerform(prOption, get, (prRes, prBod) => {
             let json = JSON.parse(prBod);
             pullRequest.push(json);
 
@@ -185,11 +181,10 @@ function GetChangelogString (func) {
 
   function getLastGithubRelease(func) {
     let options = {
-      method: "get",
       url: `${githubApiEndpoint}/releases`
     };
 
-    AuthenticatedBlockingPerform(options, (res, bod) => {
+    AuthenticatedBlockingPerform(options, get, (res, bod) => {
       let json = JSON.parse(bod);
 
       func(json[0]);

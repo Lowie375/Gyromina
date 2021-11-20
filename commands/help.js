@@ -2,8 +2,8 @@ const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
 const e = require('../systemFiles/emojis.json'); // emoji file
 const style = require('../systemFiles/style.json'); // style file
-// permission checker, embed colour checker, timestamp generator, responder
-const {p, eCol, stamp, respond} = require('../systemFiles/globalFunctions.js');
+// permission checker, embed colour checker, timestamp generator, responder, emoji puller, rejection embed generator
+const {p, eCol, stamp, respond, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
   var list = `${c.help.default === 1 ? "/" : process.env.prefix}**${c.help.name}**`
@@ -104,10 +104,10 @@ function splitCore(splitList, count, weight, totWeight) {
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const ghost = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.ghost) : e.alt.ghost;
-    const beta = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.beta) : e.alt.beta;
-    const main = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.main) : e.alt.main;
-    const dead = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.dead) : e.alt.dead;
+    const ghost = getEmoji(message, e.ghost, e.alt.ghost);
+    const beta = getEmoji(message, e.beta, e.alt.beta);
+    const main = getEmoji(message, e.main, e.alt.main);
+    const dead = getEmoji(message, e.dead, e.alt.dead);
 
     // Checks for special arguments
     var conditions = 0;
@@ -123,12 +123,8 @@ exports.run = {
       const cmdy = client.commands.get(commandName)
         || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
-      if(!cmdy) {
-        if(message.gyrType == "msg") // do nothing
-          return;
-        else // return an ephemeral
-          return respond("Sorry, I couldn't find the command you were looking for. Please check your spelling and try again.", [message, message], {eph: true});
-      }
+      if(!cmdy) // return an (ephemeral) rejection message
+        return respond({embeds: [genRejectEmbed(message, `\`${commandName}\` command not found`, "Please check your spelling and try again.")]}, [message, message], {eph: true});
 
       // Begins preparing embed data
       var ext = "";
@@ -191,12 +187,8 @@ exports.run = {
       const gmz = client.games.get(gameName)
       || client.games.find(gm => gm.label.aliases && gm.label.aliases.includes(gameName));
 
-      if(!gmz) {
-        if(message.gyrType == "msg") // do nothing
-          return;
-        else // return an ephemeral
-          return respond("Sorry, I couldn't find the game you were looking for. Please check your spelling and try again.", [message, message], {eph: true});
-      }
+      if(!gmz) // return an (ephemeral) rejection message
+      return respond({embeds: [genRejectEmbed(message, `\`${gameName}\` game not found`, "Please check your spelling and try again.")]}, [message, message], {eph: true});
 
       // Begins preparing embed data
       var ext = "";
@@ -390,14 +382,10 @@ exports.run = {
         if(buttons.components.length === 0) {
           return user.send({embeds: [embed]})
             .then(() => { // reacts to show that the DM was successful
-              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                message.react(e.yep);
-              else if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
-                message.react(e.alt.yep);
-              else if (p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                respond(`${client.emojis.cache.get(e.yep)} Help sent in DMs!`, [message, message], {reply: true});
-              else
-                respond(`${e.alt.yep} Help sent in DMs!`, [message, message], {reply: true});
+              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+                message.react(getEmoji(message, e.yep, e.alt.yep, true));
+              else 
+                respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true});
           }).catch(error => { // sends in channel if DM fails
               console.error(`Could not send generic help in DMs, defaulting to channel`, error)
               respond({embeds: [embed]}, [message, message], {eph: true});
@@ -405,14 +393,10 @@ exports.run = {
         } else { // buttons!
           return user.send({embeds: [embed], components: [buttons]})
             .then(() => { // reacts to show that the DM was successful
-              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS, D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                message.react(e.yep);
-              else if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
-                message.react(e.alt.yep);
-              else if (p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]))
-                message.reply(`${client.emojis.cache.get(e.yep)} Help sent in DMs!`);
-              else
-                message.reply(`${e.alt.yep} Help sent in DMs!`);
+              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+                message.react(getEmoji(message, e.yep, e.alt.yep, true));
+              else 
+                respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true});
           }).catch(error => { // sends in channel if DM fails
               console.error(`Could not send generic help in DMs, defaulting to channel`, error)
               respond({embeds: [embed], components: [buttons]}, [message, message], {eph: true});

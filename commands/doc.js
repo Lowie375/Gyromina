@@ -1,6 +1,6 @@
-// Require discord.js, the cdn file, and the RNG
-const D = require('discord.js');
-const cdn = require('../systemFiles/cdn.json');
+const D = require('discord.js'); // discord.js
+const cdn = require('../systemFiles/cdn.json'); // cdn file
+// RNG
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 // Support messages

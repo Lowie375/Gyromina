@@ -1,4 +1,4 @@
-// Require some global functions (RNG + Clean)
+// RNG,  mention cleaner
 const {getRandomInt, Clean} = require('../systemFiles/globalFunctions.js');
 
 // List of 'proofs'

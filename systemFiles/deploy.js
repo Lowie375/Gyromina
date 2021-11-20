@@ -1,10 +1,11 @@
+const D = require('discord.js');
 const {REST} = require('@discordjs/rest'); // REST API
 const API = require('discord-api-types/v9'); // Discord API connection
 
 const slashCommands = [];
 
 /** Deploys slash commands locally to hostGuildID
- * @param {object} client The Discord client object
+ * @param {D.Client} client The Discord client object
  * @return {boolean}
  */
 exports.localDeploy = async function(client) {
@@ -23,16 +24,16 @@ exports.localDeploy = async function(client) {
       API.Routes.applicationGuildCommands(process.env.clientID, process.env.hostGuildID),
       {body: slashCommands},
     );
-    return 0;
+    return false;
   } catch (error) {
     // generates an error message & logs the error
     console.error(error.stack);
-    return 1;
+    return true;
   }
 }
 
 /** Requests a global slash command deploy
- * @param {object} client The Discord client object
+ * @param {D.Client} client The Discord client object
  * @return {boolean}
  */
 exports.globalDeploy = async function(client) {
@@ -51,10 +52,10 @@ exports.globalDeploy = async function(client) {
       API.Routes.applicationCommands(process.env.clientID),
       {body: slashCommands},
     );
-    return 0;
+    return false;
   } catch (error) {
     // generates an error message & logs the error
     console.error(error.stack);
-    return 1;
+    return true;
   }
 }

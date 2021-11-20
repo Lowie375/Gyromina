@@ -1,13 +1,15 @@
-// Require discord.js, the style file, the RNG, the Clean function, and the embed colour checker
-const D = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {getRandomInt, Clean, eCol} = require('../systemFiles/globalFunctions.js')
+const D = require('discord.js'); // discord.js
+const style = require('../systemFiles/style.json'); // style file
+const e = require('../systemFiles/emojis.json'); // emoji file
+// RNG, mention cleaner, embed colour checker, rejection ember generator, emoji puller
+const {getRandomInt, Clean, eCol, genRejectEmbed, getEmoji} = require('../systemFiles/globalFunctions.js')
 
 // regexes + arrays
 const d6X1 = /regular|die|standard|single|one/i;
 const d6X2 = /dice|doubles|double|two/i;
 const d20advX = /^(advantage|adv|a)|(advantage|adv|a)$/i;
 const d20disX = /^(disadvantage|dis|d)|(disadvantage|dis|d)$/i;
+const onedxX = /^d\d+/i;
 const negX = /^-/i;
 const standardDice = [2, 4, 6, 8, 10, 12, 20, 100];
 
@@ -198,27 +200,33 @@ exports.run = {
         j++;
 
         // split count and faces apart as needed
-        if(d20disX.test(rawDice[i])) { // dis present (check first b/c "disadvantage" contains "advantage")
-          advDis = (advDis | 2);
-          // slice appropriate portion of string
-          if(/^(disadvantage|dis|d)/i.test(rawDice[i]))
-            rawDice[i] = rawDice[i].slice(d20disX.exec(rawDice[i])[1].length)
-          else
-            rawDice[i] = rawDice[i].slice(0, rawDice[i].search(d20disX))
-          // rest is handled at end; break loop + repeat iteration
-          i--;
-          continue;
-        } else if(d20advX.test(rawDice[i])) { // adv present
-          advDis = (advDis | 1);
-          // slice appropriate portion of string
-          if(/^(advantage|adv|a)/i.test(rawDice[i]))
-            rawDice[i] = rawDice[i].slice(d20advX.exec(rawDice[i])[1].length)
-          else
-            rawDice[i] = rawDice[i].slice(0, rawDice[i].search(d20advX))
-          // rest is handled at end; break loop + repeat iteration
-          i--;
-          continue;
-        } else if(d6X1.test(rawDice[i])) { // 1d6 query present
+        // adv/dis checks: ensures dX won't be treated as disadvantage
+        if(!onedxX.test(rawDice[i])) {
+          if(d20disX.test(rawDice[i])) { // dis present (check first b/c "disadvantage" contains "advantage")
+            advDis = (advDis | 2);
+            // slice appropriate portion of string
+            if(/^(disadvantage|dis|d)/i.test(rawDice[i]))
+              rawDice[i] = rawDice[i].slice(d20disX.exec(rawDice[i])[1].length)
+            else
+              rawDice[i] = rawDice[i].slice(0, rawDice[i].search(d20disX))
+            // rest is handled at end; break loop + repeat iteration
+            i--;
+            continue;
+          } else if(d20advX.test(rawDice[i])) { // adv present
+            advDis = (advDis | 1);
+            // slice appropriate portion of string
+            if(/^(advantage|adv|a)/i.test(rawDice[i]))
+              rawDice[i] = rawDice[i].slice(d20advX.exec(rawDice[i])[1].length)
+            else
+              rawDice[i] = rawDice[i].slice(0, rawDice[i].search(d20advX))
+            // rest is handled at end; break loop + repeat iteration
+            i--;
+            continue;
+          }
+        }
+
+        // rest of dice checks
+        if(d6X1.test(rawDice[i])) { // 1d6 query present
           rawInfo = ["1", "6"];
         } else if(d6X2.test(rawDice[i])) { // 2d6 query present
           rawInfo = ["2", "6"];
@@ -303,17 +311,15 @@ exports.run = {
     // prepares the embed
     const embed = new D.MessageEmbed();
 
-    // prepares the message that gets sent with the embed
-    var desc;
+    // checks for + filters errors
+    var rejectEmbed;
     if(resArr.includes("err")) {
       resArr = resArr.filter(e => e != "err");
       if(resArr.length === 0) {
-        return message.reply("None of those dice could be rolled! Please check your syntax and try again.")
+        return message.reply({embeds: [genRejectEmbed(message, "Invalid roll", "None of your dice could be rolled! Please check your syntax and try again.")]});
       } else {
-        desc = "Some of your dice couldn't be rolled, sorry about that! You may want to check your syntax next time.\nHere are the dice I did manage to roll for you!"
+        rejectEmbed = genRejectEmbed(message, "Some dice invalid; succesful rolls returned", false, {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})
       }
-    } else {
-      desc = "Here you go!"
     }
 
     // custom colour checker for crits/fails
@@ -380,7 +386,10 @@ exports.run = {
       embed.setDescription(eDesc.slice(0, -3));
 
     // returns the result of the roll
-    return message.reply({content: desc, embeds: [embed]});
+    if(rejectEmbed)
+      return message.reply({content: "Here you go!", embeds: [rejectEmbed, embed]});
+    else
+      return message.reply({content: "Here you go!", embeds: [embed]});
   },
 };
   

@@ -1,5 +1,5 @@
-// Require the RNG and the emoji checker
-const {getRandomInt, emojiCheck} = require('../systemFiles/globalFunctions.js');
+// RNG, emoji checker, rejection embed generator
+const {getRandomInt, emojiCheck, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 // Emoji setup
 const pront = "🖨️";
@@ -25,7 +25,12 @@ const excuses = ["The pronter ran out of black ink",
   "The pronter mysteriously vanished",
   "The pronter short-circuited",
   "The pronter was too busy eating ice cream",
-  "The pronter forgot how to pront"];
+  "The pronter forgot how to pront",
+  "The pronter quit and started working for prontbot instead",
+  "The pronter was too busy talking to Doc",
+  "The pronter was too busy putting casseroles in closets",
+  "The pronter ignored your request",
+  "The pronter was too pusy playing minesweeper"];
 
 function makeExcuse() {
   let num = getRandomInt(0, excuses.length-1);
@@ -35,10 +40,10 @@ function makeExcuse() {
 exports.run = {
   execute(message, args, client) {
     if (args.length === 0) {
-      let excuse = makeExcuse();
-      return message.reply(`${excuse}. ¯\\_(ツ)_/¯\n(No emoji entered. Please enter a valid emoji and try again.)`);
+      // No emoji entered, make an excuse
+      return message.reply({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "\`emoji\` argument not found. Please add a valid emoji and try again.", {e: pront})]});
     }
-
+    
     var uni = emojiCheck(args);
     var emoji;
     
@@ -48,14 +53,12 @@ exports.run = {
     } else if (uni[0] == "c") { // Pass; custom 
       emoji = client.emojis.cache.get(uni[1]);
       if (emoji == undefined) {
-        // Emoji not found, make an excuse
-        let excuse = makeExcuse();
-        return message.reply(`${excuse}. ¯\\_(ツ)_/¯\n(That emoji is from a server Gyromina can't access. Please choose a different emoji and try again.)`);
+        // Emoji not found (inaccessible), make an excuse
+        return message.reply({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "Gyromina can't access that emoji. Please choose a different emoji and try again.", {e: pront})]});
       }
     } else {
       // Not an emoji, make an excuse
-      let excuse = makeExcuse();
-      return message.reply(`${excuse}. ¯\\_(ツ)_/¯\n(That's not a valid emoji. Please enter a valid emoji and try again.)`);
+      return message.reply({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "Invalid emoji. Please enter a valid emoji and try again.", {e: pront})]});
     }
     
     // Sends the printed emojis

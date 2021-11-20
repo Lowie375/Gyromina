@@ -1,12 +1,17 @@
 const D = require('discord.js'); // discord.js
 const fs = require('fs'); // fs
+const H = require('heroku-client'); // Heroku client
 const colors = require('colors'); // colors
 const package = require('./package.json'); // package file
 const e = require('./systemFiles/emojis.json'); // emoji file
-const {localDeploy, globalDeploy} = require('./systemFiles/deploy.js'); // deploy functions
-const {p, getRandomInt} = require('./systemFiles/globalFunctions.js'); // permission checker, RNG
-const {statBlock} = require('./systemFiles/globalArrays.js'); // status array
-const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js'); // refcode generators
+ // deploy functions
+const {localDeploy, globalDeploy} = require('./systemFiles/deploy.js');
+ // permission checker, RNG, emoji puller
+const {p, getRandomInt, getEmoji} = require('./systemFiles/globalFunctions.js');
+ // status array
+const {statBlock} = require('./systemFiles/globalArrays.js');
+ // refcode generators
+const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
 // Splitter exception regex
 const excX = /^prove/i;
@@ -21,15 +26,13 @@ const client = new D.Client({
   intents: [D.Intents.FLAGS.GUILDS, D.Intents.FLAGS.GUILD_MESSAGES, D.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, D.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, D.Intents.FLAGS.DIRECT_MESSAGES, D.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS],
   partials: ['CHANNEL']
 });
+// Creates command + game collections
 client.commands = new D.Collection();
 client.games = new D.Collection();
 
 // Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js')).sort();
 const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js')).sort();
-
-// Declares emojis
-var nope, warning;
 
 // Collects a list of all commands and games
 for (const file of commandFiles) {
@@ -41,6 +44,9 @@ for (const file of gameFiles) {
   client.games.set(game.label.name, game);
 }
 
+// Pulls Heroku data on launch
+const hData = new H({token: process.env.herokuAuth})
+
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', async () => {
@@ -50,6 +56,19 @@ client.on('ready', async () => {
   const eventLog = client.channels.cache.get(process.env.eventLog);
   eventLog.send(`Logged in as ${client.user.tag}, ready for action!`);
 
+  // Fetch Heroku data
+  await hData.get(`/apps/${process.env.herokuID}`)
+    .then(app => {
+      client.herokuRel = Date.parse(app.released_at);
+      console.log(colors.main(`Heroku release time (${client.herokuRel}) successfully logged!`))
+      eventLog.send("Heroku release time successfully logged!");
+  }).catch(err => {
+      // API pull unsuccessful
+      console.error("Heroku API pull unsuccessful", err.stack)
+      eventLog.send("Heroku API pull unsuccessful.");
+      client.relUp = false;
+  })
+
   // Sets Gyromina's current status + deploys commands
   if(process.env.exp === "1") {
     // Debug/test status
@@ -57,7 +76,7 @@ client.on('ready', async () => {
     client.user.setActivity(`${statBlock[1][getRandomInt(0,statBlock[1].length-1)]} - ${process.env.prefix}vt - v${package.version}`);
     // Deploys slash commands locally (to test guild)
     await localDeploy(client).then(res => {
-      if(res === 0) {
+      if(!res) {
         console.log(colors.main(`Local slash command deployment complete!\n- - - - - - - - - - -`));
         eventLog.send(`Local slash command deployment complete!`);
       } else {
@@ -73,7 +92,7 @@ client.on('ready', async () => {
     if(process.env.exp !== "0") {
       // Deploys slash commands locally (to test guild)
       await localDeploy(client).then(res => {
-        if(res === 0) {
+        if(!res) {
           console.log(colors.main(`Local slash command deployment complete!\n- - - - - - - - - - -`));
           eventLog.send(`Local slash command deployment complete!`);
         } else {
@@ -81,10 +100,10 @@ client.on('ready', async () => {
           eventLog.send(`Local slash command deployment failed.`);
         }
       });
-    } else if(true) {
-      // Deploys slash commands globally (if within 24h of last Gyromina deploy)
+    } else if(client.readyAt - client.herokuRel <= 129600000) {
+      // Deploys slash commands globally (if within 36h of last Gyromina deploy)
       await globalDeploy(client).then(res => {
-        if(res === 0) {
+        if(!res) {
           console.log(colors.main(`Global slash command deployment requested, commands should be deployed within the hour.\n- - - - - - - - - - -`));
           eventLog.send(`Global slash command deployment requested, commands should be deployed within the hour.`);
         } else {
@@ -94,10 +113,6 @@ client.on('ready', async () => {
       });
     }
   }
-
-  // Emoji setup
-  nope = client.emojis.cache.get(e.nope);
-  warning = client.emojis.cache.get(e.warn);
 });
 
 client.on('messageCreate', message => {
@@ -107,7 +122,7 @@ client.on('messageCreate', message => {
   // Checks if the message was sent in a non-voice guild channel where Gyromina has message-sending and channel-viewing permissions. If not, returns
   if (message.channel.type != "DM" && !message.channel.isVoice() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES, D.Permissions.FLAGS.VIEW_CHANNEL, D.Permissions.FLAGS.READ_MESSAGE_HISTORY])) return;
   // Checks if the message was sent in a thread that Gyromina can't send messages in. If so, returns
-  if (message.channel.isThread() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES_IN_THREADS]))
+  if (message.channel.isThread() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES_IN_THREADS])) return;
 
   // Initializes arguments
   var args;
@@ -133,9 +148,9 @@ client.on('messageCreate', message => {
   // Checks if the command is experimental/unstable. If so, displays a warning instead of running the command
   if(process.env.exp !== "1" && command.help.wip) {
     if(message.author.id === process.env.hostID) {
-      message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`);
+      message.reply(`${getEmoji(message, e.nope, e.alt.nope)} The \`${commandName}\` command is currently unavailable.\n${getEmoji(message, e.warn, e.alt.warn)} Please enable **experimental mode** to run it.`);
     } else {
-      message.reply(`${p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`);
+      message.reply(`${getEmoji(message, e.nope, e.alt.nope)} The \`${commandName}\` command is currently unavailable.`);
     }
   } else {
     try {
@@ -168,9 +183,9 @@ client.on('interactionCreate', async interact => {
 
     if(process.env.exp !== "1" && (command.help.wip || command.help.s.wip)) {
       if(interact.user.id === process.env.hostID) {
-        await interact.reply({content: `${p(interact, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.\n${p(interact, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? warning : e.alt.warn} Please enable **experimental mode** to run it.`, ephemeral: true});
+        await interact.reply({content: `${getEmoji(interact, e.nope, e.alt.nope)} The \`${commandName}\` command is currently unavailable.\n${getEmoji(interact, e.warn, e.alt.nope)} Please enable **experimental mode** to run it.`, ephemeral: true});
       } else {
-        await interact.reply({content: `${p(interact, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? nope : e.alt.nope} The \`${commandName}\` command is currently unavailable.`, ephemeral: true});
+        await interact.reply({content: `${getEmoji(interact, e.nope, e.alt.nope)} The \`${commandName}\` command is currently unavailable.`, ephemeral: true});
       }
     } else {
       // Pulls arguments

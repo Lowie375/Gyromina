@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
 const e = require('../systemFiles/emojis.json'); // emoji file
 const style = require('../systemFiles/style.json'); // style file
-// permission checker, emoji checker, embed colour checker, timestamp generator
-const {p, emojiCheck, eCol, stamp} = require('../systemFiles/globalFunctions.js');
+// permission checker, emoji checker, embed colour checker, timestamp generator, rejection embed generator, emoji puller
+const {p, emojiCheck, eCol, stamp, genRejectEmbed, getEmoji} = require('../systemFiles/globalFunctions.js');
 
 // Cleanup regex
 const cleaner = /^ +/;
@@ -109,11 +109,11 @@ exports.run = {
   execute(message, args, client) {
     // Argument check
     if (args.length <= 1)
-      return message.reply(`I can't make a poll if no type or prompt is specified!`);
+      return message.reply({embeds: [genRejectEmbed(message, "\`type\`/\`prompt\` arguments not found", "Gyromina can't make a poll if no poll type or prompt is given!\nPlease check your arguments and try again")]});
 
     // Permission check: add reactions
     if (!p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
-      return message.reply(`I can't make a poll if I can't add any reactions!\nPlease ask a server administrator to enable the 'Add Reactions' permission for ${client.user.tag} and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Gyromina is missing permissions", `Gyromina can't make polls without being able to add reactions!\nPlease ask a server administrator to enable the \`Add Reactions\` permission for ${client.user.tag} and try again.`)]});
 
     // Permission check: external emojis
     var perms = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]);
@@ -198,7 +198,7 @@ exports.run = {
       let options = [];
 
       if (pollRoot.length === 0)
-        return message.reply(`I can't make a poll without any poll options!`);
+        return message.reply({embeds: [genRejectEmbed(message, "No poll options found", "Gyromina can't make a poll without any poll options!\nPlease add one or more valid poll options and try again.")]});
       
       // Escaped dash handler
       for (let i = 0; i < pollRoot.length; i++) {
@@ -251,7 +251,7 @@ exports.run = {
       }
 
       if(fails.length != 0)
-        return message.reply(`Some custom emojis (**\#${fails.join("**, **\#")}**) were invalid. Please check your emojis and try again.\n*Don't forget that dashes \`-\` must be preceded by a backslash \`\\\` (like this \`\\-\`) in description fields!*`);
+        return message.reply({embeds: [genRejectEmbed(message, `Invalid emojis (**\#${fails.join("**, **\#")}**)`, `Please check your emojis and try again.\nDon't forget that dashes \`-\` must be preceded by backslashes \`\\\` (like this \`\\-\`) in description fields!`)]});
       
       // Merges content together
       for (let i = 0; i < rxns.length; i++) {
@@ -273,18 +273,18 @@ exports.run = {
           // Sends a temporary alert if the poll was trimmed (anti-spam)
           let alert;
           if(sliced)
-            alert = await poll.reply("*(This poll was trimmed down to 4 options to avoid spam)*");
+            alert = await poll.reply({embeds: [genRejectEmbed(message, "Custom poll trimmed", "Since you do not have any \`\"poll\"\` roles or the \`Manage Messages\` permission, your poll was trimmed down to 4 options to avoid spam.", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
           // Awaits reactions
           for (rx of rxns) {
             await poll.react(rx);
           }
           return alert;
       }).then (async alert => {
-        // Deletes the alert after 5 seconds (if present)
+        // Deletes the alert 10 seconds after emojis are added (if present)
         if(sliced) {
           setTimeout(() => {
             alert.delete();
-          }, 5000);
+          }, 10000);
         }
       });
     }

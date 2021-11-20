@@ -1,29 +1,29 @@
-// Require discord.js, the RNG, permission checker, and emoji file
-const D = require('discord.js');
-const {p, getRandomInt} = require('../systemFiles/globalFunctions.js');
-const e = require('../systemFiles/emojis.json');
+const D = require('discord.js'); // discord.js
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+// permission checker, RNG, emoji puller, rejection embed generator, embed colour checker
+const {p, getRandomInt, getEmoji, genRejectEmbed, eCol} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
-    const yep = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.yep) : e.alt.yep;
-    const nope = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.nope) : e.alt.nope;
 
     let max = getRandomInt(1, 3);
     var del = getRandomInt(0, max);
 
     message.channel.sendTyping();
-    if (del == 0 || !p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES])) {
+    if (del === 0 || !p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES])) {
       setTimeout(() => {
-        message.channel.send(`${nope} Content could not be delelte'd`);
+        return message.channel.send({embeds: [genRejectEmbed(message, "Content could not be delelte'd")]});
       }, getRandomInt(250, 450));
     } else {
       message.delete()
         .then(() => {
-          message.channel.send(`${yep} [Content delelte'd]`);
+          message.channel.send({embeds: [genRejectEmbed(message, "[Content delelte'd]", false, {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
         })
-        .catch(() => {
-          message.channel.send(`${nope} Content could not be delelte'd`);
-        });
+        .catch((e) => {
+          console.log(e.stack);
+          message.channel.send({embeds: [genRejectEmbed(message, "Content could not be delelte'd")]});
+      });
     }
   },
 };

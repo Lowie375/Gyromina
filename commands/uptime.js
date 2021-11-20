@@ -1,14 +1,10 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const Heroku = require('heroku-client'); // Heroku client
 const colors = require('colors'); // colors
 const e = require('../systemFiles/emojis.json'); // emoji file
 const style = require('../systemFiles/style.json'); // style file
-// permission checker, emoji colour checker, timestamp generator, responder
-const {p, eCol, stamp, respond} = require('../systemFiles/globalFunctions.js');
-
-// Extra setup
-const hData = new Heroku({token: process.env.herokuAuth});
+// embed colour checker, timestamp generator, responder, emoji puller
+const {eCol, stamp, respond, getEmoji} = require('../systemFiles/globalFunctions.js'); 
 
 function reDate(ms) {
   // Converts milliseconds into 
@@ -48,7 +44,7 @@ function reDate(ms) {
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const dyno = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? client.emojis.cache.get(e.dyno) : e.alt.dyno;
+    const dyno = getEmoji(message, e.dyno, e.alt.dyno);
 
     // Gets the current time and the ready time
     var dUp = Date.parse(client.readyAt);
@@ -64,31 +60,26 @@ exports.run = {
       .setColor(eCol(style.e.default))
       .setFooter(`Requested by ${message.author.tag} - ${stamp()}`, message.author.avatarURL())
 
-    hData.get(`/apps/${process.env.herokuID}`)
-      .then(app => {
-        // API data pulled!
-        let up = Date.parse(app.released_at);
-        let millival = locTime - up;
-        let out = reDate(millival);
+    if(client.relUp !== false) {
+      let up = client.herokuRel;
+      let millival = locTime - up;
+      let out = reDate(millival);
 
-        // Full embed
-        embed.setTitle(out);
-        embed.setDescription(`That's ${millival} milliseconds, wow!`);
-        embed.addField(`${dyno}  Dyno Uptime`, dOut);
+      // Full embed
+      embed.setTitle(out);
+      embed.setDescription(`That's ${millival} milliseconds, wow!`);
+      embed.addField(`${dyno}  Dyno Uptime`, dOut);
 
-        // Sends the embed
-        return respond({embeds: [embed]}, [message, message]);
-      })
-      .catch (err => { // Could not pull API data
-        console.error(colors.nope("API request failed; defaulting to minimal uptime report"), err);
+      // Sends the embed
+      return respond({embeds: [embed]}, [message, message]);
+    } else {
+      // Minimal embed
+      embed.setTitle(dOut);
+      embed.setDescription(`That's ${dMillival} milliseconds, wow!`);
 
-        // Minimal embed
-        embed.setTitle(dOut);
-        embed.setDescription(`That's ${dMillival} milliseconds, wow!`);
-
-        // Sends the embed
-        return respond({embeds: [embed]}, [message, message]);
-    });  
+      // Sends the embed
+      return respond({embeds: [embed]}, [message, message]);
+    }
   },
   slashArgs(interact) {
     // template: no args

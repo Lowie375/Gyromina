@@ -1,6 +1,8 @@
-// Require the game functions file and the RNG
-const func = require('../systemFiles/gameFunctions.js');
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+// permission checker, RNG, rejection embed generator, emoji puller, embed colour checker
+const {p, getRandomInt, genRejectEmbed, getEmoji, eCol} = require('../systemFiles/globalFunctions.js');
 
 // Display icons
 const air = "󠀠⬛";
@@ -275,6 +277,7 @@ exports.exe = {
     var bombOrder = [[]];
     var steps = [];
     var content = "";
+    var rejectEmbed;
     // RNG prep
     var places = [];
     for (let i = 1; i < 7; i++) {
@@ -290,15 +293,17 @@ exports.exe = {
     
     // Checks if options are valid
     if (isNaN(bombs))
-      return message.reply(`That's not a valid mine count/preset! Please enter a valid positive integer between 4 and 20 or a valid preset and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Invalid \`mines\`/\`preset\` argument", "Please enter a valid positive integer between 4 and 20 or a valid preset and try again.")]});
 
     // Adjusts bomb count, if necessary
     if (bombs > 20) {
       bombs = 20;
-      content = "*The mine count has been reduced to 20 (max).*\n\n"
+      rejectEmbed = genRejectEmbed(message, "Mine count reduced to 20 (max)", null, {col: eCol(style.e.default), e: "⬇️"})
+      //content = "*The mine count has been reduced to 20 (max).*\n\n" // change to error embed?
     } else if (bombs < 4) {
       bombs = 4
-      content = "*The mine count has been increased to 4 (min).*\n\n"
+      rejectEmbed = genRejectEmbed(message, "Mine count increased to 4 (min)", null, {col: eCol(style.e.default), e: "⬆️"})
+      //content = "*The mine count has been increased to 4 (min).*\n\n"
     }
 
     // Randomly place robot and target
@@ -315,7 +320,7 @@ exports.exe = {
     }
 
     // Clear tempSteps[] (no cheating!)
-    //tempSteps.splice(0, tempSteps.length);
+    tempSteps = undefined;
 
     // Create a visual representation of the field
     var output = "";
@@ -331,6 +336,9 @@ exports.exe = {
     `${bkd} Delete last instruction  -  ${ibx} Confirm instructions  -  ${ccl} Quit game\`\`\`` + 
     `\*This \`minefield\` instance will time out if you do not react within 60 seconds.\nIf emojis do not get removed automatically upon reaction, you can remove them manually.\*\n`;
 
+    // Notify the player if the mine count changed
+    if(rejectEmbed)
+      message.reply({embeds: [rejectEmbed]});
     // Post the field + instructions
     message.reply(`${content}\n\*Waiting for emojis to load…\*`)
       .then(async board => {         
@@ -460,11 +468,11 @@ exports.exe = {
               break;
             case "time": // Timeouts
             case "idle":
-              board.edit(`${content}\n\*\*This \`minefield\` instance timed out due to inactivity. Please restart the game if you would like to play again.\*\*`); return;
+              return board.reply({embeds: [genRejectEmbed(message, "Inactivity timeout; \`minefield\` instance stopped", "Please restart the game if you would like to play again.")]});
             case "cancel": // Manually cancelled
-              board.edit(`${content}\n\*\*This \`minefield\` instance has been stopped. Please restart the game if you would like to play again.\*\*`); return;
+              return board.reply({embeds: [genRejectEmbed(message, "\`minefield\` instance stopped", "Please restart the game if you would like to play again.", {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
             default: // Other (error!)
-              board.edit(`${content}\n\*\*This \`minefield\` instance has encountered an unknown error and has been stopped. Please restart the game if you would like to play again.\*\*`); return;
+              return board.reply({embeds: [genRejectEmbed(message, "Unexpected error thrown; \`minefield\` instance stopped", "Please restart the game if you would like to play again.", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
           }
         });
     });

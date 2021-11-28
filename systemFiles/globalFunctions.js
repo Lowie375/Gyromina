@@ -30,7 +30,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
   console.log(body)
 };
 
-/** Clears out any @Everyone's.
+/** Clears out any tags (notably @everyone).
  * @author Nao (naoei)
  * @param text The text to clean
  * @return {string} The cleaned text

@@ -107,7 +107,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [indev-pkg]: https://github.com/Lowie375/Gyromina/blob/indev-branch/package.json
 
 [djs-link]: https://discord.js.org
-[dependency-link]: https://libraries.io/github/Lowie375/Gyromina/
+[dependency-link]: https://depfu.com/github/Lowie375/Gyromina?project_id=33026
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
 [main-tree-link]: https://github.com/Lowie375/Gyromina/tree/main
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
@@ -122,7 +122,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
 [version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina?label=release%20version
 [indev-version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina/indev-branch?label=indev%20version
-[dependency-img]: https://depfu.com/github/Lowie375/Gyromina?project_id=33026
+[dependency-img]: https://img.shields.io/depfu/Lowie375/Gyromina
 [main-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28main%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina

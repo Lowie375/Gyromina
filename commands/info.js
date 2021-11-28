@@ -50,7 +50,7 @@ exports.run = {
       new D.MessageButton()
         .setStyle('LINK')
         .setLabel('Invite link')
-        .setURL('https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot'),
+        .setURL('https://discord.com/api/oauth2/authorize?client_id=490590334758420481&permissions=412317248576&scope=bot%20applications.commands'),
       new D.MessageButton()
         .setStyle('LINK')
         .setLabel('More information')

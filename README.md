@@ -42,7 +42,7 @@ The last event that took place was the pride event (June 2021)
 
 ### General (for server owners/admins)
 
-* Follow this link: **[https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot][invite]**
+* Follow this link: **[https://discord.com/api/oauth2/authorize?client_id=490590334758420481&permissions=412317248576&scope=bot%20applications.commands][invite]**
 * Choose a server to add Gyromina to
 * Make sure all requested permissions are enabled
   * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**, **`Attach Files`**, **`Embed Links`**
@@ -100,7 +100,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 <!-- Links -->
 [commands]: https://l375.weebly.com/gyro-commands
 [info]: https://l375.weebly.com/gyromina
-[invite]: https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot
+[invite]: https://discord.com/api/oauth2/authorize?client_id=490590334758420481&permissions=412317248576&scope=bot%20applications.commands
 [log]: https://l375.weebly.com/gyro-log
 
 [main-pkg]: https://github.com/Lowie375/Gyromina/blob/main/package.json

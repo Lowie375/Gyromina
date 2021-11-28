@@ -14,7 +14,7 @@ exports.run = {
     // Shuts down the current instance of the Discord Client.
     await message.channel.send(`${getEmoji(message, e.yep, e.alt.yep)}`);
     await client.user.setStatus("invisible");
-    console.log(`Shutting down ${client.user.tag}…\n- - - - - - - - - - -`.main);
+    console.log(colors.main(`Shutting down ${client.user.tag}…\n- - - - - - - - - - -`));
     await client.destroy();
     return;
   },

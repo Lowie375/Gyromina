@@ -1,7 +1,6 @@
 const D = require('discord.js'); // discord.js
 const package = require('../package.json'); // package file
 const e = require('../systemFiles/emojis.json'); // emoji file
-const colors = require('colors'); // colors
 // timestamp generator, emoji checker, emoji puller, rejection embed generator
 const {stamp, emojiCheck, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js'); 
 
@@ -15,7 +14,7 @@ exports.run = {
 
     // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== process.env.hostID && message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id) && !package.testerIDs.includes(message.author.id)) {
-      console.log('A user attempted to run a test, but was unsuccessful!'.nope);
+      console.log('A user attempted to run a test, but was unsuccessful!');
       return message.channel.send({embeds: [genRejectEmbed(message, "Insufficient permissions")]});
     }
 

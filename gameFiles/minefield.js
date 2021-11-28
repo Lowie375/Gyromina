@@ -278,7 +278,6 @@ exports.exe = {
     var steps = [];
     var content = "";
     var rejectEmbed;
-    
     // RNG prep
     var places = [];
     for (let i = 1; i < 7; i++) {

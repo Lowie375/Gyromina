@@ -51,10 +51,10 @@ const hData = new H({token: process.env.herokuAuth})
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', async () => {
 
-  console.log(`Logged in as ${client.user.tag}, ready for action!`.main);
+  console.log(colors.main(`Logging in as ${client.user.tag}...`));
   // Event logger
   const eventLog = client.channels.cache.get(process.env.eventLog);
-  eventLog.send(`Logged in as ${client.user.tag}, ready for action!`);
+  eventLog.send(`Logging in as ${client.user.tag}...`);
 
   // Fetch Heroku data
   await hData.get(`/apps/${process.env.herokuID}`)
@@ -64,7 +64,7 @@ client.on('ready', async () => {
       eventLog.send("Heroku release time successfully logged!");
   }).catch(err => {
       // API pull unsuccessful
-      console.error("Heroku API pull unsuccessful", err.stack)
+      console.error("Heroku API pull unsuccessful -", err.stack)
       eventLog.send("Heroku API pull unsuccessful.");
       client.relUp = false;
   })
@@ -77,10 +77,10 @@ client.on('ready', async () => {
     // Deploys slash commands locally (to test guild)
     await localDeploy(client).then(res => {
       if(!res) {
-        console.log(colors.main(`Local slash command deployment complete!\n- - - - - - - - - - -`));
+        console.log(colors.main(`Local slash command deployment complete!`));
         eventLog.send(`Local slash command deployment complete!`);
       } else {
-        console.error(`Local slash command deployment failed.\n- - - - - - - - - - -`);
+        console.error(`Local slash command deployment failed.`);
         eventLog.send(`Local slash command deployment failed.`);
       }
     });
@@ -93,10 +93,10 @@ client.on('ready', async () => {
       // Deploys slash commands locally (to test guild)
       await localDeploy(client).then(res => {
         if(!res) {
-          console.log(colors.main(`Local slash command deployment complete!\n- - - - - - - - - - -`));
+          console.log(colors.main(`Local slash command deployment complete!`));
           eventLog.send(`Local slash command deployment complete!`);
         } else {
-          console.error(`Local slash command deployment failed.\n- - - - - - - - - - -`);
+          console.error(`Local slash command deployment failed.`);
           eventLog.send(`Local slash command deployment failed.`);
         }
       });
@@ -104,15 +104,18 @@ client.on('ready', async () => {
       // Deploys slash commands globally (if within 36h of last Gyromina deploy)
       await globalDeploy(client).then(res => {
         if(!res) {
-          console.log(colors.main(`Global slash command deployment requested, commands should be deployed within the hour.\n- - - - - - - - - - -`));
+          console.log(colors.main(`Global slash command deployment requested, commands should be deployed within the hour.`));
           eventLog.send(`Global slash command deployment requested, commands should be deployed within the hour.`);
         } else {
-          console.error(`Global slash command deployment failed.\n- - - - - - - - - - -`);
+          console.error(`Global slash command deployment failed.`);
           eventLog.send(`Global slash command deployment failed.`);
         }
       });
     }
   }
+  // Logs launch completion
+  console.log(colors.main(`Launch complete, ready for action!\n- - - - - - - - - - -`));
+  eventLog.send("Launch complete, ready for action!")
 });
 
 client.on('messageCreate', message => {

@@ -43,7 +43,7 @@ exports.run = {
       // No emoji entered, make an excuse
       return message.reply({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "\`emoji\` argument not found. Please add a valid emoji and try again.", {e: pront})]});
     }
-
+    
     var uni = emojiCheck(args);
     var emoji;
     

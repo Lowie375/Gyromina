@@ -30,7 +30,7 @@ exports.Write = function(message, startTime = null, useLocale = true) {
   console.log(body)
 };
 
-/** Clears out any @everyone's.
+/** Clears out any tags (notably @everyone).
  * @author Nao (naoei)
  * @param text The text to clean
  * @return {string} The cleaned text
@@ -114,19 +114,6 @@ exports.p = function(message, perm) {
     return perm && gPerm.has(perm); // this is much simpler
   }
 }
-/**
- * Creates a custom date timestamp for embed usage
- * @return {String}
- */
-
-exports.stamp = function() {
-  let dt = new Date();
-  let rawNow = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth()+1, dt.getUTCFullYear()];
-  let now = rawNow.map(elem => elem.toString().padStart(2, '0'));
-  return `${now[5]}-${now[4]}-${now[3]} @ ${now[2]}:${now[1]} UTC`;
-}
-
-// STYLE
 
 /** Creates a custom date timestamp for embed usage
  * @return {string} The produced timestanp
@@ -313,25 +300,6 @@ exports.avCol = function() {
     default: // no season, use default 
       return cdn.avatar.default;
   }
-}
-
-/**
- * Checks whether an avatar should be changed due to the current season
- * @param cdn The CDN constant
- * @return {String}
- */
-
-exports.avCol = function(cdn) {
-  let d = new Date();
-  let now = [d.getUTCSeconds(), d.getUTCMinutes(), d.getUTCHours(), d.getUTCDate(), d.getUTCMonth(), d.getUTCFullYear()];
-  if(now[4] == 5 || process.env.season === "1") // June: rainbow
-    return cdn.avatar.pride;
-  else if(now[4] == 11 || process.env.season === "2") // December: blue theme
-    return cdn.avatar.winter;
-  else if((now[4] == 4 && now[3] >= 9 && now[3] <= 15) || process.env.season === "3") // May 13th-ish: blurple theme
-    return cdn.avatar.blurple;
-  else // Default
-    return cdn.avatar.default;
 }
 
 // COLOUR

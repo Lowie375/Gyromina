@@ -8,7 +8,7 @@
 [![Last Commit (main)][main-commit-img]][main-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
 [![Build Status][build-img]][build-link]
-<!-- [![Gyromina Dev Discord][discord-img]][discord-link] -->
+[![Gyromina Dev Discord][discord-img]][discord-link]
 
 ## About
 
@@ -17,7 +17,7 @@
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.2.0  
-<!-- Latest indev build: v1.2.0-pre.3 -->
+<!-- Latest indev build: v1.2.0-pre.4 -->
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -111,7 +111,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [main-tree-link]: https://github.com/Lowie375/Gyromina/tree/main
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
 [build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
-<!-- [discord-link]: TBA -->
+[discord-link]: https://discord.gg/Bsaz4r7
 
 <!-- Banners -->
 [gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png
@@ -126,7 +126,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
 [build-img]: https://img.shields.io/scrutinizer/build/g/Lowie375/Gyromina
-<!-- [discord-img]: https://img.shields.io/discord/ID?color=5865f2&label=%20&logo=discord&logoColor=ffffff -->
+[discord-img]: https://img.shields.io/discord/409876373134508052?color=5865f2&label=%20&logo=discord&logoColor=ffffff
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-00b275
 [min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-00b275

@@ -97,7 +97,7 @@ exports.help = {
   "hide": false,
   "wip": false,
   "dead": false,
-  "s": {
+  "s": { // for slash-enabled commands
     "wip": true,
     "builder": new S.SlashCommandBuilder()
       .setName("uptime")

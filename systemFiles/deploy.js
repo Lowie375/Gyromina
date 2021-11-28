@@ -6,7 +6,7 @@ const slashCommands = [];
 
 /** Deploys slash commands locally to hostGuildID
  * @param {D.Client} client The Discord client object
- * @return {boolean}
+ * @return {boolean} `true` if an error occurred, `false` if not (deployment successful)
  */
 exports.localDeploy = async function(client) {
   // collects slash command builders
@@ -32,9 +32,9 @@ exports.localDeploy = async function(client) {
   }
 }
 
-/** Requests a global slash command deploy
+/** Requests a global slash command deploy + removes locally deployed slash commands
  * @param {D.Client} client The Discord client object
- * @return {boolean}
+ * @return {boolean} `true` if an error occurred, `false` if not (deployment successful)
  */
 exports.globalDeploy = async function(client) {
   // collects slash command builders
@@ -52,6 +52,11 @@ exports.globalDeploy = async function(client) {
       API.Routes.applicationCommands(process.env.clientID),
       {body: slashCommands},
     );
+    /* // removes locally deployed slash commands
+    let guild = client.guilds.cache.get(process.env.hostGuildID);
+    guild.commands.cache.forEach((k, v) => {
+      guild.commands.delete(k);
+    });*/
     return false;
   } catch (error) {
     // generates an error message & logs the error

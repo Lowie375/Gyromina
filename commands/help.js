@@ -6,7 +6,7 @@ const style = require('../systemFiles/style.json'); // style file
 const {p, eCol, stamp, respond, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 function setParams(c) {
-  var list = `${c.help.default === 1 ? "/" : process.env.prefix}**${c.help.name}**`
+  var list = `${c.help.s ? "/" : process.env.prefix}**${c.help.name}**`
   // Checks for parameters, and adds them as necessary
   if(!c.help.params) {
     list += "\n";
@@ -14,7 +14,7 @@ function setParams(c) {
     list += ` ${c.help.params}\n`;
   } else {
     list += ` ${c.help.params[0]}\n`;
-    for(let i = 1; i < c.help.params.length; i++) {list += `*or* ${process.env.prefix}**${c.help.name}** ${c.help.params[i]}\n`;}
+    for(let i = 1; i < c.help.params.length; i++) {list += `or ${c.help.s ? "/" : process.env.prefix}**${c.help.name}** ${c.help.params[i]}\n`;}
   }
   return list;
 }
@@ -385,7 +385,7 @@ exports.run = {
               if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
                 message.react(getEmoji(message, e.yep, e.alt.yep, true));
               else 
-                respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true});
+                respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true, eph: true});
           }).catch(error => { // sends in channel if DM fails
               console.error(`Could not send generic help in DMs, defaulting to channel`, error)
               respond({embeds: [embed]}, [message, message], {eph: true});
@@ -396,7 +396,7 @@ exports.run = {
               if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
                 message.react(getEmoji(message, e.yep, e.alt.yep, true));
               else 
-                respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true});
+                respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true, eph: true});
           }).catch(error => { // sends in channel if DM fails
               console.error(`Could not send generic help in DMs, defaulting to channel`, error)
               respond({embeds: [embed], components: [buttons]}, [message, message], {eph: true});

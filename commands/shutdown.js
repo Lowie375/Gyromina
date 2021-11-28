@@ -15,7 +15,8 @@ exports.run = {
     await message.channel.send(`${getEmoji(message, e.yep, e.alt.yep)}`);
     await client.user.setStatus("invisible");
     console.log(`Shutting down ${client.user.tag}…\n- - - - - - - - - - -`.main);
-    return await client.destroy();
+    await client.destroy();
+    return;
   },
 };
 

@@ -7,13 +7,13 @@ exports.exe = {
 exports.label = {
   "name": "checkers",
   "players": [2],
-  "reactions": 0,
+  "reactions": false,
   "description": "The classic game of checkers.",
   "helpurl": "https://l375.weebly.com/gyrogame-checkers",
   "options": "",
   "optionsdesc": "",
   "weight": 0,
-  "exclusive": 1,
-  "indev": 1,
-  "deleted": 0
+  "exclusive": true,
+  "indev": true,
+  "deleted": false,
 };

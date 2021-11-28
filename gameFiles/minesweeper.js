@@ -1,11 +1,14 @@
-// Require discord.js, bent, canvas, the RNG, the permission checker, the refcode generator, and the emoji + cdn files
-const Discord = require('discord.js');
-const bent = require('bent');
-const {createCanvas, loadImage} = require('canvas');
-const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const bent = require('bent'); // bent
+const {createCanvas, loadImage} = require('canvas'); // canvas
+const colors = require('colors'); // colors
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // style file
+const cdn = require('../systemFiles/cdn.json'); // cdn file
+// error message generator, refcode generator
 const {genErrorMsg, codeRNG} = require('../systemFiles/refcodes.js');
-const e = require('../systemFiles/emojis.json');
-const cdn = require('../systemFiles/cdn.json');
+// RNG, permission checker, emoji puller, rejection embed generator, embed colour checker
+const {getRandomInt, p, getEmoji, genRejectEmbed, eCol} = require('../systemFiles/globalFunctions.js');
 
 // Additional setup
 const getBuffer = bent('buffer');
@@ -16,28 +19,37 @@ const alphaFilter = a => b => a.length === b.length && a.every((v, i) => v === b
 function boardCheck(x) {
   switch (x) {
     case "easy":
+    case "basic":
     case "e":
+    case "b":
       return [10, 9, 9];
     case "medium":
     case "normal":
     case "moderate":
     case "regular":
     case "m":
+    case "r":
+    case "n":
       return [40, 16, 16];
     case "hard":
     case "difficult":
     case "h":
+    case "d":
       return [99, 30, 16];
     case "insane":
     case "expert":
     case "x":
     case "i":
       return [255, 30, 30];
-    case "master":
     case "ultimate":
-    case "xm":
+    case "extreme":
     case "u":
+    case "xe":
       return [390, 36, 36];
+    case "maximum":
+    case "max":
+    case "xm":
+      return [1225, 36, 36];
     default:
       return x;
   }
@@ -309,21 +321,20 @@ function stats(moves, flags) {
     case 1: statOutput += `${moves} move made`; break;
     default: statOutput += `${moves} moves made`; break;
   }
-  statOutput += "  •  "
+  statOutput += "  -  "
   // Flag check
-  if (flags == 1)
-    statOutput += `${flags} flag left\``;
-  else if (flags >= 0)
-    statOutput += `${flags} flags left\``;
-  else if (flags == -1)
-    statOutput += `${flags * -1} flag too many\``;
+  if (flags >= 0)
+    statOutput += `${flags} flag${Math.abs(flags) === 1 ? "" : "s"} left\``;
   else
-    statOutput += `${flags * -1} flags too many\``;
+    statOutput += `${flags * -1} flag${Math.abs(flags) === 1 ? "" : "s"} too many\``;
   return statOutput;
 }
 
 exports.exe = {
   async start(message, client, player, options) {
+    // Sends a typing indicator to show that board generation is in progress
+    message.channel.sendTyping();
+
     // Variable setup
     var setup;
     var places = [];
@@ -338,11 +349,11 @@ exports.exe = {
 
     // Extraneous case I: missing custom field options
     if (!Array.isArray(setup) && options.length < 3)
-      return message.channel.send(`I can't create a custom field without a valid mine count and 2 valid lengths, <@${player}>! Please check your options and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "\`mines\`/\`length1\`/\`length2\` arguments not found", "Gyromina can't create a custom board without a mine count and 2 lengths!\nPlease check your options and try again.")]});
     else if (!Array.isArray(setup) && !isNaN(parseInt(options[0]) + parseInt(options[1]) + parseInt(options[2])))
       setup = [options[0], Math.min(Math.max(parseInt(options[1]), parseInt(options[2]), 7), 36), Math.max(7, Math.min(parseInt(options[1]), parseInt(options[2]), 36))];
     else if (!Array.isArray(setup))
-      return message.channel.send(`I can't create a custom field with invalid options, <@${player}>! Please check your options and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Invalid \`mines\`/\`length1\`/\`length2\` arguments", "Gyromina can't create a custom board with invalid options!\nPlease check your options and try again.")]});
 
     // Fixes mine count
     if(setup[0] > (setup[1] - 1) * (setup[2] - 1)) {
@@ -420,26 +431,26 @@ exports.exe = {
         }
 
         // Puts the whole shebang in one variable (wow!)
-        let tooltip = `Your ${setup[2]}×${setup[1]}, ${setup[0]}-mine grid has been generated, <@${player}>!\n` +
+        let tooltip = `Your ${setup[2]}×${setup[1]}, ${setup[0]}-mine grid has been generated!\n` +
         `All tiles on the grid start covered. Under each tile, there will be either a blank, a number from 1-8, or a mine.\n` +
         `Tiles with numbers indicate how many of the surrounding 8 tiles contain mines. Blanks act as zeroes (0).\n` +
         `(ex: 1 of the 8 tiles surrounding a "1" will contain a mine, 2 of the 8 tiles surrounding a "2" will contain mines, etc.)\n` +
         `**Uncover all the tiles WITHOUT mines to win!**\n\n` +
-        `•  To uncover a tile, type **\`c:X#\`**, replacing \`X\` with a row letter and \`#\` with a column number. If you uncover a mine, you will lose!\n` +
-        `•  If you think a tile is a mine, you can flag it by typing **\`f:X#\`** (where \`X\` = row and \`#\` = column, as above). Flagged tiles can not be uncovered. To remove a flag, type the flagging command again.\n` +
-        `•  If you are unsure about whether a tile is a mine or not, you can mark it as uncertain by typing **\`q:X#\`** (where \`X\` = row and \`#\` = column, as above). You will be warned when trying to uncover a tile marked as uncertain. To remove an uncertanty marker, type the uncertainty command again.\n` +
+        `-  To uncover a tile, type **\`c.X#\`**, replacing \`X\` with a row letter and \`#\` with a column number. If you uncover a mine, you will lose!\n` +
+        `-  If you think a tile is a mine, you can flag it by typing **\`f.X#\`** (where \`X\` = row and \`#\` = column, as above). Flagged tiles can not be uncovered. To remove a flag, type the flagging command again.\n` +
+        `-  If you are unsure about whether a tile is a mine or not, you can mark it as uncertain by typing **\`q.X#\`** (where \`X\` = row and \`#\` = column, as above). You will be warned when trying to uncover a tile marked as uncertain. To remove an uncertanty marker, type the uncertainty command again.\n` +
         `**Good luck and have fun!**\n\n` +
         `\*This \`mswp\` instance will time out if you do not make a move within 2 minutes and 30 seconds.\nYou can quit the game at any time by typing \`mswp stop\`.\nIf you need more time to think about your next move, you can reset the timer to 10 minutes by typing \`mswp time\`.\*`;
         
         // Sends the board
-        let attach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), "mswp_initField.png");
-        message.channel.send(tooltip, attach)
+        let attach = new D.MessageAttachment(canvas.toBuffer('image/png'), "mswp_initField.png");
+        message.reply({content: tooltip, files: [attach]})
           .then(game => {
 
             // Sets up a message collector + time reset objects
             var moves = 0;
-            const filter = (msg) => msg.author.id == player && ((cancelRegex.exec(msg.content) && (client.games.get("minesweeper").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("minesweeper"))) || catchRegex.exec(msg.content));
-            const finder = game.channel.createMessageCollector(filter, {time: 240000, idle: 240000});  // First timer is longer to allow for rule reading
+            const filter = (msg) => msg.author.id == player && ((cancelRegex.test(msg.content) && (client.games.get("mswp").label.aliases.some(elem => msg.content.includes(elem)) || msg.content.includes("mswp"))) || catchRegex.exec(msg.content));
+            const finder = game.channel.createMessageCollector({filter, time: 240000, idle: 240000});  // First timer is longer to allow for rule reading
             const longTime = {time: 600000, idle: 600000};
             const shortTime = {time: 150000, idle: 150000};
 
@@ -448,19 +459,16 @@ exports.exe = {
               if (msg.content.includes("time")) { // Resets the timer
                 finder.resetTimer(longTime);
                 // Sends a confirmation reaction/message
-                if (p(msg, ['ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS']))
-                  msg.react(e.yep);
-                else if (p(msg, ['ADD_REACTIONS']))
-                  msg.react(e.alt.yep);
-                else if (p(msg, ['USE_EXTERNAL_EMOJIS']))
-                  msg.channel.send(`${e.yep} Timer reset, <@${player}>!`);
+                if (p(msg, [D.Permissions.FLAGS.ADD_REACTIONS]))
+                  return msg.react(getEmoji(msg, e.yep, e.alt.yep, true));
                 else
-                  msg.channel.send(`${e.alt.yep} Timer reset, <@${player}>!`);
-                return;
-              } else if (cancelRegex.exec(msg.content)) {
-                finder.stop("cancel");
-                return; // Stops the game
+                  return msg.reply({embeds: [genRejectEmbed(msg, "Timer reset!", false, {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
+              } else if (cancelRegex.test(msg.content)) {
+                return finder.stop("cancel"); // Stops the game
               }
+
+              // Sends a typing indicator to show that the move is being processed
+              msg.channel.sendTyping();
 
               // Pre-check setup
               let caught = catchRegex.exec(msg.content);
@@ -469,7 +477,7 @@ exports.exe = {
 
               // Checks if the move is valid
               if (x >= field[0].length || x < 0 || y >= field.length || y < 0) {
-                return msg.channel.send(`That tile isn't on the grid, <@${player}>. Please choose a valid tile and try again.`);
+                return msg.reply({embeds: [genRejectEmbed(msg, "Tile not on board", "Please choose a valid tile and try again.")]});
               }
 
               if (moves == 0) {
@@ -485,7 +493,7 @@ exports.exe = {
                   case "q":
                   case "?":
                     // Invalid starter; reject
-                    return msg.channel.send(`Invalid starting move, <@${player}>. Please open a tile using \`c:X#\` notation to begin.`);
+                    return msg.reply({embeds: [genRejectEmbed(msg, "Invalid starting move", "Please open a tile using \`c.X#\` notation to begin.")]});
                 }
               }
               // Increments the move counter
@@ -507,16 +515,16 @@ exports.exe = {
                     updateCanvas(board, move, img);
                     let content = "";
                     switch (move.length) {
-                      case 1: content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** cleared, <@${player}>!`; break;
-                      default: content = `New region opened from tile **\`${caught[2].toUpperCase()}${caught[3]}\`**, <@${player}>!`; break;
+                      case 1: content = `[<@${player}>] Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** cleared!`; break;
+                      default: content = `[<@${player}>] New region opened from tile **\`${caught[2].toUpperCase()}${caught[3]}\`**!`; break;
                     }
-                    let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                    let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
                     // Checks if the game has been won
                     if (unrev <= setup[0] && winCon(field, display) == 0) {
                       finder.stop("generic");
-                      game.channel.send(`Congratulations, <@${player}>! You isolated all the mines in ${moves} moves!\n**--- YOU WIN ---**`, newAttach);
+                      game.channel.send({content: `Congratulations, <@${player}>! You isolated all the mines in ${moves} moves!\n**--- YOU WIN ---**`, files: [newAttach]});
                     } else {
-                      game.channel.send(`${content}\n${stats(moves, flags)}`, newAttach)
+                      game.channel.send({content: `${content}\n${stats(moves, flags)}`, files: [newAttach]})
                         .then(newMsg => {
                           newMsg.channel.messages.fetch(newMsg.id);
                       });
@@ -525,15 +533,15 @@ exports.exe = {
                     finder.resetTimer(shortTime);
                     switch(move) {
                       case 1: // Already cleared
-                        return msg.channel.send(`That tile can't be cleared any further, <@${player}>!`);
+                        return msg.reply({embeds: [genRejectEmbed(msg, "Tile already cleared, can not clear again", "Please choose another tile and try again.")]});
                       case 2: // Flag
-                        return msg.channel.send(`That tile is flagged, <@${player}>! I can't uncover a flagged tile!`);
+                        return msg.reply({embeds: [genRejectEmbed(msg, "Tile flagged, can not clear", "If you are absolutely certain you would like to clear this tile, unflag it using \`f.X#\` notation and try again.")]});
                       case 3: // QMC
-                        return msg.channel.send(`That tile is marked as uncertain, <@${player}>!\nIf you are absolutely certain you want to reveal it, re-type the same command followed by \`-force\`.`);
+                        return msg.reply({embeds: [genRejectEmbed(msg, "Tile maked as uncertain, can not clear", "If you are absolutely certain you would like to clear this tile, re-type the same command followed by \`-force\`.")]});
                       case 4: { // Mine hit; reveal mines and end game
                         updateCanvas(board, revealMines(field, display), img);
-                        let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
-                        game.channel.send(`Oh no! You hit a mine, <@${player}>!\n**--- YOU LOSE ---**`, newAttach);
+                        let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                        game.channel.send({content: `Oh no! You hit a mine, <@${player}>!\n**--- YOU LOSE ---**`, files: [newAttach]});
                         finder.stop("generic");
                       }
                     }
@@ -548,19 +556,19 @@ exports.exe = {
                     display[y][x] = 11 + (time.getUTCMonth() == 5 ? 4 : 0);
                     unrev--;
                     flags--;
-                    content = `Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** flagged, <@${player}>!\n${stats(moves, flags)}`;
+                    content = `[<@${player}>] Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** flagged!\n${stats(moves, flags)}`;
                   } else if (display[y][x] == 11 || display[y][x] == 15) {
                     display[y][x] = 9;
                     unrev++;
                     flags++;
-                    content = `Flag on tile **\`${caught[2].toUpperCase()}${caught[3]}\`** removed, <@${player}>!\n${stats(moves, flags)}`;
+                    content = `[<@${player}>] Flag on tile **\`${caught[2].toUpperCase()}${caught[3]}\`** removed!\n${stats(moves, flags)}`;
                   } else {
                     finder.resetTimer(shortTime);
-                    return msg.channel.send(`That tile can't be flagged, <@${player}>.`);
+                    return msg.reply({embeds: [genRejectEmbed(message, "Tile can not be flagged")]});
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
-                  let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
-                  game.channel.send(content, newAttach)
+                  let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                  game.channel.send({content: content, files: [newAttach]})
                     .then(newMsg => {
                       newMsg.channel.messages.fetch(newMsg.id);
                   });
@@ -573,18 +581,18 @@ exports.exe = {
                   if (display[y][x] == 9) {
                     display[y][x] = 10;
                     unrev--;
-                    content = `Tile \`${caught[2].toUpperCase()}${caught[3]}\` marked as uncertain, <@${player}>!\n${stats(moves, flags)}`;
+                    content = `[<@${player}>] Tile \`${caught[2].toUpperCase()}${caught[3]}\` marked as uncertain!\n${stats(moves, flags)}`;
                   } else if (display[y][x] == 10) {
                     display[y][x] = 9;
                     unrev++;
-                    content = `Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed, <@${player}>!\n${stats(moves, flags)}`;
+                    content = `[<@${player}>] Uncertainty on tile \`${caught[2].toUpperCase()}${caught[3]}\` removed!\n${stats(moves, flags)}`;
                   } else {
                     finder.resetTimer(shortTime);
-                    return msg.channel.send(`That tile can't be marked as uncertain, <@${player}>.`);
+                    return msg.reply({embeds: [genRejectEmbed(message, "Tile can not be marked as uncertain", "Please choose another tile and try again.")]});
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
-                  let newAttach = new Discord.MessageAttachment(canvas.toBuffer('image/png'), flagID);
-                  game.channel.send(content, newAttach)
+                  let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                  game.channel.send({content: content, files: [newAttach]})
                     .then(newMsg => {
                       newMsg.channel.messages.fetch(newMsg.id);
                   });
@@ -611,7 +619,7 @@ exports.exe = {
                 // Discards the old board
                 game.delete()
                   .catch(err => {
-                    console.error("E: mswp board could not be discarded", err)
+                    console.error("E: mswp board could not be discarded".nope, err)
                 });
               }
             });
@@ -623,11 +631,11 @@ exports.exe = {
                   return; // Handled elsewhere in a unique message
                 case "time": // Timeouts
                 case "idle":
-                  return message.channel.send(`your \`minesweeper\` instance timed out due to inactivity, <@${player}>. Please restart the game if you would like to play again.`);
+                  return message.reply({embeds: [genRejectEmbed(message, "Inactivity timeout; \`mswp\` instance stopped", "Please restart the game if you would like to play again.")]});
                 case "cancel": // Manually cancelled
-                  return message.channel.send(`your \`minesweeper\` instance has been stopped, <@${player}>. Please restart the game if you would like to play again.`);
+                  return message.reply({embeds: [genRejectEmbed(message, "\`mswp\` instance stopped", "Please restart the game if you would like to play again.", {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
                 default: // Other (error!)
-                  return message.channel.send(`your \`minesweeper\` instance has encountered an unknown error and has been stopped, <@${player}>. Please restart the game if you would like to play again.`);
+                  return message.reply({embeds: [genRejectEmbed(message, "Unexpected error thrown; \`mswp\` instance stopped", "Please restart the game if you would like to play again.", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
               }
             });
         });
@@ -640,16 +648,16 @@ exports.exe = {
 };
 
 exports.label = {
-  "name": "minesweeper",
-  "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "mswp"],
+  "name": "mswp",
+  "aliases": ["mine", "mines", "sweep", "minesweep", "sweeper", "minesweeper"],
   "players": [1],
-  "reactions": 0,
+  "reactions": false,
   "description": "An old classic, now in bot form!",
   "helpurl": "https://l375.weebly.com/gyrogame-minesweeper",
   "options": ["[preset]", "<mines> <length1> <length2>"],
-  "optionsdesc": ["<mines>/[preset]: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, master = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "<length1>: If no preset is specified, one dimension of the board (7-36)", "<length2>: If no preset is specified, the other dimension of the board (7-36)"],
+  "optionsdesc": ["**<mines>/[preset]**: The number of mines on the field (3-1225), or a preset difficulty (easy = 9×9 + 10 mines, medium = 16×16 + 40 mines, hard = 16×30 + 99 mines, insane = 30×30 + 166 mines, ultimate = 36×36 + 390 mines) Defaults to easy (9×9 + 10 mines)", "**<length1>**: If no preset is specified, one dimension of the board (7-36)", "**<length2>**: If no preset is specified, the other dimension of the board (7-36)"],
   "weight": 3,
-  "exclusive": 0,
-  "indev": 0,
-  "deleted": 0
+  "exclusive": false,
+  "indev": false,
+  "deleted": false,
 };

@@ -1,7 +1,7 @@
-// Require discord.js, the style file, the RNG, and the embed colour checker
-const Discord = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const style = require('../systemFiles/style.json'); // style file
+// RNG, embed colour checker, rejection embed generator
+const {getRandomInt, eCol, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 // quip list for badly formatted fractions; subject to change
 const quips = [
@@ -34,14 +34,14 @@ function argComb(args) {
   if (args.length >= 3) { // advanced (space-wise) comb
     for(let i = 0; i < args.length-2; i++) {
       let concat = `${args[i]}${args[i+1]}${args[i+2]}`;
-      if(div.exec(args[i+1]) && frac.exec(concat)) {
+      if(div.test(args[i+1]) && frac.test(concat)) {
         args.splice(i, 3, concat);
       }
     }
   }
   // run through and classify matching args
   for(const arg of args) {
-    if(whole.exec(arg)) {
+    if(whole.test(arg)) {
       wSave.push(arg);
     } else {
       let f = frac.exec(arg);
@@ -84,13 +84,13 @@ exports.run = {
   execute(message, args, client) {
     var statement;
     if(args.length === 0)
-      return message.channel.send(`I need a fraction to convert to a decimal, <@${message.author.id}>!`);
+      return message.reply({embeds: [genRejectEmbed(message, "Fraction not found", "Gyromina needs a fraction to convert to a decimal!\nPlease add a fraction and try again.")]});
     
     var nums = argComb(args);
     if(!Array.isArray(nums)) {
       switch (nums) {
-        case "null": return message.channel.send(`That doesn't look like a fraction, <@${message.author.id}>. Please check your formatting and try again.`);
-        case "err": return message.channel.send(`I can't convert multiple different fractions into a single decimal, <@${message.author.id}>!`);
+        case "null": return message.reply({embeds: [genRejectEmbed(message, "Unrecognized fraction value", "Your input doesn't look like a fraction (or doesn't match Gyromina's fraction formatting).\nPlease check your formatting and try again.")]});
+        case "err": return message.reply({embeds: [genRejectEmbed(message, "Too many fractions", "Gyromina can't convert multiple different fractions into a single decimal!\nPlease enter a single fraction and try again.")]});
       }
     }
     var decim = nums[1]/nums[2] + nums[0];
@@ -98,29 +98,30 @@ exports.run = {
     // checks for an improper/mixed fraction combo
     if(nums[0] !== 0 && nums[1] >= nums[2]) { // yes: send quippy message
       var seed = getRandomInt(0, quips.length-1);
-      statement = `${quips[seed][0]} ${qExt[getRandomInt(0, qExt.length-1)][quips[seed][1]]} here you go, <@${message.author.id}>.`;
+      statement = `${quips[seed][0]} ${qExt[getRandomInt(0, qExt.length-1)][quips[seed][1]]} here you go.`;
     } else { // no: send regular message
-      statement = `Here you go, <@${message.author.id}>!`;
+      statement = `Here you go!`;
     }
 
     // creates the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setTitle(`${nums[0] === 0 ? "" : `${nums[0]} `}${nums[1]}/${nums[2]} is…\n\`${decim}\``)
       .setColor(eCol(style.e.default));
 
     // sends the message and embed
-    return message.channel.send(statement, {embed: embed});
+    return message.reply({content: statement, embeds: [embed]});
   }
 };
 
 exports.help = {
   "name": "decimal",
   "aliases": ["decim", "dec", "ftod", "fd"],
-  "description": "Converts a fraction (in base 10) to a decimal.",
+  "description": "Converts a fraction in base 10 to a decimal",
   "usage": `${process.env.prefix}decimal [whole] <num>/<denom>`,
   "params": "[whole] <num>/<denom>",
+  "default": 0,
   "weight": 2,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

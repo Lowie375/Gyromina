@@ -21,14 +21,17 @@ const yums = [
   "You're going to love this one!",
   "My favourite!",
   "Yummy!",
-  "Tasty!"
+  "Tasty!",
+  "Perfect for a hot day!"
 ];
 const uhoh = [
   "Hold up…",
   "Wait a minute…",
   "Uh oh…",
   "Oh no…",
-  "Wait…"
+  "Wait…",
+  "Hold on…",
+  "Yikes…"
 ];
 
 exports.run = {
@@ -38,18 +41,23 @@ async execute(message, args, client) {
     var yum = getRandomInt(0, yums.length-1);
     
     // Sends the ice cream, yay!
-    await message.channel.send("Coming right up!")
+    await message.reply("Coming right up!")
       .then (async order => {
         // Prepares the order
         try {
-          await message.channel.send(`${icecream[crm]}`);
-          let ono = getRandomInt(0, uhoh.length-1);
-          switch (crm) { // Checks for special cases and edits accordingly
-            case 18: order.edit(`${uhoh[ono]} that's cream, not \*ice\* cream! 😱`); break;
-            case 19: order.edit(`${uhoh[ono]} that's ice, not ice \*cream\*! 😱`); break;
-            case 20: order.edit(`${uhoh[ono]} how did \*that\* get in there?!? 😱`); break;
-            default: order.edit(`${yums[yum]}`); break;
-          }
+          // "works for a small amount of time"
+          message.channel.sendTyping();
+          setTimeout(() => {
+            // sends the icecream
+            message.channel.send(`${icecream[crm]}`);
+            let ono = getRandomInt(0, uhoh.length-1);
+            switch (crm) { // Checks for special cases and edits accordingly
+              case 18: order.edit(`${uhoh[ono]} that's cream, not \*ice\* cream! 😱`); break;
+              case 19: order.edit(`${uhoh[ono]} that's ice, not ice \*cream\*! 😱`); break;
+              case 20: order.edit(`${uhoh[ono]} how did \*that\* get in there?!? 😱`); break;
+              default: order.edit(`${yums[yum]}`); break;
+            }
+          }, getRandomInt(250, 450));
         } catch {
           let ono = getRandomInt(0, uhoh.length-1);
           order.edit(`${uhoh[ono]} the ice cream machine broke down! 😱`);
@@ -63,8 +71,9 @@ exports.help = {
   "aliases": ["gelato", "froyo", "ice-cream", "frozenyogurt", "shavedice"],
   "description": "Makes some lovely ice cream.",
   "usage": `${process.env.prefix}icecream`,
+  "default": 0,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

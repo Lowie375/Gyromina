@@ -1,5 +1,5 @@
 // Require discord.js, the style file, the RNG, and the embed colour checker
-const Discord = require('discord.js');
+const D = require('discord.js');
 const style = require('../systemFiles/style.json');
 const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
 
@@ -59,39 +59,40 @@ exports.run = {
 
     // Checks if no bounds were set
     if (args.length === 0)
-      return message.channel.send(`I can\'t generate a number in a non-existent range, <@${message.author.id}>!`)
+      return message.reply(`I can\'t generate a number in a non-existent range!`)
 
     // Checks numbers and generates
     if (args.length >= 2) {
       if (!isNaN(args[0]) && !isNaN(args[1]))
         number = getRandomNumber(args[0], args[1]);
       else
-        return message.channel.send(`I can\'t generate a random number between non-numerical values, <@${message.author.id}>!`);
+        return message.reply(`I can\'t generate a random number between non-numerical values!`);
     } else {
       if (!isNaN(args[0]))
         number = getRandomNumber(0, args[0]);
       else
-        return message.channel.send(`I can\'t generate a random number between non-numerical values, <@${message.author.id}>!`);
+        return message.reply(`I can\'t generate a random number between non-numerical values!`);
     }
 
     // Creates the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setTitle(`\`${number}\``)
       .setColor(eCol(style.e.default));
 
     // Sends the embed
-    return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
+    return message.reply({content: `Here you go!`, embeds: [embed]});
   }
 };
 
 exports.help = {
   "name": "randomnumber",
   "aliases": ["number", "num", "rn", "rnum"],
-  "description": "Generates a random number between two numbers, inclusive.\nIf only one argument is given, generates between 0 and that number, inclusive.",
+  "description": "Generates a random number between two numbers, or one number and 0, inclusive.",
   "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
   "params": "<num1> [num2]",
+  "default": 0,
   "weight": 2,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

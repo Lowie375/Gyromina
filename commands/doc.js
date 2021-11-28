@@ -1,6 +1,6 @@
-// Require discord.js, the cdn file, and the RNG
-const Discord = require('discord.js');
-const cdn = require('../systemFiles/cdn.json');
+const D = require('discord.js'); // discord.js
+const cdn = require('../systemFiles/cdn.json'); // cdn file
+// RNG
 const {getRandomInt} = require('../systemFiles/globalFunctions.js');
 
 // Support messages
@@ -27,14 +27,14 @@ exports.run = {
     let gen = [getRandomInt(0, q.length-1), getRandomInt(0, r.length-1)]
 
     // Sets up the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setColor(0xffef80)
       .setTitle(`${q[gen[0]]} ${r[gen[1]]}`)
       .setDescription("Doc, my duck friend, will be here as long as you need.")
       .setImage(`${cdn.doc}`);
     
     // Sends the embed
-    return message.channel.send({embed: embed});
+    return message.channel.send({embeds: [embed]});
   },
 };
 
@@ -42,9 +42,10 @@ exports.help = {
   "name": "doc",
   "aliases": ["duck", "rubberduck", "rubberducky", "ducky"],
   "description": "Calls Gyromina's duck friend, Doc, for some support.",
-  "usage": `${process.env.prefix}duck`,
+  "usage": `${process.env.prefix}doc`,
+  "default": 0,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

@@ -1,8 +1,6 @@
-// Require the RNG
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../systemFiles/globalFunctions.js'); // RNG
 
 const flag = "🏳️‍🌈";
-
 const quips = [["Casserole in the closet!", 1],
   ["Who took the casserole out of the closet?", 1],
   ["Who put the casserole on the window sill?", 0],
@@ -28,8 +26,9 @@ exports.help = {
   "name": 'casserole',
   "description": 'Makes a quip about casseroles and closets.',
   "usage": `${process.env.prefix}casserole`,
+  "default": 0,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

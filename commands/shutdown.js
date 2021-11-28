@@ -1,37 +1,34 @@
-// Require the package file and the permission checker
-const e = require('../systemFiles/emojis.json');
-const {p} = require('../systemFiles/globalFunctions.js');
+const colors = require('colors'); // colors
+const e = require('../systemFiles/emojis.json'); // package file
+// emoji puller, rejection embed generator
+const {getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   async execute(message, args, client) {
-    // Emoji setup
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
-    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
-    
     // Checks to see if the bot host sent the message.
     if(message.author.id !== process.env.hostID) {
-      message.channel.send(`${nope} Error - Insufficient permissions!`)
-      console.log('A user attempted to shut me down, but was unsuccessful!')
-      return;
+      console.log('A user attempted to shut me down, but was unsuccessful!'.nope)
+      return message.channel.send({embeds: [genRejectEmbed(message, "Insufficient permissions")]});
     }
 
     // Shuts down the current instance of the Discord Client.
-    let tag = client.user.tag;
-    await message.channel.send(`${yep}`);
+    await message.channel.send(`${getEmoji(message, e.yep, e.alt.yep)}`);
     await client.user.setStatus("invisible");
-    console.log(`Shutting down ${tag}…\n- - - - - - - - - - -`);
+    console.log(colors.main(`Shutting down ${client.user.tag}…\n- - - - - - - - - - -`));
     await client.destroy();
+    return;
   },
 };
 
 exports.help = {
   "name": "shutdown",
   "aliases": ["off", "stop", "quit", "shutoff"],
-  "description": "Shuts down the current instance of Gyromina. (Owner/host only)",
+  "description": "Shuts down the current instance of Gyromina. (host only)",
   "usage": `${process.env.prefix}shutdown`,
-  "params": "(owner/host only)",
-  "weight": 1,
-  "hide": 1,
-  "wip": 0,
-  "dead": 0,
+  "params": "(owner/host)",
+  "default": 0,
+  "weight": 2,
+  "hide": true,
+  "wip": false,
+  "dead": false
 };

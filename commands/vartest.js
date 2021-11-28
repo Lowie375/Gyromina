@@ -1,7 +1,8 @@
-// Require the package file, emoji file, permission checker, and timestamp generator
-const package = require('../package.json');
-const e = require('../systemFiles/emojis.json');
-const {p, stamp} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const package = require('../package.json'); // package file
+const e = require('../systemFiles/emojis.json'); // emoji file
+// timestamp generator, emoji checker, emoji puller, rejection embed generator
+const {stamp, emojiCheck, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js'); 
 
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
@@ -9,15 +10,15 @@ const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
+    const nope = getEmoji(message, e.nope, e.alt.nope);
 
     // Checks to see if the bot owner or a contributor sent the message.
     if(message.author.id !== process.env.hostID && message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id) && !package.testerIDs.includes(message.author.id)) {
       console.log('A user attempted to run a test, but was unsuccessful!');
-      return message.channel.send(`${nope} Insufficient permissions!`);
+      return message.channel.send({embeds: [genRejectEmbed(message, "Insufficient permissions")]});
     }
 
-    message.channel.send(parseInt(0x707070));
+    message.channel.send(`${parseInt(0x707070)}`);
 
     let m = rgbX.exec("rgb(255, 255, 255)");
     let n = rgbX.exec("yada blah blah");
@@ -32,24 +33,34 @@ exports.run = {
     console.log(message.channel);
     console.log(message.channel.type)
     console.log(client.user);
-    if(message.channel.type != "dm" && message.channel.type != "voice") {
+    if(message.channel.type != "DM" && message.channel.isVoice()) {
       console.log(message.guild.me);
       let gyr = message.guild.me;
-      let gPerm = ['SEND_MESSAGES', 'ADD_REACTIONS'];
+      let gPerm = [D.Permissions.FLAGS.SEND_MESSAGES, D.Permissions.FLAGS.ADD_REACTIONS];
       console.log(gyr.permissions);
-      console.log(gyr.permissions.has(['VIEW_CHANNEL']));
-      console.log(gyr.permissions.has('ADMINISTRATOR'));
+      console.log(gyr.permissions.has([D.Permissions.FLAGS.VIEW_CHANNEL]));
+      console.log(gyr.permissions.has(D.Permissions.FLAGS.ADMINISTRATOR));
       console.log(gyr.permissions.has(gPerm));
       console.log(gyr.permissionsIn(message.channel));
       console.log(message.channel.permissionsFor(gyr));
     }
+
+    console.log(true ? true : false);
+    console.log(false ? true : false);
+    console.log(0 ? true : false);
+    console.log(1 ? true : false);
+    console.log(2 ? true : false);
+    console.log(undefined ? true : false);
+    console.log(null ? true : false);
+
+    emojiCheck();
 
     message.channel.send("The Test has been initiated. You may begin.")
       .then(tMsg => {
         tMsg = 0;
 
         const filter = (msg) => msg.author.id == message.author.id;
-        const finder = message.channel.createMessageCollector(filter, {time: 30000, idle: 30000});
+        const finder = message.channel.createMessageCollector({filter, time: 30000, idle: 30000});
 
         finder.on('collect', () => {
           tMsg++;
@@ -65,13 +76,14 @@ exports.run = {
 };
     
 exports.help = {
-  "name": 'vartest',
-  "aliases": ['vt'],
-  "description": 'Miscellaneous test command. (Contributors/testers only)',
+  "name": "vartest",
+  "aliases": ["vt"],
+  "description": 'Miscellaneous test command. (contributors/testers only)',
   "usage": `${process.env.prefix}vartest`,
-  "params": "(contributors only)",
+  "params": "(contributors)",
+  "default": 0,
   "weight": 1,
-  "hide": 1,
-  "wip": 0,
-  "dead": 0,
+  "hide": true,
+  "wip": false,
+  "dead": false
 };

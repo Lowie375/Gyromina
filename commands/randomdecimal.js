@@ -1,5 +1,5 @@
 // Require discord.js, the style file, and the emoji colour checker
-const Discord = require('discord.js');
+const D = require('discord.js');
 const style = require('../systemFiles/style.json');
 const {eCol} = require('../systemFiles/globalFunctions.js');
 
@@ -28,17 +28,17 @@ exports.run = {
     if (args.length === 0)
       number = getRandomDecimal(0, 1, 10);
     else if (args[0] < 0)
-      return message.channel.send(`I can\'t generate a decimal number to a negative amount of decimal places, <@${message.author.id}>!`);
+      return message.reply(`I can\'t generate a decimal number to a negative amount of decimal places!`);
     else if (args[0] >= 0)
       number = getRandomDecimal(0, 1, args[0]);
     
     // Creates the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setTitle(`\`${number}\``)
       .setColor(eCol(style.e.default));
 
     // Sends the embed
-    return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
+    return message.reply({content: `Here you go!`, embeds: [embed]});
   }
 };
 
@@ -48,8 +48,9 @@ exports.help = {
   "description": "Generates a random decimal number between 0 and 1, to up to 16 decimal places.\nDefaults to 10 decimal places.",
   "usage": `${process.env.prefix}randomdecimal [places]`,
   "params": "[places]",
+  "default": 0,
   "weight": 2,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

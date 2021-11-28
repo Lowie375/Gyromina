@@ -1,39 +1,47 @@
-// Require the RNG (obviously), permission checker, and emoji file
-const {getRandomInt, p} = require('../systemFiles/globalFunctions.js');
-const e = require('../systemFiles/emojis.json');
+const D = require('discord.js'); // discord.js
+const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../systemFiles/style.json'); // emoji file
+// RNG (obviously), emoji puller, rejection embed generator
+const {getRandomInt, getEmoji, genRejectEmbed, eCol} = require('../systemFiles/globalFunctions.js');
 
 const cancelWords = ["rng cancel", "rng stop", "rng end", "rng quit"];
 
 function numCheck(x) {
   switch(x) {
     case "easy":
+    case "basic":
     case "e":
+    case "b":
       return 10;
     case "medium":
     case "normal":
     case "moderate":
     case "regular":
     case "m":
+    case "r":
+    case "n":
       return 100;
     case "hard":
     case "difficult":
     case "h":
+    case "d":
       return 1000;
     case "insane":
     case "expert":
     case "x":
     case "i":
       return 7500;
-    case "master":
     case "ultimate":
-    case "xm":
+    case "extreme":
     case "u":
+    case "xe":
       return 50000;
     case "demonic":
     case "maximum":
-    case "xxm":
+    case "max":
+    case "xm":
     case "xu":
-    case "xxu":
+    case "xd":
       return 16777215;
     default:
       return parseInt(x);
@@ -48,8 +56,8 @@ exports.exe = {
     var content = "";
 
     // Emoji setup
-    const yep = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.yep) : e.alt.yep;
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.yep;
+    const yep = getEmoji(message, e.yep, e.alt.yep);
+    const nope = getEmoji(message, e.nope, e.alt.yep);
 
     if (!options)
       max = 10;
@@ -58,7 +66,7 @@ exports.exe = {
 
     // Checks if options are valid
     if(isNaN(max))
-      return message.channel.send(`that's not a valid maximum/preset, <@${player}>! Please enter a valid positive integer less than 16777216 or a valid preset and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Invalid maximum/preset", "Please enter a positive integer less than 16777216 or a valid preset and try again.")]});
 
     // Adjusts max, if necessary
     if (max < 2)
@@ -74,7 +82,7 @@ exports.exe = {
       gPow++;
     }
     if (gPow <= 4)
-      guesses = gPow
+      guesses = gPow;
     else
       guesses = 4 + Math.floor((gPow-4)*0.75);
 
@@ -92,7 +100,7 @@ exports.exe = {
     message.channel.send(`${content}`);
 
     const filter = (msg) => msg.author.id == player && (!isNaN(parseInt(msg.content, 10)) || cancelWords.includes(msg.content));
-    const finder = message.channel.createMessageCollector(filter, {time: 60000, idle: 60000});
+    const finder = message.channel.createMessageCollector({filter, time: 60000, idle: 60000});
     
     finder.on('collect', msg => {
       // Checks if the collected message was a cancellation message
@@ -111,10 +119,10 @@ exports.exe = {
         return;
       } else if (guess > num) { // Too high
         high = Math.min(high, guess);
-        alert += `⬇️ Lower, <@${player}>!\n\*Current range: ${low} to ${high} (inclusive)\*`;
+        alert += `⬇️ Lower!\n\*Current range: ${low} to ${high} (inclusive)\*`;
       } else if (guess < num) { // Too low
         low = Math.max(low, guess);
-        alert += `⬆️ Higher, <@${player}>!\n\*Current range: ${low} to ${high} (inclusive)\*`;
+        alert += `⬆️ Higher!\n\*Current range: ${low} to ${high} (inclusive)\*`;
       }
 
       if (guesses == 0) { // Out of guesses; stops the game
@@ -127,7 +135,7 @@ exports.exe = {
       }
 
       // Sends update and resets the timer
-      message.channel.send(alert)
+      message.reply(alert)
       finder.resetTimer({time: 60000, idle: 60000});
     });
 
@@ -136,15 +144,15 @@ exports.exe = {
       switch (reason) {
         case "time": // Timeouts
         case "idle":
-          message.channel.send(`your \`rng\` instance timed out due to inactivity, <@${player}>. Please restart the game if you would like to play again.`); return;
+          return message.reply({embeds: [genRejectEmbed(message, "Inactivity timeout; \`rng\` instance stopped", "Please restart the game if you would like to play again.")]});
         case "cancel": // Manually cancelled
-          message.channel.send(`your \`rng\` instance has been stopped, <@${player}>. Please restart the game if you would like to play again.`); return;
+          return message.reply({embeds: [genRejectEmbed(message, "\`rng\` instance stopped", "Please restart the game if you would like to play again.", {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
         case "win": // Correct guess!
-          message.channel.send(`${yep} You guessed the right number, <@${player}>!\n**YOU WIN**`); return;
+          return message.reply(`${yep} Congratulations! You guessed the right number!\n**YOU WIN**`);
         case "out": // Out of guesses
-          message.channel.send(`${nope} You ran out of guesses, <@${player}>.\nThe number was ${num}.\n**YOU LOSE**`); return;
+          return message.reply(`${nope} Oh no, you ran out of guesses!\nThe number was **${num}**.\n**YOU LOSE**`);
         default: // Other (error!)
-          message.channel.send(`your \`rng\` instance has encountered an unknown error and has been stopped, <@${player}>. Please restart the game if you would like to play again.`); return;
+          return message.reply({embeds: [genRejectEmbed(message, "Unexpected error thrown; \`rng\` instance stopped", "Please restart the game if you would like to play again.", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
       }
     });
   }
@@ -154,13 +162,13 @@ exports.label = {
   "name": "rng",
   "aliases": ["rnggame", "rng-game", "beattherng", "beat-the-rng"],
   "players": [1],
-  "reactions": 0,
+  "reactions": false,
   "description": "A guessing game of pure chance, because the RNG is wonderful and deserves its own game.",
   "helpurl": "https://l375.weebly.com/gyrogame-rng",
   "options": "[max/preset]",
-  "optionsdesc": "[max/preset]: The maximum number the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, master = 50000). Defaults to easy (10)",
+  "optionsdesc": "**[max/preset]**: The maximum number the RNG could generate (up to 16777215) or a preset difficulty (easy = 10, medium = 100, hard = 1000, insane = 7500, ultimate = 50000). Defaults to easy (10)",
   "weight": 1,
-  "exclusive": 0,
-  "indev": 0,
-  "deleted": 0
+  "exclusive": false,
+  "indev": false,
+  "deleted": false,
 };

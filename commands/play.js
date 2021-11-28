@@ -1,13 +1,13 @@
-// Require the package file, emoji file, and permission checker
-const package = require('../package.json');
-const e = require('../systemFiles/emojis.json');
-const {p} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const e = require('../systemFiles/emojis.json'); // emoji file
+// permission checker, emoji puller, rejection embed generator
+const {p, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js'); 
 
 exports.run = {
   execute(message, args, client) {
     // Emoji setup
-    const nope = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.nope) : e.alt.nope;
-    const warning = p(message, ['USE_EXTERNAL_EMOJIS']) ? client.emojis.cache.get(e.warn) : e.alt.warn;
+    const nope = getEmoji(message, e.nope, e.alt.nope);
+    const warning = getEmoji(message, e.warn, e.alt.warn);
     
     // Finds the requested game file
     const gameName = args.shift();
@@ -16,11 +16,11 @@ exports.run = {
     
     // Checks if the game exists
     if (!game)
-      return message.channel.send(`I couldn't load the game you were looking for, <@${message.author.id}>. Please check your spelling and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, `\`${gameName}\` game not found`, "Please check your spelling and try again.")]});
 
     // Checks if Gyromina has permission to add reactions (if the game requires them)
-    if(game.label.reactions == 1 && !p(message, ['ADD_REACTIONS']))
-      return message.channel.send(`I can't run this game if I can't add any reactions, <@${message.author.id}>! Please ask a server administrator to enable the 'Add Reactions' permission for Gyromina and try again.`);
+    if(game.label.reactions && !p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+      return message.reply({embeds: [genRejectEmbed(message, "Gyromina is missing permissions", `Gyromina can't run this game without reactions!\nPlease ask a server administrator to enable the \`Add Reactions\` permission for ${client.user.tag} and try again.`)]});
 
     // Determines the main player(s)
     var player;
@@ -30,11 +30,11 @@ exports.run = {
       player = [message.author.id];
     }
 
-    if(process.env.exp === "0" && game.label.indev === 1) {
-      if(message.author.id === package.authorID) {
-        message.channel.send(`${nope} The game \`${gameName}\` is still in development and thus has not been released to the public.\n\n${warning} Please enable **experimental mode** to play it.`);
+    if(process.env.exp === "0" && game.label.indev) {
+      if(message.author.id === process.env.hostID) {
+        message.channel.send({embeds: [genRejectEmbed(message, "Game unavailable", `\`${gameName}\` is still in development and thus has not been released to the public.\nPlease enable **experimental mode** to play it.`)]});
       } else {
-        message.channel.send(`${nope} The game \`${gameName}\` is still in development and thus has not been released to the public.`);
+        message.channel.send({embeds: [genRejectEmbed(message, "Game unavailable", `\`${gameName}\` is still in development and thus has not been released to the public.`)]});
       }
     } else { 
       // Checks if game options were passed
@@ -52,12 +52,13 @@ exports.run = {
 exports.help = {
   "name": "play",
   "aliases": ["game", "playgame", "play-game"],
-  "description": "Starts a game.",
+  "description": `Starts a game. (Use **${process.env.prefix}help -g** to view the game library)`,
   "usage": `${process.env.prefix}play <game> [options]`,
   "params": "<game> [options]",
+  "default": 0,
   "helpurl": "https://l375.weebly.com/gyrocmd-play",
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

@@ -1,5 +1,5 @@
 // Require discord.js, the package file, the style file, the embed colour checker, and the timestamp generator
-const Discord = require('discord.js');
+const D = require('discord.js');
 const package = require('../package.json');
 const style = require('../systemFiles/style.json');
 const {eCol, stamp} = require('../systemFiles/globalFunctions.js');
@@ -8,7 +8,7 @@ exports.run = {
   execute(message, args, client) {
 
     // Creates the crediting embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setAuthor("Gyromina Contributors", client.user.avatarURL())
       .setColor(eCol(style.e.default))
       .setTitle("A huge thanks to everyone who has contributed to Gyromina!")
@@ -49,7 +49,7 @@ exports.run = {
     }
 
     // Sends the embed
-    return message.channel.send({embed: embed});
+    return message.channel.send({embeds: [embed]});
   },
 };
 
@@ -58,8 +58,9 @@ exports.help = {
   "aliases": ["credits", "developers", "devs", "contrib", "helpers", "team"],
   "description": "Lists all of Gyromina's contributors.",
   "usage": `${process.env.prefix}contributors`,
+  "default": 0,
   "weight": 1,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

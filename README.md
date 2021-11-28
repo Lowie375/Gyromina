@@ -4,12 +4,11 @@
 [![Bot Version][version-img]][main-pkg]
 [![Indev Version][indev-version-img]][indev-pkg]
 [![Dependency Status][dependency-img]][dependency-link]
-[![Top Language][lang-img]][lang-link]
 [![License][license-img]](LICENSE)  
 [![Last Commit (main)][main-commit-img]][main-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
 [![Build Status][build-img]][build-link]
-[![Scrutinizer Code Quality][code-quality-img]][code-quality-link]
+[![Gyromina Dev Discord][discord-img]][discord-link]
 
 ## About
 
@@ -17,14 +16,14 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.1.12  
-<!-- Latest indev build: v1.2.0-alpha.8 -->
+Latest stable build: v1.2.0  
+<!-- Latest indev build: v1.2.0-pre.4 -->
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
 ### External Links
 
-**[Info Pages][info]** / **[Commands][commands]** / **[Changelog][log]** / **[Invite Link][invite]**
+**[Info Pages][info]** - **[Commands][commands]** - **[Changelog][log]** - **[Invite Link][invite]**
 
 ### Overview
 
@@ -46,30 +45,22 @@ The last event that took place was the pride event (June 2021)
 * Follow this link: **[https://discordapp.com/oauth2/authorize?client_id=490590334758420481&permissions=537259072&scope=bot][invite]**
 * Choose a server to add Gyromina to
 * Make sure all requested permissions are enabled
-  * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**
-  * Highly recommended: **`Use External Emojis`**, **`Manage Messages`**
-* You're good to go! Have fun!
+  * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**, **`Attach Files`**, **`Embed Links`**
+  * Highly recommended: **`Send Messages in Threads`**, **`Use External Emojis`**, **`Manage Messages`**
+* **[Toggle any configuration options as desired](docs/SERVER_CONFIG.md)**
+* **You're good to go! Have fun!**
 
 ### Test or Local Bots (for contributors/debuggers)
 
 #### Requirements
 
-* Discord bot token + channel access
+* Discord bot token
+* Discord server + channel access
 
 #### Config
 
 * Fork/download source code + `npm install` in terminal
-* Configure environment variables (`1.1.x` = **`v9`** setup)
-  * `token`/`prefix`: Self-explanatory; Discord bot token/prefix
-  * `exp`: `"1"` to enable experimental commands, `"0"` to disable  
-  (WARNING: experimental commands may break! use at your own risk!)
-  * `hostID`: Your Discord user ID (enables local use of `shutdown` and `vartest`)
-  * `errorLog`/`eventLog`: Discord channel IDs for logging errors/events
-* Optional environment variable config
-  * `season`: Style override; `"0"` to disable, `"1"` for pride, `"2"` for winter, `"3"` for blurple
-  * `progressLog`: Discord channel ID (used with `release`)
-  * `gitToken`/`gitUsername`/`gitRepoName`: GitHub auth token/username/repo name (token scope = `repo`; used with `release`)
-  * `herokuAuth`/`herokuID`: Heroku auth token/project ID (used with `uptime`)
+* **[Configure environment variables](docs/ENV_CONFIG.md)** (`>=1.2.0` = **`v10`** configuration)
 * Run using your native runtime/debugger/host and you're good to go!
 
 ## Additional Info
@@ -88,16 +79,16 @@ The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](doc
 
 ## Contributing
 
-[![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
-[![Minor Contributor 💾][min-contrib-label]][min-contrib-label]
-[![Debugger 🦟][debugger-label]][debugger-label]
-[![Beta Tester ⌚][tester-label]][tester-label]
-
 Contributions to Gyromina are always welcome! I'm a novice, so I don't know the best tips, tricks, and optimizations for JavaScript/Node. A little help can go a long way.
 
 Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
 
 ### Contributors
+
+[![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
+[![Minor Contributor 💾][min-contrib-label]][min-contrib-label]
+[![Debugger 🦟][debugger-label]][debugger-label]
+[![Beta Tester ⌚][tester-label]][tester-label]
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
 * 💻 Nao - [@naoei](https://github.com/naoei)
@@ -116,13 +107,12 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [indev-pkg]: https://github.com/Lowie375/Gyromina/blob/indev-branch/package.json
 
 [djs-link]: https://discord.js.org
-[dependency-link]: https://david-dm.org/Lowie375/Gyromina
+[dependency-link]: https://libraries.io/github/Lowie375/Gyromina/
 [contributors-link]: https://github.com/Lowie375/Gyromina/graphs/contributors
 [main-tree-link]: https://github.com/Lowie375/Gyromina/tree/main
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
-[lang-link]: https://github.com/Lowie375/Gyromina/search?l=javascript
 [build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
-[code-quality-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
+[discord-link]: https://discord.gg/Bsaz4r7
 
 <!-- Banners -->
 [gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png
@@ -130,15 +120,14 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 <!-- Labels -->
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js
-[version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina
+[version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina?label=release%20version
 [indev-version-img]: https://img.shields.io/github/package-json/v/Lowie375/Gyromina/indev-branch?label=indev%20version
-[dependency-img]: https://david-dm.org/Lowie375/Gyromina.svg
+[dependency-img]: https://img.shields.io/librariesio/github/Lowie375/Gyromina
 [main-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina?label=last%20commit%20%28main%29
 [indev-commit-img]: https://img.shields.io/github/last-commit/Lowie375/Gyromina/indev-branch?label=last%20commit%20%28indev-branch%29
 [license-img]: https://img.shields.io/github/license/Lowie375/Gyromina
-[lang-img]: https://img.shields.io/github/languages/top/Lowie375/Gyromina
 [build-img]: https://img.shields.io/scrutinizer/build/g/Lowie375/Gyromina
-[code-quality-img]: https://img.shields.io/scrutinizer/quality/g/Lowie375/Gyromina
+[discord-img]: https://img.shields.io/discord/409876373134508052?color=5865f2&label=%20&logo=discord&logoColor=ffffff
 
 [maj-contrib-label]: https://img.shields.io/badge/major%20contributor-%F0%9F%92%BB-00b275
 [min-contrib-label]: https://img.shields.io/badge/minor%20contributor-%F0%9F%92%BE-00b275

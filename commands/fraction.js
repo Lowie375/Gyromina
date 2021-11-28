@@ -1,7 +1,8 @@
-// Require discord.js, the style file, the RNG, and the embed colour checker
-const Discord = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const style = require('../systemFiles/style.json'); // style file
+const e = require('../systemFiles/emojis.json'); // emoji file
+// RNG, embed colour checker, emoji puller, rejection embed generator
+const {getRandomInt, eCol, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 const flow = ["Anyway,", "Regardless,", "Either way,"];
 
@@ -17,7 +18,7 @@ function argComb(args) {
   let rSave;
   // Checks for queries
   for (let i = 0; i < args.length; i++) {
-    if(args[i].startsWith("-") && !negNum.exec(args[i])) {
+    if(args[i].startsWith("-") && !negNum.test(args[i])) {
       switch(args[i].slice(1, 2)) {
         case "t":
         case "d":
@@ -36,11 +37,11 @@ function argComb(args) {
       }
       args.splice(i, 1);
       i--;
-    } else if(dots.exec(args[i])) {
+    } else if(dots.test(args[i])) {
       save.push("r");
       run = i;
-      let d = dots.exec(args[i]);
-      args[i].slice(0, -d[1].length);
+      let dot = dots.exec(args[i]);
+      args[i].slice(0, -dot[1].length);
     }
   } 
   switch(save.length) {
@@ -266,9 +267,9 @@ exports.run = {
 
     // Checks that there is a number, and that it is actually a decimal number
     if(args.length === 0)
-      return message.reply(`I need a number to convert to a fraction!`);
+      return message.reply({embeds: [genRejectEmbed(message, "\`decimal\` argument not found", "Gyromina needs a decimal number to be able to convert something to a fraction!\nPlease add a decimal number and try again.")]});
     else if(!decimX.test(args[0]))
-      return message.reply(`That's not a decimal! Please enter a valid one and try again.`);
+      return message.reply({embeds: [genRejectEmbed(message, "Unrecognized \`decimal\` value", "You argument doesn't look like a decimal number.\nPlease add a valid decimal number and try again.")]});
 
     // Prepares the number
     var num = args[0].split(".").slice(0, 2);
@@ -294,19 +295,19 @@ exports.run = {
           frac = runner(num, set);
         break;
       } default: // conflicting; throw error
-        return message.channel.send(`I'm not sure what kind of decimal to treat this as, <@${message.author.id}>.\n(Please choose either **\`-r\`**epeating or **\`-t\`**erminating, not both.)`);
+        return message.reply({embeds: [genRejectEmbed(message, "Decimal type conflict", "Gyromina isn't sure what kind of decimal to treat this as.\nPlease choose either **\`-r\`**epeating or **\`-t\`**erminating, not both, and try again.")]});
     }
 
     if(!Array.isArray(frac)) { // error thrown
       switch(frac) {
-        case "lim": return message.channel.send(`That fraction is far too complex for me to handle, <@${message.author.id}>! Sorry about that!`);
-        case "badRun": return message.channel.send(`That's not a valid repeating decimal length, <@${message.author.id}>! Please enter a valid positive integer and try again.`);
-        default: return message.channel.send(`Something went wrong when processing that fraction, <@${message.author.id}>! Sorry about that!`);
+        case "lim": return message.reply({embeds: [genRejectEmbed(message, "Fraction too complex", "That fraction is far too complex for Gyromina to handle! Sorry about that!", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
+        case "badRun": return message.reply({embeds: [genRejectEmbed(message, "Invalid \`-r\` query \`[#]\` value", "That's not a valid repeating decimal length! Please enter a valid positive integer and try again.")]});
+        default: return message.reply({embeds: [genRejectEmbed(message, "Unexpected calculation error", "Something went wrong when processing that fraction. Sorry about that!", {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)})]});
       }
     }
 
     // creates the embed
-    const embed = new Discord.MessageEmbed()
+    const embed = new D.MessageEmbed()
       .setColor(eCol(style.e.default));
     
     if(set[0] == "r" || results[0] == "r")
@@ -318,12 +319,12 @@ exports.run = {
     if(set[0] == "x") {
       switch(results[0]) {
         case "t": // terminating
-          return message.channel.send(`I think this is a terminating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, {embed: embed});
+          return message.reply({content: `I think this is a terminating decimal. If I'm wrong, try this command again with a **\`-r\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, embeds: [embed]});
         default: // repeating
-          return message.channel.send(`I think this is a repeating decimal, <@${message.author.id}>. If I'm wrong, try this command again with a **\`-t\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, {embed: embed});
+          return message.reply({content: `I think this is a repeating decimal. If I'm wrong, try this command again with a **\`-t\`** at the end.\n${flow[getRandomInt(0, flow.length-1)]} here you go!`, embeds: [embed]});
       }
     } else {
-      return message.channel.send(`Here you go, <@${message.author.id}>!`, {embed: embed});
+      return message.reply({content: `Here you go!`, embeds: [embed]});
     }
   }
 };
@@ -331,12 +332,13 @@ exports.run = {
 exports.help = {
   "name": "fraction",
   "aliases": ["frac", "dtof", "df"],
-  "description": "Converts a decimal to a simplified fraction (in base 10).\nDefaults to an improper fraction.",
+  "description": "Converts a decimal to a simplified fraction in base 10. Defaults to an improper fraction.",
   "usage": `${process.env.prefix}fraction <decimal> [queries]`,
   "params": "<decimal> [queries]",
+  "default": 0,
   "helpurl": "https://l375.weebly.com/gyrocmd-fraction",
   "weight": 2,
-  "hide": 0,
-  "wip": 0,
-  "dead": 0,
+  "hide": false,
+  "wip": false,
+  "dead": false
 };

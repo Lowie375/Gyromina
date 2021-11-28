@@ -47,7 +47,8 @@ The last event that took place was the pride event (June 2021)
 * Make sure all requested permissions are enabled
   * Critical: **`Send Messages`**, **`View Channels`**, **`Read Message History`**, **`Add Reactions`**, **`Attach Files`**, **`Embed Links`**
   * Highly recommended: **`Send Messages in Threads`**, **`Use External Emojis`**, **`Manage Messages`**
-* You're good to go! Have fun!
+* **[Toggle any configuration options as desired](docs/SERVER_CONFIG.md)**
+* **You're good to go! Have fun!**
 
 ### Test or Local Bots (for contributors/debuggers)
 

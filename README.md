@@ -19,6 +19,7 @@ Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.
 Latest stable build: v1.2.0  
 <!-- Latest indev build: v1.2.0-pre.4 -->
 
+
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
 ### External Links
@@ -84,11 +85,6 @@ Contributions to Gyromina are always welcome! I'm a novice, so I don't know the 
 Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
 
 ### Contributors
-
-[![Major Contributor 💻][maj-contrib-label]][maj-contrib-label]
-[![Minor Contributor 💾][min-contrib-label]][min-contrib-label]
-[![Debugger 🦟][debugger-label]][debugger-label]
-[![Beta Tester ⌚][tester-label]][tester-label]
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
 * 💻 Nao - [@naoei](https://github.com/naoei)

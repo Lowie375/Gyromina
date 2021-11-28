@@ -10,8 +10,6 @@ const {genErrorMsg, codeRNG} = require('../systemFiles/refcodes.js');
 // RNG, permission checker, emoji puller, rejection embed generator, embed colour checker
 const {getRandomInt, p, getEmoji, genRejectEmbed, eCol} = require('../systemFiles/globalFunctions.js');
 
-
-
 // Additional setup
 const getBuffer = bent('buffer');
 const cancelRegex = /stop|cancel|end|quit|time/i;

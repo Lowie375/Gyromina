@@ -5,7 +5,6 @@ const {FtoC, CtoF, CtoK, KtoC, FtoR, RtoF, eCol, genRejectEmbed} = require('../s
 // conversion arrays
 const {unitNames, converter, metricNames, metrics, registeredMetrics, metricDoubles, metricTriples} = require('../systemFiles/globalArrays.js');
 
-
 // Splitter separators + extraneous cases
 const separators = /[_-]/;
 const ex = /^(cubic|square)/;

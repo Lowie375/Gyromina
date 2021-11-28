@@ -60,7 +60,7 @@ exports.run = {
       .setColor(eCol(style.e.default))
       .setFooter(`Requested by ${message.author.tag} - ${stamp()}`, message.author.avatarURL())
 
-    if(client.relUp !== false) {
+    if(!isNaN(client.relUp) && !!client.relUp) {
       let up = client.herokuRel;
       let millival = locTime - up;
       let out = reDate(millival);

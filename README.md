@@ -35,8 +35,8 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-Currently, there is no event active.  
-The last event that took place was the pride event (June 2021)
+The **winter** event is currently active!  
+For the month of December, Gyromina's default colour will shift to blue.
 
 ## Setup
 

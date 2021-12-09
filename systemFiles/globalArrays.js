@@ -231,5 +231,5 @@ exports.statBlock = [
    [],
    ["happy pride month!", "with pronouns!", "gay rights!", "trans rights!", "with colours!", "with flags!"],
    ["happy holidays!", "with snowflakes!", "in the snow!"],
-   ["happy birthday Discord!", "with blue!"]
+   ["happy birthday Discord!", "with blurple!", "with Wumpus!"]
  ];

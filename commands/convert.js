@@ -38,13 +38,13 @@ function powerCheck(root) {
 function metricCheck(x) {
   if (x.length == 0) {
     // No unit; prefix IS unit
-    return 2;
+    return 1;
   }
   for (let i = 0; i < registeredMetrics.length; i++) {
     if(registeredMetrics[i].startsWith(x))
       return 0;
   }
-  return 2;
+  return 1;
 }
 
 function metricExSlicer(x, pos) {
@@ -98,7 +98,7 @@ function cleanArgs(args) {
     // Checks if the argument is a single character
     if (args2[j].length <= 1) {
       // Single character; no prefix
-      cleaned[j] = args2[j];
+      cleaned[j] = args2[j].toLowerCase();
     } else {
       // Determines possible metric prefixes
       let exArg = exCheck(args2[j]);
@@ -110,11 +110,11 @@ function cleanArgs(args) {
       }
       // Checks if a prefix was found
       if (checkCtr == 0) { // No prefix; leave things as-is
-        cleaned[j] = args2[j];
+        cleaned[j] = args2[j].toLowerCase();
       } else { // Prefix; check if the prefix is exclusive
         if (checkCtr == 1) { // Exclusive
           cleaned[j+3] = save[0][1];
-          cleaned[j] = args2[j].slice(1);
+          cleaned[j] = args2[j].slice(1).toLowerCase();
         } else if (checkCtr != 0 && checkCtr != 1) {
           // Checks if the prefixes have the same index
           let index = save[0][1];
@@ -130,28 +130,22 @@ function cleanArgs(args) {
                 max = metricNames[0][item[0]].length;
             }
             cleaned[j+3] = save[0][1];
-            cleaned[j] = metricExSlicer(args2[j], max);
+            cleaned[j] = metricExSlicer(args2[j], max).toLowerCase();
           } else {
             // Runs a deeper check
             let dpr = deepCleanArgs(args2, save, j, 2);
             cleaned[j+3] = dpr[0];
-            cleaned[j] = metricExSlicer(args2[j], dpr[1]);
+            cleaned[j] = metricExSlicer(args2[j], dpr[1]).toLowerCase();
           }
         }
     
         // Checks if the prefix was actually a valid prefix
         let validate = metricCheck(cleaned[j]);
         switch(validate) {
-          case 0: // OK, continue
+          case 0: { // OK, continue
             break;
-          case 1: { // Extraneous, perform additional check
-            let checkOutput = metricCheckAddl(cleaned[j], cleaned[j+3]);
-            if (checkOutput != null) {
-              cleaned[j] = checkOutput;
-              break;
-            }
           }
-          case 2: // Not a prefix, undo split
+          default: // Not a prefix, undo split
             cleaned[j] = args2[j];
             cleaned[j+3] = -1;
             break;

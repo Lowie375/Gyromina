@@ -8,7 +8,7 @@
 [![Last Commit (main)][main-commit-img]][main-tree-link]
 [![Last Commit (indev-branch)][indev-commit-img]][indev-tree-link]
 [![Build Status][build-img]][build-link]
-[![Gyromina Dev Discord][discord-img]][discord-link]
+[![Gyromina Dev Discord][discord-img]][discord]
 
 ## About
 
@@ -16,14 +16,14 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.2.1  
-<!-- Latest indev build: v1.2.0-pre.4 -->
+Latest stable build: v1.2.2  
+<!-- Latest indev build: v1.2.0 -->
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
 ### External Links
 
-**[Info Pages][info]** - **[Commands][commands]** - **[Changelog][log]** - **[Invite Link][invite]**
+**[Info Pages][info]** - **[Commands][commands]** - **[Changelog][log]** - **[Invite Link][invite]** - **[Development Server][discord]**
 
 ### Overview
 
@@ -36,7 +36,7 @@ Gyromina contains an assortment of features, including a random colour and numbe
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
 The **winter** event is currently active!  
-For the month of December, Gyromina's default colour will shift to blue.
+For the month of December, Gyromina's default UI colour will shift to light blue.
 
 ## Setup
 
@@ -102,6 +102,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [info]: https://l375.weebly.com/gyromina
 [invite]: https://discord.com/api/oauth2/authorize?client_id=490590334758420481&permissions=412317248576&scope=bot%20applications.commands
 [log]: https://l375.weebly.com/gyro-log
+[discord]: https://discord.gg/Bsaz4r7
 
 [main-pkg]: https://github.com/Lowie375/Gyromina/blob/main/package.json
 [indev-pkg]: https://github.com/Lowie375/Gyromina/blob/indev-branch/package.json
@@ -112,7 +113,6 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [main-tree-link]: https://github.com/Lowie375/Gyromina/tree/main
 [indev-tree-link]: https://github.com/Lowie375/Gyromina/tree/indev-branch
 [build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
-[discord-link]: https://discord.gg/Bsaz4r7
 
 <!-- Banners -->
 [gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png

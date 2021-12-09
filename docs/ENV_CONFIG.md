@@ -28,7 +28,7 @@ For older configurations, please consult the `README` file for your version of G
   (WARNING: these commands may be unstable, use them at your own risk!)
   - `0` = **disabled**: experimental commands *off*, slash commands deployed *globally*
   - `1` = **enabled**: experimental commands *on*, slash commands deployed *locally*
-  - `2` = **test-disabled**: experimental commands *off*, slash commands deployed *locally* (to be implemented)
+  - `2` = **test-disabled**: experimental commands *off*, slash commands deployed *locally*
 
 ### `hostID`: Discord user ID
 

@@ -233,3 +233,4 @@ exports.statBlock = [
    ["happy holidays!", "with snowflakes!", "in the snow!"],
    ["happy birthday Discord!", "with blue!"]
  ];
+ 

@@ -1,8 +1,9 @@
-// Require discord.js, the package file, the style file, the embed colour checker, and the timestamp generator
-const D = require('discord.js');
-const package = require('../package.json');
-const style = require('../systemFiles/style.json');
-const {eCol, stamp} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const S = require('@discordjs/builders'); // slash command builder
+const package = require('../package.json'); // package file
+const style = require('../systemFiles/style.json'); // style file
+// embed colour checker, timestamp generator, responder
+const {eCol, stamp, respond} = require('../systemFiles/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {
@@ -49,7 +50,11 @@ exports.run = {
     }
 
     // Sends the embed
-    return message.channel.send({embeds: [embed]});
+    return respond({embeds: [embed]}, [message, message]);
+  },
+  slashArgs(interact) {
+    // template: no args
+    return "";
   },
 };
 
@@ -62,5 +67,11 @@ exports.help = {
   "weight": 1,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("contributors")
+      .setDescription("Lists all of Gyromina's contributors")
+  }
 };

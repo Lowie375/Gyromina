@@ -26,6 +26,17 @@ exports.run = {
       });
     }
   },
+  /*slashArgs(interact) {
+    // template: "loose" args
+    let opts = [
+      interact.options.getString("message")
+    ];
+    for(let i = 0; i < opts.length; i++) {
+      if(opts[i] === null)
+        opts[i] = "";
+    }
+    return opts.join(" ");
+  },*/
 };
 
 exports.help = {
@@ -38,5 +49,12 @@ exports.help = {
   "weight": 1,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false/*,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("delelte")
+      .setDescription("\'Attempts\' to delete the trigger message")
+      .addStringOption(o => o.setName("message").setDescription("The message to attempt to delete").setRequired(false))
+  }*/
 };

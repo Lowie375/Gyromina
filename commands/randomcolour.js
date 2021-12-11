@@ -1,8 +1,11 @@
-// randomcolour V2 - Made by Irisu (irisuwastaken)
+const D = require('discord.js'); // discord.js
+const S = require('@discordjs/builders'); // slash command builder
+// colour conversions, responder
+const {getRandomInt, hexToRgb, rgbToCmyk, rgbToHsl, rgbToHsv, hexToInt, respond} = require('../systemFiles/globalFunctions.js');
 
-// Require discord.js, the RNG, and some colour conversions
-const D = require('discord.js');
-const {getRandomInt, hexToRgb, rgbToCmyk, rgbToHsl, rgbToHsv, hexToInt} = require('../systemFiles/globalFunctions.js');
+/** randomcolour V2 - hex generator
+ * @author Irisu (irisuwastaken)
+ */
 
 function getRandomHex() {
   let r = getRandomInt(0, 255);
@@ -32,7 +35,11 @@ exports.run = {
     }
 
     // Sends the embed
-    return message.reply({content: `Here you go!`, embeds: [embed]});
+    return respond({content: `Here you go!`, embeds: [embed]}, [message, message], {reply: true});
+  },
+  slashArgs(interact) {
+    // template: no args
+    return "";
   },
 };
 
@@ -45,5 +52,11 @@ exports.help = {
   "weight": 1,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("randomcolour")
+      .setDescription("Returns a random colour in various formats")
+  }
 };

@@ -1,4 +1,6 @@
-const {getRandomInt} = require('../systemFiles/globalFunctions.js'); // RNG
+const S = require('@discordjs/builders'); // slash command builder
+// RNG, responder, season checker
+const {getRandomInt, respond, s} = require('../systemFiles/globalFunctions.js');
 
 const flag = "🏳️‍🌈";
 const quips = [["Casserole in the closet!", 1],
@@ -15,10 +17,14 @@ exports.run = {
     var time = new Date();
     // Checks if the quip is pride-related
     var output = quips[quip][0];
-    if (quips[quip][1] === 1 && time.getUTCMonth() == 5)
+    if (quips[quip][1] === 1 && s() === 1)
       output += ` ${flag}`;
     // Sends the quip
-    return message.channel.send(output);
+    return respond(output, [message, message]);
+  },
+  slashArgs(interact) {
+    // template: no args
+    return "";
   },
 };
 
@@ -30,5 +36,11 @@ exports.help = {
   "weight": 1,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("casserole")
+      .setDescription("Makes a quip about casseroles and closets")
+  }
 };

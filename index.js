@@ -7,9 +7,9 @@ const e = require('./systemFiles/emojis.json'); // emoji file
  // deploy functions
 const {localDeploy, globalDeploy} = require('./systemFiles/deploy.js');
  // permission checker, RNG, emoji puller
-const {p, getRandomInt, getEmoji} = require('./systemFiles/globalFunctions.js');
+const {p, getRandomInt, getEmoji, s} = require('./systemFiles/globalFunctions.js');
  // status array
-const {statBlock} = require('./systemFiles/globalArrays.js');
+const {statBlock, seasonalStatBlock} = require('./systemFiles/globalArrays.js');
  // refcode generators
 const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 
@@ -66,14 +66,15 @@ client.on('ready', async () => {
       // API pull unsuccessful
       console.error("Heroku API pull unsuccessful -", err.stack)
       eventLog.send("Heroku API pull unsuccessful.");
-      client.relUp = false;
+      client.herokuRel = false;
   })
 
   // Sets Gyromina's current status + deploys commands
   if(process.env.exp === "1") {
     // Debug/test status
     client.user.setStatus("idle");
-    client.user.setActivity(`${statBlock[1][getRandomInt(0,statBlock[1].length-1)]} - ${process.env.prefix}vt - v${package.version}`);
+    let fullBlock = statBlock[1].concat(seasonalStatBlock[s()]);
+    client.user.setActivity(`${fullBlock[getRandomInt(0, fullBlock.length-1)]} - ${process.env.prefix}vt - v${package.version}`);
     // Deploys slash commands locally (to test guild)
     await localDeploy(client).then(res => {
       if(!res) {
@@ -87,7 +88,8 @@ client.on('ready', async () => {
   } else {
     // Normal status
     client.user.setStatus("online");
-    client.user.setActivity(`${statBlock[0][getRandomInt(0,statBlock[0].length-1)]} - ${process.env.prefix}help - v${package.version}`);
+    let fullBlock = statBlock[0].concat(seasonalStatBlock[s()]);
+    client.user.setActivity(`${fullBlock[getRandomInt(0, fullBlock.length-1)]} - ${process.env.prefix}help - v${package.version}`);
     // Checks slash command deployment method
     if(process.env.exp !== "0") {
       // Deploys slash commands locally (to test guild)
@@ -100,8 +102,8 @@ client.on('ready', async () => {
           eventLog.send(`Local slash command deployment failed.`);
         }
       });
-    } else if(client.readyAt - client.herokuRel <= 129600000) {
-      // Deploys slash commands globally (if within 36h of last Gyromina deploy)
+    } else if(!client.herokuRel || client.readyAt - client.herokuRel <= 43200000) {
+      // Deploys slash commands globally (if within 12h of last Gyromina deploy)
       await globalDeploy(client).then(res => {
         if(!res) {
           console.log(colors.main(`Global slash command deployment requested, commands should be deployed within the hour.`));

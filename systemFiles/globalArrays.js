@@ -222,4 +222,14 @@ exports.statBlock = [
    "with bugs!", "around with code!", "console.log(\"haha\");", "console.log(\"oops\");", "with breakpoints!",
    "with environment variables!", "with brand new code!", "the \"crash\" challenge", "with errors!", "in the backend!",
    "spot the difference!", "red light, green light!", "the waiting game…"]
-]
+];
+
+/** A list of additional statuses to add to stat block rotations based on season
+ * @summary [0] = default/forced, [1] = pride, [2] = winter, [3] = blurple
+ */
+ exports.seasonalStatBlock = [
+   [],
+   ["happy pride month!", "with pronouns!", "gay rights!", "trans rights!", "with colours!", "with flags!"],
+   ["happy holidays!", "with snowflakes!", "in the snow!"],
+   ["happy birthday Discord!", "with blurple!", "with Wumpus!"]
+ ];

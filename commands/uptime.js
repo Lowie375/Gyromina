@@ -60,7 +60,7 @@ exports.run = {
       .setColor(eCol(style.e.default))
       .setFooter(`Requested by ${message.author.tag} - ${stamp()}`, message.author.avatarURL())
 
-    if(!isNaN(client.relUp) && !!client.relUp) {
+    if(!isNaN(client.herokuRel)) {
       let up = client.herokuRel;
       let millival = locTime - up;
       let out = reDate(millival);
@@ -98,7 +98,7 @@ exports.help = {
   "wip": false,
   "dead": false,
   "s": { // for slash-enabled commands
-    "wip": true,
+    "wip": false,
     "builder": new S.SlashCommandBuilder()
       .setName("uptime")
       .setDescription("Shows Gyromina's uptime")

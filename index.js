@@ -66,7 +66,7 @@ client.on('ready', async () => {
       // API pull unsuccessful
       console.error("Heroku API pull unsuccessful -", err.stack)
       eventLog.send("Heroku API pull unsuccessful.");
-      client.relUp = false;
+      client.herokuRel = false;
   })
 
   // Sets Gyromina's current status + deploys commands
@@ -102,7 +102,7 @@ client.on('ready', async () => {
           eventLog.send(`Local slash command deployment failed.`);
         }
       });
-    } else if(!client.relUp || client.readyAt - client.herokuRel <= 43200000) {
+    } else if(!client.herokuRel || client.readyAt - client.herokuRel <= 43200000) {
       // Deploys slash commands globally (if within 12h of last Gyromina deploy)
       await globalDeploy(client).then(res => {
         if(!res) {

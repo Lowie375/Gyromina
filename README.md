@@ -16,7 +16,7 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.2.2  
+Latest stable build: v1.2.3  
 <!-- Latest indev build: v1.2.0 -->
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)

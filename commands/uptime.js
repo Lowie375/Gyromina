@@ -98,7 +98,7 @@ exports.help = {
   "wip": false,
   "dead": false,
   "s": { // for slash-enabled commands
-    "wip": true,
+    "wip": false,
     "builder": new S.SlashCommandBuilder()
       .setName("uptime")
       .setDescription("Shows Gyromina's uptime")

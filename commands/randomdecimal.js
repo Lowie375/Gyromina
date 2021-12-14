@@ -1,12 +1,13 @@
-// Require discord.js, the style file, and the emoji colour checker
-const D = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {eCol} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const S = require('@discordjs/builders'); // slash command builder
+const style = require('../systemFiles/style.json'); // style file
+// embed colour checker, minMax constrainer, responder, rejection embed generator
+const {eCol, minMax, respond, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 function getRandomDecimal(min, max, decims) {
 
-  var places = Math.round(decims);
-  var factor = Math.pow(10, places);
+  //var places = Math.round(decims);
+  var factor = Math.pow(10, decims);
 
   min = Math.ceil(min * factor);
   max = Math.floor(max * factor);
@@ -28,9 +29,9 @@ exports.run = {
     if (args.length === 0)
       number = getRandomDecimal(0, 1, 10);
     else if (args[0] < 0)
-      return message.reply(`I can\'t generate a decimal number to a negative amount of decimal places!`);
+      return respond({embeds: [genRejectEmbed(message, `\`places\` argument is negative`, `Please enter a valid positive integer and try again.`)]}, [message, message], {reply: true, eph: true});
     else if (args[0] >= 0)
-      number = getRandomDecimal(0, 1, args[0]);
+      number = getRandomDecimal(0, 1, minMax(parseInt(args[0]), 1, 16));
     
     // Creates the embed
     const embed = new D.MessageEmbed()
@@ -38,8 +39,16 @@ exports.run = {
       .setColor(eCol(style.e.default));
 
     // Sends the embed
-    return message.reply({content: `Here you go!`, embeds: [embed]});
-  }
+    return respond({content: `Here you go!`, embeds: [embed]}, [message, message], {reply: true});
+  },
+  slashArgs(interact) {
+    // template: single arg
+    let opts = interact.options.getNumber("places")
+    switch(opts) {
+      case null: return "";
+      default: return opts;
+    }
+  },
 };
 
 exports.help = {
@@ -52,5 +61,12 @@ exports.help = {
   "weight": 2,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("randomdecimal")
+      .setDescription("Generates a random decimal number between 0 and 1")
+      .addNumberOption(o => o.setName("places").setDescription("Number of decimal places to generate the decimal to (default = 10)").setRequired(false))
+  }
 };

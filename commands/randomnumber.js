@@ -1,7 +1,8 @@
-// Require discord.js, the style file, the RNG, and the embed colour checker
-const D = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const S = require('@discordjs/builders'); // slash command builder
+const style = require('../systemFiles/style.json'); // style file
+// RNG, embed colour checker, responder, rejection embed generator
+const {getRandomInt, eCol, respond, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;
@@ -59,19 +60,18 @@ exports.run = {
 
     // Checks if no bounds were set
     if (args.length === 0)
-      return message.reply(`I can\'t generate a number in a non-existent range!`)
+      return respond({embeds: [genRejectEmbed(message, `\`places\` argument is negative`, `Please enter a valid positive integer and try again.`)]}, [message, message], {reply: true, eph: true});
 
     // Checks numbers and generates
-    if (args.length >= 2) {
-      if (!isNaN(args[0]) && !isNaN(args[1]))
+    if(isNaN(parseInt(args[0]))) { // invalid num1
+      return respond({embeds: [genRejectEmbed(message, `Non-numerical \`num1\` argument`, `Gyromina can\'t generate a random number between non-numerical values!\nPlease enter a valid number and try again.`)]}, [message, message], {reply: true, eph: true});
+    } else if(args.length >= 2) {
+      if(isNaN(parseInt(args[1]))) // invalid num2
+        return respond({embeds: [genRejectEmbed(message, `Non-numerical \`num2\` argument`, `Gyromina can\'t generate a random number between non-numerical values!\nPlease enter a valid number and try again.`)]}, [message, message], {reply: true, eph: true});
+      else
         number = getRandomNumber(args[0], args[1]);
-      else
-        return message.reply(`I can\'t generate a random number between non-numerical values!`);
     } else {
-      if (!isNaN(args[0]))
-        number = getRandomNumber(0, args[0]);
-      else
-        return message.reply(`I can\'t generate a random number between non-numerical values!`);
+      number = getRandomNumber(0, args[0]);
     }
 
     // Creates the embed
@@ -80,8 +80,23 @@ exports.run = {
       .setColor(eCol(style.e.default));
 
     // Sends the embed
-    return message.reply({content: `Here you go!`, embeds: [embed]});
-  }
+    return respond({content: `Here you go!`, embeds: [embed]}, [message, message], {reply: true});
+  },
+  slashArgs(interact) {
+    // template: multi arg + trailing optionals
+    let opts = [
+      interact.options.getNumber("num1"),
+      interact.options.getNumber("num2")
+    ];
+    for(let i = 0; i < opts.length; i++) {
+      if(opts[i] === null)
+        opts[i] = "";
+    }
+    while(opts[opts.length-1] === "") {
+      opts.pop();
+    }
+    return opts.join(" ");
+  },
 };
 
 exports.help = {
@@ -94,5 +109,13 @@ exports.help = {
   "weight": 2,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("randomnumber")
+      .setDescription("Generates a random number between two numbers, inclusive")
+      .addNumberOption(o => o.setName("num1").setDescription("First bound to generate a number between").setRequired(true))
+      .addNumberOption(o => o.setName("num2").setDescription("Second bound to generate a number between (default = 0)").setRequired(false))
+  }
 };

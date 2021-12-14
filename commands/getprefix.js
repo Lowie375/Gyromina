@@ -11,7 +11,7 @@ const msgResp = [
 exports.run = {
   execute(message, args, client) {
     var output = `My message command prefix is **\`${process.env.prefix}\`**!`;
-    return respond((message.gyrType == "msg" ? `${output}\n*${msgResp[getRandomInt(0, msgResp.length-1)]}*` : output), [message, message], {eph: true, reply: true});
+    return respond((message.gyrType == "msg" ? `${output}\n*${msgResp[getRandomInt(0, msgResp.length-1)]}*` : output), [message, message], {reply: true, eph: true});
   },
   slashArgs(interact) {
     // template: no args

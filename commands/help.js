@@ -124,7 +124,7 @@ exports.run = {
         || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
       if(!cmdy) // return an (ephemeral) rejection message
-        return respond({embeds: [genRejectEmbed(message, `\`${commandName}\` command not found`, "Please check your spelling and try again.")]}, [message, message], {eph: true});
+        return respond({embeds: [genRejectEmbed(message, `\`${commandName}\` command not found`, "Please check your spelling and try again.")]}, [message, message], {reply: true, eph: true});
 
       // Begins preparing embed data
       var ext = "";
@@ -188,7 +188,7 @@ exports.run = {
       || client.games.find(gm => gm.label.aliases && gm.label.aliases.includes(gameName));
 
       if(!gmz) // return an (ephemeral) rejection message
-      return respond({embeds: [genRejectEmbed(message, `\`${gameName}\` game not found`, "Please check your spelling and try again.")]}, [message, message], {eph: true});
+      return respond({embeds: [genRejectEmbed(message, `\`${gameName}\` game not found`, "Please check your spelling and try again.")]}, [message, message], {reply: true, eph: true});
 
       // Begins preparing embed data
       var ext = "";

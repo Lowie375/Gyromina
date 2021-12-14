@@ -2,8 +2,8 @@ const D = require('discord.js'); // discord.js
 const colors = require('colors'); // colors
 const e = require('../systemFiles/emojis.json'); // emoji file
 const style = require('../systemFiles/style.json'); // style file
-// RNG, responder, emoji puller
-const {getRandomInt, respond, getEmoji} = require('../systemFiles/globalFunctions.js');
+// RNG, responder, emoji puller, rejection embed generator
+const {getRandomInt, respond, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 // Declares CBX characters for future use
 const genChars = ["0", "1", "2", "3", "5", "8", "l", "a", "w", "n", "p", "x", "-", "i", "_", "y", "h", "b", "t", "q", "j", "s", "r", "v", "k", "c", "g", "f", "m", "z", "e", "u"];
@@ -58,12 +58,14 @@ exports.genErrorMsg = function(message, client, error) {
   // Logs the error
   console.error(`REFCODE: ${newRef}\n`.nope, error);
 
-  // Sends a warning message in the channel
-  const embed = new D.MessageEmbed()
+  /*const embed = new D.MessageEmbed()
     .setTitle(`${warning} Something went wrong…`)
     .setColor(style.e.error)
-    .setDescription(`Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``);
-  respond({embeds: [embed]}, [message, message], {eph: true});
+    .setDescription(`Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``);*/
+
+  // Sends a rejection embed with the reference code in the channel
+  const embed = genRejectEmbed(message, "Something went wrong…", `Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``, {col: style.e.error, e: warning});
+  respond({embeds: [embed]}, [message, message], {reply: true, eph: true});
   
   // Sends the error to the Gyromina log channel
   const log = client.channels.cache.get(process.env.errorLog);

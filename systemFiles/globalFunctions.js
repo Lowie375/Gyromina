@@ -127,7 +127,7 @@ exports.stamp = function() {
 }
 
 /** Responds to a message or interaction
- * @param {object|string} resp A response object to send
+ * @param {object|string} resp A text string or response object to send
  * @param {D.Message[]|D.Interaction[]} msg The message or interaction objects [oldMsg, newMsg]
  * @param {object} options An options object with response-specific options
  * @param {boolean?} options.edit

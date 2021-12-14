@@ -1,7 +1,7 @@
-// Require discord.js, the style file, the RNG, and the embed colour checker
-const D = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {getRandomInt, eCol} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const style = require('../systemFiles/style.json'); // style file
+// RNG, embed colour checker, responder, rejection embed generator
+const {getRandomInt, eCol, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;
@@ -59,19 +59,19 @@ exports.run = {
 
     // Checks if no bounds were set
     if (args.length === 0)
-      return message.reply(`I can\'t generate a number in a non-existent range!`)
+      return message.reply({embeds: [genRejectEmbed(message, `\`num1\` argument not found`, `Gyromina can\'t generate a number in a non-existent range!\nPlease enter a valid number and try again.`)]});
 
     // Checks numbers and generates
     if (args.length >= 2) {
       if (!isNaN(args[0]) && !isNaN(args[1]))
         number = getRandomNumber(args[0], args[1]);
       else
-        return message.reply(`I can\'t generate a random number between non-numerical values!`);
+        return message.reply({embeds: [genRejectEmbed(message, `Non-numerical \`num1\` or \`num2\` arguments`, `Gyromina can\'t generate a random number between non-numerical values!\nPlease enter valid numbers and try again.`)]});
     } else {
       if (!isNaN(args[0]))
         number = getRandomNumber(0, args[0]);
       else
-        return message.reply(`I can\'t generate a random number between non-numerical values!`);
+        return message.reply({embeds: [genRejectEmbed(message, `Non-numerical \`num1\` argument`, `Gyromina can\'t generate a random number between non-numerical values!\nPlease enter a valid number and try again.`)]});
     }
 
     // Creates the embed

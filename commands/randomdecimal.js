@@ -1,7 +1,7 @@
-// Require discord.js, the style file, and the emoji colour checker
-const D = require('discord.js');
-const style = require('../systemFiles/style.json');
-const {eCol} = require('../systemFiles/globalFunctions.js');
+const D = require('discord.js'); // discord.js
+const style = require('../systemFiles/style.json'); // style file
+// embed colour checker, minMax constrainer, responder, rejection embed generator
+const {eCol, minMax, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
 
 function getRandomDecimal(min, max, decims) {
 
@@ -28,9 +28,9 @@ exports.run = {
     if (args.length === 0)
       number = getRandomDecimal(0, 1, 10);
     else if (args[0] < 0)
-      return message.reply(`I can\'t generate a decimal number to a negative amount of decimal places!`);
+      return message.reply({embeds: [genRejectEmbed(message, `Negative \`places\` argument`, `Please enter a valid positive integer and try again.`)]});
     else if (args[0] >= 0)
-      number = getRandomDecimal(0, 1, args[0]);
+      number = getRandomDecimal(0, 1, minMax(parseInt(args[0]), 1, 16));
     
     // Creates the embed
     const embed = new D.MessageEmbed()

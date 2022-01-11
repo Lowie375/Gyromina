@@ -35,11 +35,11 @@ exports.run = {
 
     // Creates the info embed
     const embed = new D.MessageEmbed()
-      .setAuthor("The Gyroscopic Dictionary", client.user.avatarURL())
+      .setAuthor({name: "The Gyroscopic Dictionary", iconURL: client.user.avatarURL()})
       .setColor(eCol(style.e.default))
       .setTitle("**Gy·ro·mi·na**   \`/ˈdʒaɪrɔmɪnə/\`")
       .setDescription(desc)
-      .setFooter(`Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, message.author.avatarURL())
+      .setFooter({text: `Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, iconURL: message.author.avatarURL()})
       .addField("*Origin:*", "​***\`    L-V3R7     --->    Gyromina   \`***\n*\` Jul 07, 2018        Sep 15, 2018 \`*")
       .addField("*Usage:*", "*\"You can invite Gyromina to your Discord server and view more information about Gyromina using the buttons below!\"*")
       .addField("*See also:*", "​*\`JavaScript\`, \`Node.js\`, \`discord.js\`, \`open source bot\`*")

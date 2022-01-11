@@ -56,9 +56,9 @@ exports.run = {
 
     // Sets up the embed
     const embed = new D.MessageEmbed()
-      .setAuthor("Gyromina Uptime", client.user.avatarURL())
+      .setAuthor({name: "Gyromina Uptime", iconURL: client.user.avatarURL()})
       .setColor(eCol(style.e.default))
-      .setFooter(`Requested by ${message.author.tag} - ${stamp()}`, message.author.avatarURL())
+      .setFooter({text: `Requested by ${message.author.tag} - ${stamp()}`, iconURL: message.author.avatarURL()});
 
     if(!isNaN(client.herokuRel)) {
       let up = client.herokuRel;

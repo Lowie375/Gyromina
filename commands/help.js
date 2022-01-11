@@ -52,6 +52,12 @@ function checkArgs(args) {
 function split(list, weight) {
   // Splits the command/game list into multiple parts to save vertical space in the embed
   let splitList = list.split('\n');
+  for(let i = 0; i < splitList.length; i++) {
+    if(splitList[i].startsWith("or ")) {
+      splitList[i-1] = `${splitList[i-1]}\n${splitList.splice(i, 1)}`;
+      i--;
+    }
+  }
   splitList.pop();
   let totWeight = 0;
   for (w of weight) {
@@ -134,7 +140,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter({text: `Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, iconURL: message.author.avatarURL()});
       if(cmdy.help.dead)
         embed.setColor(style.e.dead);
       else if(cmdy.help.wip)
@@ -198,7 +204,7 @@ exports.run = {
       ext += " ";
 
       // Sets up the embed
-      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter({text: `Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, iconURL: message.author.avatarURL()});
       if(gmz.label.deleted)
         embed.setColor(style.e.dead);
       else if(gmz.label.indev)
@@ -243,8 +249,8 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
-      embed.setAuthor("Game Library", client.user.avatarURL(), "https://l375.weebly.com/gyromina/");
+      embed.setFooter({text: `Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, iconURL: message.author.avatarURL()});
+      embed.setAuthor({name: "Game Library", iconURL: client.user.avatarURL(), url: "https://l375.weebly.com/gyromina/"});
       embed.setTitle(`Do **${process.env.prefix}help -g [game]** for more detailed game info.`);
 
       var glist = "";
@@ -310,8 +316,8 @@ exports.run = {
 
       // Sets up the embed
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, message.author.avatarURL());
-      embed.setAuthor("Main Command List", client.user.avatarURL(), "https://l375.weebly.com/gyromina/commands");
+      embed.setFooter({text: `Requested by ${message.author.tag} - <required>, [optional] - ${stamp()}`, iconURL: message.author.avatarURL()});
+      embed.setAuthor({name: "Main Command List", iconURL: client.user.avatarURL(), url: "https://l375.weebly.com/gyromina/commands"});
       embed.setTitle(`Do **${process.env.prefix}help [command]** for more detailed command info.`);
 
       var cmdlist = "";

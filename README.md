@@ -16,8 +16,8 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.2.3  
-Latest indev build: v1.3.0-alpha.1
+Latest stable build: v1.2.6  
+Latest indev build: v1.3.0-alpha.3
 
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
@@ -35,8 +35,8 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-The **winter** event is currently active!  
-For the month of December, Gyromina's default UI colour will shift to light blue.
+There is currently no event active.  
+(Last active event: December 2020 - Winter)
 
 ## Setup
 

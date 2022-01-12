@@ -44,10 +44,10 @@ exports.run = {
 };
 
 exports.help = {
-  "name": "randomcolour",
-  "aliases": ["randomcolor", "rc", "rcol"],
+  "name": "rcol",
+  "aliases": ["randomcolour", "randomcolor", "rc"],
   "description": "Returns a random colour in various formats.",
-  "usage": `${process.env.prefix}randomcolour`,
+  "usage": `${process.env.prefix}rcol`,
   "default": 0,
   "weight": 1,
   "hide": false,
@@ -56,7 +56,7 @@ exports.help = {
   "s": { // for slash-enabled commands
     "wip": true,
     "builder": new S.SlashCommandBuilder()
-      .setName("randomcolour")
+      .setName("rcol")
       .setDescription("Returns a random colour in various formats")
   }
 };

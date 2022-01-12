@@ -52,10 +52,10 @@ exports.run = {
 };
 
 exports.help = {
-  "name": "randomdecimal",
-  "aliases": ["rd", "randomdecim", "rdec"],
+  "name": "rdec",
+  "aliases": ["randomdecimal", "rd", "randomdecim"],
   "description": "Generates a random decimal number between 0 and 1, to up to 16 decimal places.\nDefaults to 10 decimal places.",
-  "usage": `${process.env.prefix}randomdecimal [places]`,
+  "usage": `${process.env.prefix}rdec [places]`,
   "params": "[places]",
   "default": 0,
   "weight": 2,
@@ -65,7 +65,7 @@ exports.help = {
   "s": { // for slash-enabled commands
     "wip": true,
     "builder": new S.SlashCommandBuilder()
-      .setName("randomdecimal")
+      .setName("rdec")
       .setDescription("Generates a random decimal number between 0 and 1")
       .addNumberOption(o => o.setName("places").setDescription("Number of decimal places to generate the decimal to (default = 10)").setRequired(false))
   }

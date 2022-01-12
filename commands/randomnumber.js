@@ -60,7 +60,7 @@ exports.run = {
 
     // Checks if no bounds were set
     if (args.length === 0)
-      return respond({embeds: [genRejectEmbed(message, `\`places\` argument is negative`, `Please enter a valid positive integer and try again.`)]}, [message, message], {reply: true, eph: true});
+      return respond({embeds: [genRejectEmbed(message, `\`num1\` argument not found`, `Gyromina can\'t generate a number in a non-existent range!\nPlease enter a valid number and try again.`)]}, [message, message], {reply: true, eph: true});
 
     // Checks numbers and generates
     if(isNaN(parseInt(args[0]))) { // invalid num1
@@ -100,10 +100,10 @@ exports.run = {
 };
 
 exports.help = {
-  "name": "randomnumber",
-  "aliases": ["number", "num", "rn", "rnum"],
+  "name": "rnum",
+  "aliases": ["randomnumber", "number", "num", "rn"],
   "description": "Generates a random number between two numbers, or one number and 0, inclusive.",
-  "usage": `${process.env.prefix}randomnumber <num1> [num2]`,
+  "usage": `${process.env.prefix}rnum <num1> [num2]`,
   "params": "<num1> [num2]",
   "default": 0,
   "weight": 2,
@@ -113,7 +113,7 @@ exports.help = {
   "s": { // for slash-enabled commands
     "wip": true,
     "builder": new S.SlashCommandBuilder()
-      .setName("randomnumber")
+      .setName("rnum")
       .setDescription("Generates a random number between two numbers, inclusive")
       .addNumberOption(o => o.setName("num1").setDescription("First bound to generate a number between").setRequired(true))
       .addNumberOption(o => o.setName("num2").setDescription("Second bound to generate a number between (default = 0)").setRequired(false))

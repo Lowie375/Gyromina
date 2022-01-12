@@ -153,7 +153,7 @@ exports.run = {
     switch (col[0]) {
       case "amb": {
         let blurb = "Defaulted to a colour integer.\nIf this is a hex code, add \`#\` or \`0x\` in front of it and try again."
-        return message.reply({content: `Here you go!`, embeds: [genRejectEmbed(message, "Ambiguous input", blurb, {col: style.e.warn, e: getEmoji(e.warn, e.alt.warn)}), embed]});
+        return message.reply({content: `Here you go!`, embeds: [genRejectEmbed(message, "Ambiguous input", blurb, {col: style.e.warn, e: getEmoji(message, e.warn, e.alt.warn)}), embed]});
       }
       default: return message.reply({content: `Here you go!`, embeds: [embed]});
     }

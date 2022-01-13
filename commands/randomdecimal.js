@@ -6,7 +6,6 @@ const {eCol, minMax, respond, genRejectEmbed} = require('../systemFiles/globalFu
 
 function getRandomDecimal(min, max, decims) {
 
-  //var places = Math.round(decims);
   var factor = Math.pow(10, decims);
 
   min = Math.ceil(min * factor);
@@ -43,12 +42,12 @@ exports.run = {
   },
   slashArgs(interact) {
     // template: single arg
-    let opts = interact.options.getNumber("places")
+    let opts = interact.options.getInteger("places")
     switch(opts) {
       case null: return "";
       default: return opts;
     }
-  },
+  }
 };
 
 exports.help = {
@@ -67,6 +66,6 @@ exports.help = {
     "builder": new S.SlashCommandBuilder()
       .setName("rdec")
       .setDescription("Generates a random decimal number between 0 and 1")
-      .addNumberOption(o => o.setName("places").setDescription("Number of decimal places to generate the decimal to (default = 10)").setRequired(false))
+      .addIntegerOption(o => o.setName("places").setDescription("Number of decimal places to generate the decimal to (default = 10)").setRequired(false))
   }
 };

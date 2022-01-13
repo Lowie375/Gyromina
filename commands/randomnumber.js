@@ -83,7 +83,7 @@ exports.run = {
     return respond({content: `Here you go!`, embeds: [embed]}, [message, message], {reply: true});
   },
   slashArgs(interact) {
-    // template: multi arg + trailing optionals
+    // template: trailing optionals
     let opts = [
       interact.options.getNumber("num1"),
       interact.options.getNumber("num2")

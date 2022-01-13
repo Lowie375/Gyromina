@@ -14,7 +14,6 @@ exports.run = {
   execute(message, args, client) {
     // Quip setup
     var quip = getRandomInt(0, quips.length-1);
-    var time = new Date();
     // Checks if the quip is pride-related
     var output = quips[quip][0];
     if (quips[quip][1] === 1 && s() === 1)

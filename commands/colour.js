@@ -213,7 +213,7 @@ exports.run = {
       interact.options.getString("hsl"),
       interact.options.getString("hsv"),
       interact.options.getString("cmyk"),
-      interact.options.getNumber("int"),
+      interact.options.getInteger("int"),
       interact.options.getString("name")
     ];
     for(let i = 0; i < opts.length; i++) {
@@ -232,6 +232,7 @@ exports.help = {
   "usage": `${process.env.prefix}col <colour>`,
   "params": "<colour>",
   "default": 0,
+  "helpurl": "https://l375.weebly.com/gyrocmd-col",
   "weight": 1,
   "hide": false,
   "wip": false,
@@ -246,7 +247,7 @@ exports.help = {
       .addStringOption(o => o.setName("hsl").setDescription("An HSL colour code: hsl(<h>, <s>, <l>)").setRequired(false))
       .addStringOption(o => o.setName("hsv").setDescription("An HSV colour code: hsv(<h>, <s>, <v>)").setRequired(false))
       .addStringOption(o => o.setName("cmyk").setDescription("A CMYK colour code: cmyk(<c>, <m>, <y>, <k>)").setRequired(false))
-      .addNumberOption(o => o.setName("int").setDescription("A colour integer: <int>").setRequired(false))
+      .addIntegerOption(o => o.setName("int").setDescription("A colour integer: <int>").setRequired(false))
       .addStringOption(o => o.setName("name").setDescription("A legacy/custom colour name: <name>").setRequired(false))
   }
 };

@@ -10,10 +10,10 @@ exports.run = {
 
     // Creates the crediting embed
     const embed = new D.MessageEmbed()
-      .setAuthor("Gyromina Contributors", client.user.avatarURL())
+      .setAuthor({name: "Gyromina Contributors", iconURL: client.user.avatarURL()})
       .setColor(eCol(style.e.default))
       .setTitle("A huge thanks to everyone who has contributed to Gyromina!")
-      .setFooter(`Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, message.author.avatarURL())
+      .setFooter({text: `Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, iconURL: message.author.avatarURL()})
     
     // Creates the list of contributors
     let c;

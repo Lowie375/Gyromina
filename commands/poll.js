@@ -148,7 +148,7 @@ exports.run = {
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
       embed.setColor(eCol(style.e.default));
-      embed.setFooter(`Poll created by ${message.author.tag} - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter({text: `Poll created by ${message.author.tag} - ${stamp()}`, iconURL: message.author.avatarURL()});
       if (content != "")
         embed.setDescription(`${content}`);
 
@@ -265,7 +265,7 @@ exports.run = {
       embed.setTitle(`${prompt}`);
       embed.setColor(eCol(style.e.default));
       embed.setDescription(`${content}`);
-      embed.setFooter(`Poll created by ${message.author.tag} - ${stamp()}`, message.author.avatarURL());
+      embed.setFooter({text: `Poll created by ${message.author.tag} - ${stamp()}`, iconURL: message.author.avatarURL()});
 
       // Sends the embed
       return message.channel.send({embeds: [embed]})

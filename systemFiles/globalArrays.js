@@ -162,7 +162,7 @@ exports.metricTriples = ["cubicmetres", "cubicmeters", "metrescubed", "meterscub
 // COLOUR
 
 /** A list of colour names and their corresponding hex codes  
- * (Colour data taken from https://www.w3schools.com/colors/colors_hex.asp)
+ * @see https://www.w3schools.com/colors/colors_hex.asp
  * @summary [0] = name, [1] = hex code
  */
 exports.colNames = [ 
@@ -211,25 +211,26 @@ exports.colNames = [
 // MISC
 
 /** A list of statuses for Gyromina to rotate through on each dyno refresh
- * @summary [0] = standard, [1] = experimental mode
+ * @summary [0] = persistent, [1] = experimental mode, [2] = update-specific
  */
 exports.statBlock = [
-  ["with threads!", "with dice!", "with slashes!", "critical hit!", "nat 1, sad…",
-   "with buttons!", "with fancy links!", "with Discord!", "with HSV colours!", "with HSL colours!",
-   "with new colours!", "shiny math rocks!", "with new stuff!"
-  ],
+  ["with Discord!", "with new stuff!", "with embeds!", "with emojis!", "with bot users!", "games!"],
   ["with the debugger!", "with variables!", "in experimental mode!", "in the editor!", "with programmers!",
    "with bugs!", "around with code!", "console.log(\"haha\");", "console.log(\"oops\");", "with breakpoints!",
    "with environment variables!", "with brand new code!", "the \"crash\" challenge", "with errors!", "in the backend!",
-   "spot the difference!", "red light, green light!", "the waiting game…"]
+   "spot the difference!", "red light, green light!", "the waiting game…", "gateway timeout", "API timeout",
+   "the \"exact instructions\" challenge", "console.log(\"yay!\");"],
+  ["with slashes!", "with buttons!", "with fancy links!", "with arguments!", "with more commands!",
+   "with new systems!", "with new frameworks!", "with hex codes!", "with the converter!"]
 ];
 
 /** A list of additional statuses to add to stat block rotations based on season
  * @summary [0] = default/forced, [1] = pride, [2] = winter, [3] = blurple
  */
  exports.seasonalStatBlock = [
-   [],
-   ["happy pride month!", "with pronouns!", "gay rights!", "trans rights!", "with colours!", "with flags!"],
-   ["happy holidays!", "with snowflakes!", "in the snow!"],
-   ["happy birthday Discord!", "with blurple!", "with Wumpus!"]
+   ["in green!"],
+   ["happy pride month!", "with pronouns!", "gay rights!", "trans rights!", "with colours!", "with flags!", "🏳️‍🌈🏳️‍⚧️",
+    "with rainbows!", "in a sea of colours!"],
+   ["happy holidays!", "with snowflakes!", "in the snow!", "❄️", "festive music!", "with Dominic!", "in blue!"],
+   ["happy birthday Discord!", "with blurple!", "with Wumpus!", "in Blurple!"]
  ];

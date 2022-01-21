@@ -88,7 +88,7 @@ client.on('ready', async () => {
   } else {
     // Normal status
     client.user.setStatus("online");
-    let fullBlock = statBlock[0].concat(seasonalStatBlock[s()]);
+    let fullBlock = statBlock[0].concat(seasonalStatBlock[s()], statBlock[2]);
     client.user.setActivity(`${fullBlock[getRandomInt(0, fullBlock.length-1)]} - ${process.env.prefix}help - v${package.version}`);
     // Checks slash command deployment method
     if(process.env.exp !== "0") {

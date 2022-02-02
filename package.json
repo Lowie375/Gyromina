@@ -50,7 +50,7 @@
   "testerLinks": [],
   "license": "MIT",
   "dependencies": {
-    "@discordjs/rest": "^0.2.0-canary.0",
+    "@discordjs/rest": "^0.3.0",
     "bent": "^7.3.12",
     "canvas": "^2.9.0",
     "colors": "^1.4.0",

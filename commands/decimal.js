@@ -1,7 +1,8 @@
 const D = require('discord.js'); // discord.js
-const style = require('../systemFiles/style.json'); // style file
-// RNG, embed colour checker, rejection embed generator
-const {getRandomInt, eCol, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const S = require('@discordjs/builders'); // slash command builder
+const style = require('../system/style.json'); // style file
+// RNG, embed colour checker, rejection embed generator, responder
+const {getRandomInt, eCol, genRejectEmbed, respond} = require('../system/globalFunctions.js');
 
 // quip list for badly formatted fractions; subject to change
 const quips = [
@@ -84,13 +85,13 @@ exports.run = {
   execute(message, args, client) {
     var statement;
     if(args.length === 0)
-      return message.reply({embeds: [genRejectEmbed(message, "Fraction not found", "Gyromina needs a fraction to convert to a decimal!\nPlease add a fraction and try again.")]});
+      return respond({embeds: [genRejectEmbed(message, "Fraction not found", "Gyromina needs a fraction to convert to a decimal!\nPlease add a fraction and try again.")]}, [message, message], {reply: true, eph: true});
     
     var nums = argComb(args);
     if(!Array.isArray(nums)) {
       switch (nums) {
-        case "null": return message.reply({embeds: [genRejectEmbed(message, "Unrecognized fraction value", "Your input doesn't look like a fraction (or doesn't match Gyromina's fraction formatting).\nPlease check your formatting and try again.")]});
-        case "err": return message.reply({embeds: [genRejectEmbed(message, "Too many fractions", "Gyromina can't convert multiple different fractions into a single decimal!\nPlease enter a single fraction and try again.")]});
+        case "null": return respond({embeds: [genRejectEmbed(message, "Unrecognized fraction value", "Your input doesn't look like a fraction (or doesn't match Gyromina's fraction formatting).\nPlease check your formatting and try again.")]}, [message, message], {reply: true, eph: true});
+        case "err": return respond({embeds: [genRejectEmbed(message, "Too many fractions", "Gyromina can't convert multiple different fractions into a single decimal!\nPlease enter a single fraction and try again.")]}, [message, message], {reply: true, eph: true});
       }
     }
     var decim = nums[1]/nums[2] + nums[0];
@@ -109,19 +110,40 @@ exports.run = {
       .setColor(eCol(style.e.default));
 
     // sends the message and embed
-    return message.reply({content: statement, embeds: [embed]});
-  }
+    return respond({content: statement, embeds: [embed]}, [message, message], {reply: true});
+  },
+  slashArgs(interact) {
+    // template: formatted args
+    let opts = [
+      interact.options.getInteger("whole"),
+      interact.options.getInteger("num"),
+      interact.options.getInteger("denom")
+    ];
+    switch(opts[0]) {
+      case null: return `${opts[1]}/${opts[2]}`;
+      default: return `${opts[0]} ${opts[1]}/${opts[2]}`;
+    }
+  },
 };
 
 exports.help = {
-  "name": "decimal",
-  "aliases": ["decim", "dec", "ftod", "fd"],
-  "description": "Converts a fraction in base 10 to a decimal",
-  "usage": `${process.env.prefix}decimal [whole] <num>/<denom>`,
+  "name": "dec",
+  "aliases": ["decimal", "decim", "ftod", "fd"],
+  "description": "Converts a fraction in base 10 to a decimal.",
+  "usage": `${process.env.prefix}dec [whole] <num>/<denom>`,
   "params": "[whole] <num>/<denom>",
   "default": 0,
   "weight": 2,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("dec")
+      .setDescription("Converts a fraction in base 10 to a decimal")
+      .addIntegerOption(o => o.setName("num").setDescription("Numerator of the fraction").setRequired(true))
+      .addIntegerOption(o => o.setName("denom").setDescription("Denominator of the fraction").setRequired(true))
+      .addIntegerOption(o => o.setName("whole").setDescription("Whole number portion of the fraction (if a mixed fraction)").setRequired(false))
+  }
 };

@@ -1,5 +1,6 @@
-// RNG, emoji checker, rejection embed generator
-const {getRandomInt, emojiCheck, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const S = require('@discordjs/builders'); // slash command builder
+// RNG, emoji checker, rejection embed generator, responder
+const {getRandomInt, emojiCheck, genRejectEmbed, respond} = require('../system/globalFunctions.js');
 
 // Emoji setup
 const pront = "🖨️";
@@ -41,7 +42,7 @@ exports.run = {
   execute(message, args, client) {
     if (args.length === 0) {
       // No emoji entered, make an excuse
-      return message.reply({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "\`emoji\` argument not found. Please add a valid emoji and try again.", {e: pront})]});
+      return respond({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "\`emoji\` argument not found. Please add a valid emoji and try again.", {e: pront})]}, [message, message], {reply: true});
     }
     
     var uni = emojiCheck(args);
@@ -54,15 +55,20 @@ exports.run = {
       emoji = client.emojis.cache.get(uni[1]);
       if (emoji == undefined) {
         // Emoji not found (inaccessible), make an excuse
-        return message.reply({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "Gyromina can't access that emoji. Please choose a different emoji and try again.", {e: pront})]});
+        return respond({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "Gyromina can't access that emoji. Please choose a different emoji and try again.", {e: pront})]}, [message, message], {reply: true});
       }
     } else {
       // Not an emoji, make an excuse
-      return message.reply({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "Invalid emoji. Please enter a valid emoji and try again.", {e: pront})]});
+      return respond({embeds: [genRejectEmbed(message, `${makeExcuse()}  ¯\\_(ツ)_/¯`, "Invalid emoji. Please enter a valid emoji and try again.", {e: pront})]}, [message, message], {reply: true});
     }
     
     // Sends the printed emojis
-    return message.channel.send(`${pront}\n${emoji}\n${emoji}\n${emoji}`);
+    return respond(`${pront}\n${emoji}\n${emoji}\n${emoji}`, [message, message]);
+  },
+  slashArgs(interact) {
+    // template: single arg
+    let opts = interact.options.getString("emoji");
+    return (opts === null ? "" : opts);
   },
 };
 
@@ -76,5 +82,12 @@ exports.help = {
   "weight": 1,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("pront")
+      .setDescription("Prints emojis")
+      .addStringOption(o => o.setName("emoji").setDescription("The emoji to print").setRequired(true))
+  },
 };

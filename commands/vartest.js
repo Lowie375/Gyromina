@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
 const package = require('../package.json'); // package file
-const e = require('../systemFiles/emojis.json'); // emoji file
+const e = require('../system/emojis.json'); // emoji file
 // timestamp generator, emoji checker, emoji puller, rejection embed generator
-const {stamp, emojiCheck, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js'); 
+const {stamp, emojiCheck, getEmoji, genRejectEmbed} = require('../system/globalFunctions.js'); 
 
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
@@ -76,10 +76,10 @@ exports.run = {
 };
     
 exports.help = {
-  "name": "vartest",
-  "aliases": ["vt"],
+  "name": "vt",
+  "aliases": ["vartest"],
   "description": 'Miscellaneous test command. (contributors/testers only)',
-  "usage": `${process.env.prefix}vartest`,
+  "usage": `${process.env.prefix}vt`,
   "params": "(contributors)",
   "default": 0,
   "weight": 1,

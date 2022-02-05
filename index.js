@@ -3,15 +3,15 @@ const fs = require('fs'); // fs
 const H = require('heroku-client'); // Heroku client
 const colors = require('colors'); // colors
 const package = require('./package.json'); // package file
-const e = require('./systemFiles/emojis.json'); // emoji file
+const e = require('./system/emojis.json'); // emoji file
  // deploy functions
-const {localDeploy, globalDeploy} = require('./systemFiles/deploy.js');
+const {localDeploy, globalDeploy} = require('./system/deploy.js');
  // permission checker, RNG, emoji puller
-const {p, getRandomInt, getEmoji, s} = require('./systemFiles/globalFunctions.js');
+const {p, getRandomInt, getEmoji, s} = require('./system/globalFunctions.js');
  // status array
-const {statBlock, seasonalStatBlock} = require('./systemFiles/globalArrays.js');
+const {statBlock, seasonalStatBlock} = require('./system/globalArrays.js');
  // refcode generators
-const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
+const {genErrorMsg, genWarningMsg} = require('./system/refcodes.js');
 
 // Splitter exception regex
 const excX = /^prove/i;
@@ -32,7 +32,7 @@ client.games = new D.Collection();
 
 // Pulls out the command and game files
 const commandFiles = fs.readdirSync('./commands').filter(f => f.endsWith('.js')).sort();
-const gameFiles = fs.readdirSync('./gameFiles').filter(f => f.endsWith('.js')).sort();
+const gameFiles = fs.readdirSync('./games').filter(f => f.endsWith('.js')).sort();
 
 // Collects a list of all commands and games
 for (const file of commandFiles) {
@@ -40,7 +40,7 @@ for (const file of commandFiles) {
   client.commands.set(command.help.name, command);
 }
 for (const file of gameFiles) {
-  const game = require(`./gameFiles/${file}`);
+  const game = require(`./games/${file}`);
   client.games.set(game.label.name, game);
 }
 
@@ -88,7 +88,7 @@ client.on('ready', async () => {
   } else {
     // Normal status
     client.user.setStatus("online");
-    let fullBlock = statBlock[0].concat(seasonalStatBlock[s()]);
+    let fullBlock = statBlock[0].concat(seasonalStatBlock[s()], statBlock[2]);
     client.user.setActivity(`${fullBlock[getRandomInt(0, fullBlock.length-1)]} - ${process.env.prefix}help - v${package.version}`);
     // Checks slash command deployment method
     if(process.env.exp !== "0") {

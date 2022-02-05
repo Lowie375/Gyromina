@@ -1,9 +1,9 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const e = require('../systemFiles/emojis.json'); // emoji file
-const style = require('../systemFiles/style.json'); // style file
+const e = require('../system/emojis.json'); // emoji file
+const style = require('../system/style.json'); // style file
 // permission checker, embed colour checker, timestamp generator, responder, emoji puller, rejection embed generator
-const {p, eCol, stamp, respond, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const {p, eCol, stamp, respond, getEmoji, genRejectEmbed} = require('../system/globalFunctions.js');
 
 function setParams(c) {
   var list = `${c.help.s ? "/" : process.env.prefix}**${c.help.name}**`
@@ -130,7 +130,7 @@ exports.run = {
         || client.commands.find(cmd => cmd.help.aliases && cmd.help.aliases.includes(commandName));
 
       if(!cmdy) // return an (ephemeral) rejection message
-        return respond({embeds: [genRejectEmbed(message, `\`${commandName}\` command not found`, "Please check your spelling and try again.")]}, [message, message], {eph: true});
+        return respond({embeds: [genRejectEmbed(message, `\`${commandName}\` command not found`, "Please check your spelling and try again.")]}, [message, message], {reply: true, eph: true});
 
       // Begins preparing embed data
       var ext = "";
@@ -194,7 +194,7 @@ exports.run = {
       || client.games.find(gm => gm.label.aliases && gm.label.aliases.includes(gameName));
 
       if(!gmz) // return an (ephemeral) rejection message
-      return respond({embeds: [genRejectEmbed(message, `\`${gameName}\` game not found`, "Please check your spelling and try again.")]}, [message, message], {eph: true});
+      return respond({embeds: [genRejectEmbed(message, `\`${gameName}\` game not found`, "Please check your spelling and try again.")]}, [message, message], {reply: true, eph: true});
 
       // Begins preparing embed data
       var ext = "";

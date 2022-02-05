@@ -1,7 +1,7 @@
 const D = require('discord.js'); // discord.js
-const cdn = require('../systemFiles/cdn.json'); // cdn file
+const cdn = require('../system/cdn.json'); // cdn file
 // RNG
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt} = require('../system/globalFunctions.js');
 
 // Support messages
 const q = ["In a pickle?",

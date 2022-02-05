@@ -1,5 +1,5 @@
 const S = require('@discordjs/builders'); // slash command builder
-const {respond, getRandomInt} = require('../systemFiles/globalFunctions.js'); // RNG, responder
+const {respond, getRandomInt} = require('../system/globalFunctions.js'); // RNG, responder
 
 const msgResp = [
   "Wait… you probably knew that already. Oh well!",
@@ -11,7 +11,7 @@ const msgResp = [
 exports.run = {
   execute(message, args, client) {
     var output = `My message command prefix is **\`${process.env.prefix}\`**!`;
-    return respond((message.gyrType == "msg" ? `${output}\n*${msgResp[getRandomInt(0, msgResp.length-1)]}*` : output), [message, message], {eph: true, reply: true});
+    return respond((message.gyrType == "msg" ? `${output}\n*${msgResp[getRandomInt(0, msgResp.length-1)]}*` : output), [message, message], {reply: true, eph: true});
   },
   slashArgs(interact) {
     // template: no args

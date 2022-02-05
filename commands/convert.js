@@ -1,9 +1,9 @@
 const D = require('discord.js'); // discord.js
-const style = require('../systemFiles/style.json');
+const style = require('../system/style.json');
 // temperature conversions, embed colour checker, rejection embed generator
-const {FtoC, CtoF, CtoK, KtoC, FtoR, RtoF, eCol, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const {FtoC, CtoF, CtoK, KtoC, FtoR, RtoF, eCol, genRejectEmbed} = require('../system/globalFunctions.js');
 // conversion arrays
-const {unitNames, converter, metricNames, metrics, registeredMetrics, metricDoubles, metricTriples} = require('../systemFiles/globalArrays.js');
+const {unitNames, converter, metricNames, metrics, registeredMetrics, metricDoubles, metricTriples} = require('../system/globalArrays.js');
 
 // Splitter separators + extraneous cases
 const separators = /[_-]/;

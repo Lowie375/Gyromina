@@ -1,7 +1,7 @@
 const colors = require('colors'); // colors
-const e = require('../systemFiles/emojis.json'); // package file
+const e = require('../system/emojis.json'); // package file
 // emoji puller, rejection embed generator
-const {getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const {getEmoji, genRejectEmbed} = require('../system/globalFunctions.js');
 
 exports.run = {
   async execute(message, args, client) {

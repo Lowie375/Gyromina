@@ -1,5 +1,5 @@
 // RNG,  mention cleaner
-const {getRandomInt, Clean} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, Clean} = require('../system/globalFunctions.js');
 
 // List of 'proofs'
 const proof = [

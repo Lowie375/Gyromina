@@ -1,5 +1,6 @@
-// Require the RNG
-const {getRandomInt} = require('../systemFiles/globalFunctions.js');
+const S = require('@discordjs/builders'); // slash command builder
+// RNG, responder
+const {getRandomInt, respond} = require('../system/globalFunctions.js');
 
 // Arrays
 const icecream = ["🍦", "🍦", "🍦", "🍦", "🍦", "🍦", "🍧", "🍧", "🍧", "🍧", "🍧", "🍧",
@@ -41,7 +42,7 @@ async execute(message, args, client) {
     var yum = getRandomInt(0, yums.length-1);
     
     // Sends the ice cream, yay!
-    await message.reply("Coming right up!")
+    await respond("Coming right up!", [message, message], {reply: true})
       .then (async order => {
         // Prepares the order
         try {
@@ -49,21 +50,25 @@ async execute(message, args, client) {
           message.channel.sendTyping();
           setTimeout(() => {
             // sends the icecream
-            message.channel.send(`${icecream[crm]}`);
+            respond(`${icecream[crm]}`, [message, message], {follow: true}); //[message, order]
             let ono = getRandomInt(0, uhoh.length-1);
             switch (crm) { // Checks for special cases and edits accordingly
-              case 18: order.edit(`${uhoh[ono]} that's cream, not \*ice\* cream! 😱`); break;
-              case 19: order.edit(`${uhoh[ono]} that's ice, not ice \*cream\*! 😱`); break;
-              case 20: order.edit(`${uhoh[ono]} how did \*that\* get in there?!? 😱`); break;
-              default: order.edit(`${yums[yum]}`); break;
+              case 18: respond(`${uhoh[ono]} that's cream, not \*ice\* cream! 😱`, [message, order], {edit: true}); break;
+              case 19: respond(`${uhoh[ono]} that's ice, not ice \*cream\*! 😱`, [message, order], {edit: true}); break;
+              case 20: respond(`${uhoh[ono]} how did \*that\* get in there?!? 😱`, [message, order], {edit: true}); break;
+              default: respond(`${yums[yum]}`, [message, order], {edit: true}); break;
             }
           }, getRandomInt(250, 450));
         } catch {
           let ono = getRandomInt(0, uhoh.length-1);
-          order.edit(`${uhoh[ono]} the ice cream machine broke down! 😱`);
+          respond(`${uhoh[ono]} the ice cream machine broke down! 😱`, [message, order], {edit: true});
         }
     });
-  }
+  },
+  slashArgs(interact) {
+    // template: no args
+    return "";
+  },
 };
 
 exports.help = {
@@ -75,5 +80,11 @@ exports.help = {
   "weight": 1,
   "hide": false,
   "wip": false,
-  "dead": false
+  "dead": false,
+  "s": { // for slash-enabled commands
+    "wip": true,
+    "builder": new S.SlashCommandBuilder()
+      .setName("icecream")
+      .setDescription("Makes some lovely ice cream")
+  }
 };

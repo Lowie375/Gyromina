@@ -1,11 +1,11 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const e = require('../systemFiles/emojis.json'); // emoji file
-const style = require('../systemFiles/style.json'); // style file
+const e = require('../system/emojis.json'); // emoji file
+const style = require('../system/style.json'); // style file
 // colour conversions, mention cleaner, minMax constrainer, rejection embed generator, emoji puller, responder
-const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb, Clean, minMax, genRejectEmbed, getEmoji, respond} = require('../systemFiles/globalFunctions.js');
+const {rgbToCmyk, cmykToRgb, rgbToHex, hexToRgb, hexToInt, intToHex, rgbToHsl, hslToRgb, rgbToHsv, hsvToRgb, Clean, minMax, genRejectEmbed, getEmoji, respond} = require('../system/globalFunctions.js');
 // colour name array
-const {colNames} = require('../systemFiles/globalArrays.js');
+const {colNames} = require('../system/globalArrays.js');
 
 // Regex setup
 const hexX = /^(0x|#|\b)([a-f\d]{6})/i;

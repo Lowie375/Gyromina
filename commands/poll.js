@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
-const e = require('../systemFiles/emojis.json'); // emoji file
-const style = require('../systemFiles/style.json'); // style file
+const e = require('../system/emojis.json'); // emoji file
+const style = require('../system/style.json'); // style file
 // permission checker, emoji checker, embed colour checker, timestamp generator, rejection embed generator, emoji puller
-const {p, emojiCheck, eCol, stamp, genRejectEmbed, getEmoji} = require('../systemFiles/globalFunctions.js');
+const {p, emojiCheck, eCol, stamp, genRejectEmbed, getEmoji} = require('../system/globalFunctions.js');
 
 // Cleanup regex
 const cleaner = /^ +/;

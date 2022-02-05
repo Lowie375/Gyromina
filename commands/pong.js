@@ -1,6 +1,6 @@
 const S = require('@discordjs/builders'); // slash command builder
  // responder
-const {respond} = require('../systemFiles/globalFunctions.js');
+const {respond} = require('../system/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {

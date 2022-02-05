@@ -1,7 +1,7 @@
 const D = require('discord.js'); // discord.js
-const e = require('../systemFiles/emojis.json'); // emoji file
+const e = require('../system/emojis.json'); // emoji file
 // permission checker, emoji puller, rejection embed generator
-const {p, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js'); 
+const {p, getEmoji, genRejectEmbed} = require('../system/globalFunctions.js'); 
 
 exports.run = {
   execute(message, args, client) {

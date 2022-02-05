@@ -2,7 +2,7 @@ const bent = require('bent'); // bent
 const colors = require('colors'); // colors
 const package = require('../package.json'); // package file
 // console timestamper, mention cleaner, rejection embed generator
-const {Write, Clean, genRejectEmbed} = require("../systemFiles/globalFunctions.js"); 
+const {Write, Clean, genRejectEmbed} = require("../system/globalFunctions.js"); 
 
 // replaced deprecated 'request' with 'bent': may not work the same, but this function is deprecated anyway, so hopefully it'll be fine
 const post = bent('POST', [200, 201, 202]);

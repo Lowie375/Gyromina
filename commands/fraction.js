@@ -1,9 +1,9 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const style = require('../systemFiles/style.json'); // style file
-const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../system/style.json'); // style file
+const e = require('../system/emojis.json'); // emoji file
 // RNG, embed colour checker, emoji puller, rejection embed generator, responder
-const {getRandomInt, eCol, getEmoji, genRejectEmbed, respond} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, eCol, getEmoji, genRejectEmbed, respond} = require('../system/globalFunctions.js');
 
 const flow = ["Anyway,", "Regardless,", "Either way,"];
 

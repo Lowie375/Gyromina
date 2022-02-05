@@ -1,9 +1,9 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const e = require('../systemFiles/emojis.json'); // emoji file
-const style = require('../systemFiles/style.json'); // style file
+const e = require('../system/emojis.json'); // emoji file
+const style = require('../system/style.json'); // style file
 // permission checker, embed colour checker, timestamp generator, responder, emoji puller, rejection embed generator
-const {p, eCol, stamp, respond, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const {p, eCol, stamp, respond, getEmoji, genRejectEmbed} = require('../system/globalFunctions.js');
 
 function setParams(c) {
   var list = `${c.help.s ? "/" : process.env.prefix}**${c.help.name}**`

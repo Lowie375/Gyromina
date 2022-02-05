@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const style = require('../systemFiles/style.json'); // style file
+const style = require('../system/style.json'); // style file
 // RNG, embed colour checker, responder, rejection embed generator
-const {getRandomInt, eCol, respond, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, eCol, respond, genRejectEmbed} = require('../system/globalFunctions.js');
 
 function getRandomNumber(min, max) {
   var num, numDecim, factor, factorPower;

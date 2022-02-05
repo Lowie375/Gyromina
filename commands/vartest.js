@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
 const package = require('../package.json'); // package file
-const e = require('../systemFiles/emojis.json'); // emoji file
+const e = require('../system/emojis.json'); // emoji file
 // timestamp generator, emoji checker, emoji puller, rejection embed generator
-const {stamp, emojiCheck, getEmoji, genRejectEmbed} = require('../systemFiles/globalFunctions.js'); 
+const {stamp, emojiCheck, getEmoji, genRejectEmbed} = require('../system/globalFunctions.js'); 
 
 // Test regex
 const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;

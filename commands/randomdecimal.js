@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const style = require('../systemFiles/style.json'); // style file
+const style = require('../system/style.json'); // style file
 // embed colour checker, minMax constrainer, responder, rejection embed generator
-const {eCol, minMax, respond, genRejectEmbed} = require('../systemFiles/globalFunctions.js');
+const {eCol, minMax, respond, genRejectEmbed} = require('../system/globalFunctions.js');
 
 function getRandomDecimal(min, max, decims) {
 

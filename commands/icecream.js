@@ -1,6 +1,6 @@
 const S = require('@discordjs/builders'); // slash command builder
 // RNG, responder
-const {getRandomInt, respond} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, respond} = require('../system/globalFunctions.js');
 
 // Arrays
 const icecream = ["🍦", "🍦", "🍦", "🍦", "🍦", "🍦", "🍧", "🍧", "🍧", "🍧", "🍧", "🍧",

@@ -1,6 +1,6 @@
 const S = require('@discordjs/builders'); // slash command builder
 // RNG, responder, season checker
-const {getRandomInt, respond, s} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, respond, s} = require('../system/globalFunctions.js');
 
 const flag = "🏳️‍🌈";
 const quips = [["Casserole in the closet!", 1],

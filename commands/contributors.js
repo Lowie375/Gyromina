@@ -1,9 +1,9 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
 const package = require('../package.json'); // package file
-const style = require('../systemFiles/style.json'); // style file
+const style = require('../system/style.json'); // style file
 // embed colour checker, timestamp generator, responder
-const {eCol, stamp, respond} = require('../systemFiles/globalFunctions.js');
+const {eCol, stamp, respond} = require('../system/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {

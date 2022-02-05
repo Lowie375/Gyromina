@@ -1,5 +1,5 @@
 const S = require('@discordjs/builders'); // slash command builder
-const {respond, getRandomInt} = require('../systemFiles/globalFunctions.js'); // RNG, responder
+const {respond, getRandomInt} = require('../system/globalFunctions.js'); // RNG, responder
 
 const msgResp = [
   "Wait… you probably knew that already. Oh well!",

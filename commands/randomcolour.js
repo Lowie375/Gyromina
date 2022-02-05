@@ -1,7 +1,7 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
 // colour conversions, responder
-const {getRandomInt, hexToRgb, rgbToCmyk, rgbToHsl, rgbToHsv, hexToInt, respond} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, hexToRgb, rgbToCmyk, rgbToHsl, rgbToHsv, hexToInt, respond} = require('../system/globalFunctions.js');
 
 /** randomcolour V2 - hex generator
  * @author Irisu (irisuwastaken)

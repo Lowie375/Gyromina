@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
-const e = require('../systemFiles/emojis.json'); // emoji file
-const style = require('../systemFiles/style.json'); // style file
+const e = require('../system/emojis.json'); // emoji file
+const style = require('../system/style.json'); // style file
 // permission checker, RNG, emoji puller, rejection embed generator, embed colour checker
-const {p, getRandomInt, getEmoji, genRejectEmbed, eCol} = require('../systemFiles/globalFunctions.js');
+const {p, getRandomInt, getEmoji, genRejectEmbed, eCol} = require('../system/globalFunctions.js');
 
 exports.run = {
   execute(message, args, client) {

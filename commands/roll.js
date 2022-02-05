@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
-const style = require('../systemFiles/style.json'); // style file
-const e = require('../systemFiles/emojis.json'); // emoji file
+const style = require('../system/style.json'); // style file
+const e = require('../system/emojis.json'); // emoji file
 // RNG, mention cleaner, embed colour checker, rejection ember generator, emoji puller
-const {getRandomInt, Clean, eCol, genRejectEmbed, getEmoji} = require('../systemFiles/globalFunctions.js')
+const {getRandomInt, Clean, eCol, genRejectEmbed, getEmoji} = require('../system/globalFunctions.js')
 
 // regexes + arrays
 const d6X1 = /regular|die|standard|single|one/i;

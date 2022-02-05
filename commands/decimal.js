@@ -1,8 +1,8 @@
 const D = require('discord.js'); // discord.js
 const S = require('@discordjs/builders'); // slash command builder
-const style = require('../systemFiles/style.json'); // style file
+const style = require('../system/style.json'); // style file
 // RNG, embed colour checker, rejection embed generator, responder
-const {getRandomInt, eCol, genRejectEmbed, respond} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, eCol, genRejectEmbed, respond} = require('../system/globalFunctions.js');
 
 // quip list for badly formatted fractions; subject to change
 const quips = [

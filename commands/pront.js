@@ -1,6 +1,6 @@
 const S = require('@discordjs/builders'); // slash command builder
 // RNG, emoji checker, rejection embed generator, responder
-const {getRandomInt, emojiCheck, genRejectEmbed, respond} = require('../systemFiles/globalFunctions.js');
+const {getRandomInt, emojiCheck, genRejectEmbed, respond} = require('../system/globalFunctions.js');
 
 // Emoji setup
 const pront = "🖨️";

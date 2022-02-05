@@ -52,10 +52,10 @@
   "dependencies": {
     "@discordjs/rest": "^0.2.0-canary.0",
     "bent": "^7.3.12",
-    "canvas": "^2.8.0",
+    "canvas": "^2.9.0",
     "colors": "^1.4.0",
     "discord-api-types": "^0.26.1",
-    "discord.js": "^13.5.1",
+    "discord.js": "^13.6.0",
     "emoji-regex": "^10.0.0",
     "heroku-client": "^3.1.0"
   },

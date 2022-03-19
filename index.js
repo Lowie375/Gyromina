@@ -16,6 +16,12 @@ const {genErrorMsg, genWarningMsg} = require('./systemFiles/refcodes.js');
 // Splitter exception regex
 const excX = /^prove/i;
 
+// Emits uncaught promise rejection warnings
+process.on('unhandledRejection', error => {
+  genWarningMsg(client, error);
+  console.error('Promise Rejection -', error.stack)
+});
+
 // Console colour theme
 colors.setTheme({
   main: "brightCyan",
@@ -222,12 +228,6 @@ client.on('warn', w => {
   // Generates a warning message & logs the warning
   genWarningMsg(client, w);
   console.warn(w);
-});
-
-// Emits uncaught promise rejection warnings
-process.on('unhandledRejection', error => {
-  genWarningMsg(client, error);
-  console.error('Promise Rejection -', error.stack)
 });
 
 // Logs into Discord with Gyromina's token

@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "Gyromina, a multipurpose Discord bot",
   "homepage": "https://l375.weebly.com/gyromina",
   "repository": {
@@ -18,7 +18,7 @@
     "email": "lowie375@gmail.com"
   },
   "engines": {
-    "node": ">=16.9.0",
+    "node": "^16.9.0",
     "npm": ">=7.0.0"
   },
   "author": "L375",

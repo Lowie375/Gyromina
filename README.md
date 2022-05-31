@@ -35,8 +35,12 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-There is currently no event active.  
-(Last active event: December 2020 - Winter)
+The **pride** event is currently active!  
+Gyromina was made by an openly queer, nonbinary developer. As such, many of their projects (including Gyromina) include small nods to their community.
+
+Throughout the month of June, Gyromina's colour scheme will be randomized, and a few fun easter eggs will pop up in various features.
+
+💛🤍💜🖤 ​ ​ ​ ❤️🧡💛💚💙💜 ​ ​ ​ 💗💛💙
 
 ## Setup
 

@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const e = require('../system/emojis.json'); // emoji file
 const style = require('../system/style.json'); // style file
 // permission checker, embed colour checker, timestamp generator, responder, emoji puller, rejection embed generator
@@ -120,8 +119,8 @@ exports.run = {
     if (args) conditions = checkArgs(args);
 
     // Creates embed + button row shells
-    const embed = new D.MessageEmbed();
-    const buttons = new D.MessageActionRow();
+    const embed = new D.EmbedBuilder();
+    const buttons = new D.ActionRowBuilder();
 
     if (args.length >= 1 && ((conditions & 2) === 0 || (conditions & 4) !== 0)) { // Detailed command help
 
@@ -181,7 +180,7 @@ exports.run = {
       // Adds a button if a helpurl is present
       if(cmdy.help.helpurl) {
         buttons.addComponents(
-          new D.MessageButton()
+          new D.ButtonBuilder()
           .setStyle('LINK')
           .setLabel(`More information about ${process.env.prefix}${cmdy.help.name}`)
           .setURL(cmdy.help.helpurl)
@@ -239,7 +238,7 @@ exports.run = {
       // Adds a button if a helpurl is present
       if(gmz.label.helpurl) {
         buttons.addComponents(
-          new D.MessageButton()
+          new D.ButtonBuilder()
           .setStyle('LINK')
           .setLabel(`More information about ${gmz.label.name}`)
           .setURL(gmz.label.helpurl)
@@ -267,13 +266,13 @@ exports.run = {
         // Checks if a list split is needed
         let splitList = split(glist, gweight);
         if(!Array.isArray(splitList)) { // Short list, no splitting needed
-          embed.addField(`Ready to launch ${main}`, `${splitList}`, true);
+          embed.addFields({name: `Ready to launch ${main}`, value: `${splitList}`, inline: true});
         } else { // Splitting needed
           let inlineCtr = 1;
-          embed.addField(`Ready to launch [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
+          embed.addFields({name: `Ready to launch [${inlineCtr}] ${main}`, value: `${splitList.shift()}`, inline: true});
           for(l of splitList) {
             inlineCtr++;
-            embed.addField(`[${inlineCtr}]`, `${l}`, true);
+            embed.addFields({name: `[${inlineCtr}]`, value: `${l}`, inline: true});
           }
         }
       }
@@ -290,7 +289,7 @@ exports.run = {
         glist = glist + setGameOptions(g);
         gctr++;
       });
-      if(gctr != 0) embed.addField(`In Development ${beta}`, `${glist}`, true);
+      if(gctr != 0) embed.addFields({name: `In Development ${beta}`, value: `${glist}`, inline: true});
 
       // If specified, creates the hidden and depricated command lists
       if((conditions & 1) !== 0) {
@@ -301,7 +300,7 @@ exports.run = {
           glist = glist + setGameOptions(g);
           gctr++;
         });
-        if(gctr != 0) embed.addField(`Exclusive Games ${ghost}`, `${glist}`, true);
+        if(gctr != 0) embed.addFields({name: `Exclusive Games ${ghost}`, value: `${glist}`, inline: true});
 
         glist = "These games have been removed from the game library.\n";      
         gctr = 0;
@@ -310,7 +309,7 @@ exports.run = {
           glist = glist + setGameOptions(g);
           gctr++;
         });
-        if(gctr != 0) embed.addField(`Removed Games ${dead}`, `${glist}`, true);
+        if(gctr != 0) embed.addFields({name: `Removed Games ${dead}`, value: `${glist}`, inline: true});
       }
     } else { // General command help
 
@@ -334,13 +333,13 @@ exports.run = {
         // Checks if a list split is needed
         let splitList = split(cmdlist, weight);
         if(!Array.isArray(splitList)) { // Short list, no splitting needed
-          embed.addField(`Main List ${main}`, `${splitList}`, true);
+          embed.addFields({name: `Main List ${main}`, value: `${splitList}`, inline: true});
         } else { // Splitting needed
           let inlineCtr = 1;
-          embed.addField(`Main List [${inlineCtr}] ${main}`, `${splitList.shift()}`, true);
+          embed.addFields({name: `Main List [${inlineCtr}] ${main}`, value: `${splitList.shift()}`, inline: true});
           for(l of splitList) {
             inlineCtr++;
-            embed.addField(`[${inlineCtr}]`, `${l}`, true);
+            embed.addFields({name: `[${inlineCtr}]`, value: `${l}`, inline: true});
           }
         }
       }
@@ -357,7 +356,7 @@ exports.run = {
         cmdlist = cmdlist + setParams(c);
         cmdctr++;
       });
-      if(cmdctr != 0) embed.addField(`Experimental (WIP) ${beta}`, `${cmdlist}`, true);
+      if(cmdctr != 0) embed.addFields({name: `Experimental (WIP) ${beta}`, value: `${cmdlist}`, inline: true});
 
       // If specified, creates the hidden and depricated command lists
       if((conditions & 1) !== 0) {
@@ -368,7 +367,7 @@ exports.run = {
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
         });
-        if(cmdctr != 0) embed.addField(`Hidden ${ghost}`, `${cmdlist}`, true);
+        if(cmdctr != 0) embed.addFields({name: `Hidden ${ghost}`, value: `${cmdlist}`, inline: true});
 
         cmdlist = "These commands are no longer functional nor maintained.\n";      
         cmdctr = 0;
@@ -377,7 +376,7 @@ exports.run = {
           cmdlist = cmdlist + setParams(c);
           cmdctr++;
         });
-        if(cmdctr != 0) embed.addField(`Deprecated ${dead}`, `${cmdlist}`, true);
+        if(cmdctr != 0) embed.addFields({name: `Deprecated ${dead}`, value: `${cmdlist}`, inline: true});
       }
     }
 
@@ -388,7 +387,7 @@ exports.run = {
         if(buttons.components.length === 0) {
           return user.send({embeds: [embed]})
             .then(() => { // reacts to show that the DM was successful
-              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+              if (message.gyrType == "msg" && p(message, [D.PermissionsBitField.Flags.AddReactions]))
                 message.react(getEmoji(message, e.yep, e.alt.yep, true));
               else 
                 respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true, eph: true});
@@ -399,7 +398,7 @@ exports.run = {
         } else { // buttons!
           return user.send({embeds: [embed], components: [buttons]})
             .then(() => { // reacts to show that the DM was successful
-              if (message.gyrType == "msg" && p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+              if (message.gyrType == "msg" && p(message, [D.PermissionsBitField.Flags.AddReactions]))
                 message.react(getEmoji(message, e.yep, e.alt.yep, true));
               else 
                 respond(`${getEmoji(message, e.yep, e.alt.yep)} Help sent in DMs!`, [message, message], {reply: true, eph: true});
@@ -444,7 +443,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": false,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("help")
       .setDescription("Provides command and game help")
       .addStringOption(o => o.setName("options").setDescription("Any queries and/or a command/game").setRequired(false))

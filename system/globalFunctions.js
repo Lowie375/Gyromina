@@ -7,6 +7,7 @@ const cdn = require('../system/cdn.json'); // cdn file
 
 const regex = emojiRegex();
 
+
 // UTIL
 
 /** Writes to the console with time when it was ran
@@ -15,7 +16,6 @@ const regex = emojiRegex();
  * @param startTime
  * @param useLocale Whether to use the user's locale or not
  */
-
 exports.Write = function(message, startTime = null, useLocale = true) {
   let currentTime = Date.now() - startTime;
   let body = "";
@@ -35,7 +35,6 @@ exports.Write = function(message, startTime = null, useLocale = true) {
  * @param text The text to clean
  * @return {string} The cleaned text
  */
-
 exports.Clean = function(text) {
   if (typeof(text) === "string")
     return text.replace(/`/g, `\`${String.fromCharCode(8203)}`).replace(/@/g, `@${String.fromCharCode(8203)}`);
@@ -48,7 +47,6 @@ exports.Clean = function(text) {
  * @param {number} max The maximum value that can be generated
  * @return {number} The random integer generated
  */
-
 exports.getRandomInt = function(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -61,7 +59,6 @@ exports.getRandomInt = function(min, max) {
  * @param {string[]} eList The list to check
  * @return {string[]} An array with information about the emoji
  */
-
 exports.emojiCheck = function(eList = []) {
   let match;
   let save = [];
@@ -95,22 +92,20 @@ exports.emojiCheck = function(eList = []) {
  * @param {number} max The maximum
  * @return {number} The number, constrained between `min` and `max`
  */
-
 exports.minMax = function(n, min, max) {
   return Math.max(min, Math.min(max, n));
 }
 
 /** Checks whether Gyromina has a certain permission in the channel a message was sent in
  * @param {D.Message|D.Interaction} message The message object
- * @param {D.Permissions[]} perm An array containing the permissions to check for
+ * @param {D.PermissionsBitField} perm An array containing the permissions to check for
  * @return {boolean} `true` if Gyromina has permissions, `false` if not
  */
-
 exports.p = function(message, perm) {
-  if (message.channel.type == "DM" || message.channel.isVoice()) {
+  if (message.channel.isDMBased()) {
     return true;
   } else {
-    let gPerm = message.channel.permissionsFor(message.guild.me);
+    let gPerm = message.channel.permissionsFor(message.client.user);
     return perm && gPerm.has(perm); // this is much simpler
   }
 }
@@ -118,7 +113,6 @@ exports.p = function(message, perm) {
 /** Creates a custom date timestamp for embed usage
  * @return {string} The produced timestanp
  */
-
 exports.stamp = function() {
   let dt = new Date();
   let rawNow = [dt.getUTCSeconds(), dt.getUTCMinutes(), dt.getUTCHours(), dt.getUTCDate(), dt.getUTCMonth()+1, dt.getUTCFullYear()];
@@ -127,6 +121,7 @@ exports.stamp = function() {
 }
 
 /** Responds to a message or interaction
+ * options = {edit: false, reply: false, eph: false, follow: false}
  * @param {object|string} resp A text string or response object to send
  * @param {D.Message[]|D.Interaction[]} msg The message or interaction objects [oldMsg, newMsg]
  * @param {object} options An options object with response-specific options
@@ -136,7 +131,6 @@ exports.stamp = function() {
  * @param {boolean?} options.follow
  * @return {function} The appropriate message or interaction response function
  */
-// options = {edit: false, reply: false, eph: false, follow: false}
 exports.respond = async function(resp, msg, options = {}) {
   let response = typeof(resp) == "string" ? {content: resp} : resp;
   switch(msg[0].gyrType) {
@@ -184,14 +178,13 @@ exports.respond = async function(resp, msg, options = {}) {
  * @param {object} opts An options object
  * @param {number?} opts.col
  * @param {string?} opts.e
- * @return {D.MessageEmbed}
+ * @return {D.Embed}
  */
-
 exports.genRejectEmbed = function(msg, title, sub = false, opts = {}) {
   // gets the error emoji to use
   let emoji = (opts.e ? opts.e : exports.getEmoji(msg, e.nope, e.alt.nope));
   // error embed setup
-  const embed = new D.MessageEmbed()
+  const embed = new D.EmbedBuilder()
     .setColor(opts.col ? opts.col : style.e.reject)
     .setTitle(`${emoji}  ${title}`);
   if(sub)
@@ -208,20 +201,19 @@ exports.genRejectEmbed = function(msg, title, sub = false, opts = {}) {
  * @param {boolean} raw `true` to return raw emoji ID, `false` (default) to return emoji object
  * @return {string}
  */
-
- exports.getEmoji = function(msg, emoji, fallback, raw = false) {
+exports.getEmoji = function(msg, emoji, fallback, raw = false) {
   if(raw)
-    return exports.p(msg, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? emoji : fallback;
+    return exports.p(msg, [D.PermissionsBitField.Flags.UseExternalEmojis]) ? emoji : fallback;
   else
-    return exports.p(msg, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]) ? msg.client.emojis.cache.get(emoji) : fallback;
+    return exports.p(msg, [D.PermissionsBitField.Flags.UseExternalEmojis]) ? msg.client.emojis.cache.get(emoji) : fallback;
  }
+
 
 // STYLE
 
 /** Returns the current season, if one is active
  * @return {number} The season ID
  */
-
 exports.s = function() {
   // gets the date + time
   let dt = new Date();
@@ -244,7 +236,6 @@ exports.s = function() {
  * @param {string} def The standard colour for the embed in question
  * @return {string} The embed colour to use
  */
-
 exports.eCol = function(def) {
   // gets the current season
   let s = exports.s();
@@ -284,7 +275,6 @@ exports.eCol = function(def) {
 /** Checks whether an avatar should be changed due to the current season
  * @return {string} The avatar image to use
  */
-
 exports.avCol = function() {
   // gets the current season
   let s = exports.s();
@@ -302,6 +292,7 @@ exports.avCol = function() {
   }
 }
 
+
 // COLOUR
 
 /** Converts a hexadecimal colour code to RGB format
@@ -309,7 +300,6 @@ exports.avCol = function() {
  * @param {string} hex The hexadecimal colour code (preceded by a #)
  * @return {object<number>} An RGB colour object
  */
-
 exports.hexToRgb = function(hex) { 
   var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, function(m, r, g, b) {
@@ -331,7 +321,6 @@ exports.hexToRgb = function(hex) {
  * @param {number} rgb.b
  * @return {string} A hexadecimal colour code
  */
-
 exports.rgbToHex = function(rgb) {
   let hex = [rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)];
   return `${hex[0].length > 1 ? hex[0] : `0${hex[0]}`}${hex[1].length > 1 ? hex[1] : `0${hex[1]}`}${hex[2].length > 1 ? hex[2] : `0${hex[2]}`}`;
@@ -345,7 +334,6 @@ exports.rgbToHex = function(rgb) {
  * @param {number} cmyk.k
  * @return {object<number>} An RGB colour object
  */
-
 exports.cmykToRgb = function(cmyk) {
   let div = [cmyk.c/100, cmyk.m/100, cmyk.y/100, cmyk.k/100];
 
@@ -367,7 +355,6 @@ exports.cmykToRgb = function(cmyk) {
  * @param {number} rgb.b
  * @return {object<number>} A CMYK colour object
  */
-
 exports.rgbToCmyk = function(rgb) {
   let c = (255 - rgb.r) / 255;
   let m = (255 - rgb.g) / 255;
@@ -396,7 +383,6 @@ exports.rgbToCmyk = function(rgb) {
  * @param {string} hex The hexadecimal colour code (raw; no #)
  * @return {number} A colour integer
  */
-
 exports.hexToInt = function(hex) {
   return parseInt(parseInt(hex, 16).toString(10));
 }
@@ -405,7 +391,6 @@ exports.hexToInt = function(hex) {
  * @param {number} int The colour integer
  * @return {string} A hexadecimal colour code
  */
-
 exports.intToHex = function(int) {
   let res = int.toString(16)
   while (res.length < 6) {
@@ -421,7 +406,6 @@ exports.intToHex = function(int) {
  * @param {number} rgb.b
  * @return {object<number>} An HSL colour object
  */
-
 exports.rgbToHsl = function(rgb) {
   let v = Math.max(rgb.r, rgb.g, rgb.b);
   let m = Math.min(rgb.r, rgb.g, rgb.b);
@@ -462,7 +446,6 @@ exports.rgbToHsl = function(rgb) {
  * @param {number} hsl.l
  * @return {object<number>} An RGB colour object
  */
-
 exports.hslToRgb = function(hsl) {
   let div = [hsl.h/60, hsl.s/100, hsl.l/100];
   let c = (1 - Math.abs(2 * div[2] - 1)) * div[1];
@@ -503,7 +486,6 @@ exports.hslToRgb = function(hsl) {
  * @param {number} rgb.b
  * @return {object<number>} An HSV colour object
  */
-
 exports.rgbToHsv = function(rgb) {
   let v = Math.max(rgb.r, rgb.g, rgb.b);
   let m = Math.min(rgb.r, rgb.g, rgb.b);
@@ -542,7 +524,6 @@ exports.rgbToHsv = function(rgb) {
  * @param {number} hsv.v
  * @return {object<number>} An RGB colour object
  */
-
 exports.hsvToRgb = function(hsv) {
   let div = [hsv.h/60, hsv.s/100, hsv.v/100];
   let c = div[1] * div[2];
@@ -576,13 +557,13 @@ exports.hsvToRgb = function(hsv) {
   }  
 }
 
+
 // TEMPERATURE
 
 /** Converts a temperature in degrees Fahrenheit to degrees Celcius
  * @param {number} F The temperature in degrees Fahrenheit
  * @return {number} A temperature in degrees Celcius
  */
-
 exports.FtoC = function(F) {
   return (F - 32) * 5/9;
 }
@@ -591,7 +572,6 @@ exports.FtoC = function(F) {
  * @param {number} C The temperature in degrees Celcius
  * @return {number} A temperature in degrees Fahrenheit
  */
-
 exports.CtoF = function(C) {
   return C * 9/5 + 32;
 }
@@ -600,7 +580,6 @@ exports.CtoF = function(C) {
  * @param {number} C The temperature in degrees Celcius
  * @return {number} A temperature in Kelvins
  */
-
 exports.CtoK = function(C) {
   return C + 273.15;
 }
@@ -609,7 +588,6 @@ exports.CtoK = function(C) {
  * @param {number} K The temperature in Kelvins
  * @return {number} A temperature in degrees Celcius
  */
-
 exports.KtoC = function(K) {
   return K - 273.15;
 }
@@ -618,7 +596,6 @@ exports.KtoC = function(K) {
  * @param {number} F The temperature in degrees Fahrenheit
  * @return {number} A temperature in degrees Rankine
  */
-
 exports.FtoR = function(F) {
   return F + 459.67;
 }
@@ -627,7 +604,6 @@ exports.FtoR = function(F) {
  * @param {number} R The temperature in degrees Rankine
  * @return {number} A temperature in degrees Fahrenheit
  */
-
 exports.RtoF = function(R) {
   return R - 459.67;
 }

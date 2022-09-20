@@ -112,14 +112,14 @@ exports.run = {
       return message.reply({embeds: [genRejectEmbed(message, "\`type\`/\`prompt\` arguments not found", "Gyromina can't make a poll if no poll type or prompt is given!\nPlease check your arguments and try again")]});
 
     // Permission check: add reactions
-    if (!p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+    if (!p(message, [D.PermissionsBitField.Flags.AddReactions]))
       return message.reply({embeds: [genRejectEmbed(message, "Gyromina is missing permissions", `Gyromina can't make polls without being able to add reactions!\nPlease ask a server administrator to enable the \`Add Reactions\` permission for ${client.user.tag} and try again.`)]});
 
     // Permission check: external emojis
-    var perms = p(message, [D.Permissions.FLAGS.USE_EXTERNAL_EMOJIS]);
+    var perms = p(message, [D.PermissionsBitField.Flags.UseExternalEmojis]);
 
     // Embed setup
-    const embed = new D.MessageEmbed();
+    const embed = new D.EmbedBuilder();
     var content = "";
 
     // Checks the poll type
@@ -143,7 +143,7 @@ exports.run = {
       }
 
       // Deletes the poll creation message (for cleanliness), if possible
-      if (p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES]) && !args.includes("-nd")) message.delete();
+      if (p(message, [D.PermissionsBitField.Flags.ManageMessages]) && !args.includes("-nd")) message.delete();
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);
@@ -215,7 +215,7 @@ exports.run = {
         if (message.channel.guild.roles.cache.some(r => pollRoleX.test(r.name.toLowerCase()))) {
           // poll role exists, check permissions + roles
           let guildMember = message.channel.guild.members.cache.get(message.author.id);
-          if(!(message.author.id === message.guild.ownerId || guildMember.permissions.has(D.Permissions.FLAGS.MANAGE_MESSAGES, true) || guildMember.roles.cache.some(r => pollRoleX.test(r.name.toLowerCase())))) {
+          if(!(message.author.id === message.guild.ownerId || guildMember.permissions.has(D.PermissionsBitField.Flags.ManageMessages, true) || guildMember.roles.cache.some(r => pollRoleX.test(r.name.toLowerCase())))) {
             // no poll role or permissions for member: impose 4 option restriction for anti-spam protection
             pollRoot = pollRoot.slice(0, 4);
             sliced = true;
@@ -259,7 +259,7 @@ exports.run = {
       }
 
       // Deletes the poll creation message (for cleanliness), if possible
-      if (p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES]) && (flags & 1) === 0) message.delete();
+      if (p(message, [D.PermissionsBitField.Flags.ManageMessages]) && (flags & 1) === 0) message.delete();
 
       // Sets up the poll embed
       embed.setTitle(`${prompt}`);

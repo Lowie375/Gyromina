@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const style = require('../system/style.json'); // style file
 // RNG, embed colour checker, responder, rejection embed generator
 const {getRandomInt, eCol, respond, genRejectEmbed} = require('../system/globalFunctions.js');
@@ -75,7 +74,7 @@ exports.run = {
     }
 
     // Creates the embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setTitle(`\`${number}\``)
       .setColor(eCol(style.e.default));
 
@@ -112,7 +111,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("rnum")
       .setDescription("Generates a random number between two numbers, inclusive")
       .addNumberOption(o => o.setName("num1").setDescription("First bound to generate a number between").setRequired(true))

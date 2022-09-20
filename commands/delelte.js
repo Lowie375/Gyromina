@@ -11,7 +11,7 @@ exports.run = {
     var del = getRandomInt(0, max);
 
     message.channel.sendTyping();
-    if (del === 0 || !p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES])) {
+    if (del === 0 || !p(message, [D.PermissionsBitField.Flags.ManageMessages])) {
       setTimeout(() => {
         return message.channel.send({embeds: [genRejectEmbed(message, "Content could not be delelte'd")]});
       }, getRandomInt(250, 450));
@@ -52,7 +52,7 @@ exports.help = {
   "dead": false/*,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("delelte")
       .setDescription("\'Attempts\' to delete the trigger message")
       .addStringOption(o => o.setName("message").setDescription("The message to attempt to delete").setRequired(false))

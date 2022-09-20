@@ -19,7 +19,7 @@ exports.run = {
       return message.reply({embeds: [genRejectEmbed(message, `\`${gameName}\` game not found`, "Please check your spelling and try again.")]});
 
     // Checks if Gyromina has permission to add reactions (if the game requires them)
-    if(game.label.reactions && !p(message, [D.Permissions.FLAGS.ADD_REACTIONS]))
+    if(game.label.reactions && !p(message, [D.PermissionsBitField.Flags.AddReactions]))
       return message.reply({embeds: [genRejectEmbed(message, "Gyromina is missing permissions", `Gyromina can't run this game without reactions!\nPlease ask a server administrator to enable the \`Add Reactions\` permission for ${client.user.tag} and try again.`)]});
 
     // Determines the main player(s)

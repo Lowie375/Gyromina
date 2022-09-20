@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const colors = require('colors'); // colors
 const e = require('../system/emojis.json'); // emoji file
 const style = require('../system/style.json'); // style file
@@ -55,7 +54,7 @@ exports.run = {
     var dOut = reDate(dMillival);
 
     // Sets up the embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setAuthor({name: "Gyromina Uptime", iconURL: client.user.avatarURL()})
       .setColor(eCol(style.e.default))
       .setFooter({text: `Requested by ${message.author.tag} - ${stamp()}`, iconURL: message.author.avatarURL()});
@@ -68,7 +67,7 @@ exports.run = {
       // Full embed
       embed.setTitle(out);
       embed.setDescription(`That's ${millival} milliseconds, wow!`);
-      embed.addField(`${dyno}  Dyno Uptime`, dOut);
+      embed.addFields({name: `${dyno}  Dyno Uptime`, value: dOut});
 
       // Sends the embed
       return respond({embeds: [embed]}, [message, message]);
@@ -99,7 +98,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": false,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("uptime")
       .setDescription("Shows Gyromina's uptime")
   }

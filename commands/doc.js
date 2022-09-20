@@ -27,7 +27,7 @@ exports.run = {
     let gen = [getRandomInt(0, q.length-1), getRandomInt(0, r.length-1)]
 
     // Sets up the embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setColor(0xffef80)
       .setTitle(`${q[gen[0]]} ${r[gen[1]]}`)
       .setDescription("Doc, my duck friend, will be here as long as you need.")

@@ -1,6 +1,6 @@
-const D = require('discord.js');
+const D = require('discord.js'); // discord.js
 const {REST} = require('@discordjs/rest'); // REST API
-const API = require('discord-api-types/v9'); // Discord API connection
+const API = require('discord-api-types/v10'); // Discord API connection
 
 const slashCommands = [];
 
@@ -16,7 +16,7 @@ exports.localDeploy = async function(client) {
   });
 
   // connects to REST API
-  const rest = new REST({version: '9'}).setToken(process.env.token);
+  const rest = new REST({version: '10'}).setToken(process.env.token);
 
   try {
     // registers commands
@@ -44,7 +44,7 @@ exports.globalDeploy = async function(client) {
   });
 
   // connects to REST API
-  const rest = new REST({version: '9'}).setToken(process.env.token);
+  const rest = new REST({version: '10'}).setToken(process.env.token);
 
   try {
     // registers commands globally

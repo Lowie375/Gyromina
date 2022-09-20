@@ -1,4 +1,4 @@
-const S = require('@discordjs/builders'); // slash command builder
+const D = require('discord.js'); // discord.js
 // RNG, emoji checker, rejection embed generator, responder
 const {getRandomInt, emojiCheck, genRejectEmbed, respond} = require('../system/globalFunctions.js');
 
@@ -85,7 +85,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("pront")
       .setDescription("Prints emojis")
       .addStringOption(o => o.setName("emoji").setDescription("The emoji to print").setRequired(true))

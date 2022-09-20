@@ -443,7 +443,7 @@ exports.exe = {
         `\*This \`mswp\` instance will time out if you do not make a move within 2 minutes and 30 seconds.\nYou can quit the game at any time by typing \`mswp stop\`.\nIf you need more time to think about your next move, you can reset the timer to 10 minutes by typing \`mswp time\`.\*`;
         
         // Sends the board
-        let attach = new D.MessageAttachment(canvas.toBuffer('image/png'), "mswp_initField.png");
+        let attach = new D.AttachmentBuilder(canvas.toBuffer('image/png'), {name: "mswp_initField.png"});
         message.reply({content: tooltip, files: [attach]})
           .then(game => {
 
@@ -459,7 +459,7 @@ exports.exe = {
               if (msg.content.includes("time")) { // Resets the timer
                 finder.resetTimer(longTime);
                 // Sends a confirmation reaction/message
-                if (p(msg, [D.Permissions.FLAGS.ADD_REACTIONS]))
+                if (p(msg, [D.PermissionsBitField.Flags.AddReactions]))
                   return msg.react(getEmoji(msg, e.yep, e.alt.yep, true));
                 else
                   return msg.reply({embeds: [genRejectEmbed(msg, "Timer reset!", false, {col: eCol(style.e.accept), e: getEmoji(message, e.yep, e.alt.yep)})]});
@@ -518,7 +518,7 @@ exports.exe = {
                       case 1: content = `[<@${player}>] Tile **\`${caught[2].toUpperCase()}${caught[3]}\`** cleared!`; break;
                       default: content = `[<@${player}>] New region opened from tile **\`${caught[2].toUpperCase()}${caught[3]}\`**!`; break;
                     }
-                    let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                    let newAttach = new D.AttachmentBuilder(canvas.toBuffer('image/png'), {name: flagID});
                     // Checks if the game has been won
                     if (unrev <= setup[0] && winCon(field, display) == 0) {
                       finder.stop("generic");
@@ -526,7 +526,7 @@ exports.exe = {
                     } else {
                       game.channel.send({content: `${content}\n${stats(moves, flags)}`, files: [newAttach]})
                         .then(newMsg => {
-                          newMsg.channel.messages.fetch(newMsg.id);
+                          newMsg.channel.messages.fetch({message: newMsg.id});
                       });
                     }
                   } else { // Rejection thrown; check outcome
@@ -540,7 +540,7 @@ exports.exe = {
                         return msg.reply({embeds: [genRejectEmbed(msg, "Tile maked as uncertain, can not clear", "If you are absolutely certain you would like to clear this tile, re-type the same command followed by \`-force\`.")]});
                       case 4: { // Mine hit; reveal mines and end game
                         updateCanvas(board, revealMines(field, display), img);
-                        let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                        let newAttach = new D.AttachmentBuilder(canvas.toBuffer('image/png'), {name: flagID});
                         game.channel.send({content: `Oh no! You hit a mine, <@${player}>!\n**--- YOU LOSE ---**`, files: [newAttach]});
                         finder.stop("generic");
                       }
@@ -567,10 +567,10 @@ exports.exe = {
                     return msg.reply({embeds: [genRejectEmbed(message, "Tile can not be flagged")]});
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
-                  let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                  let newAttach = new D.AttachmentBuilder(canvas.toBuffer('image/png'), {name: flagID});
                   game.channel.send({content: content, files: [newAttach]})
                     .then(newMsg => {
-                      newMsg.channel.messages.fetch(newMsg.id);
+                      newMsg.channel.messages.fetch({message: newMsg.id});
                   });
                   break;
                 }
@@ -591,10 +591,10 @@ exports.exe = {
                     return msg.reply({embeds: [genRejectEmbed(message, "Tile can not be marked as uncertain", "Please choose another tile and try again.")]});
                   }
                   updateCanvas(board, [[display[y][x], x, y]], img);
-                  let newAttach = new D.MessageAttachment(canvas.toBuffer('image/png'), flagID);
+                  let newAttach = new D.AttachmentBuilder(canvas.toBuffer('image/png'), {name: flagID});
                   game.channel.send({content: content, files: [newAttach]})
                     .then(newMsg => {
-                      newMsg.channel.messages.fetch(newMsg.id);
+                      newMsg.channel.messages.fetch({message: newMsg.id});
                   });
                   break;
                 }
@@ -603,7 +603,7 @@ exports.exe = {
               finder.resetTimer(shortTime);
               // Filter setup
               const attachFilter = (a) => a.name == flagID;
-              const msgFilter = (msgx) => msgx.author.id == client.user.id && msgx.attachments.some(attachFilter) && msgx.mentions.users.has(player) && !msgx.deleted;
+              const msgFilter = (msgx) => msgx.author.id == client.user.id && msgx.attachments.some(attachFilter) && msgx.mentions.users.has(player);
 
               // Board swap
               let boards = game.channel.messages.cache.filter(msgFilter);

@@ -1,4 +1,4 @@
-const S = require('@discordjs/builders'); // slash command builder
+const D = require('discord.js'); // discord.js
 // RNG, responder, season checker
 const {getRandomInt, respond, s} = require('../system/globalFunctions.js');
 
@@ -38,7 +38,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("casserole")
       .setDescription("Makes a quip about casseroles and closets")
   }

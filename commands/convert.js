@@ -370,7 +370,7 @@ exports.run = {
     if((round == output && output % 1 == 0) || round == 0) round = "null";
 
     // Creates the embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setTitle(`${cArgs[0]}${name1} equals…\n\`${output}${name2}\``)
       .setColor(eCol(style.e.default));
     // Adds a rounded output, if suitable

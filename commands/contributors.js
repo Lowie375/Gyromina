@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const package = require('../package.json'); // package file
 const style = require('../system/style.json'); // style file
 // embed colour checker, timestamp generator, responder
@@ -9,7 +8,7 @@ exports.run = {
   execute(message, args, client) {
 
     // Creates the crediting embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setAuthor({name: "Gyromina Contributors", iconURL: client.user.avatarURL()})
       .setColor(eCol(style.e.default))
       .setTitle("A huge thanks to everyone who has contributed to Gyromina!")
@@ -29,7 +28,7 @@ exports.run = {
       else
         c += `\n${package.contributors[i]} - [@${package.contributorGits[i]}](https://github.com/${package.contributorGits[i]})`;
     }
-    embed.addField("Repo Contributors  💻 💾", c);
+    embed.addFields({name: "Repo Contributors  💻 💾", value: c});
 
     // Creates the list of testers
     if (package.testers.length > 0) {
@@ -46,7 +45,7 @@ exports.run = {
         else
           t += `, ${package.testers[i]}`;
       }
-      embed.addField("Helpers 🦟 ⌚", t);
+      embed.addFields({name: "Helpers 🦟 ⌚", value: t});
     }
 
     // Sends the embed
@@ -70,7 +69,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("contributors")
       .setDescription("Lists all of Gyromina's contributors")
   }

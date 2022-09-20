@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const style = require('../system/style.json'); // style file
 // embed colour checker, minMax constrainer, responder, rejection embed generator
 const {eCol, minMax, respond, genRejectEmbed} = require('../system/globalFunctions.js');
@@ -33,7 +32,7 @@ exports.run = {
       number = getRandomDecimal(0, 1, minMax(parseInt(args[0]), 1, 16));
     
     // Creates the embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setTitle(`\`${number}\``)
       .setColor(eCol(style.e.default));
 
@@ -63,7 +62,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("rdec")
       .setDescription("Generates a random decimal number between 0 and 1")
       .addIntegerOption(o => o.setName("places").setDescription("Number of decimal places to generate the decimal to (default = 10)").setRequired(false))

@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const style = require('../system/style.json'); // style file
 // RNG, embed colour checker, rejection embed generator, responder
 const {getRandomInt, eCol, genRejectEmbed, respond} = require('../system/globalFunctions.js');
@@ -105,7 +104,7 @@ exports.run = {
     }
 
     // creates the embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setTitle(`${nums[0] === 0 ? "" : `${nums[0]} `}${nums[1]}/${nums[2]} is…\n\`${decim}\``)
       .setColor(eCol(style.e.default));
 
@@ -139,7 +138,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("dec")
       .setDescription("Converts a fraction in base 10 to a decimal")
       .addIntegerOption(o => o.setName("num").setDescription("Numerator of the fraction").setRequired(true))

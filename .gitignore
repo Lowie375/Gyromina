@@ -79,6 +79,5 @@ typings/
 .dynamodb/
 
 # Code workspace files
-Gyromina.code-workspace
-.vscode/launch.json
-.vscode/launch.json
+*.code-workspace
+.vscode

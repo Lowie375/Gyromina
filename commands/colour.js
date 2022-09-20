@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const e = require('../system/emojis.json'); // emoji file
 const style = require('../system/style.json'); // style file
 // colour conversions, mention cleaner, minMax constrainer, rejection embed generator, emoji puller, responder
@@ -188,7 +187,7 @@ exports.run = {
       head[0] += ` (${colNames[0][colNames[1].indexOf(hex)]})`;
 
     // Output setup
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setTitle(head[0])
       .setDescription(strand.join("\n"));
     switch(hex) {
@@ -239,7 +238,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("col")
       .setDescription("Displays colour data (accepts exactly one of the options provided)")
       .addStringOption(o => o.setName("hex").setDescription("A hexadecimal colour code: #<hex>").setRequired(false))

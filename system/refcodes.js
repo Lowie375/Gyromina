@@ -47,8 +47,6 @@ function genCode() {
  * @param {D.Client} client The Discord client object
  * @param {Error} error The error thrown
  */
-
-// Reference code generator
 exports.genErrorMsg = function(message, client, error) {
   // Emoji setup
   const warning = getEmoji(message, e.warn, e.alt.warn);
@@ -57,11 +55,6 @@ exports.genErrorMsg = function(message, client, error) {
   const newRef = genCode();
   // Logs the error
   console.error(`REFCODE: ${newRef}\n`.nope, error);
-
-  /*const embed = new D.MessageEmbed()
-    .setTitle(`${warning} Something went wrong…`)
-    .setColor(style.e.error)
-    .setDescription(`Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``);*/
 
   // Sends a rejection embed with the reference code in the channel
   const embed = genRejectEmbed(message, "Something went wrong…", `Found a bug? Report it [here](https://github.com/Lowie375/Gyromina/issues).\nReference code: \`${newRef}\``, {col: style.e.error, e: warning});
@@ -76,8 +69,6 @@ exports.genErrorMsg = function(message, client, error) {
  * @param {D.Client} client The Discord client object
  * @param {Error} w The warning thrown
  */
-
-// Warning generator
 exports.genWarningMsg = function(client, w) {
   // Sends the warning to the Gyromina log channel
   const log = client.channels.cache.get(process.env.errorLog);
@@ -87,7 +78,6 @@ exports.genWarningMsg = function(client, w) {
 /** Generates a raw reference code (for miscellaneous use)
  * @return {string}
  */
-
 exports.codeRNG = function() {
   return genCode();
 }

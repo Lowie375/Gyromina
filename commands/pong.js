@@ -1,4 +1,4 @@
-const S = require('@discordjs/builders'); // slash command builder
+const D = require('discord.js'); // discord.js
  // responder
 const {respond} = require('../system/globalFunctions.js');
 
@@ -30,7 +30,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": false,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("pong")
       .setDescription("Pongs Gyromina")
   }

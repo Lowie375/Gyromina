@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const botinfo = require('../package.json'); // package file
 const cdn = require('../system/cdn.json'); // cdn file
 const style = require('../system/style.json'); // style file
@@ -34,42 +33,44 @@ exports.run = {
     desc += `currently running v${botinfo.version} on ${client.guilds.cache.size} servers\n\`[2]\` \"${botinfo.tagline}\"`;
 
     // Creates the info embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setAuthor({name: "The Gyroscopic Dictionary", iconURL: client.user.avatarURL()})
       .setColor(eCol(style.e.default))
       .setTitle("**Gy·ro·mi·na**   \`/ˈdʒaɪrɔmɪnə/\`")
       .setDescription(desc)
       .setFooter({text: `Requested by ${message.author.tag} - Source: package.json - ${stamp()}`, iconURL: message.author.avatarURL()})
-      .addField("*Origin:*", "​***\`    L-V3R7     --->    Gyromina   \`***\n*\` Jul 07, 2018        Sep 15, 2018 \`*")
-      .addField("*Usage:*", "*\"You can invite Gyromina to your Discord server and view more information about Gyromina using the buttons below!\"*")
-      .addField("*See also:*", "​*\`JavaScript\`, \`Node.js\`, \`discord.js\`, \`open source bot\`*")
+      .addFields(
+        {name: "*Origin:*", value: "​***\`    L-V3R7     --->    Gyromina   \`***\n*\` Jul 07, 2018        Sep 15, 2018 \`*"},
+        {name: "*Usage:*", value: "*\"You can invite Gyromina to your Discord server and view more information about Gyromina using the buttons below!\"*"},
+        {name: "*See also:*", value: "​*\`JavaScript\`, \`Node.js\`, \`discord.js\`, \`open source bot\`*"}
+      )
       .setThumbnail(avCol(cdn));
 
     // Creates info buttons
-    const inviteBtn = new D.MessageActionRow().addComponents(
-      new D.MessageButton()
+    const inviteBtn = new D.ActionRowBuilder().addComponents(
+      new D.ButtonBuilder()
         .setStyle('LINK')
         .setLabel('Invite link')
         .setURL('https://discord.com/api/oauth2/authorize?client_id=490590334758420481&permissions=412317248576&scope=bot%20applications.commands'),
-      new D.MessageButton()
+      new D.ButtonBuilder()
         .setStyle('LINK')
         .setLabel('More information')
         .setURL('https://l375.weebly.com/gyromina'),
-      new D.MessageButton()
+      new D.ButtonBuilder()
         .setStyle('LINK')
         .setLabel('GitHub')
         .setURL('https://github.com/Lowie375/Gyromina')
     );
-    const githubBtn = new D.MessageActionRow().addComponents(
-      new D.MessageButton()
+    const githubBtn = new D.ActionRowBuilder().addComponents(
+      new D.ButtonBuilder()
         .setStyle('LINK')
         .setLabel('Project Manager')
         .setURL('https://github.com/Lowie375/Gyromina/projects/1'),
-      new D.MessageButton()
+      new D.ButtonBuilder()
         .setStyle('LINK')
         .setLabel('Report a Bug')
         .setURL('https://github.com/Lowie375/Gyromina/issues'),
-      new D.MessageButton()
+      new D.ButtonBuilder()
         .setStyle('LINK')
         .setLabel('Bug Tracker')
         .setURL('https://github.com/Lowie375/Gyromina/projects/2')
@@ -96,7 +97,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": false,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("info")
       .setDescription("Displays Gyromina's info")
   }

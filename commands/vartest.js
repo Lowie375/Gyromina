@@ -33,13 +33,13 @@ exports.run = {
     console.log(message.channel);
     console.log(message.channel.type)
     console.log(client.user);
-    if(message.channel.type != "DM" && message.channel.isVoice()) {
+    if(!message.channel.isDMBased()) {
       console.log(message.guild.me);
       let gyr = message.guild.me;
-      let gPerm = [D.Permissions.FLAGS.SEND_MESSAGES, D.Permissions.FLAGS.ADD_REACTIONS];
+      let gPerm = [D.PermissionsBitField.Flags.SendMessages, D.PermissionsBitField.Flags.AddReactions];
       console.log(gyr.permissions);
-      console.log(gyr.permissions.has([D.Permissions.FLAGS.VIEW_CHANNEL]));
-      console.log(gyr.permissions.has(D.Permissions.FLAGS.ADMINISTRATOR));
+      console.log(gyr.permissions.has([D.PermissionsBitField.Flags.ViewChannel]));
+      console.log(gyr.permissions.has(D.PermissionsBitField.Flags.Administrator));
       console.log(gyr.permissions.has(gPerm));
       console.log(gyr.permissionsIn(message.channel));
       console.log(message.channel.permissionsFor(gyr));

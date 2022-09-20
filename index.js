@@ -16,6 +16,12 @@ const {genErrorMsg, genWarningMsg} = require('./system/refcodes.js');
 // Splitter exception regex
 const excX = /^prove/i;
 
+// Emits uncaught promise rejection warnings
+process.on('unhandledRejection', error => {
+  genWarningMsg(client, error);
+  console.error('Promise Rejection -', error.stack)
+});
+
 // Console colour theme
 colors.setTheme({
   main: "brightCyan",
@@ -23,8 +29,8 @@ colors.setTheme({
 
 // Creates a new instance of the Discord Client
 const client = new D.Client({
-  intents: [D.Intents.FLAGS.GUILDS, D.Intents.FLAGS.GUILD_MESSAGES, D.Intents.FLAGS.GUILD_MESSAGE_REACTIONS, D.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, D.Intents.FLAGS.DIRECT_MESSAGES, D.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS],
-  partials: ['CHANNEL']
+  intents: [D.GatewayIntentBits.MessageContent, D.GatewayIntentBits.Guilds, D.GatewayIntentBits.GuildMessages, D.GatewayIntentBits.GuildMessageReactions, D.GatewayIntentBits.GuildEmojisAndStickers, D.GatewayIntentBits.DirectMessages, D.GatewayIntentBits.DirectMessageReactions],
+  partials: [D.Partials.Channel]
 });
 // Creates command + game collections
 client.commands = new D.Collection();
@@ -50,7 +56,6 @@ const hData = new H({token: process.env.herokuAuth})
 // Logs Gyromina into the console, once the client is ready
 // Will trigger once login is complete or Gyromina reconnects after disconnection
 client.on('ready', async () => {
-
   console.log(colors.main(`Logging in as ${client.user.tag}...`));
   // Event logger
   const eventLog = client.channels.cache.get(process.env.eventLog);
@@ -124,10 +129,10 @@ client.on('messageCreate', message => {
   // Filters out messages that don't begin with Gyromina's prefix, as well as messages sent by bots
   if (!message.content.startsWith(process.env.prefix) || message.author.bot) return;
 
-  // Checks if the message was sent in a non-voice guild channel where Gyromina has message-sending and channel-viewing permissions. If not, returns
-  if (message.channel.type != "DM" && !message.channel.isVoice() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES, D.Permissions.FLAGS.VIEW_CHANNEL, D.Permissions.FLAGS.READ_MESSAGE_HISTORY])) return;
+  // Checks if the message was sent in a guild channel where Gyromina has message-sending and channel-viewing permissions. If not, returns
+  if (!message.channel.isDMBased() && !p(message, [D.PermissionsBitField.Flags.SendMessages, D.PermissionsBitField.Flags.ViewChannel, D.PermissionsBitField.Flags.ReadMessageHistory])) return;
   // Checks if the message was sent in a thread that Gyromina can't send messages in. If so, returns
-  if (message.channel.isThread() && !p(message, [D.Permissions.FLAGS.SEND_MESSAGES_IN_THREADS])) return;
+  if (message.channel.isThread() && !p(message, [D.PermissionsBitField.Flags.SendMessagesInThreads])) return;
 
   // Initializes arguments
   var args;
@@ -222,12 +227,6 @@ client.on('warn', w => {
   // Generates a warning message & logs the warning
   genWarningMsg(client, w);
   console.warn(w);
-});
-
-// Emits uncaught promise rejection warnings
-process.on('unhandledRejection', error => {
-  genWarningMsg(client, error);
-  console.error('Promise Rejection -', error.stack)
 });
 
 // Logs into Discord with Gyromina's token

@@ -1,5 +1,4 @@
 const D = require('discord.js'); // discord.js
-const S = require('@discordjs/builders'); // slash command builder
 const style = require('../system/style.json'); // style file
 const e = require('../system/emojis.json'); // emoji file
 // RNG, embed colour checker, emoji puller, rejection embed generator, responder
@@ -308,7 +307,7 @@ exports.run = {
     }
 
     // creates the embed
-    const embed = new D.MessageEmbed()
+    const embed = new D.EmbedBuilder()
       .setColor(eCol(style.e.default));
     
     if(set[0] == "r" || results[0] == "r")
@@ -359,7 +358,7 @@ exports.help = {
   "dead": false,
   "s": { // for slash-enabled commands
     "wip": true,
-    "builder": new S.SlashCommandBuilder()
+    "builder": new D.SlashCommandBuilder()
       .setName("frac")
       .setDescription("Converts a decimal to a simplified fraction in base 10 (defaults to an improper fraction)")
       .addNumberOption(o => o.setName("decimal").setDescription("Decimal to convert to a fraction").setRequired(true))

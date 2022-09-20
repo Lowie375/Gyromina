@@ -381,7 +381,7 @@ exports.exe = {
               break;
           }
           // Removes the corresponding reaction (if not in a DM channel + Gyromina has permissions to do so)
-          if(board.channel.type != "DM" && p(message, [D.Permissions.FLAGS.MANAGE_MESSAGES])) {
+          if(!board.channel.isDMBased() && p(message, [D.PermissionsBitField.Flags.ManageMessages])) {
             const userReaction = board.reactions.cache.filter(reaction => reaction.users.cache.has(player) && reaction.emoji.name == r.emoji.name);
             for (const urxn of userReaction.values()) {
               removeRxnLoop(urxn, player);

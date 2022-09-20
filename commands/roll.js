@@ -309,7 +309,7 @@ exports.run = {
     }
 
     // prepares the embed
-    const embed = new D.MessageEmbed();
+    const embed = new D.EmbedBuilder();
 
     // checks for + filters errors
     var rejectEmbed;

@@ -14,7 +14,7 @@
 
 ### "Fun + function, all in one."
 
-Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
+Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu**, and **[@alazymeme](https://github.com/alazymeme)**
 
 Latest stable build: v1.2.10  
 <!-- Latest indev build: v1.3.0-alpha.5 -->
@@ -35,12 +35,9 @@ Gyromina contains an assortment of features, including a random colour and numbe
 
 Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
 
-The **pride** event is currently active!  
-Gyromina was made by an openly queer, nonbinary developer. As such, many of their projects (including Gyromina) include small nods to their community.
+The **winter** event is currently active!  
 
-Throughout the month of June, Gyromina's colour scheme will be randomized, and a few fun easter eggs will pop up in various features.
-
-💛🤍💜🖤 ​ ​ ​ ❤️🧡💛💚💙💜 ​ ​ ​ 💗💛💙
+Throughout the month of December, Gyromina's UI will take on a blue colour scheme.
 
 ## Setup
 

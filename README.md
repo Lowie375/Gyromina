@@ -82,7 +82,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
 * 💻 Nao - [@naoei](https://github.com/naoei)
-* 💻 Irisu - [@irisuwastaken](https://github.com/irisuwastaken)
+* 💻 Irisu
 * 💾 alazymeme - [@alazymeme](https://github.com/alazymeme)
 
 <!-- ### Helpers -->
@@ -105,7 +105,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
 
 <!-- Banners -->
-[gyro-banner]: https://lh6.googleusercontent.com/btfZ0a8VmQTl8KjDNjdAUQdoSbs8S8cc1UKAcwKN5kPH8K8smBywiZcS9IIQJKYDLL38UMTWuG4qyycVAvTwJFjUXuBocd9XzA2f86xjS_VgtF7vhnK0V_chMU0BXzpNTA=w1280
+[gyro-banner]: assets/GyrominaBanner.png
 <!-- [gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/842935847594491924/GyrominaBannerRMOpen-pride.png -->
 
 <!-- Labels -->

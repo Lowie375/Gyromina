@@ -1,10 +1,10 @@
 {
   "avatar": {
-    "default": "https://lh5.googleusercontent.com/pqC5rCCB23VbC48y1tQOtC2k_fQRJzwuBXa8EqPYXEwY23LiE_Or4iPRQ3xO65SsPuTXYFdGJRcTNUtTg9U_WdE=w1280",
-    "pride": "https://lh6.googleusercontent.com/Azux1PItuaXpPnjQmKNJVTd2Hjgo7JE3ZiqVxvK0jux0NRV9Kf0xND1Zg6pCPsnWC-2AHn___HDdkgXlvgGpX40=w1280",
-    "blurple": "https://lh3.googleusercontent.com/jcj0FBEGweJS8edCn8ATdubzSnLCxJ0IB17JBR1PFRTtrAIKYUimcoNMxt4mrq4i4VS-rxXOCgaFmCPLTrp9IhI=w1280",
-    "winter": "https://lh3.googleusercontent.com/fHqZa8ElJClN98-CEMvlO5K1KsI5zyTcCrunkrXmQtIzuNn340cABYH0yP-IFgtU9xOAkMRLdktZvd8lMrjuJsk=w1280"
+    "default": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3.png",
+    "pride": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3-pride.png",
+    "blurple": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3-blurp.png",
+    "winter": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3-blurpOG.png"
   },
-  "mswp": "https://lh4.googleusercontent.com/6Iv9S1cYvO4N2WFUMHMPtmSjx4uXSPF5UnR0NyOJCm7JDAwLtvYXr84X3pGBDxIosNcYrfltTNaMpdOwBUVKOsA=w1280",
-  "doc": "https://lh4.googleusercontent.com/npr5ScWH-cjr94V-jHC5hXoqtlAuZL_tBQbAAzWPB0YIw0tL9S9VpSRi9R4TASeFoZXJOLK8ON_oiWN7nmXG-Kk=w1280"
+  "mswp": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/mswpTileset.png",
+  "doc": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/theDoc.png"
 }

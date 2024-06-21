@@ -10,7 +10,7 @@ For older configurations, please consult the `README` file for your version of G
 ### `token`: Discord bot token
 
 - Used to log into Discord
-- *example: `1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVW` (a fake token)*
+- *example: `1234567890.abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVW` (a fake token)*
 
 ### `prefix`: Discord bot prefix
 

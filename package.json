@@ -1,6 +1,6 @@
 {
   "name": "gyromina",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "Gyromina, a multipurpose Discord bot",
   "homepage": "https://l375.weebly.com/gyromina",
   "repository": {
@@ -19,7 +19,7 @@
   },
   "engines": {
     "node": "^16.9.0",
-    "npm": ">=7.0.0"
+    "npm": ">=7.0.0 && <10.0.0"
   },
   "author": "L375",
   "authorGit": "Lowie375",
@@ -32,7 +32,7 @@
   ],
   "contributorGits": [
     "naoei",
-    "irisuwastaken",
+    "",
     "alazymeme"
   ],
   "contributorIDs": [
@@ -52,11 +52,11 @@
   "dependencies": {
     "@discordjs/rest": "^0.4.1",
     "bent": "^7.3.12",
-    "canvas": "^2.9.1",
+    "canvas": "^2.11.2",
     "colors": "^1.4.0",
     "discord-api-types": "^0.32.0",
-    "discord.js": "^13.6.0",
-    "emoji-regex": "^10.1.0",
+    "discord.js": "^13.17.1",
+    "emoji-regex": "^10.3.0",
     "heroku-client": "^3.1.0"
   },
   "keywords": [

@@ -14,8 +14,10 @@ exports.run = {
       // Adds a credit + custom link (if present) or GitHub link (if not)
       if(botinfo.contributorLinks[i] != "")
         desc += `[${botinfo.contributors[i]}](${botinfo.contributorLinks[i]})`;
-      else
+      else if(botinfo.contributorGits[i] != "")
         desc += `[${botinfo.contributors[i]}](https://github.com/${botinfo.contributorGits[i]})`;
+      else
+        desc += `${botinfo.contributors[i]}`;
 
       // Adds the word "and", a comma, or both
       if(botinfo.contributors.length == i+2 && botinfo.contributors.length != 4) {

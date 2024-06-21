@@ -16,9 +16,6 @@
 
 Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Latest stable build: v1.2.10  
-<!-- Latest indev build: v1.3.0-alpha.5 -->
-
 Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 
 ### External Links
@@ -30,14 +27,6 @@ Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
 Gyromina is a multipurpose Discord bot, made to be a fun and functional addition to any Discord server.
 
 Gyromina contains an assortment of features, including a random colour and number generator, a unit converter, a library of minigames, a custom poll creator, miscellaneous fun commands, and more!
-
-### Events/Seasons
-
-Occasionally, Gyromina will get some special features and UI changes during certain events throughout the year!
-
-The **winter** event is currently active!  
-
-Throughout the month of December, Gyromina's UI will take on a blue colour scheme.
 
 ## Setup
 
@@ -80,9 +69,9 @@ The community Code of Conduct can be found under **[docs/CODE_OF_CONDUCT.md](doc
 
 ## Contributing
 
-Contributions to Gyromina are always welcome! I'm a novice, so I don't know the best tips, tricks, and optimizations for JavaScript/Node. A little help can go a long way.
+Contributions to Gyromina are always welcome! I don't always have time on my hands to keep things running smoothly, so any help in doing that is greatly appreciated.
 
-Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information + general style notes and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
+Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution information and general style notes, and **[docs/CODE_OF_CONDUCT.md](docs/CODE_OF_CONDUCT.md)** for the community code of conduct.
 
 ### Contributors
 
@@ -93,7 +82,7 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 
 * 💻 [L375](https://l375.weebly.com/about) - [@Lowie375](https://github.com/Lowie375)
 * 💻 Nao - [@naoei](https://github.com/naoei)
-* 💻 Irisu - [@irisuwastaken](https://github.com/irisuwastaken)
+* 💻 Irisu
 * 💾 alazymeme - [@alazymeme](https://github.com/alazymeme)
 
 <!-- ### Helpers -->
@@ -116,8 +105,8 @@ Please see **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for contribution inf
 [build-link]: https://scrutinizer-ci.com/g/Lowie375/Gyromina
 
 <!-- Banners -->
-[gyro-banner]: https://cdn.discordapp.com/attachments/492389515478958101/815054288644472842/GyrominaBannerRMOpen.png
-[gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/842935847594491924/GyrominaBannerRMOpen-pride.png
+[gyro-banner]: assets/GyrominaBanner.png
+<!-- [gyro-banner-pride]: https://cdn.discordapp.com/attachments/429364141355171840/842935847594491924/GyrominaBannerRMOpen-pride.png -->
 
 <!-- Labels -->
 [djs-img]: https://img.shields.io/github/package-json/dependency-version/Lowie375/Gyromina/discord.js

@@ -1,10 +1,10 @@
 {
   "avatar": {
-    "default": "https://cdn.discordapp.com/attachments/492389515478958101/815044932062543872/GyrominaRMV3.png",
-    "pride": "https://cdn.discordapp.com/attachments/429364141355171840/981391207789908068/GyrominaRMV3-pride2-2.png",
-    "blurple": "https://cdn.discordapp.com/attachments/429364141355171840/849478673291018291/GyrominaRMV3-blurp.png",
-    "winter": "https://cdn.discordapp.com/attachments/429364141355171840/849478743420043294/GyrominaRMV3-blurpOG.png"
+    "default": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3.png",
+    "pride": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3-pride.png",
+    "blurple": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3-blurp.png",
+    "winter": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/GyrominaRMV3-blurpOG.png"
   },
-  "mswp": "https://cdn.discordapp.com/attachments/429364141355171840/709862095549759538/compiled-outline.png",
-  "doc": "https://cdn.discordapp.com/attachments/429364141355171840/817563700290256937/theDoc.png"
+  "mswp": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/mswpTileset.png",
+  "doc": "https://raw.githubusercontent.com/Lowie375/Gyromina/main/assets/theDoc.png"
 }

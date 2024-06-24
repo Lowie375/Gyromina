@@ -50,7 +50,7 @@
   "testerLinks": [],
   "license": "MIT",
   "dependencies": {
-    "@discordjs/rest": "^0.4.1",
+    "@discordjs/rest": "^2.3.0",
     "bent": "^7.3.12",
     "canvas": "^2.11.2",
     "colors": "^1.4.0",

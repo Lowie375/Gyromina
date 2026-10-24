@@ -81,3 +81,9 @@ typings/
 # Code workspace files
 *.code-workspace
 .vscode
+
+# Environment config
+.vscode/launch.json
+
+# TypeScript output
+build

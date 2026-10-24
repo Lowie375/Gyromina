@@ -9,11 +9,8 @@ const rgbX = /^rgb\((\d+)[, ]+(\d+)[, ]+(\d+)\)/i;
 
 exports.run = {
   execute(message, args, client) {
-    // Emoji setup
-    const nope = getEmoji(message, e.nope, e.alt.nope);
-
     // Checks to see if the bot owner or a contributor sent the message.
-    if(message.author.id !== process.env.hostID && message.author.id !== package.authorID && !package.contributorIDs.includes(message.author.id) && !package.testerIDs.includes(message.author.id)) {
+    if(message.author.id !== process.env.hostID && message.author.id !== package.authorID) {
       console.log('A user attempted to run a test, but was unsuccessful!');
       return message.channel.send({embeds: [genRejectEmbed(message, "Insufficient permissions")]});
     }

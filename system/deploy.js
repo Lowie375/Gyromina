@@ -1,6 +1,4 @@
 const D = require('discord.js'); // discord.js
-const {REST} = require('@discordjs/rest'); // REST API
-const API = require('discord-api-types/v10'); // Discord API connection
 
 const slashCommands = [];
 
@@ -16,12 +14,12 @@ exports.localDeploy = async function(client) {
   });
 
   // connects to REST API
-  const rest = new REST({version: '10'}).setToken(process.env.token);
+  const rest = new D.REST({version: '10'}).setToken(process.env.token);
 
   try {
     // registers commands
     await rest.put(
-      API.Routes.applicationGuildCommands(process.env.clientID, process.env.hostGuildID),
+      D.Routes.applicationGuildCommands(process.env.clientID, process.env.hostGuildID),
       {body: slashCommands},
     );
     return false;
@@ -44,12 +42,12 @@ exports.globalDeploy = async function(client) {
   });
 
   // connects to REST API
-  const rest = new REST({version: '10'}).setToken(process.env.token);
+  const rest = new D.REST({version: '10'}).setToken(process.env.token);
 
   try {
     // registers commands globally
     await rest.put(
-      API.Routes.applicationCommands(process.env.clientID),
+      D.Routes.applicationCommands(process.env.clientID),
       {body: slashCommands},
     );
     /* // removes locally deployed slash commands

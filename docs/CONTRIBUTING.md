@@ -2,25 +2,27 @@
 
 First off, if you're reading this file, I assume you want to help me improve Gyromina. Thanks for doing that, I really appreciate it!
 
-Secondly, please make sure you've read through the code of conduct under **[docs/CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** before contributing.
+Secondly, please note that I develop Gyromina without the use of generative AI in any capacity, and I expect all contributions to adhere to that standard. I will not accept any contributions that I know or suspect to be aided by generative AI.
+
+Finally, please make sure you've read through the code of conduct under **[docs/CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** before contributing.
 
 ## General Notes
 
 ### If you are reporting a bug
 
 * Check the GitHib **[issues tab](https://github.com/Lowie375/Gyromina/issues)** to see if your bug has already been reported
-* If it has not been reported, create a new issue using the primary issue template under **[.github/ISSUE_TEMPLATE/bug_report.md](/.github/ISSUE_TEMPLATE/bug_report.md)**
+* If it has not been reported, create a new issue using the issue template under **[.github/ISSUE_TEMPLATE/bug_report.md](/.github/ISSUE_TEMPLATE/bug_report.md)**
 * **If you are reporting a security vulnerability, please see the security vulnerability protocol under [**docs/SECURITY.md**](SECURITY.md)**
 
 ### If you are contributing code or patching a bug
 
-* Open a new GitHub pull request
-* Add a title that summarizes the pull request and list changes in the pull request's description
+* Open a pull request
+* Add a title that summarizing the pull request, and list changes in the pull request's description
 
 ### If you are requesting a feature/improvement
 
 * Check the GitHib **[issues tab](https://github.com/Lowie375/Gyromina/issues)** to see if that feature/improvement has already been requested
-* If it has not been requested, create a new issue using the primary feature request template under **[.github/ISSUE_TEMPLATE/feature_request.md](/.github/ISSUE_TEMPLATE/feature_request.md)**
+* If it has not been requested, create a new issue using the feature request template under **[.github/ISSUE_TEMPLATE/feature_request.md](/.github/ISSUE_TEMPLATE/feature_request.md)**
 
 ## Code Conventions
 
@@ -28,11 +30,10 @@ These are some of the conventions I've tried to follow within Gyromina's code. A
 That being said, here are the main ones I've followed. You should be able to get the gist of them (along with other minor conventions) once you start reading through some of the existing code:
 
 * Indent using double spaces (soft tabs)
-* Add function/array definitions for all exported functions/arrays in the 'systemFiles' folder
-* Adding spaces after list items and parameters is preferred (`[x, y, z]` over `[x,y,z]`)
-* Avoiding spaces inside single line blocks is preferred (`if (foo === true) {return bar;}` over `if (foo === true) { return bar; }`)
-* Adding some spaces around operators is preferred (`i = 5` over `i=5`, `myVar += m * 9` or `myVar += m*9` over `myVar+=m*9`), unless they're wrapped within something (`arr[i+2]` and `myFunc(n*5)` are okay)
-* Making things look nice is greatly appreciated! Add whitespace between large segments of code and include brief comments wherever you see fit. Gyromina is an open source project, so keeping things clean and easy to read for future contributors is a must. Comments also help everyone (especially myself) see what certain segments of code do so that we don't end up breaking them later on.
+* Add spaces after list items when possible (`[x, y, z]` over `[x,y,z]`)
+* Add spaces around operators when possible (`i = 5` over `i=5`, `myVar += m * 9` or `myVar += m*9` over `myVar+=m*9`), unless enclosed in brackets (`arr[i+2]` and `myFunc(n*5)` are okay)
+* Add whitespace between large segments of code
+* Add documentation comments before major functions (to make things easier to maintain in the future), and keep single-line internal comments to a minimum
 
 ## Crediting
 

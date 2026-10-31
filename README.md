@@ -14,11 +14,12 @@
 
 ### "Fun + function, all in one."
 
-Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu \([@irisuwastaken](https://github.com/irisuwastaken)\)**, and **[@alazymeme](https://github.com/alazymeme)**
+Created by **[L375](https://l375.weebly.com/about) \([@Lowie375](https://github.com/Lowie375)\)**, with contributions & support from **Nao \([@naoei](https://github.com/naoei)\)**, **Irisu**, and **[@alazymeme](https://github.com/alazymeme)**
 
-Gyromina is entirely open source and licensed under the [MIT license](LICENSE)
+Gyromina is entirely open source. The current version of Gyromina is licensed under [AGPL-3.0](LICENSE), the full text of which can be found [here](docs/AGPL-3.0).  
+Versions prior to v2.0.0 are licensed under the [MIT license](https://opensource.org/license/MIT).
 
-### External Links
+Gyromina has been developed without the use of generative AI in any capacity, and will continue to be developed without the use of generative AI.
 
 **[Info Pages][info]** - **[Commands][commands]** - **[Changelog][log]** - **[Invite Link][invite]** - **[Development Server][discord]**
 

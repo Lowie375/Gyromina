@@ -2,7 +2,9 @@
     "compilerOptions": {
         "outDir": "./build",
         "allowJs": true,
-        "target": "es5"
+        "target": "es5",
+        "resolveJsonModule": true,
+        "esModuleInterop": true
     },
     "include": ["./commands/*", "./system/*", "./games/*", "index.js"],
 }
